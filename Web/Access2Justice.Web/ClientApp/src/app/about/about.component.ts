@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { environment } from "../../environments/environment";
-import { About } from "../about/about";
+
+import ENV from 'env';
+import { About } from './about';
 import { Global } from "../global";
 import { HelpText } from "../home/home";
 import { StaticResourceService } from "../shared/services/static-resource.service";
@@ -11,11 +12,11 @@ import { StaticResourceService } from "../shared/services/static-resource.servic
   styleUrls: ["./about.component.css"]
 })
 export class AboutComponent implements OnInit {
-  name: string = "AboutPage";
+  name = "AboutPage";
   aboutContent: About;
   staticContent: any;
   staticContentSubcription: any;
-  blobUrl: string = environment.blobUrl;
+  blobUrl: string = ENV.blobUrl;
   helpText: HelpText;
 
   constructor(
@@ -26,8 +27,7 @@ export class AboutComponent implements OnInit {
   getAboutPageContent(): void {
     if (
       this.staticResourceService.aboutContent &&
-      this.staticResourceService.aboutContent.location[0].state ==
-        this.staticResourceService.getLocation()
+      this.staticResourceService.aboutContent.location[0].state == this.staticResourceService.getLocation()
     ) {
       this.aboutContent = this.staticResourceService.aboutContent;
       this.helpText = this.staticResourceService.homeContent.helpText;

@@ -1,6 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
-import { environment } from "../../environments/environment";
+
+import ENV from 'env';
 import { Global } from "../global";
 import { LocationDetails } from "../shared/map/map";
 import { ILuisInput } from "../shared/search/search-results/search-results.model";
@@ -14,7 +15,7 @@ import { GuidedAssistant } from "./guided-assistant";
   templateUrl: "./guided-assistant.component.html",
   styleUrls: ["./guided-assistant.component.css"]
 })
-export class GuidedAssistantComponent implements OnInit {
+export class GuidedAssistantComponent implements OnInit, OnDestroy {
   searchText: string;
   topicLength = 12;
   luisInput: ILuisInput = {
@@ -27,12 +28,12 @@ export class GuidedAssistantComponent implements OnInit {
   guidedAssistantResults: any;
   locationDetails: LocationDetails;
   previousSearchText: string;
-  name: string = "GuidedAssistantPrivacyPage";
+  name = "GuidedAssistantPrivacyPage";
   guidedAssistantPageContent: GuidedAssistant;
   staticContent: any;
   staticContentSubcription: any;
-  blobUrl: string = environment.blobUrl;
-  description: string = "";
+  blobUrl: string = ENV.blobUrl;
+  description = "";
 
   constructor(
     private searchService: SearchService,

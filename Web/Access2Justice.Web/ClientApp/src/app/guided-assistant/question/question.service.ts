@@ -6,7 +6,9 @@ import { api } from "../../../api/api";
 import { Answer } from "./answers";
 import { Question } from "./question";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class QuestionService {
   constructor(private http: HttpClient) {}
 

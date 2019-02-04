@@ -1,8 +1,9 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { MsalService } from "@azure/msal-angular";
+
+import ENV from 'env';
 import { api } from "../../../api/api";
-import { environment } from "../../../environments/environment";
 
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json" })
@@ -15,7 +16,7 @@ export class LoginService {
   getUserProfile() {
     let userData = this.msalService.getUser();
     if (!userData) {
-      this.msalService.loginRedirect(environment.consentScopes);
+      this.msalService.loginRedirect(ENV.consentScopes);
     } else {
       let userProfile = {
         name: userData.idToken["name"],

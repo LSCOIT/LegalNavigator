@@ -135,7 +135,7 @@ describe("SearchComponent", () => {
         ]),
         HttpClientModule,
         FormsModule,
-        PipeModule.forRoot(),
+        PipeModule,
         BsDropdownModule.forRoot()
       ],
       providers: [

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
 
-import { environment } from "../../../environments/environment";
+import ENV from 'env';
 import { About } from "../../about/about";
 import { Global } from "../../global";
 import { MapLocation } from "../../shared/map/map";
@@ -22,7 +22,7 @@ export class AboutTemplateComponent implements OnInit {
   aboutContent: About;
   staticContent: any;
   staticContentSubcription: any;
-  blobUrl: string = environment.blobUrl;
+  blobUrl: string = ENV.blobUrl;
   form: FormGroup;
   newAboutContent: any;
   state: string;

@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from "@angular/core";
+import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 import { MsalService } from "@azure/msal-angular";
 import { NgxSpinnerService } from "ngx-spinner";
@@ -15,7 +15,7 @@ import { StaticResourceService } from "./shared/services/static-resource.service
   templateUrl: "./app.component.html",
   styleUrls: ["./app.component.css"]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   title = "app";
   staticContentResults: any;
   subscription: any;

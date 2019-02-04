@@ -1,34 +1,33 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { Router } from "@angular/router";
-import { MsalService } from "@azure/msal-angular";
-import { environment } from "../../../environments/environment";
-import { Global, UserStatus } from "../../global";
-import { Login } from "../navigation/navigation";
-import { LoginService } from "./login.service";
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Router } from '@angular/router';
+import { MsalService } from '@azure/msal-angular';
+
+import ENV from 'env';
+import { Global, UserStatus } from '../../global';
+import { Login } from '../navigation/navigation';
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.css"]
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   @Input() login: Login;
   userProfileName: string;
-  isLoggedIn: boolean = false;
-  blobUrl: any = environment.blobUrl;
+  isLoggedIn = false;
+  blobUrl: any = ENV.blobUrl;
   @Output() sendProfileOptionClickEvent = new EventEmitter<string>();
   userProfile: any;
-  isProfileSaved: boolean = false;
-  isAdmin: boolean = false;
+  isAdmin = false;
   roleInformationSubscription;
-  isMobile: boolean = false;
+  isMobile = false;
 
   constructor(
     private router: Router,
     private global: Global,
-    private msalService: MsalService,
-    private loginService: LoginService
-  ) {}
+    private msalService: MsalService
+  ) {
+  }
 
   onProfileOptionClick() {
     this.sendProfileOptionClickEvent.emit();
@@ -48,7 +47,7 @@ export class LoginComponent implements OnInit {
   externalLogin(event) {
     event.preventDefault();
     this.global.isLoginRedirect = true;
-    this.msalService.loginRedirect(environment.consentScopes);
+    this.msalService.loginRedirect(ENV.consentScopes);
   }
 
   logout() {
@@ -57,7 +56,7 @@ export class LoginComponent implements OnInit {
 
   checkIfAdmin(roleInformation) {
     roleInformation.forEach(role => {
-      if (role.roleName.includes("Admin") || role.roleName === "Developer") {
+      if (role.roleName.includes('Admin') || role.roleName === 'Developer') {
         this.isAdmin = true;
       }
     });
@@ -67,9 +66,9 @@ export class LoginComponent implements OnInit {
     this.userProfile = this.msalService.getUser();
     if (this.userProfile) {
       this.isLoggedIn = true;
-      this.userProfileName = this.userProfile.idToken["name"]
-        ? this.userProfile.idToken["name"]
-        : this.userProfile.idToken["preferred_username"];
+      this.userProfileName = this.userProfile.idToken['name']
+        ? this.userProfile.idToken['name']
+        : this.userProfile.idToken['preferred_username'];
     }
 
     this.roleInformationSubscription = this.global.notifyRoleInformation.subscribe(
@@ -79,8 +78,8 @@ export class LoginComponent implements OnInit {
     );
 
     if (
-      document.getElementById("mobile-menu") &&
-      document.getElementById("mobile-menu").style.display !== "none"
+      document.getElementById('mobile-menu') &&
+      document.getElementById('mobile-menu').style.display !== 'none'
     ) {
       this.isMobile = true;
     }

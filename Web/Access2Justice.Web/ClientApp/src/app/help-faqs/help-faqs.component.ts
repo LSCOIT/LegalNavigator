@@ -1,7 +1,8 @@
-import { Component, OnInit, QueryList, ViewChildren } from "@angular/core";
-import { environment } from "../../environments/environment";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+
+import ENV from 'env';
 import { Global } from "../global";
-import { Faq, HelpAndFaqs, ImageUrl } from "../help-faqs/help-faqs";
+import { Faq, HelpAndFaqs, ImageUrl } from './help-faqs';
 import { StaticResourceService } from "../shared/services/static-resource.service";
 
 @Component({
@@ -9,12 +10,12 @@ import { StaticResourceService } from "../shared/services/static-resource.servic
   templateUrl: "./help-faqs.component.html",
   styleUrls: ["./help-faqs.component.css"]
 })
-export class HelpFaqsComponent implements OnInit {
+export class HelpFaqsComponent implements OnInit, OnDestroy {
   helpAndFaqsContent: HelpAndFaqs;
   faqData: Array<Faq> = [];
   imageData: ImageUrl;
-  name: string = "HelpAndFAQPage";
-  blobUrl: string = environment.blobUrl;
+  name = "HelpAndFAQPage";
+  blobUrl: string = ENV.blobUrl;
   staticContent: any;
   staticContentSubcription: any;
 

@@ -108,7 +108,7 @@ describe("AppComponent", () => {
       imports: [
         FormsModule,
         HttpClientModule,
-        PipeModule.forRoot()
+        PipeModule
       ],
       providers: [
         AppComponent,

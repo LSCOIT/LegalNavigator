@@ -1,7 +1,8 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from "@angular/core";
-import { environment } from "../../../environments/environment";
+
+import ENV from 'env';
 import { Global } from "../../global";
-import { StaticResourceService } from "../../shared/services/static-resource.service";
+import { StaticResourceService } from '../services/static-resource.service';
 import { MapService } from "../map/map.service";
 import { HelpAndFAQ, Language, Location, Login, Navigation, PrivacyPromise } from "./navigation";
 
@@ -11,7 +12,7 @@ import { HelpAndFAQ, Language, Location, Login, Navigation, PrivacyPromise } fro
   styleUrls: ["./upper-nav.component.css"]
 })
 export class UpperNavComponent implements OnInit {
-  blobUrl: any = environment.blobUrl;
+  blobUrl: any = ENV.blobUrl;
   navigation: Navigation;
   name: string = "Navigation";
   language: Language;

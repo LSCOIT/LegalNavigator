@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+
 import { api } from "../../../api/api";
 import { About } from "../../about/about";
 import { GuidedAssistant } from "../../guided-assistant/guided-assistant";
@@ -7,10 +8,12 @@ import { PersonalizedPlanDescription } from "../../guided-assistant/personalized
 import { HelpAndFaqs } from "../../help-faqs/help-faqs";
 import { Home } from "../../home/home";
 import { PrivacyContent } from "../../privacy-promise/privacy-promise";
-import { LocationDetails, MapLocation } from "./../map/map";
-import { Navigation } from "./../navigation/navigation";
+import { LocationDetails, MapLocation } from '../map/map';
+import { Navigation } from '../navigation/navigation';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class StaticResourceService {
   constructor(private httpClient: HttpClient) { }
 

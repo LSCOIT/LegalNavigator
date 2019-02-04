@@ -1,24 +1,37 @@
-import { Component, ElementRef, OnInit, ViewChild } from "@angular/core";
-import { environment } from "../../../environments/environment";
-import { Global } from "../../global";
-import { EventUtilityService } from "../../shared/services/event-utility.service";
-import { StaticResourceService } from "../../shared/services/static-resource.service";
-import { MapService } from "../map/map.service";
-import { About, GuidedAssistant, HelpAndFAQ, Home, Language, Login, Logo, Navigation, PrivacyPromise, Search, TopicAndResources } from "./navigation";
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+
+import ENV from 'env';
+import { Global } from '../../global';
+import { EventUtilityService } from '../services/event-utility.service';
+import { StaticResourceService } from '../services/static-resource.service';
+import { MapService } from '../map/map.service';
+import {
+  About,
+  GuidedAssistant,
+  HelpAndFAQ,
+  Home,
+  Language,
+  Login,
+  Logo,
+  Navigation,
+  PrivacyPromise,
+  Search,
+  TopicAndResources
+} from './navigation';
 
 @Component({
-  selector: "app-lower-nav",
-  templateUrl: "./lower-nav.component.html",
-  styleUrls: ["./lower-nav.component.css"]
+  selector: 'app-lower-nav',
+  templateUrl: './lower-nav.component.html',
+  styleUrls: ['./lower-nav.component.css']
 })
 export class LowerNavComponent implements OnInit {
   width = 0;
   showSearch = false;
-  myClass = "";
+  myClass = '';
   staticContentSubcription: any;
-  blobUrl: any = environment.blobUrl;
+  blobUrl: any = ENV.blobUrl;
   navigation: Navigation;
-  name: string = "Navigation";
+  name = 'Navigation';
   language: Language;
   location: any = Location;
   privacyPromise: PrivacyPromise;
@@ -32,7 +45,7 @@ export class LowerNavComponent implements OnInit {
   search: Search;
   subscription: any;
   staticContent: any;
-  @ViewChild("sidenav") sidenav: ElementRef;
+  @ViewChild('sidenav') sidenav: ElementRef;
 
   constructor(
     private staticResourceService: StaticResourceService,
@@ -47,23 +60,23 @@ export class LowerNavComponent implements OnInit {
 
   openNav() {
     let windowWidth = window.innerWidth;
-    this.myClass = "dimmer";
+    this.myClass = 'dimmer';
     if (windowWidth >= 768) {
-      this.sidenav.nativeElement.style.width = "400px";
-      this.sidenav.nativeElement.style.height = "100%";
+      this.sidenav.nativeElement.style.width = '400px';
+      this.sidenav.nativeElement.style.height = '100%';
     } else {
-      this.sidenav.nativeElement.style.height = "100%";
-      this.sidenav.nativeElement.style.width = "100%";
+      this.sidenav.nativeElement.style.height = '100%';
+      this.sidenav.nativeElement.style.width = '100%';
     }
   }
 
   closeNav() {
     let windowWidth = window.innerWidth;
-    this.myClass = "";
+    this.myClass = '';
     if (windowWidth >= 768) {
-      this.sidenav.nativeElement.style.width = "0";
+      this.sidenav.nativeElement.style.width = '0';
     } else {
-      this.sidenav.nativeElement.style.height = "0";
+      this.sidenav.nativeElement.style.height = '0';
     }
   }
 
@@ -92,7 +105,7 @@ export class LowerNavComponent implements OnInit {
     if (
       this.staticResourceService.navigation &&
       this.staticResourceService.navigation.location[0].state ==
-        this.staticResourceService.getLocation()
+      this.staticResourceService.getLocation()
     ) {
       this.navigation = this.staticResourceService.navigation;
       this.filterNavigationContent(this.staticResourceService.navigation);

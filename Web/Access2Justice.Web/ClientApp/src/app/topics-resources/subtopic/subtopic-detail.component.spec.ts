@@ -100,7 +100,7 @@ describe("SubtopicDetailComponent", () => {
           }
         ]),
         HttpClientModule,
-        PipeModule.forRoot(),
+        PipeModule,
         BsDropdownModule.forRoot()
       ],
       providers: [

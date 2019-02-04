@@ -1,10 +1,12 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { environment } from "../../../../environments/environment";
+
+import ENV from 'env';
 import { LatitudeLongitude } from "./map-results";
+
 declare var Microsoft: any;
 
-const virtualEarthUrl = environment.virtualEarthUrl;
+const virtualEarthUrl = ENV.virtualEarthUrl;
 @Injectable()
 export class MapResultsService {
   latitudeLongitude: Array<LatitudeLongitude> = [];
@@ -43,7 +45,7 @@ export class MapResultsService {
 
   getMap() {
     let map = new Microsoft.Maps.Map("#my-map-results", {
-      credentials: environment.bingmap_key
+      credentials: ENV.bingmap_key
     });
   }
 
@@ -53,7 +55,7 @@ export class MapResultsService {
       let latitude = this.latitudeLongitude[0].latitude;
       let longitude = this.latitudeLongitude[0].longitude;
       let streetMap = new Microsoft.Maps.Map("#my-map-results", {
-        credentials: environment.bingmap_key,
+        credentials: ENV.bingmap_key,
         mapTypeId: Microsoft.Maps.MapTypeId.streetside,
         zoom: 14,
         center: new Microsoft.Maps.Location(latitude, longitude)
@@ -68,7 +70,7 @@ export class MapResultsService {
       streetMap.setView({ mapTypeId: Microsoft.Maps.MapTypeId.streetside });
     } else {
       let map = new Microsoft.Maps.Map("#my-map-results", {
-        credentials: environment.bingmap_key
+        credentials: ENV.bingmap_key
       });
       for (let i = 0, len = this.latitudeLongitude.length; i < len; i++) {
         var pin = new Microsoft.Maps.Pushpin(

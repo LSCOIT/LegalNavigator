@@ -1,5 +1,6 @@
-import { Component, OnInit } from "@angular/core";
-import { environment } from "../../environments/environment";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+
+import ENV from 'env';
 import { Global } from "../global";
 import { LocationDetails } from "../shared/map/map";
 import { MapService } from "../shared/map/map.service";
@@ -11,7 +12,7 @@ import { Carousel, GuidedAssistantOverview, Hero, Home, Privacy, SponsorOverview
   templateUrl: "./home.component.html",
   styleUrls: ["./home.component.css"]
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   topicLength = 12;
   locationDetails: LocationDetails;
   state: string;
@@ -19,8 +20,8 @@ export class HomeComponent implements OnInit {
   slides = [];
   sponsors: Array<Sponsors>;
   button: { buttonText: ""; buttonAltText: ""; buttonLink: "" };
-  blobUrl: string = environment.blobUrl;
-  name: string = "HomePage";
+  blobUrl: string = ENV.blobUrl;
+  name = "HomePage";
   homeContent: Home;
   heroData: Hero;
   guidedAssistantOverviewData: GuidedAssistantOverview;

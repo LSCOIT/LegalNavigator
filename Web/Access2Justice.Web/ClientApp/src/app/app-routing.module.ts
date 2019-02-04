@@ -53,6 +53,7 @@ const appRoutes: Routes = [
   declarations: [],
   exports: [
     RouterModule
-  ]
+  ],
+  providers: [ProfileResolver]
 })
 export class AppRoutingModule { }
