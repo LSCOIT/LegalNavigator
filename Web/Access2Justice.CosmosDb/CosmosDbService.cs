@@ -169,9 +169,16 @@ namespace Access2Justice.CosmosDb
             return await QueryItemsPaginationAsync(cosmosDbSettings.ResourcesCollectionId, query, feedOptions); ;
         }
 
-        public async Task<dynamic> ExecuteStoredProcedureAsync(string collectionId, string storedProcName, params dynamic[] procedureParams)
+        public async Task<dynamic> ExecuteStoredProcedureAsync(
+            string collectionId,
+            string storedProcName,
+            string partitionKey,
+            params dynamic[] procedureParams)
         {
-            return await documentClient.ExecuteStoredProcedureAsync<dynamic>(UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, collectionId, storedProcName), procedureParams);
+            return await documentClient.ExecuteStoredProcedureAsync<dynamic>(
+                UriFactory.CreateStoredProcedureUri(cosmosDbSettings.DatabaseId, collectionId, storedProcName),
+                new RequestOptions { PartitionKey = new PartitionKey(partitionKey) },
+                procedureParams);
         }
     }
 }

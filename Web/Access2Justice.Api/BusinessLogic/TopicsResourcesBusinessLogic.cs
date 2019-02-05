@@ -113,8 +113,21 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetBreadcrumbDataAsync(string id)
         {
+            List<dynamic> topics = await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Id, id);
+
+            if (!topics.Any())
+            {
+                throw new Exception($"No topic found with this id: {id}");
+            }
+
+            var topic = JsonUtilities.DeserializeDynamicObject<Topic>(topics.First());
+
             List<dynamic> procedureParams = new List<dynamic>() { id };
-            return await dbService.ExecuteStoredProcedureAsync(dbSettings.TopicsCollectionId, Constants.BreadcrumbStoredProcedureName, procedureParams);
+            return await dbService.ExecuteStoredProcedureAsync(
+                dbSettings.TopicsCollectionId,
+                Constants.BreadcrumbStoredProcedureName,
+                topic.OrganizationalUnit,
+                procedureParams);
         }
 
         public async Task<dynamic> GetTopicDetailsAsync(string topicName)

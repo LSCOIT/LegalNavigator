@@ -15,7 +15,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<T> GetItemAsync<T>(string id, string collectionId);
         Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate,string collectionId);
         Task<dynamic> QueryItemsAsync(string collectionId, string query);
-        Task<dynamic> ExecuteStoredProcedureAsync(string collectionId, string storedProcName, params dynamic[] procedureParams);
+        Task<dynamic> ExecuteStoredProcedureAsync(string collectionId, string storedProcName, string partitionKey, params dynamic[] procedureParams);
         Task<Document> UpdateItemAsync<T>(string id, T item, string collectionId);
         Task<dynamic> QueryItemsPaginationAsync(string collectionId, string query, FeedOptions feedOptions);
         Task<dynamic> GetFirstPageResourceAsync(string query,bool isInitialPage);
