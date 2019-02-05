@@ -999,6 +999,8 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         public void GetBreadcrumbItemsAsyncEmptyData()
         {
             //arrange
+            var dbFindResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicsCollectionId, Constants.Id, topicId);
+            dbFindResponse.ReturnsForAnyArgs<dynamic>(new List<object>(topicData));
             var dbResponse = backendDatabaseService.ExecuteStoredProcedureAsync(cosmosDbSettings.TopicsCollectionId, procedureName, topicId);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
