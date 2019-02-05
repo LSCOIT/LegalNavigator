@@ -1,10 +1,10 @@
 import { TestBed } from "@angular/core/testing";
 
+import ENV from 'env';
 import { StateCodeService } from "../services/state-code.service";
 import { MapService } from "./map.service";
 
 describe("MapService", () => {
-  const ENV = {map_type: false};
   let service: MapService;
   let mockStateCodeService: StateCodeService;
   let mockMapType: boolean = false;
