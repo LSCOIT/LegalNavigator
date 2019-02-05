@@ -7,12 +7,12 @@ namespace Access2Justice.Shared.Bing
 {
     public class BingSettings : IBingSettings
     {
-        public BingSettings(IConfiguration configuration)
+        public BingSettings(IConfiguration configuration, ISecretsService secretsService)
         {
             try
             {
                 BingSearchUrl = new Uri(configuration.GetSection("BingSearchUrl").Value);
-                SubscriptionKey = configuration.GetSection("SubscriptionKey").Value;
+                SubscriptionKey = secretsService.GetSecret("SubscriptionKey");
                 CustomConfigId = configuration.GetSection("CustomConfigId").Value;
                 PageResultsCount = Int16.Parse(configuration.GetSection("PageResultsCount").Value, CultureInfo.InvariantCulture);
                 PageOffsetValue = Int16.Parse(configuration.GetSection("PageOffsetValue").Value, CultureInfo.InvariantCulture);

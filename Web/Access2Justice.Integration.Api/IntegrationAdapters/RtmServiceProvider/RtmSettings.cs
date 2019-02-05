@@ -1,18 +1,16 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using Access2Justice.Shared.Interfaces;
+using Microsoft.Extensions.Configuration;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
 {
     public class RtmSettings
     {
-        public RtmSettings(IConfiguration configuration)
+        public RtmSettings(IConfiguration configuration, ISecretsService secretsService)
         {
             try
             {
-                ApiKey = configuration.GetSection("ApiKey").Value;
+                ApiKey = secretsService.GetSecret("ApiKey");
                 SessionURL = new Uri(configuration.GetSection("SessionURL").Value);
                 ServiceProviderURL = new Uri(configuration.GetSection("ServiceProviderURL").Value);
                 ServiceProviderDetailURL = new Uri(configuration.GetSection("ServiceProviderDetailURL").Value);

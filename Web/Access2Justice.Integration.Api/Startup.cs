@@ -5,7 +5,7 @@ using Access2Justice.Integration.Api.Interfaces;
 using Access2Justice.Integration.Api.Model;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
-using Access2Justice.Shared.Utilities;
+using Access2Justice.Shared.KeyVault;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Azure.Documents;
@@ -52,6 +52,11 @@ namespace Access2Justice.Integration.Api
             IKeyVaultSettings keyVaultSettings = new KeyVaultSettings(Configuration.GetSection("KeyVault"));
             services.AddSingleton(keyVaultSettings);
 
+            services.AddSingleton<ISecretsService>(
+                serviceProvider =>
+                    new KeyVaultSecretsService(serviceProvider.GetService<IKeyVaultSettings>()));
+
+
             services.AddSingleton<IHttpClientService, HttpClientService>();
             services.AddSingleton<IServiceProvidersBusinessLogic, ServiceProvidersBusinessLogic>();            
             ConfigureCosmosDb(services);
@@ -95,9 +100,20 @@ namespace Access2Justice.Integration.Api
 
         private void ConfigureCosmosDb(IServiceCollection services)
         {
-            ICosmosDbSettings cosmosDbSettings = new CosmosDbSettings(Configuration.GetSection("CosmosDb"), (Configuration.GetSection("KeyVault")));
-            services.AddSingleton(cosmosDbSettings);
-            services.AddSingleton<IDocumentClient>(x => new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
+            services.AddSingleton<ICosmosDbSettings>(
+                serviceProvider =>
+                    new CosmosDbSettings(
+                        Configuration.GetSection("CosmosDb"),
+                        serviceProvider.GetService<ISecretsService>()));
+
+            services.AddSingleton<IDocumentClient>(
+                serviceProvider =>
+                {
+                    var cosmosDbSettings = serviceProvider.GetService<ICosmosDbSettings>();
+                    return new DocumentClient(
+                        cosmosDbSettings.Endpoint,
+                        cosmosDbSettings.AuthKey);
+                });
             services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
             services.AddSingleton<IDynamicQueries, CosmosDbDynamicQueries>();
             services.AddSingleton<IServiceProvidersOrchestrator, ServiceProvidersOrchestrator>();
