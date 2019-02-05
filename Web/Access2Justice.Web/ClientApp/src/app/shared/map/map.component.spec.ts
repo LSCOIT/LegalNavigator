@@ -8,6 +8,7 @@ import { BsModalRef, ModalModule } from 'ngx-bootstrap';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { from } from 'rxjs';
 
+import ENV from 'env';
 import { Global } from '../../global';
 import { EventUtilityService } from '../services/event-utility.service';
 import { StaticResourceService } from '../services/static-resource.service';
@@ -17,7 +18,6 @@ import { MapComponent } from './map.component';
 import { MapService } from './map.service';
 
 describe('MapComponent', () => {
-  const ENV = {map_type: false};
   let component: MapComponent;
   let fixture: ComponentFixture<MapComponent>;
   let modalService: BsModalService;

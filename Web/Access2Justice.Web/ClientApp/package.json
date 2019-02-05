@@ -10,6 +10,7 @@
     "build:ssr": "npm run build -- --app=ssr --output-hashing=media",
     "release": "ng build --prod",
     "test": "ng test",
+    "test:ci": "ng test --watch=false --reporters=junit,progress",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
