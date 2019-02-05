@@ -16,11 +16,18 @@ namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
 {
     public class RtmServiceProviderAdapter : IServiceProviderAdapter
     {
+        private readonly ISecretsService _secretsService;
+
+        public RtmServiceProviderAdapter(ISecretsService secretsService)
+        {
+            _secretsService = secretsService;
+        }
+
         private static IConfiguration Configuration { get; set; }
 
         public async Task<List<string>> GetServiceProviders(string topicName)
         {
-            var rtmSettings = GetRTMConfiguration();
+            var rtmSettings = GetRTMConfiguration(_secretsService);
             var providerIds = new List<string>();
             if (rtmSettings != null && !string.IsNullOrEmpty(topicName))
             {
@@ -46,7 +53,7 @@ namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
 
         public async Task<ServiceProvider> GetServiceProviderDetails(string providerId)
         {
-            var rtmSettings = GetRTMConfiguration();
+            var rtmSettings = GetRTMConfiguration(_secretsService);
             var serviceProvider = new ServiceProvider();
             if (rtmSettings != null && !string.IsNullOrEmpty(providerId))
             {
@@ -122,7 +129,7 @@ namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
         /// Reads RTM configuration from json file.
         /// </summary>
         /// <returns>RTM configuration</returns>
-        private static RtmSettings GetRTMConfiguration()
+        private static RtmSettings GetRTMConfiguration(ISecretsService secretsService)
         {
             try
             {
@@ -131,7 +138,7 @@ namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
                     .SetBasePath(Directory.GetCurrentDirectory())
                     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
                     .Build();
-                rtmSettings = new RtmSettings(Configuration.GetSection("RtmSettings"));
+                rtmSettings = new RtmSettings(Configuration.GetSection("RtmSettings"), secretsService);
                 return rtmSettings;
             }
             catch

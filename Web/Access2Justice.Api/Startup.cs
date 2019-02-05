@@ -11,7 +11,7 @@ using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Luis;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Share;
-using Access2Justice.Shared.Utilities;
+using Access2Justice.Shared.KeyVault;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -45,23 +45,39 @@ namespace Access2Justice.Api
             ConfigureSession(services);
 
             services.AddMvc();
-            ILuisSettings luisSettings = new LuisSettings(Configuration.GetSection("Luis"));
-            services.AddSingleton(luisSettings);
 
-            IBingSettings bingSettings = new BingSettings(Configuration.GetSection("Bing"));
-            services.AddSingleton(bingSettings);
+            services.AddSingleton<IKeyVaultSettings>(
+                new KeyVaultSettings(Configuration.GetSection("KeyVault")));
+
+            services.AddSingleton<ISecretsService>(
+                serviceProvider =>
+                    new KeyVaultSecretsService(serviceProvider.GetService<IKeyVaultSettings>()));
+
+            services.AddSingleton<ILuisSettings>(
+                serviceProvider =>
+                new LuisSettings(
+                    Configuration.GetSection("Luis"),
+                    serviceProvider.GetService<ISecretsService>()));
+
+            services.AddSingleton<IBingSettings>(
+                serviceProvider =>
+                    new BingSettings(
+                        Configuration.GetSection("Bing"),
+                        serviceProvider.GetService<ISecretsService>()));
 
             IShareSettings shareSettings = new ShareSettings(Configuration.GetSection("Share"));
             services.AddSingleton(shareSettings);
 
-            IKeyVaultSettings keyVaultSettings = new KeyVaultSettings(Configuration.GetSection("KeyVault"));
-            services.AddSingleton(keyVaultSettings);
 
             IAdminSettings adminSettings = new AdminSettings(Configuration.GetSection("Admin"));
             services.AddSingleton(adminSettings);
 
-            IOnboardingInfoSettings onboardingInfoSettings = new OnboardingInfoSettings(Configuration.GetSection("EmailService"), Configuration.GetSection("KeyVault"));
-            services.AddSingleton(onboardingInfoSettings);
+            services.AddSingleton<IOnboardingInfoSettings>(
+                serviceProvider =>
+                    new OnboardingInfoSettings(
+                        Configuration.GetSection("EmailService"),
+                        serviceProvider.GetService<ISecretsService>()));
+
             IQnAMakerSettings qnAMakerSettings = new QnAMakerSettings(Configuration.GetSection("QnAMaker"));
             services.AddSingleton(qnAMakerSettings);
 
@@ -125,7 +141,7 @@ namespace Access2Justice.Api
             }
 
             var apiEnpoint = new Uri(Configuration.GetSection("Api:Endpoint").Value);
-            var url = $"{apiEnpoint.Scheme}://{apiEnpoint.Host}:{apiEnpoint.Port}";         
+            var url = $"{apiEnpoint.Scheme}://{apiEnpoint.Host}:{apiEnpoint.Port}";
             app.UseCors(builder => builder.WithOrigins(url)
                         .AllowAnyOrigin()
                         .AllowAnyMethod()
@@ -147,9 +163,20 @@ namespace Access2Justice.Api
 
         private void ConfigureCosmosDb(IServiceCollection services)
         {
-            ICosmosDbSettings cosmosDbSettings = new CosmosDbSettings(Configuration.GetSection("CosmosDb"), (Configuration.GetSection("KeyVault")));
-            services.AddSingleton(cosmosDbSettings);
-            services.AddSingleton<IDocumentClient>(x => new DocumentClient(cosmosDbSettings.Endpoint, cosmosDbSettings.AuthKey));
+            services.AddSingleton<ICosmosDbSettings>(
+                serviceProvider =>
+                    new CosmosDbSettings(
+                        Configuration.GetSection("CosmosDb"),
+                        serviceProvider.GetService<ISecretsService>()));
+
+            services.AddSingleton<IDocumentClient>(
+                serviceProvider =>
+                {
+                    var cosmosDbSettings = serviceProvider.GetService<ICosmosDbSettings>();
+                    return new DocumentClient(
+                        cosmosDbSettings.Endpoint,
+                        cosmosDbSettings.AuthKey);
+                });
             services.AddSingleton<IBackendDatabaseService, CosmosDbService>();
             services.AddSingleton<IDynamicQueries, CosmosDbDynamicQueries>();
         }

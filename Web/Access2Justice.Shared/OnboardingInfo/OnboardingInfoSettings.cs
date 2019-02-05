@@ -7,21 +7,13 @@ namespace Access2Justice.Shared.Admin
 {
     public class OnboardingInfoSettings : IOnboardingInfoSettings
     {
-        public OnboardingInfoSettings(IConfiguration configuration, IConfiguration kvConfiguration)
+        public OnboardingInfoSettings(IConfiguration configuration, ISecretsService secretsService)
         {
             try
             {
-                if (configuration != null)
-                {
-                    IKeyVaultSettings kv = new Access2Justice.Shared.Utilities.KeyVaultSettings(kvConfiguration);
-                    var kvSecret = kv.GetKeyVaultSecrets("EmailServiceSecretKey");
-                    kvSecret.Wait();
-                    Password = kvSecret.Result;
-                }
-                else
-                {
-                    Password = configuration.GetSection("Password").Value;
-                }
+                var getSecretTask = secretsService.GetSecretAsync("EmailServiceSecretKey");
+                getSecretTask.Wait();
+                Password = getSecretTask.Result;
 
                 HostAddress = configuration.GetSection("HostAddress").Value;
                 PortNumber = configuration.GetSection("PortNumber").Value;
