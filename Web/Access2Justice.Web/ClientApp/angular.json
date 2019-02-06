@@ -20,7 +20,7 @@
             "assets": [
               "src/assets",
               {
-                "glob": "env.js",
+                "glob": "env*.js",
                 "input": "src/scripts/",
                 "output": "/"
               }
