@@ -10,7 +10,7 @@ namespace Access2Justice.Integration.Api.IntegrationAdapters.RtmServiceProvider
         {
             try
             {
-                ApiKey = secretsService.GetSecret("ApiKey");
+                ApiKey = secretsService.GetSecret("IntegrationRtmApiKey");
                 SessionURL = new Uri(configuration.GetSection("SessionURL").Value);
                 ServiceProviderURL = new Uri(configuration.GetSection("ServiceProviderURL").Value);
                 ServiceProviderDetailURL = new Uri(configuration.GetSection("ServiceProviderDetailURL").Value);

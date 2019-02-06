@@ -6,13 +6,13 @@ namespace Access2Justice.Shared.QnAMaker
 {
     public class QnAMakerSettings : IQnAMakerSettings
     {
-        public QnAMakerSettings(IConfiguration configuration)
+        public QnAMakerSettings(IConfiguration configuration, ISecretsService secretsService)
         {
             try
             {
+                AuthorizationKey = secretsService.GetSecret("QnAMakerAuthorizationKey");
                 Endpoint = new Uri(configuration.GetSection("Endpoint").Value);
                 KnowledgeId = configuration.GetSection("KnowledgeId").Value;
-                AuthorizationKey = configuration.GetSection("AuthorizationKey").Value;
             }
             catch
             {
