@@ -40,7 +40,7 @@ export class SaveButtonComponent implements OnInit {
   ) {}
 
   externalLogin() {
-    this.msalService.loginRedirect(ENV.consentScopes);
+    this.msalService.loginRedirect(ENV().consentScopes);
   }
 
   savePlanResources(): void {

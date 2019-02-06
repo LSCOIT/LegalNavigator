@@ -16,7 +16,7 @@ export class FooterComponent implements OnInit {
     private global: Global
   ) {}
 
-  blobUrl: any = ENV.blobUrl;
+  blobUrl: any = ENV().blobUrl;
   navigation: Navigation;
   name = "Navigation";
   privacyPromise: PrivacyPromise;

@@ -17,7 +17,7 @@ export class PrivacyPromiseComponent implements OnInit {
   name: string = "PrivacyPromisePage";
   staticContent: any;
   staticContentSubcription: any;
-  blobUrl: string = ENV.blobUrl;
+  blobUrl: string = ENV().blobUrl;
 
   constructor(
     private staticResourceService: StaticResourceService,

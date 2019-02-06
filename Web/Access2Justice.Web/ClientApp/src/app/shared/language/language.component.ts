@@ -12,7 +12,7 @@ import { StaticResourceService } from '../services/static-resource.service';
   styleUrls: ["./language.component.css"]
 })
 export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
-  blobUrl: any = ENV.blobUrl;
+  blobUrl: any = ENV().blobUrl;
   navigation: Navigation;
   name = "Navigation";
   language: Language;

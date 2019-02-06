@@ -147,7 +147,7 @@ export class ShareButtonComponent implements OnInit {
   }
 
   externalLogin() {
-    this.msalService.loginRedirect(ENV.consentScopes);
+    this.msalService.loginRedirect(ENV().consentScopes);
   }
 
   ngOnInit() {

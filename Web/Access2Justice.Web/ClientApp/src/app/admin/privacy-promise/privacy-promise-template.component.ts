@@ -23,7 +23,7 @@ export class PrivacyPromiseTemplateComponent implements OnInit {
   newPrivacyContent;
   name: string = "PrivacyPromisePage";
   staticContent: any;
-  blobUrl: string = ENV.blobUrl;
+  blobUrl: string = ENV().blobUrl;
   state: string;
   location: MapLocation = {
     state: this.activeRoute.snapshot.queryParams["state"]

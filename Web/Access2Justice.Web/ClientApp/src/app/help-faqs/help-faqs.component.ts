@@ -15,7 +15,7 @@ export class HelpFaqsComponent implements OnInit, OnDestroy {
   faqData: Array<Faq> = [];
   imageData: ImageUrl;
   name = "HelpAndFAQPage";
-  blobUrl: string = ENV.blobUrl;
+  blobUrl: string = ENV().blobUrl;
   staticContent: any;
   staticContentSubcription: any;
 

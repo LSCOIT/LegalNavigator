@@ -12,7 +12,7 @@ import { HelpAndFAQ, Language, Location, Login, Navigation, PrivacyPromise } fro
   styleUrls: ["./upper-nav.component.css"]
 })
 export class UpperNavComponent implements OnInit {
-  blobUrl: any = ENV.blobUrl;
+  blobUrl: any = ENV().blobUrl;
   navigation: Navigation;
   name: string = "Navigation";
   language: Language;

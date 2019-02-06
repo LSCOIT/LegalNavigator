@@ -209,7 +209,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     if (!this.msalService.getUser() && !this.global.isShared) {
-      this.msalService.loginRedirect(ENV.consentScopes);
+      this.msalService.loginRedirect(ENV().consentScopes);
     }
     if (this.global.isLoggedIn && !this.global.isShared) {
       this.userId = this.global.userId;

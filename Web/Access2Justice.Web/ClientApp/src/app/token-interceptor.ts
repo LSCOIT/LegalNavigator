@@ -18,7 +18,7 @@ export class TokenInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    const scopes = ENV.consentScopes;
+    const scopes = ENV().consentScopes;
     const tokenStored = this.auth.getCachedTokenInternal(scopes);
     if (tokenStored && tokenStored.token) {
       req = req.clone({setHeaders: this.getAuthHeaders(tokenStored.token)});

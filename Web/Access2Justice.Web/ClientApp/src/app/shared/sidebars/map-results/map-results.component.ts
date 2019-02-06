@@ -87,7 +87,7 @@ export class MapResultsComponent implements OnChanges {
         .trim();
       if (address.toLowerCase() !== "na" || address.toLowerCase() !== "n/a") {
         this.mapResultsService
-          .getLocationDetails(address, ENV.bingmap_key)
+          .getLocationDetails(address, ENV().bingmap_key)
           .subscribe(locationCoordinates => {
             this.latlong = {
               latitude:

@@ -27,7 +27,7 @@ export class PersonalizedPlanComponent implements OnInit {
   personalizedPlanContent: PersonalizedPlanDescription;
   staticContent: any;
   staticContentSubcription: any;
-  blobUrl: string = ENV.blobUrl;
+  blobUrl: string = ENV().blobUrl;
   description: string = "";
 
   constructor(

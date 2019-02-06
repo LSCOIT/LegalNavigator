@@ -27,7 +27,7 @@ export class BrowserTabCloseComponent implements OnInit {
       sessionStorage.getItem(this.global.topicsSessionKey)
     ) {
       this.global.isLoginRedirect = true;
-      this.msalService.loginRedirect(ENV.consentScopes);
+      this.msalService.loginRedirect(ENV().consentScopes);
     }
   }
 

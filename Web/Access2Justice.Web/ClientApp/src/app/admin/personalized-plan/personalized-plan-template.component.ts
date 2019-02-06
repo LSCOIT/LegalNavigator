@@ -21,7 +21,7 @@ export class PersonalizedPlanTemplateComponent implements OnInit {
   personalizedPlanContent: PersonalizedPlan;
   staticContent: any;
   staticContentSubcription: any;
-  blobUrl: string = ENV.blobUrl;
+  blobUrl: string = ENV().blobUrl;
   form: FormGroup;
   detailParams: any;
   newPersonalizedPlanContent: any;

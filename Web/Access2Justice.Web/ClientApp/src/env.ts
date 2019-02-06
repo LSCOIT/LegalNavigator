@@ -23,4 +23,6 @@ export interface IEnv {
   apiScope: string;
 }
 
-export default window['__ngEnv'] as IEnv;
+export default function (): IEnv {
+  return window['__ngEnv'] as IEnv;
+}

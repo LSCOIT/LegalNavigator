@@ -32,7 +32,7 @@ export class GuidedAssistantComponent implements OnInit, OnDestroy {
   guidedAssistantPageContent: GuidedAssistant;
   staticContent: any;
   staticContentSubcription: any;
-  blobUrl: string = ENV.blobUrl;
+  blobUrl: string = ENV().blobUrl;
   description = "";
 
   constructor(

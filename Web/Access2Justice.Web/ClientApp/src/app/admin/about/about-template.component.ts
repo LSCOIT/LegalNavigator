@@ -22,7 +22,7 @@ export class AboutTemplateComponent implements OnInit {
   aboutContent: About;
   staticContent: any;
   staticContentSubcription: any;
-  blobUrl: string = ENV.blobUrl;
+  blobUrl: string = ENV().blobUrl;
   form: FormGroup;
   newAboutContent: any;
   state: string;
