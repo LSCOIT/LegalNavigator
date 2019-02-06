@@ -25,12 +25,12 @@ import ENV from 'env';
     BrowserModule,
     HttpClientModule,
     MsalModule.forRoot({
-      clientID: ENV.clientID,
-      authority: ENV.authority,
-      consentScopes: ENV.consentScopes,
-      redirectUri: ENV.redirectUri,
-      navigateToLoginRequestUrl: ENV.navigateToLoginRequestUrl,
-      postLogoutRedirectUri: ENV.postLogoutRedirectUri
+      clientID: ENV().clientID,
+      authority: ENV().authority,
+      consentScopes: ENV().consentScopes,
+      redirectUri: ENV().redirectUri,
+      navigateToLoginRequestUrl: ENV().navigateToLoginRequestUrl,
+      postLogoutRedirectUri: ENV().postLogoutRedirectUri
     }),
   ]
 })

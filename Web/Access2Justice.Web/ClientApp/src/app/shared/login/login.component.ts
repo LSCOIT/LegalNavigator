@@ -15,7 +15,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   @Input() login: Login;
   userProfileName: string;
   isLoggedIn = false;
-  blobUrl: any = ENV.blobUrl;
+  blobUrl: any = ENV().blobUrl;
   @Output() sendProfileOptionClickEvent = new EventEmitter<string>();
   userProfile: any;
   isAdmin = false;
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   externalLogin(event) {
     event.preventDefault();
     this.global.isLoginRedirect = true;
-    this.msalService.loginRedirect(ENV.consentScopes);
+    this.msalService.loginRedirect(ENV().consentScopes);
   }
 
   logout() {

@@ -36,7 +36,7 @@ export class MapComponent implements OnInit {
   showLocality: boolean = true;
   subscription: any;
   state: string;
-  blobUrl: any = ENV.blobUrl;
+  blobUrl: any = ENV().blobUrl;
   navigation: Navigation;
   locationNavContent: LocationNavContent;
   location: Array<Location>;
@@ -98,7 +98,7 @@ export class MapComponent implements OnInit {
   }
 
   getLocationDetails() {
-    this.locationDetails = ENV.map_type
+    this.locationDetails = ENV().map_type
       ? JSON.parse(sessionStorage.getItem("globalSearchMapLocation"))
       : JSON.parse(sessionStorage.getItem("localSearchMapLocation"));
     if (this.locationDetails.formattedAddress) {
@@ -107,12 +107,12 @@ export class MapComponent implements OnInit {
           .getStateFullName(
             this.locationDetails.country,
             this.locationDetails.formattedAddress,
-            ENV.bingmap_key
+            ENV().bingmap_key
           )
           .subscribe(location => {
             this.locationDetails.displayLocationDetails.address =
               location.resourceSets[0].resources[0].name;
-            if (ENV.map_type) {
+            if (ENV().map_type) {
               this.locationDetails.location.state =
                 location.resourceSets[0].resources[0].name;
               this.locationDetails.displayLocationDetails.locality =
@@ -187,18 +187,18 @@ export class MapComponent implements OnInit {
               .getAddressBasedOnPoints(
                 this.geolocationPosition.coords.latitude,
                 this.geolocationPosition.coords.longitude,
-                ENV.bingmap_key
+                ENV().bingmap_key
               )
               .subscribe(response => {
                 this.selectedAddress = response;
-                ENV.map_type = true;
+                ENV().map_type = true;
                 this.mapResultsService
                   .getStateFullName(
                     this.selectedAddress.resourceSets[0].resources[0].address
                       .countryRegion,
                     this.selectedAddress.resourceSets[0].resources[0].address
                       .adminDistrict,
-                    ENV.bingmap_key
+                    ENV().bingmap_key
                   )
                   .subscribe(stateFullName => {
                     this.selectedAddress.resourceSets[0].resources[0].address.adminDistrict =
@@ -328,7 +328,7 @@ export class MapComponent implements OnInit {
     }
     this.setLocalMapLocation();
     this.subscription = this.global.notifyLocationUpate.subscribe(value => {
-      ENV.map_type = true;
+      ENV().map_type = true;
       this.updateLocation();
     });
   }

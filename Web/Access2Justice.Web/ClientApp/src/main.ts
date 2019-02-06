@@ -12,7 +12,7 @@ const providers = [
   { provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }
 ];
 
-if (ENV.production) {
+if (ENV().production) {
   enableProdMode();
 }
 

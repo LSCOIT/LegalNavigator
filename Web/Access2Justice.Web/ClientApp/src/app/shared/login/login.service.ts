@@ -16,7 +16,7 @@ export class LoginService {
   getUserProfile() {
     let userData = this.msalService.getUser();
     if (!userData) {
-      this.msalService.loginRedirect(ENV.consentScopes);
+      this.msalService.loginRedirect(ENV().consentScopes);
     } else {
       let userProfile = {
         name: userData.idToken["name"],

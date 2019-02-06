@@ -93,7 +93,7 @@ export class GuidedAssistantSidebarComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl("/guidedassistant/" + this.guidedAssistantId);
     }
     this.resourceFilter = {
-      ResourceType: ENV.All,
+      ResourceType: ENV().All,
       TopicIds: this.topicIds,
       Location: this.location,
       PageNumber: 0,

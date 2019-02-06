@@ -22,7 +22,7 @@ export class HomeTemplateComponent implements OnInit {
   location: MapLocation = {
     state: this.activeRoute.snapshot.queryParams["state"]
   };
-  blobUrl: string = ENV.blobUrl;
+  blobUrl: string = ENV().blobUrl;
   regionalIllustrations = [
     {
       name: " Beachy(No Island)",

@@ -29,7 +29,7 @@ export class LowerNavComponent implements OnInit {
   showSearch = false;
   myClass = '';
   staticContentSubcription: any;
-  blobUrl: any = ENV.blobUrl;
+  blobUrl: any = ENV().blobUrl;
   navigation: Navigation;
   name = 'Navigation';
   language: Language;

@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   slides = [];
   sponsors: Array<Sponsors>;
   button: { buttonText: ""; buttonAltText: ""; buttonLink: "" };
-  blobUrl: string = ENV.blobUrl;
+  blobUrl: string = ENV().blobUrl;
   name = "HomePage";
   homeContent: Home;
   heroData: Hero;
