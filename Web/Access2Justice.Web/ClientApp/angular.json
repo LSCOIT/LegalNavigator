@@ -18,7 +18,12 @@
             "progress": true,
             "polyfills": "src/polyfills.ts",
             "assets": [
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "env.js",
+                "input": "src/scripts/",
+                "output": "/"
+              }
             ],
             "styles": [
               "src/style-guide.css",
@@ -26,8 +31,7 @@
               "src/styles.css"
             ],
             "scripts": [
-              "node_modules/jspdf/dist/jspdf.min.js",
-              "src/scripts/env.js"
+              "node_modules/jspdf/dist/jspdf.min.js"
             ]
           },
           "configurations": {
@@ -69,8 +73,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [
-              "node_modules/jspdf/dist/jspdf.min.js",
-              "src/scripts/env.js"
+              "node_modules/jspdf/dist/jspdf.min.js"
             ],
             "styles": [
               "src/style-guide.css",
@@ -78,7 +81,12 @@
               "src/styles.css"
             ],
             "assets": [
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "env.js",
+                "input": "src/scripts/",
+                "output": "/"
+              }
             ]
           }
         },

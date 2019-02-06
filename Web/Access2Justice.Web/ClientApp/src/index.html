@@ -1,44 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <link
-      rel="icon"
-      href="assets/images/icons/PageIcon.ico"
-      type="image/x-icon"
-    />
-    <title>Access to Justice</title>
-    <base href="/" />
-    <script
-      type="text/javascript"
-      src="https://www.bing.com/api/maps/mapcontrol"
-      async
-      defer
-    ></script>
-    <script type="text/javascript">
-      function googleTranslateElementInit() {
-        new google.translate.TranslateElement(
-          {
-            pageLanguage: "en",
-            layout: google.translate.TranslateElement.InlineLayout.VERTICAL
-          },
-          "google_translate_element"
-        );
-        let translator = document.getElementById("google_translate_element");
-        translator.setAttribute(
-          "style",
-          "display: none; box-shadow: 0 6px 12px 3px #ddd;"
-        );
-      }
-    </script>
-    <script
-      type="text/javascript"
-      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
-    ></script>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-  </head>
-  <body>
-    <app-root>Loading...</app-root>
-    <div id="google_translate_element"></div>
-  </body>
+<head>
+  <meta charset="utf-8"/>
+  <link rel="icon" href="assets/images/icons/PageIcon.ico" type="image/x-icon"/>
+  <title>Access to Justice</title>
+  <base href="/"/>
+  <script type="text/javascript" src="env.js"></script>
+  <script type="text/javascript" src="https://www.bing.com/api/maps/mapcontrol" async defer></script>
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement(
+        {
+          pageLanguage: "en",
+          layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+        },
+        "google_translate_element"
+      );
+      let translator = document.getElementById("google_translate_element");
+      translator.setAttribute(
+        "style",
+        "display: none; box-shadow: 0 6px 12px 3px #ddd;"
+      );
+    }
+  </script>
+  <script
+    type="text/javascript"
+    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+  ></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+</head>
+<body>
+<app-root>Loading...</app-root>
+<div id="google_translate_element"></div>
+</body>
 </html>
