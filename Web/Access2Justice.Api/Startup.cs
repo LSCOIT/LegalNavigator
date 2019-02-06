@@ -78,8 +78,11 @@ namespace Access2Justice.Api
                         Configuration.GetSection("EmailService"),
                         serviceProvider.GetService<ISecretsService>()));
 
-            IQnAMakerSettings qnAMakerSettings = new QnAMakerSettings(Configuration.GetSection("QnAMaker"));
-            services.AddSingleton(qnAMakerSettings);
+            services.AddSingleton<IQnAMakerSettings>(
+                serviceProvider =>
+                    new QnAMakerSettings(
+                        Configuration.GetSection("QnAMaker"),
+                        serviceProvider.GetService<ISecretsService>()));
 
             services.AddSingleton<ILuisProxy, LuisProxy>();
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();

@@ -11,8 +11,9 @@ namespace Access2Justice.Shared.Bing
         {
             try
             {
+                SubscriptionKey = secretsService.GetSecret("BingSearchKey");
+
                 BingSearchUrl = new Uri(configuration.GetSection("BingSearchUrl").Value);
-                SubscriptionKey = secretsService.GetSecret("SubscriptionKey");
                 CustomConfigId = configuration.GetSection("CustomConfigId").Value;
                 PageResultsCount = Int16.Parse(configuration.GetSection("PageResultsCount").Value, CultureInfo.InvariantCulture);
                 PageOffsetValue = Int16.Parse(configuration.GetSection("PageOffsetValue").Value, CultureInfo.InvariantCulture);
