@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { ResponseInterceptor } from '../response-interceptor';
 import { TokenInterceptor } from '../token-interceptor';
-import ENV from 'env';
+import ENV from 'environment';
 
 @NgModule({
   declarations: [],
@@ -25,12 +25,12 @@ import ENV from 'env';
     BrowserModule,
     HttpClientModule,
     MsalModule.forRoot({
-      clientID: ENV().clientID,
-      authority: ENV().authority,
-      consentScopes: ENV().consentScopes,
-      redirectUri: ENV().redirectUri,
-      navigateToLoginRequestUrl: ENV().navigateToLoginRequestUrl,
-      postLogoutRedirectUri: ENV().postLogoutRedirectUri
+      clientID: ENV.clientID,
+      authority: ENV.authority,
+      consentScopes: ENV.consentScopes,
+      redirectUri: ENV.redirectUri,
+      navigateToLoginRequestUrl: ENV.navigateToLoginRequestUrl,
+      postLogoutRedirectUri: ENV.postLogoutRedirectUri
     }),
   ]
 })

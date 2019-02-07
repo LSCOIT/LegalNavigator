@@ -8,7 +8,7 @@ import { BsModalRef, ModalModule } from 'ngx-bootstrap';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { from } from 'rxjs';
 
-import ENV from 'env';
+import ENV from 'environment';
 import { Global } from '../../global';
 import { EventUtilityService } from '../services/event-utility.service';
 import { StaticResourceService } from '../services/static-resource.service';
@@ -207,7 +207,7 @@ describe('MapComponent', () => {
     spyOn(sessionStorage, 'getItem').and.returnValue(
       JSON.stringify(mockLocationDetailsWithFormatAddress)
     );
-    ENV().map_type = true;
+    ENV.map_type = true;
     component.getLocationDetails();
     expect(mapResultsService.getStateFullName).toHaveBeenCalled();
     expect(component.locationDetails.location).toEqual(
@@ -227,7 +227,7 @@ describe('MapComponent', () => {
     spyOn(sessionStorage, 'getItem').and.returnValue(
       JSON.stringify(mockLocationDetailsWithFormatAddress)
     );
-    ENV().map_type = false;
+    ENV.map_type = false;
     component.getLocationDetails();
     expect(mapResultsService.getStateFullName).toHaveBeenCalled();
     expect(component.locationDetails.location).toEqual(
@@ -247,7 +247,7 @@ describe('MapComponent', () => {
     spyOn(sessionStorage, 'getItem').and.returnValue(
       JSON.stringify(mockLocationDetailsWithOutFormatAddress)
     );
-    ENV().map_type = true;
+    ENV.map_type = true;
     component.getLocationDetails();
     expect(component.updateLocationDetails).toHaveBeenCalled();
   });

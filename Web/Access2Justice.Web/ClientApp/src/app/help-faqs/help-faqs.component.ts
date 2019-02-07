@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import ENV from 'env';
+import ENV from 'environment';
 import { Global } from "../global";
 import { Faq, HelpAndFaqs, ImageUrl } from './help-faqs';
 import { StaticResourceService } from "../shared/services/static-resource.service";
@@ -15,7 +15,7 @@ export class HelpFaqsComponent implements OnInit, OnDestroy {
   faqData: Array<Faq> = [];
   imageData: ImageUrl;
   name = "HelpAndFAQPage";
-  blobUrl: string = ENV().blobUrl;
+  blobUrl: string = ENV.blobUrl;
   staticContent: any;
   staticContentSubcription: any;
 

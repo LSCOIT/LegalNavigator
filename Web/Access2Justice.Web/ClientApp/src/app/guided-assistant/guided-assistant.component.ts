@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 
-import ENV from 'env';
+import ENV from 'environment';
 import { Global } from "../global";
 import { LocationDetails } from "../shared/map/map";
 import { ILuisInput } from "../shared/search/search-results/search-results.model";
@@ -32,7 +32,7 @@ export class GuidedAssistantComponent implements OnInit, OnDestroy {
   guidedAssistantPageContent: GuidedAssistant;
   staticContent: any;
   staticContentSubcription: any;
-  blobUrl: string = ENV().blobUrl;
+  blobUrl: string = ENV.blobUrl;
   description = "";
 
   constructor(

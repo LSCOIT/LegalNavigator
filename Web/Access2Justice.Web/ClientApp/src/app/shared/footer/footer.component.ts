@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 
-import ENV from 'env';
+import ENV from 'environment';
 import { Global } from "../../global";
 import { About, GuidedAssistant, HelpAndFAQ, Home, Navigation, PrivacyPromise, TopicAndResources } from "../navigation/navigation";
 import { StaticResourceService } from "../services/static-resource.service";
@@ -16,7 +16,7 @@ export class FooterComponent implements OnInit {
     private global: Global
   ) {}
 
-  blobUrl: any = ENV().blobUrl;
+  blobUrl: any = ENV.blobUrl;
   navigation: Navigation;
   name = "Navigation";
   privacyPromise: PrivacyPromise;

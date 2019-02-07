@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 
-import ENV from 'env';
+import ENV from 'environment';
 import { LocationDetails, MapLocation } from "../../map/map";
 import { MapService } from "../../map/map.service";
 import { PaginationService } from "../../pagination/pagination.service";
@@ -93,7 +93,7 @@ export class GuidedAssistantSidebarComponent implements OnInit, OnDestroy {
       this.router.navigateByUrl("/guidedassistant/" + this.guidedAssistantId);
     }
     this.resourceFilter = {
-      ResourceType: ENV().All,
+      ResourceType: ENV.All,
       TopicIds: this.topicIds,
       Location: this.location,
       PageNumber: 0,

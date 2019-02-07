@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 
-import ENV from 'env';
+import ENV from 'environment';
 import { About } from './about';
 import { Global } from "../global";
 import { HelpText } from "../home/home";
@@ -16,7 +16,7 @@ export class AboutComponent implements OnInit {
   aboutContent: About;
   staticContent: any;
   staticContentSubcription: any;
-  blobUrl: string = ENV().blobUrl;
+  blobUrl: string = ENV.blobUrl;
   helpText: HelpText;
 
   constructor(

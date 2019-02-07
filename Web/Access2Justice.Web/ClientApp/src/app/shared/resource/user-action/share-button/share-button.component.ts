@@ -4,7 +4,7 @@ import { MsalService } from "@azure/msal-angular";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { BsModalRef } from "ngx-bootstrap/modal/bs-modal-ref.service";
 
-import ENV from 'env';
+import ENV from 'environment';
 import { Global, UserStatus } from "../../../../global";
 import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
 import { NavigateDataService } from "../../../services/navigate-data.service";
@@ -147,7 +147,7 @@ export class ShareButtonComponent implements OnInit {
   }
 
   externalLogin() {
-    this.msalService.loginRedirect(ENV().consentScopes);
+    this.msalService.loginRedirect(ENV.consentScopes);
   }
 
   ngOnInit() {

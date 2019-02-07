@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import ENV from 'env';
+import ENV from 'environment';
 import { Global } from "../global";
 import { LocationDetails } from "../shared/map/map";
 import { MapService } from "../shared/map/map.service";
@@ -20,7 +20,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   slides = [];
   sponsors: Array<Sponsors>;
   button: { buttonText: ""; buttonAltText: ""; buttonLink: "" };
-  blobUrl: string = ENV().blobUrl;
+  blobUrl: string = ENV.blobUrl;
   name = "HomePage";
   homeContent: Home;
   heroData: Hero;

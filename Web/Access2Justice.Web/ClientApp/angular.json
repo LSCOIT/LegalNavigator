@@ -18,12 +18,7 @@
             "progress": true,
             "polyfills": "src/polyfills.ts",
             "assets": [
-              "src/assets",
-              {
-                "glob": "env*.js",
-                "input": "src/scripts/",
-                "output": "/"
-              }
+              "src/assets"
             ],
             "styles": [
               "src/style-guide.css",
@@ -35,6 +30,40 @@
             ]
           },
           "configurations": {
+            "dev": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environment/index.ts",
+                  "with": "src/environment/environment.dev.ts"
+                }
+              ]
+            },
+            "stage": {
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environment/index.ts",
+                  "with": "src/environment/environment.stage.ts"
+                }
+              ]
+            },
             "production": {
               "optimization": true,
               "outputHashing": "all",
@@ -44,7 +73,13 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environment/index.ts",
+                  "with": "src/environment/environment.prod.ts"
+                }
+              ]
             }
           }
         },
@@ -73,8 +108,7 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "scripts": [
-              "node_modules/jspdf/dist/jspdf.min.js",
-              "src/scripts/env.js"
+              "node_modules/jspdf/dist/jspdf.min.js"
             ],
             "styles": [
               "src/style-guide.css",

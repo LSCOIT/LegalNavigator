@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 
-import ENV from 'env';
+import ENV from 'environment';
 import { Global } from "../../../global";
 import { PersonalizedPlanService } from "../../../guided-assistant/personalized-plan/personalized-plan.service";
 import { LocationDetails } from "../../map/map";
@@ -29,7 +29,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   uniqueResources: any;
   sortType: any;
   resourceResults: ResourceResult[] = [];
-  filterType: string = ENV().All;
+  filterType: string = ENV.All;
   resourceTypeFilter: any[];
   resourceFilter: IResourceFilter = {
     ResourceType: "",
@@ -165,7 +165,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       this.initialResourceFilter = this.searchResults.resourceType;
       this.filterType = this.searchResults.resourceType;
     } else {
-      this.filterType = ENV().All;
+      this.filterType = ENV.All;
     }
     this.resourceResults = this.searchResults.resourceTypeFilter;
     this.navigateDataService.setData(undefined);
@@ -186,8 +186,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
           ];
           this.topicIds = this.searchResults.topicIds;
           this.total = this.resourceTypeFilter[index].ResourceCount;
-          this.pagesToShow = ENV().internalResourcePagesToShow;
-          this.limit = ENV().internalResourceRecordsToDisplay;
+          this.pagesToShow = ENV.internalResourcePagesToShow;
+          this.limit = ENV.internalResourceRecordsToDisplay;
           break;
         }
       }
@@ -197,8 +197,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   mapWebResources() {
     this.total = this.searchResults.webResources.webPages.totalEstimatedMatches;
     this.searchText = this.searchResults.webResources.queryContext.originalQuery;
-    this.pagesToShow = ENV().webResourcePagesToShow;
-    this.limit = ENV().webResourceRecordsToDisplay;
+    this.pagesToShow = ENV.webResourcePagesToShow;
+    this.limit = ENV.webResourceRecordsToDisplay;
   }
 
   cacheSearchResultsData() {
@@ -306,7 +306,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
 
   filterResourceByTopicAndLocation() {
     this.resourceFilter = {
-      ResourceType: ENV().All,
+      ResourceType: ENV.All,
       TopicIds: this.searchResults.topicIds,
       Location: this.location,
       PageNumber: 0,
@@ -324,7 +324,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
           this.searchResults = response;
           this.searchResults.topIntent = this.topIntent;
           this.searchResults.isItFromTopicPage = true;
-          this.searchResults.resourceType = ENV().All;
+          this.searchResults.resourceType = ENV.All;
           this.displayFetchedResources();
         }
       });
@@ -351,7 +351,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.cacheSearchResultsData();
     this.isInternalResource = true;
     this.mapInternalResource();
-    let event = { filterParam: ENV().All };
+    let event = { filterParam: ENV.All };
     this.filterSearchResults(event);
   }
 

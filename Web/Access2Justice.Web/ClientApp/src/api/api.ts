@@ -1,6 +1,6 @@
-import ENV from 'env';
+import ENV from 'environment';
 
-const apiUrl = ENV().apiUrl;
+const apiUrl = ENV.apiUrl;
 const topic = apiUrl + "/topics-resources";
 const userProfile = apiUrl + "/user";
 const curatedExperience = apiUrl + "/curated-experiences";

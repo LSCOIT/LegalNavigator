@@ -1,6 +1,6 @@
 import { TestBed } from "@angular/core/testing";
 
-import ENV from 'env';
+import ENV from 'environment';
 import { StateCodeService } from "../services/state-code.service";
 import { MapService } from "./map.service";
 
@@ -87,7 +87,7 @@ describe("MapService", () => {
       JSON.stringify(mockLocationDetails)
     );
     spyOn(service, "setGlobalMapLocationDetails");
-    ENV().map_type = true;
+    ENV.map_type = true;
     service.updateLocation();
     expect(service.setGlobalMapLocationDetails).toHaveBeenCalled();
   });
@@ -201,7 +201,7 @@ describe("MapService", () => {
   });
 
   it("should store global map location details to session storage when mapLocationDetails is called from global map(map type is true)", () => {
-    ENV().map_type = true;
+    ENV.map_type = true;
     service.mapLocationDetails(mockLocation);
     expect(service.locationDetails.country).toEqual(
       mockLocation.address.countryRegion
@@ -212,7 +212,7 @@ describe("MapService", () => {
   });
 
   it("should store local map location details to session storage when mapLocationDetails is called from global map(map type is flase)", () => {
-    ENV().map_type = false;
+    ENV.map_type = false;
     service.mapLocationDetails(mockLocation);
     expect(service.locationDetails.country).toEqual(
       mockLocation.address.countryRegion
