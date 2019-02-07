@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { MsalService } from "@azure/msal-angular";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 
-import ENV from 'env';
+import ENV from 'environment';
 import { Global } from "../../global";
 
 @Component({
@@ -27,7 +27,7 @@ export class BrowserTabCloseComponent implements OnInit {
       sessionStorage.getItem(this.global.topicsSessionKey)
     ) {
       this.global.isLoginRedirect = true;
-      this.msalService.loginRedirect(ENV().consentScopes);
+      this.msalService.loginRedirect(ENV.consentScopes);
     }
   }
 

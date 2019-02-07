@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
 
-import ENV from 'env';
+import ENV from 'environment';
 import { PersonalizedPlan } from "../../guided-assistant/personalized-plan/personalized-plan";
 import { MapLocation } from "../../shared/map/map";
 import { NavigateDataService } from "../../shared/services/navigate-data.service";
@@ -21,7 +21,7 @@ export class PersonalizedPlanTemplateComponent implements OnInit {
   personalizedPlanContent: PersonalizedPlan;
   staticContent: any;
   staticContentSubcription: any;
-  blobUrl: string = ENV().blobUrl;
+  blobUrl: string = ENV.blobUrl;
   form: FormGroup;
   detailParams: any;
   newPersonalizedPlanContent: any;

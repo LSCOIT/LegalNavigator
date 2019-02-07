@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
-import ENV from 'env';
+import ENV from 'environment';
 import { Global } from '../../global';
 import { EventUtilityService } from '../services/event-utility.service';
 import { StaticResourceService } from '../services/static-resource.service';
@@ -29,7 +29,7 @@ export class LowerNavComponent implements OnInit {
   showSearch = false;
   myClass = '';
   staticContentSubcription: any;
-  blobUrl: any = ENV().blobUrl;
+  blobUrl: any = ENV.blobUrl;
   navigation: Navigation;
   name = 'Navigation';
   language: Language;

@@ -5,7 +5,7 @@ import {map} from 'rxjs/operators';
 import { MsalService } from "@azure/msal-angular";
 import { NgxSpinnerService } from "ngx-spinner";
 
-import ENV from 'env';
+import ENV from 'environment';
 import { Global } from "../global";
 import { PersonalizedPlan, PersonalizedPlanTopic } from "../guided-assistant/personalized-plan/personalized-plan";
 import { PersonalizedPlanService } from "../guided-assistant/personalized-plan/personalized-plan.service";
@@ -209,7 +209,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     if (!this.msalService.getUser() && !this.global.isShared) {
-      this.msalService.loginRedirect(ENV().consentScopes);
+      this.msalService.loginRedirect(ENV.consentScopes);
     }
     if (this.global.isLoggedIn && !this.global.isShared) {
       this.userId = this.global.userId;

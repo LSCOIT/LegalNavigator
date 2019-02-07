@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
 
-import ENV from 'env';
+import ENV from 'environment';
 import { Global } from "../../global";
 import { PrivacyContent } from "../../privacy-promise/privacy-promise";
 import { MapLocation } from "../../shared/map/map";
@@ -23,7 +23,7 @@ export class PrivacyPromiseTemplateComponent implements OnInit {
   newPrivacyContent;
   name: string = "PrivacyPromisePage";
   staticContent: any;
-  blobUrl: string = ENV().blobUrl;
+  blobUrl: string = ENV.blobUrl;
   state: string;
   location: MapLocation = {
     state: this.activeRoute.snapshot.queryParams["state"]
