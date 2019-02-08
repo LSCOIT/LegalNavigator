@@ -1,12 +1,12 @@
-import { Component, Input, OnInit } from "@angular/core";
-import { DomSanitizer } from "@angular/platform-browser";
-import { Global } from "../../../../global";
-import { ShowMoreService } from "../../../sidebars/show-more/show-more.service";
+import { Component, Input, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { Global } from '../../../../global';
+import { ShowMoreService } from '../../../sidebars/show-more/show-more.service';
 
 @Component({
-  selector: "app-videos",
-  templateUrl: "./videos.component.html",
-  styleUrls: ["./videos.component.css"]
+  selector: 'app-videos',
+  templateUrl: './videos.component.html',
+  styleUrls: ['./videos.component.css']
 })
 export class VideosComponent implements OnInit {
   @Input() resource;
@@ -29,10 +29,26 @@ export class VideosComponent implements OnInit {
     );
   }
 
-  resourceUrl(url) {
-    this.url = url.replace("watch?v=", "embed/");
+  resourceUrl(videoUrl: string) {
+    if (!videoUrl || !videoUrl.includes('youtube')) {
+      return;
+    }
+
+    const parsedUrl = new URL(videoUrl);
+    let embeddingUrl = `https://${parsedUrl.hostname}/embed/`;
+
+    if (parsedUrl.searchParams.has('list')) {
+      embeddingUrl += `videoseries?list=${parsedUrl.searchParams.get('list')}`;
+
+      if (parsedUrl.searchParams.has('index')) {
+        embeddingUrl += `&index=${parsedUrl.searchParams.get('index')}`;
+      }
+    } else {
+      embeddingUrl += parsedUrl.searchParams.get('v');
+    }
+
+    this.url = embeddingUrl;
     this.safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(this.url);
-    // https://www.youtube.com/embed/videoseries?list=%Playlist id%
   }
 
   ngOnInit() {
