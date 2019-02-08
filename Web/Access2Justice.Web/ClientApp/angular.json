@@ -23,7 +23,7 @@
             "styles": [
               "src/style-guide.css",
               "src/bootstrap_overwrite.css",
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": [
               "node_modules/jspdf/dist/jspdf.min.js"
@@ -164,7 +164,7 @@
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "app",
-      "styleext": "css"
+      "styleext": "scss"
     },
     "@schematics/angular:directive": {
       "prefix": "app"

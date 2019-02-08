@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, HostBinding, Input, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
+
 import { Global, UserStatus } from "../../../../global";
 import { ProfileResources, SavedResources } from "../../../../guided-assistant/personalized-plan/personalized-plan";
 import { PersonalizedPlanComponent } from "../../../../guided-assistant/personalized-plan/personalized-plan.component";
@@ -11,7 +12,11 @@ import { NavigateDataService } from "../../../services/navigate-data.service";
 @Component({
   selector: "app-remove-button",
   templateUrl: "./remove-button.component.html",
-  styleUrls: ["./remove-button.component.css"]
+  styleUrls: ["./remove-button.component.css"],
+  // tslint:disable-next-line
+  host: {
+    '[class.app-resource-button]': 'true',
+  }
 })
 export class RemoveButtonComponent implements OnInit {
   @Input() resourceId;
@@ -20,7 +25,6 @@ export class RemoveButtonComponent implements OnInit {
   @Input() selectedPlanDetails;
   removeResource: SavedResources;
   profileResources: ProfileResources = { oId: "", resourceTags: [], type: "" };
-  isRemovedPlan: boolean = false;
   resourceDetails: any;
   topicIndex: number;
 

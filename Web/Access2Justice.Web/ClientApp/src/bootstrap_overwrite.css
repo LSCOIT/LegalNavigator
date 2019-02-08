@@ -279,12 +279,12 @@ span.carousel-control .glyphicon-chevron-left,
   background-repeat: no-repeat;
 }
 
-.dropdown-menu li a {
+.dropdown-menu .dropdown-item {
   cursor: pointer;
   text-align: left;
 }
 
-.dropdown-menu li a:hover {
+.dropdown-menu .dropdown-item:hover {
   -webkit-box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);
   box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);

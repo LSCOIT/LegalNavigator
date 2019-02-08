@@ -1,3 +1,7 @@
+:host {
+  display: inline-block;
+}
+
 #save:hover {
   text-decoration: none;
   color: #333;
