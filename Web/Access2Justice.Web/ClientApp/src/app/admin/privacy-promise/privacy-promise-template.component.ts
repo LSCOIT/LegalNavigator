@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global } from "../../global";
 import { PrivacyContent } from "../../privacy-promise/privacy-promise";
 import { MapLocation } from "../../shared/map/map";

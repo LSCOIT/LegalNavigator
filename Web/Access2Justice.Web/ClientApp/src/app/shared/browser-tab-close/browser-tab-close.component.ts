@@ -2,7 +2,7 @@ import { Component, OnInit, TemplateRef, ViewChild } from "@angular/core";
 import { MsalService } from "@azure/msal-angular";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global } from "../../global";
 
 @Component({

@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global, UserStatus } from '../../global';
 import { Login } from '../navigation/navigation';
 

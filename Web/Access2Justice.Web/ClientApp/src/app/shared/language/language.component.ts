@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit } from '@angular/core';
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global } from "../../global";
 import { Language, Location, Navigation } from '../navigation/navigation';
 import { EventUtilityService } from '../services/event-utility.service';

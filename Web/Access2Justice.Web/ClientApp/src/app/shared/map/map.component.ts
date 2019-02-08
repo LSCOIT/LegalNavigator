@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, OnInit, TemplateRef, ViewChild } from "@a
 import { BsModalService } from "ngx-bootstrap/modal";
 import { BsModalRef } from "ngx-bootstrap/modal/bs-modal-ref.service";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global } from "../../global";
 import { EventUtilityService } from '../services/event-utility.service';
 import { StaticResourceService } from '../services/static-resource.service';

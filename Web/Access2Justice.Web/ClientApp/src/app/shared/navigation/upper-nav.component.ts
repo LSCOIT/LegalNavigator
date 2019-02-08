@@ -1,6 +1,6 @@
 import { Component, ElementRef, HostListener, OnInit, ViewChild } from "@angular/core";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global } from "../../global";
 import { StaticResourceService } from '../services/static-resource.service';
 import { MapService } from "../map/map.service";

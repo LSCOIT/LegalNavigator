@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { About } from './about';
 import { Global } from "../global";
 import { HelpText } from "../home/home";

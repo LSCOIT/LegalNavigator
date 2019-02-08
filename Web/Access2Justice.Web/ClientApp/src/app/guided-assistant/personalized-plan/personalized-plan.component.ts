@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global } from "../../global";
 import { NavigateDataService } from "../../shared/services/navigate-data.service";
 import { StaticResourceService } from "../../shared/services/static-resource.service";

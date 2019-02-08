@@ -1,6 +1,6 @@
 import { TestBed } from "@angular/core/testing";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { StateCodeService } from "../services/state-code.service";
 import { MapService } from "./map.service";
 

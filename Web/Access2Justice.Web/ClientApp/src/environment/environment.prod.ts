@@ -1,4 +1,4 @@
-export default {
+export const ENV = {
   production: true,
   apiUrl: "https://api.legalnav.org/api",
   bingmap_key: "AirzY_3r9_Fk3oHTIEDjlBV_7qXRineubclytdXOTnmpAOWdNVv4H2sYj0nr8KPo",

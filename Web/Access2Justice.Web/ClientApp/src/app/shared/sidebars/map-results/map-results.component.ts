@@ -1,6 +1,6 @@
 import { Component, Input, OnChanges, Output, EventEmitter } from "@angular/core";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { LatitudeLongitude, MapLocationResult } from "./map-results";
 import { MapResultsService } from "./map-results.service";
 

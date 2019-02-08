@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global } from '../../global';
 import { EventUtilityService } from '../services/event-utility.service';
 import { StaticResourceService } from '../services/static-resource.service';

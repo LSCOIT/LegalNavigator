@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { LatitudeLongitude } from "./map-results";
 
 declare var Microsoft: any;

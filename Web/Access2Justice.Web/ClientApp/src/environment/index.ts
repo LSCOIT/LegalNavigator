@@ -1,4 +1,4 @@
-export default {
+export const ENV = {
   production: false,
   apiUrl: "http://localhost:4200/api",
   bingmap_key: "AkaN9T4QD5xmxp3PbDCeEmnIi-BDrMd7Hi4Lp8P_orTTQ2L_s1QKSumVBlefNKrk",

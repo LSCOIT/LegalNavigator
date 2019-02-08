@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Subject } from "rxjs";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { StateCodeService } from "../services/state-code.service";
 import { DisplayLocationDetails, LocationDetails, MapLocation } from "./map";
 

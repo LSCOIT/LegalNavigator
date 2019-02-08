@@ -4,7 +4,7 @@ import { MsalService } from "@azure/msal-angular";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { BsModalRef } from "ngx-bootstrap/modal/bs-modal-ref.service";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global, UserStatus } from "../../../../global";
 import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
 import { NavigateDataService } from "../../../services/navigate-data.service";

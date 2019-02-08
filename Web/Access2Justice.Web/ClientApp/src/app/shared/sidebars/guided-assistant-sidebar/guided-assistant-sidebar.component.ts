@@ -1,7 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { LocationDetails, MapLocation } from "../../map/map";
 import { MapService } from "../../map/map.service";
 import { PaginationService } from "../../pagination/pagination.service";

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { PersonalizedPlan } from "../../guided-assistant/personalized-plan/personalized-plan";
 import { MapLocation } from "../../shared/map/map";
 import { NavigateDataService } from "../../shared/services/navigate-data.service";

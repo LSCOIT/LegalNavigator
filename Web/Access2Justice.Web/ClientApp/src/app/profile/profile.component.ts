@@ -5,7 +5,7 @@ import {map} from 'rxjs/operators';
 import { MsalService } from "@azure/msal-angular";
 import { NgxSpinnerService } from "ngx-spinner";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global } from "../global";
 import { PersonalizedPlan, PersonalizedPlanTopic } from "../guided-assistant/personalized-plan/personalized-plan";
 import { PersonalizedPlanService } from "../guided-assistant/personalized-plan/personalized-plan.service";

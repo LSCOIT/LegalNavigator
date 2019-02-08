@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { ResponseInterceptor } from '../response-interceptor';
 import { TokenInterceptor } from '../token-interceptor';
-import ENV from 'environment';
+import {ENV} from 'environment';
 
 @NgModule({
   declarations: [],

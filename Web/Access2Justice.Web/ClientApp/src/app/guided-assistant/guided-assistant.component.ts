@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from "@angular/router";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global } from "../global";
 import { LocationDetails } from "../shared/map/map";
 import { ILuisInput } from "../shared/search/search-results/search-results.model";

@@ -4,7 +4,7 @@ import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest
 import { Injectable } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global } from './global';
 
 @Injectable()

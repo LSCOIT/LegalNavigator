@@ -3,7 +3,7 @@ import { Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from
 import { ActivatedRoute, Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global } from "../../../global";
 import { PersonalizedPlanService } from "../../../guided-assistant/personalized-plan/personalized-plan.service";
 import { LocationDetails } from "../../map/map";

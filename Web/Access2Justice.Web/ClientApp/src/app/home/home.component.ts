@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global } from "../global";
 import { LocationDetails } from "../shared/map/map";
 import { MapService } from "../shared/map/map.service";

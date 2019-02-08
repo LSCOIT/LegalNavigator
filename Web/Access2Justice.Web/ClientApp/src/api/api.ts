@@ -1,4 +1,4 @@
-import ENV from 'environment';
+import {ENV} from 'environment';
 
 const apiUrl = ENV.apiUrl;
 const topic = apiUrl + "/topics-resources";

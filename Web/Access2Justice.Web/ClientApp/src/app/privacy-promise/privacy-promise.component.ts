@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global } from "../global";
 import { Details, Image, PrivacyContent } from './privacy-promise';
 import { StaticResourceService } from "../shared/services/static-resource.service";

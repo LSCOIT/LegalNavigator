@@ -1,7 +1,7 @@
 import { enableProdMode } from '@angular/core';
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { AppModule } from './app/app.module';
 
 export function getBaseUrl() {

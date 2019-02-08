@@ -8,7 +8,7 @@ import { BsModalRef, ModalModule } from 'ngx-bootstrap';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { from } from 'rxjs';
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global } from '../../global';
 import { EventUtilityService } from '../services/event-utility.service';
 import { StaticResourceService } from '../services/static-resource.service';

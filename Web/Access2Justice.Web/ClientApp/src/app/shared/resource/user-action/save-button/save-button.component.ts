@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { MsalService } from "@azure/msal-angular";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { Global } from "../../../../global";
 import { SavedResources } from "../../../../guided-assistant/personalized-plan/personalized-plan";
 import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";

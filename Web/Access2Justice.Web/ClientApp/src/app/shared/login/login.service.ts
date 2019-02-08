@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { MsalService } from "@azure/msal-angular";
 
-import ENV from 'environment';
+import {ENV} from 'environment';
 import { api } from "../../../api/api";
 
 const httpOptions = {
