@@ -23,7 +23,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   @Input() fullPage = false;
   isInternalResource: boolean;
   isWebResource: boolean;
-  isLuisResponse: boolean;
   searchText: string;
   @Input() searchResults: any;
   uniqueResources: any;
@@ -62,9 +61,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   subscription: any;
   showRemoveOption: boolean;
   @Input() showRemove: boolean;
-  initialResourceLength: number;
   displayMessage: boolean = false;
-  loading = false;
   total = 0;
   page = 1;
   limit = 0;

@@ -329,8 +329,7 @@ describe('MapComponent', () => {
     expect(mapService.updateLocation).toBeTruthy();
     mapResultsService.getAddressBasedOnPoints(
       mockGeolocationPositionLatiitude,
-      mockGeolocationPositionLangitude,
-      mockBingKey
+      mockGeolocationPositionLangitude
     );
     component.loadCurrentLocation();
     expect(mapResultsService.getAddressBasedOnPoints).toBeTruthy();
@@ -345,7 +344,7 @@ describe('MapComponent', () => {
       keyboard: false
     };
     navigator.geolocation.getCurrentPosition(null);
-    mapResultsService.getAddressBasedOnPoints(0, 0, mockBingKey);
+    mapResultsService.getAddressBasedOnPoints(0, 0);
     component.locationInputRequired = false;
     component.loadCurrentLocation();
     component.openModal(template);
