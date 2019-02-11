@@ -1,51 +1,47 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
-import {ENV} from 'environment';
-import { LatitudeLongitude } from "./map-results";
+import { ENV } from 'environment';
+import { LatitudeLongitude } from './map-results';
 
 declare var Microsoft: any;
 
 const virtualEarthUrl = ENV.virtualEarthUrl;
+const bingMapKey = ENV.bingmap_key;
+
 @Injectable()
 export class MapResultsService {
   latitudeLongitude: Array<LatitudeLongitude> = [];
 
-  constructor(private http: HttpClient) {}
-  
-  getLocationDetails(address, credentials): any {
-    let cleanAddress = encodeURI(address).replace("%0A", "%20");
-    let searchRequest =
-      virtualEarthUrl + cleanAddress + "?output=json&key=" + credentials;
-    return this.http.get(searchRequest);
+  constructor(private http: HttpClient) {
   }
 
-  getAddressBasedOnPoints(latitude, longitude, credentials): any {
-    let searchRequest =
-      virtualEarthUrl +
-      encodeURI(latitude) +
-      "," +
-      encodeURI(longitude) +
-      "?key=" +
-      credentials;
-    return this.http.get(searchRequest);
+  getLocationDetails(address): any {
+    return this.http.get(virtualEarthUrl + encodeURIComponent(address.replace('\n', ' ')), {
+      params: {
+        output: 'json',
+        key: bingMapKey
+      }
+    });
   }
 
-  getStateFullName(countryRegion, state, credentials): any {
-    let searchRequest =
-      virtualEarthUrl +
-      "?CountryRegion=" +
-      encodeURI(countryRegion) +
-      "&adminDistrict=" +
-      encodeURI(state) +
-      "&key=" +
-      credentials;
-    return this.http.get(searchRequest);
+  getAddressBasedOnPoints(latitude, longitude): any {
+    return this.http.get(virtualEarthUrl + encodeURIComponent(`${latitude},${longitude}`), {params: {key: bingMapKey}});
+  }
+
+  getStateFullName(countryRegion, state): any {
+    return this.http.get(virtualEarthUrl, {
+      params: {
+        CountryRegion: countryRegion,
+        adminDistrict: state,
+        key: bingMapKey
+      }
+    });
   }
 
   getMap() {
-    let map = new Microsoft.Maps.Map("#my-map-results", {
-      credentials: ENV.bingmap_key
+    const map = new Microsoft.Maps.Map('#my-map-results', {
+      credentials: bingMapKey
     });
   }
 
@@ -54,7 +50,7 @@ export class MapResultsService {
     if (this.latitudeLongitude.length === 1) {
       let latitude = this.latitudeLongitude[0].latitude;
       let longitude = this.latitudeLongitude[0].longitude;
-      let streetMap = new Microsoft.Maps.Map("#my-map-results", {
+      let streetMap = new Microsoft.Maps.Map('#my-map-results', {
         credentials: ENV.bingmap_key,
         mapTypeId: Microsoft.Maps.MapTypeId.streetside,
         zoom: 14,
@@ -63,13 +59,13 @@ export class MapResultsService {
       var pin = new Microsoft.Maps.Pushpin(
         new Microsoft.Maps.Location(latitude, longitude),
         {
-          icon: "../../assets/images/location/poi_custom.png"
+          icon: '../../assets/images/location/poi_custom.png'
         }
       );
       streetMap.entities.push(pin);
-      streetMap.setView({ mapTypeId: Microsoft.Maps.MapTypeId.streetside });
+      streetMap.setView({mapTypeId: Microsoft.Maps.MapTypeId.streetside});
     } else {
-      let map = new Microsoft.Maps.Map("#my-map-results", {
+      let map = new Microsoft.Maps.Map('#my-map-results', {
         credentials: ENV.bingmap_key
       });
       for (let i = 0, len = this.latitudeLongitude.length; i < len; i++) {
@@ -79,14 +75,14 @@ export class MapResultsService {
             this.latitudeLongitude[i].longitude
           ),
           {
-            icon: "../../assets/images/location/poi_custom.png"
+            icon: '../../assets/images/location/poi_custom.png'
           }
         );
         map.entities.push(pin);
         let bestview = Microsoft.Maps.LocationRect.fromLocations(
           this.latitudeLongitude
         );
-        map.setView({ bounds: bestview, zoom: 5 });
+        map.setView({bounds: bestview, zoom: 5});
       }
     }
   }

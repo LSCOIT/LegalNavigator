@@ -74,10 +74,9 @@ describe("MapResults Service", () => {
   it("should return map results", done => {
     const mockResponse = Observable.of(mockMapResult);
     let mockAddress = "Test Address";
-    let mockCredentials = "Test Credentials";
     httpSpy.get.and.returnValue(mockResponse);
     service
-      .getLocationDetails(mockAddress, mockCredentials)
+      .getLocationDetails(mockAddress)
       .subscribe(mapResults => {
         expect(httpSpy.get).toHaveBeenCalled();
         expect(mapResults).toEqual(mockMapResult);

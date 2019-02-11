@@ -106,8 +106,7 @@ export class MapComponent implements OnInit {
         this.mapResultsService
           .getStateFullName(
             this.locationDetails.country,
-            this.locationDetails.formattedAddress,
-            ENV.bingmap_key
+            this.locationDetails.formattedAddress
           )
           .subscribe(location => {
             this.locationDetails.displayLocationDetails.address =
@@ -186,8 +185,7 @@ export class MapComponent implements OnInit {
             this.mapResultsService
               .getAddressBasedOnPoints(
                 this.geolocationPosition.coords.latitude,
-                this.geolocationPosition.coords.longitude,
-                ENV.bingmap_key
+                this.geolocationPosition.coords.longitude
               )
               .subscribe(response => {
                 this.selectedAddress = response;
@@ -197,8 +195,7 @@ export class MapComponent implements OnInit {
                     this.selectedAddress.resourceSets[0].resources[0].address
                       .countryRegion,
                     this.selectedAddress.resourceSets[0].resources[0].address
-                      .adminDistrict,
-                    ENV.bingmap_key
+                      .adminDistrict
                   )
                   .subscribe(stateFullName => {
                     this.selectedAddress.resourceSets[0].resources[0].address.adminDistrict =
