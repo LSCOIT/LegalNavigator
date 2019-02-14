@@ -45,5 +45,7 @@ namespace Access2Justice.Shared.Interfaces
         dynamic GetReviewer(dynamic reviewerValues);
         dynamic GetContents(dynamic contentValues);
         Task<dynamic> GetTopicDetailsAsync(IntentInput intentInput);
+        string GetAbsoluteStaticResourceStoragePath(string path);
+        string GetRelativeStaticResourceStoragePath(string path);
     }
 }

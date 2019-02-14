@@ -27,6 +27,7 @@ using System.Reflection;
 using System.IO;
 using System.Diagnostics.CodeAnalysis;
 using Access2Justice.Shared.QnAMaker;
+using Access2Justice.Shared.Storage;
 
 namespace Access2Justice.Api
 {
@@ -71,6 +72,8 @@ namespace Access2Justice.Api
 
             IAdminSettings adminSettings = new AdminSettings(Configuration.GetSection("Admin"));
             services.AddSingleton(adminSettings);
+
+            services.AddSingleton<IStorageSettings>(new StorageSettings(Configuration.GetSection("Storage")));
 
             services.AddSingleton<IOnboardingInfoSettings>(
                 serviceProvider =>

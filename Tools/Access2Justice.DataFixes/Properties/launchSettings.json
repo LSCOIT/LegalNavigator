@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Access2Justice.DataFixes": {
+      "commandName": "Project",
+      "commandLineArgs": "-k gnJMjgwaKJkUsbGPBau3wj5Pj4CPrkMTNbF9NHTLMTAYR5lM9zXEXw6twPv41jbo39bRa1su0GIx86Mv3KU4Eg== -e https://legalnavdevdbaccount.documents.azure.com:443/ -d DevDb -i #829"
+    }
+  }
+}
