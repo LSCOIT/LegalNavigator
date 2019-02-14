@@ -17,6 +17,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 {
     public class TopicsResourcesBusinessLogicTests
     {
+        private readonly IStorageSettings storageSettings;
         private readonly IDynamicQueries dynamicQueries;
         private readonly ICosmosDbSettings cosmosDbSettings;
         private readonly IBackendDatabaseService backendDatabaseService;
@@ -92,19 +93,20 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
         public TopicsResourcesBusinessLogicTests()
         {
+            storageSettings = Substitute.For<IStorageSettings>();
             dynamicQueries = Substitute.For<IDynamicQueries>();
             cosmosDbSettings = Substitute.For<ICosmosDbSettings>();
             backendDatabaseService = Substitute.For<IBackendDatabaseService>();
             topicsResourcesSettings = Substitute.For<ITopicsResourcesBusinessLogic>();
 
-            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(dynamicQueries, cosmosDbSettings, backendDatabaseService);
+            storageSettings.StaticResourcesRootUrl.Returns("https://storage");
             cosmosDbSettings.AuthKey.Returns("dummykey");
             cosmosDbSettings.Endpoint.Returns(new System.Uri("https://bing.com"));
             cosmosDbSettings.DatabaseId.Returns("dbname");
             cosmosDbSettings.TopicsCollectionId.Returns("TopicCollection");
             cosmosDbSettings.ResourcesCollectionId.Returns("ResourceCollection");
 
-            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(dynamicQueries, cosmosDbSettings, backendDatabaseService);
+            topicsResourcesBusinessLogic = new TopicsResourcesBusinessLogic(storageSettings, dynamicQueries, cosmosDbSettings, backendDatabaseService);
         }
 
         [Fact]
@@ -1322,5 +1324,56 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             Assert.Contains("[{}]", result, StringComparison.InvariantCultureIgnoreCase);
         }
 
+        [Fact]
+        public void GetAbsoluteStaticResourceStoragePath()
+        {
+            //arrange
+            var relativePath = "/static-resource/assets/images/categories/individual_rights.svg";
+
+            //act
+            var absolutePath = topicsResourcesBusinessLogic.GetAbsoluteStaticResourceStoragePath(relativePath);
+
+            //assert
+            Assert.Equal(storageSettings.StaticResourcesRootUrl + relativePath, absolutePath);
+        }
+
+        [Fact]
+        public void GetAbsoluteStaticResourceStoragePathShouldReturnSamePath()
+        {
+            //arrange
+            var relativePath = "/static-resource/assets/images/categories/individual_rights.svg";
+
+            //act
+            var absolutePath = topicsResourcesBusinessLogic.GetAbsoluteStaticResourceStoragePath(relativePath);
+
+            //assert
+            Assert.Equal(storageSettings.StaticResourcesRootUrl + relativePath, absolutePath);
+        }
+
+        [Fact]
+        public void GetRelativeStaticResourceStoragePath()
+        {
+            //arrange
+            var absolutePath = "https://example.windows.net/static-resource/assets/images/categories/individual_rights.svg";
+
+            //act
+            var relativePath = topicsResourcesBusinessLogic.GetRelativeStaticResourceStoragePath(absolutePath);
+
+            //assert
+            Assert.Equal(absolutePath, relativePath);
+        }
+
+        [Fact]
+        public void GetRelativeStaticResourceStoragePathShouldReturnSamePath()
+        {
+            //arrange
+            var originalPath = "https://example.com/static-resource/assets/images/categories/individual_rights.svg";
+
+            //act
+            var relativePath = topicsResourcesBusinessLogic.GetRelativeStaticResourceStoragePath(originalPath);
+
+            //assert
+            Assert.Equal(originalPath, relativePath);
+        }
     }
 }

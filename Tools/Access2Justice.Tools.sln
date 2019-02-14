@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access2Justice.DataImportTo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Access2Justice.HTMLContentExtractor", "HTMLContentExtractor\Access2Justice.HTMLContentExtractor.csproj", "{6AF607BA-1B04-458D-8ED0-3A21F627B708}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Access2Justice.DataFixes", "Access2Justice.DataFixes\Access2Justice.DataFixes.csproj", "{FA73DD3E-E3B8-4326-BF45-FC1BC4392BF6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{6AF607BA-1B04-458D-8ED0-3A21F627B708}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6AF607BA-1B04-458D-8ED0-3A21F627B708}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6AF607BA-1B04-458D-8ED0-3A21F627B708}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA73DD3E-E3B8-4326-BF45-FC1BC4392BF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA73DD3E-E3B8-4326-BF45-FC1BC4392BF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA73DD3E-E3B8-4326-BF45-FC1BC4392BF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA73DD3E-E3B8-4326-BF45-FC1BC4392BF6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

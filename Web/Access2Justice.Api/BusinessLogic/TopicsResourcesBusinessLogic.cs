@@ -9,17 +9,28 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
 {
     public class TopicsResourcesBusinessLogic : ITopicsResourcesBusinessLogic
     {
+        private readonly IStorageSettings _storageSettings;
         private readonly IDynamicQueries dbClient;
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
-        public TopicsResourcesBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService)
+
+        private static readonly Regex IconLocationAbsoluteStoragePathRegEx =
+            new Regex(@"^https:\/\/[a-zA-Z0-9\-\.]+\.blob\.core\.windows\.net\/static-resource\/([\w- .\/?%&=])+$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
+
+        public TopicsResourcesBusinessLogic(
+            IStorageSettings storageSettings,
+            IDynamicQueries dynamicQueries,
+            ICosmosDbSettings cosmosDbSettings,
+            IBackendDatabaseService backendDatabaseService)
         {
+            _storageSettings = storageSettings;
             dbClient = dynamicQueries;
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
@@ -34,33 +45,44 @@ namespace Access2Justice.Api.BusinessLogic
                 throw new Exception($"No topic found with this name: {topicName}");
             }
 
-            return JsonUtilities.DeserializeDynamicObject<Topic>(topics.FirstOrDefault());
+            return PrepareTopic(
+                JsonUtilities.DeserializeDynamicObject<Topic>(topics.FirstOrDefault()));
         }
 
         public async Task<dynamic> GetTopicsAsync(string keyword, Location location)
         {
-            return await dbClient.FindItemsWhereContainsWithLocationAsync(dbSettings.TopicsCollectionId, "keywords", keyword, location);
+            return await PrepareTopicsCollection(
+                await dbClient.FindItemsWhereContainsWithLocationAsync(
+                    dbSettings.TopicsCollectionId, "keywords", keyword, location));
         }
 
         public async Task<dynamic> GetTopicsAsync(string stateCode)
         {
-            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.TopicsCollectionId, Constants.Location, Constants.StateCode, stateCode, true);
+            return await PrepareTopicsCollection(
+                await dbClient.FindItemsWhereArrayContainsAsync(
+                    dbSettings.TopicsCollectionId, Constants.Location, Constants.StateCode, stateCode, true));
         }
 
         public async Task<dynamic> GetTopLevelTopicsAsync(Location location)
         {
-            return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicsCollectionId, Constants.ParentTopicId, "", location);
+            return await PrepareTopicsCollection(
+                await dbClient.FindItemsWhereWithLocationAsync(
+                    dbSettings.TopicsCollectionId, Constants.ParentTopicId, "", location));
         }
 
         public async Task<dynamic> GetSubTopicsAsync(TopicInput topicInput)
         {
             if (topicInput.IsShared)
             {
-                return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id);
+                return await PrepareTopicsCollection(
+                    await dbClient.FindItemsWhereArrayContainsAsync(
+                        dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id));
             }
             else
             {
-                return await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id, topicInput.Location);
+                return await PrepareTopicsCollection(
+                    await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(
+                        dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id, topicInput.Location));
             }
         }
 
@@ -103,11 +125,15 @@ namespace Access2Justice.Api.BusinessLogic
         {
             if (topicInput.IsShared)
             {
-                return await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Id, topicInput.Id);
+                return await PrepareTopicsCollection(
+                    await dbClient.FindItemsWhereAsync(
+                        dbSettings.TopicsCollectionId, Constants.Id, topicInput.Id));
             }
             else
             {
-                return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.TopicsCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
+                return await PrepareTopicsCollection(
+                    await dbClient.FindItemsWhereWithLocationAsync(
+                        dbSettings.TopicsCollectionId, Constants.Id, topicInput.Id, topicInput.Location));
             }
         }
 
@@ -132,8 +158,9 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetTopicDetailsAsync(string topicName)
         {
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName);
-            return result;
+            return await PrepareTopicsCollection(
+                await dbClient.FindItemsWhereAsync(
+                    dbSettings.TopicsCollectionId, Constants.Name, topicName));
         }
 
         public async Task<dynamic> GetResourceDetailAsync(string resourceName, string resourceType)
@@ -786,6 +813,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<IEnumerable<object>> UpsertTopicDocumentAsync(dynamic topic)
         {
+            //TODO: fix icon location when saving new item
             List<dynamic> results = new List<dynamic>();
             List<dynamic> topics = new List<dynamic>();
             var topicObjects = JsonUtilities.DeserializeDynamicObject<object>(topic);
@@ -831,7 +859,7 @@ namespace Access2Justice.Api.BusinessLogic
                 Keywords = topicObject.keywords,
                 OrganizationalUnit = topicObject.organizationalUnit,
                 Location = locations,
-                Icon = topicObject.icon,
+                Icon = GetRelativeStaticResourceStoragePath((string)topicObject.icon),
                 CreatedBy = topicObject.createdBy,
                 ModifiedBy = topicObject.modifiedBy
             };
@@ -845,7 +873,9 @@ namespace Access2Justice.Api.BusinessLogic
             dynamic Resources = Array.Empty<string>();
             if (resourceFilter.TopicIds != null && resourceFilter.TopicIds.Count() > 0)
             {
-                Topics = await dbClient.FindItemsWhereInClauseAsync(dbSettings.TopicsCollectionId, "id", resourceFilter.TopicIds) ?? Array.Empty<string>();
+                Topics = await PrepareTopicsCollection(
+                    await dbClient.FindItemsWhereInClauseAsync(
+                        dbSettings.TopicsCollectionId, "id", resourceFilter.TopicIds) ?? Array.Empty<string>());
             }
             if (resourceFilter.ResourceIds != null && resourceFilter.ResourceIds.Count() > 0)
             {
@@ -868,12 +898,101 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetAllTopics()
         {
-            return await dbClient.FindItemsAllAsync(dbSettings.TopicsCollectionId);
+            return await PrepareTopicsCollection(
+                await dbClient.FindItemsAllAsync(dbSettings.TopicsCollectionId));
         }
 
         public async Task<dynamic> GetTopicDetailsAsync(IntentInput intentInput)
         {
-            return await dbClient.FindItemsWhereInClauseAsync(dbSettings.TopicsCollectionId, Constants.Name, intentInput.Intents, intentInput.Location);
+            return await PrepareTopicsCollection(
+                await dbClient.FindItemsWhereInClauseAsync(
+                    dbSettings.TopicsCollectionId, Constants.Name, intentInput.Intents, intentInput.Location));
+        }
+
+        private async Task<dynamic> PrepareTopicsCollection(dynamic topics)
+        {
+            if (topics != null)
+            {
+                var listOfDynamic = topics as List<dynamic>;
+
+                if (listOfDynamic != null &&
+                    listOfDynamic.Any())
+                {
+                    var preparedTopics = new List<dynamic>();
+
+                    foreach(var rawTopic in listOfDynamic)
+                    {
+                        preparedTopics.Add(
+                            PrepareTopic(
+                                JsonUtilities.DeserializeDynamicObject<Topic>(rawTopic)));
+                    }
+
+                    topics = preparedTopics;
+                }
+            }
+
+            return topics;
+        }
+
+        private Topic PrepareTopic(Topic topic)
+        {
+            if (topic != null)
+            {
+                topic.Icon = GetAbsoluteStaticResourceStoragePath(topic.Icon);
+            }
+
+            return topic;
+        }
+
+        public string GetAbsoluteStaticResourceStoragePath(string path)
+        {
+            if (!string.IsNullOrEmpty(path))
+            {
+                if (path.IndexOf('|') > 0)
+                {
+                    var locations = path.Split('|', StringSplitOptions.RemoveEmptyEntries);
+
+                    return string.Join(
+                        " | ",
+                        locations.
+                            Where(l => !string.IsNullOrEmpty(l)).
+                            Select(l => GetAbsoluteStaticResourceStoragePath(l.Trim())));
+                }
+                else if (path.StartsWith("/static-resource", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    return _storageSettings.StaticResourcesRootUrl + path;
+                }
+            }
+
+            return path;
+        }
+
+        public string GetRelativeStaticResourceStoragePath(string path)
+        {
+            if (!string.IsNullOrEmpty(path))
+            {
+                if (path.IndexOf('|') > 0)
+                {
+                    return string.Join(
+                        " | ",
+                        path.
+                            Split('|', StringSplitOptions.RemoveEmptyEntries).
+                            Where(l => !string.IsNullOrWhiteSpace(l)).
+                            Select(l => GetRelativeStaticResourceStoragePath(l.Trim())));
+                }
+                else
+                {
+                    if (IconLocationAbsoluteStoragePathRegEx.IsMatch(path))
+                    {
+                        return path.Substring(
+                            path.IndexOf(
+                                "/static-resource",
+                                StringComparison.InvariantCultureIgnoreCase));
+                    }
+                }
+            }
+
+            return path;
         }
     }
 }
