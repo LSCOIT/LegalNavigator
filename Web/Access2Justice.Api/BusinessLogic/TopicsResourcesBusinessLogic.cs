@@ -45,27 +45,27 @@ namespace Access2Justice.Api.BusinessLogic
                 throw new Exception($"No topic found with this name: {topicName}");
             }
 
-            return PrepareTopic(
+            return GetOutboundTopic(
                 JsonUtilities.DeserializeDynamicObject<Topic>(topics.FirstOrDefault()));
         }
 
         public async Task<dynamic> GetTopicsAsync(string keyword, Location location)
         {
-            return await PrepareTopicsCollection(
+            return GetOutboundTopicsCollection(
                 await dbClient.FindItemsWhereContainsWithLocationAsync(
                     dbSettings.TopicsCollectionId, "keywords", keyword, location));
         }
 
         public async Task<dynamic> GetTopicsAsync(string stateCode)
         {
-            return await PrepareTopicsCollection(
+            return GetOutboundTopicsCollection(
                 await dbClient.FindItemsWhereArrayContainsAsync(
                     dbSettings.TopicsCollectionId, Constants.Location, Constants.StateCode, stateCode, true));
         }
 
         public async Task<dynamic> GetTopLevelTopicsAsync(Location location)
         {
-            return await PrepareTopicsCollection(
+            return GetOutboundTopicsCollection(
                 await dbClient.FindItemsWhereWithLocationAsync(
                     dbSettings.TopicsCollectionId, Constants.ParentTopicId, "", location));
         }
@@ -74,13 +74,13 @@ namespace Access2Justice.Api.BusinessLogic
         {
             if (topicInput.IsShared)
             {
-                return await PrepareTopicsCollection(
+                return GetOutboundTopicsCollection(
                     await dbClient.FindItemsWhereArrayContainsAsync(
                         dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id));
             }
             else
             {
-                return await PrepareTopicsCollection(
+                return GetOutboundTopicsCollection(
                     await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(
                         dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id, topicInput.Location));
             }
@@ -125,13 +125,13 @@ namespace Access2Justice.Api.BusinessLogic
         {
             if (topicInput.IsShared)
             {
-                return await PrepareTopicsCollection(
+                return GetOutboundTopicsCollection(
                     await dbClient.FindItemsWhereAsync(
                         dbSettings.TopicsCollectionId, Constants.Id, topicInput.Id));
             }
             else
             {
-                return await PrepareTopicsCollection(
+                return GetOutboundTopicsCollection(
                     await dbClient.FindItemsWhereWithLocationAsync(
                         dbSettings.TopicsCollectionId, Constants.Id, topicInput.Id, topicInput.Location));
             }
@@ -158,7 +158,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetTopicDetailsAsync(string topicName)
         {
-            return await PrepareTopicsCollection(
+            return GetOutboundTopicsCollection(
                 await dbClient.FindItemsWhereAsync(
                     dbSettings.TopicsCollectionId, Constants.Name, topicName));
         }
@@ -873,7 +873,7 @@ namespace Access2Justice.Api.BusinessLogic
             dynamic Resources = Array.Empty<string>();
             if (resourceFilter.TopicIds != null && resourceFilter.TopicIds.Count() > 0)
             {
-                Topics = await PrepareTopicsCollection(
+                Topics = GetOutboundTopicsCollection(
                     await dbClient.FindItemsWhereInClauseAsync(
                         dbSettings.TopicsCollectionId, "id", resourceFilter.TopicIds) ?? Array.Empty<string>());
             }
@@ -898,18 +898,18 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetAllTopics()
         {
-            return await PrepareTopicsCollection(
+            return GetOutboundTopicsCollection(
                 await dbClient.FindItemsAllAsync(dbSettings.TopicsCollectionId));
         }
 
         public async Task<dynamic> GetTopicDetailsAsync(IntentInput intentInput)
         {
-            return await PrepareTopicsCollection(
+            return GetOutboundTopicsCollection(
                 await dbClient.FindItemsWhereInClauseAsync(
                     dbSettings.TopicsCollectionId, Constants.Name, intentInput.Intents, intentInput.Location));
         }
 
-        private async Task<dynamic> PrepareTopicsCollection(dynamic topics)
+        private dynamic GetOutboundTopicsCollection(dynamic topics)
         {
             if (topics != null)
             {
@@ -923,7 +923,7 @@ namespace Access2Justice.Api.BusinessLogic
                     foreach(var rawTopic in listOfDynamic)
                     {
                         preparedTopics.Add(
-                            PrepareTopic(
+                            GetOutboundTopic(
                                 JsonUtilities.DeserializeDynamicObject<Topic>(rawTopic)));
                     }
 
@@ -934,7 +934,7 @@ namespace Access2Justice.Api.BusinessLogic
             return topics;
         }
 
-        private Topic PrepareTopic(Topic topic)
+        private Topic GetOutboundTopic(Topic topic)
         {
             if (topic != null)
             {
