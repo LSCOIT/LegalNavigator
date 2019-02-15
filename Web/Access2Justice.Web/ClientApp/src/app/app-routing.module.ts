@@ -42,7 +42,7 @@ const appRoutes: Routes = [
   { path: 'error', component: InternalErrorComponent },
   { path: '401', component: UnauthorizedComponent },
   { path: '404', component: NotFoundComponent },
-  { path: '**', redirectTo: '/404' }
+  // { path: '**', redirectTo: '/404' }
 ];
 
 @NgModule({
