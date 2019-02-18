@@ -6,7 +6,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { MsalService } from '@azure/msal-angular';
 import { BsModalRef, ModalModule } from 'ngx-bootstrap';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { from } from 'rxjs';
+import { from, of } from 'rxjs';
 
 import {ENV} from 'environment';
 import { Global } from '../../global';
@@ -22,7 +22,7 @@ describe('MapComponent', () => {
   let fixture: ComponentFixture<MapComponent>;
   let modalService: BsModalService;
   let template: TemplateRef<any>;
-  let mockMapLocation: MapLocation = {
+  const mockMapLocation: MapLocation = {
     state: 'Sample State',
     city: 'Sample City',
     county: 'Sample County',
@@ -31,37 +31,36 @@ describe('MapComponent', () => {
   let mapResultsService: MapResultsService;
   let mockGeolocationPositionLangitude: '77.33817429999999';
   let mockGeolocationPositionLatiitude: '28.5372834';
-  let mockBingKey = 'testAqpcQxjuTmheUzCm8b5kUhV9UhjfsK66Ctest';
-  let mockMapLocation2 = {
+  const mockMapLocation2 = {
     state: 'UP',
     city: 'Noida',
     zipCode: '201303',
     locality: '201303',
     address: 'UP'
   };
-  let mockMapLocationWithFormatAddressGlobal = {
+  const mockMapLocationWithFormatAddressGlobal = {
     state: 'UP',
     city: 'Sample City',
     county: 'Sample County',
     zipCode: '1009203'
   };
-  let mockMapLocationWithFormatAddressLocal = {
+  const mockMapLocationWithFormatAddressLocal = {
     state: 'Sample State',
     city: 'Sample City',
     county: 'Sample County',
     zipCode: '1009203'
   };
-  let mockDisplayLocationDetails = {
+  const mockDisplayLocationDetails = {
     locality: 'UP',
     address: 'UP'
   };
-  let mockLocationDetailsWithFormatAddress = {
+  const mockLocationDetailsWithFormatAddress = {
     location: mockMapLocation,
     displayLocationDetails: mockDisplayLocationDetails,
     country: 'United States',
     formattedAddress: 'AK'
   };
-  let mockMapResultsLocation = {
+  const mockMapResultsLocation = {
     resourceSets: [
       {
         resources: [
@@ -72,13 +71,13 @@ describe('MapComponent', () => {
       }
     ]
   };
-  let mockLocationDetailsWithOutFormatAddress = {
+  const mockLocationDetailsWithOutFormatAddress = {
     location: mockMapLocation,
     country: 'United States',
     formattedAddress: 'Hjorth St, Indio, California 92201, United States'
   };
   let mapService, msalService;
-  let returnLocationValue = {
+  const returnLocationValue = {
     value: 'Hawaii'
   };
   let modalRefInstance: jasmine.SpyObj<BsModalRef>;
@@ -258,14 +257,10 @@ describe('MapComponent', () => {
     component.changeLocationButton = {
       nativeElement: jasmine.createSpyObj('nativeElement', ['focus'])
     };
-    mapService.updateLocation.and.returnValue(
-      mockLocationDetailsWithFormatAddress
-    );
+    mapService.updateLocation.and.returnValue(of(mockLocationDetailsWithFormatAddress));
     spyOn(component, 'displayLocationDetails');
     component.updateLocationDetails();
-    expect(
-      component.changeLocationButton.nativeElement.focus
-    ).toHaveBeenCalled();
+    expect(component.changeLocationButton.nativeElement.focus).toHaveBeenCalled();
     expect(modalRefInstance.hide).toHaveBeenCalled();
     expect(component.showLocality).toBeFalsy();
   });
@@ -277,7 +272,7 @@ describe('MapComponent', () => {
       country: 'United States',
       formattedAddress: 'Hjorth St, Indio, California 92201, United States'
     };
-    mapService.updateLocation.and.returnValue(mockLocation);
+    mapService.updateLocation.and.returnValue(of(mockLocation));
     component.mapType = true;
     spyOn(component, 'displayLocationDetails');
     component.updateLocationDetails();
@@ -320,13 +315,11 @@ describe('MapComponent', () => {
     spyOn(navigator.geolocation, 'getCurrentPosition');
     spyOn(mapResultsService, 'getAddressBasedOnPoints');
     component.openModal(template);
-    mapService.updateLocation.and.returnValue(
-      mockLocationDetailsWithFormatAddress
-    );
+    mapService.updateLocation.and.returnValue(of(mockLocationDetailsWithFormatAddress));
     component.displayLocationDetails(mockMapLocation2);
     expect(component.address).toEqual(mockMapLocation2.address);
     expect(component.locality).toEqual(mockMapLocation2.locality);
-    expect(mapService.updateLocation).toBeTruthy();
+
     mapResultsService.getAddressBasedOnPoints(
       mockGeolocationPositionLatiitude,
       mockGeolocationPositionLangitude
