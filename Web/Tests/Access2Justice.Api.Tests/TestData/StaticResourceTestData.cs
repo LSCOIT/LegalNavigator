@@ -95,6 +95,7 @@ namespace Access2Justice.Api.Tests.TestData
                                 'path': '/assets/images/secondary-illustrations/privacy_promise.svg'
                             }
                         },
+                        'name': 'HomePage',
                         '_rid': 'mwoSAIKx1tkBAAAAAAAAAA==',
                         '_self': 'dbs/mwoSAA==/colls/mwoSAIKx1tk=/docs/mwoSAIKx1tkBAAAAAAAAAA==/',
                         '_etag': '\'fc005f34-0000-0000-0000-5b5ac3b50000\'',
@@ -168,6 +169,29 @@ namespace Access2Justice.Api.Tests.TestData
         'city': null,
         'zipCode': null
       }]}]");
+
+        public static string createdStaticResourcesContent = "{"+
+    "\"description\": \"Lorem, ipsum dolor sit amet consectetur adipisicing elit. Asperiores illo totam iste rerum fuga sit facilis modi iusto sapiente saepe tenetur labore eaque esse quod alias maxime ut velit quisquam, doloremque perspiciatis harum omnis. Odit dolorem, reprehenderit cupiditate deleniti amet a aperiam voluptates quam facilis suscipit, vero error magnam voluptatum.\","+
+    "\"image\": {" +
+    "  \"source\": \"/static-resource/alaska/assets/images/secondary-illustrations/privacy_promise_dark.svg\"," +
+    "  \"altText\": \"Privacy Promise Page\"" +
+    "}," +
+    "\"details\": [" +
+    "  {"+
+    "    \"title\": \"Data Collection and Use\","+
+    "    \"description\": \"Lorem ipsum dolor sit, amet consectetur adipisicing elit. Adipisci, distinctio possimus neque corrupti veritatis aspernatur odit quae sed voluptas minima, aliquam iste ex deleniti ut aliquid quaerat animi, similique accusamus?\""+
+    "  }"+
+    "],"+
+    "\"organizationalUnit\": \"Hawaii\","+
+    "\"id\": \"7b58a732-2f77-1db9-dfdf-9798fb564d6c\","+
+    "\"name\": \"PrivacyPromisePage\","+
+    "\"location\": ["+
+    "  {"+
+    "    \"state\": \"Hawaii\","+
+    "    \"county\": null,"+
+    "    \"city\": null,"+
+    "    \"zipCode\": null"+
+    "  }]}";
 
         public static string updatedHelpAndFAQContent = "{\"description\": \"Lorem ipsum, dolor sit amet consectetur adipisicing elit. A non excepturi ullam magnam similique, nobis officiis cupiditate aperiam consectetur at labore commodi! Soluta, expedita fuga in quod corporis voluptatem reiciendis. \"," +
             "\"image\": {\"source\": \"/static-resource/alaska/assets/images/secondary-illustrations/help_faqs.svg\"," +
@@ -406,6 +430,28 @@ namespace Access2Justice.Api.Tests.TestData
     ]
   }]");
 
+        public static string updatedPersonalizedPlanContent = @"{
+    'id': '0cc3a8c0-9d97-2b80-3fc9-a7a7a8fb315e',
+    'name': 'PersonalizedActionPlanPage',
+    'location': [
+        {
+            'state': 'HI',
+            'county': null,
+            'city': null,
+            'zipCode': null
+        }
+    ],
+    'organizationalUnit': 'HI',
+    'description': 'the following information and resources are sponsored by the following organizations-Hawaii',
+    'sponsors': [
+        {
+            'image': {
+                'source': '',
+                'altText': ''
+            }
+        }
+    ]
+  }";
 
 
         public static IEnumerable<object[]> UpsertNavigationContent()

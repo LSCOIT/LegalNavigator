@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Api.Authorization;
 using Access2Justice.Api.Interfaces;
+using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Http;
@@ -25,6 +26,19 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
+        /// Get all static resources grouped by OrganizationUnit and Name
+        /// </summary>
+        /// <returns>Array of Organization Units with static resources</returns>
+        [HttpGet]
+        [Route("")]
+        public async Task<ActionResult> GetAllStaticResources()
+        {
+            var content = await staticResourceBusinessLogic.GetAllStaticResourcesAsync();
+
+            return Ok(content);
+        }
+
+        /// <summary>
         /// Get static resources by location
         /// </summary>
         /// <remarks>
@@ -46,12 +60,44 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
+        /// Creates a set of static resources for a new state
+        /// </summary>
+        /// <param name="state">Abbreviation of state to create static resources for</param>
+        /// <returns>Static resources created for a new state</returns>
+        [Permission(PermissionName.upsertstatichomepage)]
+        [Permission(PermissionName.upsertstaticprivacypage)]
+        [Permission(PermissionName.upsertstatichelpandfaqpage)]
+        [Permission(PermissionName.upsertstaticnavigation)]
+        [Permission(PermissionName.upsertstaticaboutpage)]
+        [Permission(PermissionName.upsertstaticpersonalizedplanpage)]
+        [Permission(PermissionName.upsertstaticguidedassistantpage)]
+        [HttpPost]
+        [Route("create")]
+        public async Task<IActionResult> CreateStaticResourcesAsync(string state)
+        {
+            if (string.IsNullOrWhiteSpace(state) ||
+                USState.GetByAbbreviation(state) == null)
+            {
+                return BadRequest("invalid state");
+            }
+
+            var location = new Location { State = state.ToUpperInvariant() };
+            if (await userRoleBusinessLogic.ValidateOrganizationalUnit(location.State))
+            {
+                var content = await staticResourceBusinessLogic.CreateStaticResourcesFromDefaultAsync(location);
+                return Ok(content);
+            }
+
+            return StatusCode(StatusCodes.Status403Forbidden);
+        }
+
+        /// <summary>
         /// Insert and Update the home page static contents
         /// </summary>
         /// <remarks>
         /// Helps to get home page static contents inserted or updated
         /// </remarks>
-        /// <param name="homePageContent"></param>        
+        /// <param name="homePageContent"></param>
         /// <response code="200">Get home page static contents inserted or updated</response>
         /// <response code="500">Failure</response>
         [Permission(PermissionName.upsertstatichomepage)]
