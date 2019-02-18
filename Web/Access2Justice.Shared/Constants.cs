@@ -42,16 +42,29 @@
         public const string StateCode = "state";
         public const string ServiceProviderResourceType = "Service Providers";
         public const string IntegrationAPI = "Integration API";
-        public const string ExternalId = "externalId";        
+        public const string ExternalId = "externalId";
         public const string RTMSessionId = "session_id";
         public const string EFormFormFields = "onboardingInfo";
         public const string Plans = "plan";
         public const string Code = "code";
+        public const string DefaultOgranizationalUnit = "Default";
 
         public static class ReasourceTypes
         {
             public const string AdditionalReadings = "Additional Readings";
         }
+
+        public static class StaticResourceTypes
+        {
+            public const string AboutPage = "AboutPage";
+            public const string GuidedAssistantPrivacyPage = "GuidedAssistantPrivacyPage";
+            public const string HelpAndFAQPage = "HelpAndFAQPage";
+            public const string HomePage = "HomePage";
+            public const string Navigation = "Navigation";
+            public const string PersonalizedActionPlanPage = "PersonalizedActionPlanPage";
+            public const string PrivacyPromisePage = "PrivacyPromisePage";
+        }
+
         public const string A2JTemplateFileExtension = ".zip";
     }
 }

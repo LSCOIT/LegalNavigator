@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NSubstitute;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using Xunit;
 
@@ -23,13 +22,17 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         //Mocked input data
         private readonly JArray homePageData = StaticResourceTestData.homePageData;
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
+        private readonly JArray emptyArray = JArray.Parse(@"[]");
+        private readonly JArray staticPrivacyPromiseContent = StaticResourceTestData.staticPrivacyPromiseContent;
+
         Location location = new Location
         {
             State = "Hawaii"
         };
         //expected data
         private readonly string expectedPageName = "HomePage";
-        
+        private readonly string expectedPrivacyPolicyPageName = "PrivacyPromisePage";
+
         public StaticResourceBusinessLogicTests()
         {
             dynamicQueries = Substitute.For<IDynamicQueries>();
@@ -43,6 +46,23 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             cosmosDbSettings.ResourcesCollectionId.Returns("ResourceCollection");
             cosmosDbSettings.ProfilesCollectionId.Returns("UserProfile");
             cosmosDbSettings.StaticResourcesCollectionId.Returns("StaticResource");
+        }
+
+        [Fact]
+        public void GetAllStaticResourcesAsyncTestsShouldReturnProperData()
+        {
+            //arrange
+            var staticResourcesData = new JArray(homePageData[0], staticPrivacyPromiseContent[0]);
+            var dbResponse = dynamicQueries.FindItemsAllAsync(cosmosDbSettings.StaticResourcesCollectionId);
+            dbResponse.ReturnsForAnyArgs<dynamic>(staticResourcesData);
+
+            //act
+            var response = staticResourceBusinessLogic.GetAllStaticResourcesAsync();
+            string result = JsonConvert.SerializeObject(response);
+
+            //assert
+            Assert.Contains(expectedPageName, result, StringComparison.InvariantCultureIgnoreCase);
+            Assert.Contains(expectedPrivacyPolicyPageName, result, StringComparison.InvariantCultureIgnoreCase);
         }
 
         [Fact]
@@ -63,7 +83,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         [Fact]
         public void GetStaticResourceDataAsyncShouldReturnEmptyData()
         {
-            //arrange      
+            //arrange
             var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourcesCollectionId, Constants.Id, location);
             dbResponse.ReturnsForAnyArgs<dynamic>(emptyData);
 
@@ -75,6 +95,30 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             Assert.DoesNotContain(expectedPageName, result, StringComparison.InvariantCultureIgnoreCase);
         }
 
+        [Fact]
+        public void CreateStaticResourcesFromDefaultAsyncTestsShouldValidate()
+        {
+            //arrange
+            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(
+                cosmosDbSettings.StaticResourcesCollectionId, Constants.Name, new Location());
+            dbResponse.ReturnsForAnyArgs(emptyArray, staticPrivacyPromiseContent);
+
+            var createdDocument = new Document();
+            var jsonTextReader = new JsonTextReader(new StringReader(StaticResourceTestData.createdStaticResourcesContent));
+            createdDocument.LoadFrom(jsonTextReader);
+            backendDatabaseService.CreateItemAsync<dynamic>(
+               Arg.Any<PrivacyPromiseContent>(),
+               Arg.Any<string>()).ReturnsForAnyArgs<Document>(createdDocument);
+
+            //act
+            var response = staticResourceBusinessLogic.CreateStaticResourcesFromDefaultAsync(location);
+            var actualResult = JsonConvert.SerializeObject(response.Result);
+
+            //assert
+            Assert.Contains($"\"organizationalUnit\":\"{location.State}\"", actualResult);
+            Assert.Contains($"\"state\":\"{location.State}\"", actualResult);
+        }
+
         [Theory]
         [MemberData(nameof(StaticResourceTestData.UpsertNavigationContent), MemberType = typeof(StaticResourceTestData))]
         public void UpsertStaticNavigationDataAsyncShouldValidate(Navigation navigationInput, JArray navigationDBData, dynamic expectedResult)
@@ -82,7 +126,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var expectedName = "Navigation";
             var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.StaticResourcesCollectionId, Constants.Name, navigationInput.Name, new Location());
             dbResponse.ReturnsForAnyArgs(navigationDBData);
-            
+
             Document updatedDocument = new Document();
             JsonTextReader reader = new JsonTextReader(new StringReader(StaticResourceTestData.updatedStaticNavigationContent));
             updatedDocument.LoadFrom(reader);
@@ -101,7 +145,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             expectedResult = JsonConvert.SerializeObject(expectedResult);
             var actualResult = JsonConvert.SerializeObject(response.Result);
             //assert
-            Assert.Contains(expectedName, expectedResult);
+            Assert.Contains(expectedName, actualResult);
         }
 
         [Theory]
@@ -113,7 +157,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs(privacyPromiseDBData);
 
             Document updatedDocument = new Document();
-            JsonTextReader reader = new JsonTextReader(new StringReader(StaticResourceTestData.updatedStaticNavigationContent));
+            JsonTextReader reader = new JsonTextReader(new StringReader(StaticResourceTestData.updatedPrivacyPromiseContent));
             updatedDocument.LoadFrom(reader);
 
             backendDatabaseService.CreateItemAsync<dynamic>(
@@ -130,7 +174,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             expectedResult = JsonConvert.SerializeObject(expectedResult);
             var actualResult = JsonConvert.SerializeObject(response.Result);
             //assert
-            Assert.Contains(expectedName, expectedResult);
+            Assert.Contains(expectedName, actualResult);
         }
 
         [Theory]
@@ -159,7 +203,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             expectedResult = JsonConvert.SerializeObject(expectedResult);
             var actualResult = JsonConvert.SerializeObject(response.Result);
             //assert
-            Assert.Contains(expectedName, expectedResult);
+            Assert.Contains(expectedName, actualResult);
         }
 
         [Theory]
@@ -171,7 +215,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs(aboutDBData);
 
             Document updatedDocument = new Document();
-            JsonTextReader reader = new JsonTextReader(new StringReader(StaticResourceTestData.updatedHelpAndFAQContent));
+            JsonTextReader reader = new JsonTextReader(new StringReader(StaticResourceTestData.updatedAboutContent));
             updatedDocument.LoadFrom(reader);
 
             backendDatabaseService.CreateItemAsync<dynamic>(
@@ -188,7 +232,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             expectedResult = JsonConvert.SerializeObject(expectedResult);
             var actualResult = JsonConvert.SerializeObject(response.Result);
             //assert
-            Assert.Contains(expectedName, expectedResult);
+            Assert.Contains(expectedName, actualResult);
         }
 
         [Theory]
@@ -217,7 +261,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             expectedResult = JsonConvert.SerializeObject(expectedResult);
             var actualResult = JsonConvert.SerializeObject(response.Result);
             //assert
-            Assert.Contains(expectedName, expectedResult);
+            Assert.Contains(expectedName, actualResult);
         }
 
         [Theory]
@@ -229,7 +273,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs(homeDBData);
 
             Document updatedDocument = new Document();
-            JsonTextReader reader = new JsonTextReader(new StringReader(StaticResourceTestData.updatedHomeContent));
+            JsonTextReader reader = new JsonTextReader(new StringReader(StaticResourceTestData.updatedPersonalizedPlanContent));
             updatedDocument.LoadFrom(reader);
 
             backendDatabaseService.CreateItemAsync<dynamic>(
@@ -247,7 +291,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             var actualResult = JsonConvert.SerializeObject(response.Result);
 
             //assert
-            Assert.Contains(expectedName, expectedResult);
+            Assert.Contains(expectedName, actualResult);
         }
     }
 }

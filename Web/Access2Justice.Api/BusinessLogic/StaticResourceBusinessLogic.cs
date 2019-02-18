@@ -2,7 +2,8 @@
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
-using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,6 +21,39 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
+        public async Task<dynamic> GetAllStaticResourcesAsync()
+        {
+            var groupedStaticResources = new Dictionary<string, Dictionary<string, List<dynamic>>>();
+            var staticResources = await dbClient.FindItemsAllAsync(dbSettings.StaticResourcesCollectionId);
+
+            foreach(var staticResource in staticResources)
+            {
+                var organizationalUnit = (string)staticResource.organizationalUnit;
+                if (string.IsNullOrWhiteSpace(organizationalUnit))
+                {
+                    organizationalUnit = Constants.DefaultOgranizationalUnit;
+                }
+                var name = (string)staticResource.name;
+
+                if (!groupedStaticResources.TryGetValue(organizationalUnit,
+                    out Dictionary<string, List<dynamic>> orgUnitResources))
+                {
+                    orgUnitResources = new Dictionary<string, List<dynamic>>();
+                    groupedStaticResources[organizationalUnit] = orgUnitResources;
+                }
+
+                if (!orgUnitResources.TryGetValue(name, out List<dynamic> resources))
+                {
+                    resources = new List<dynamic>();
+                    orgUnitResources[name] = resources;
+                }
+
+                resources.Add(staticResource);
+            }
+
+            return groupedStaticResources;
+        }
+
         public async Task<dynamic> GetPageStaticResourcesDataAsync(Location location)
         {
             dynamic result = null;
@@ -30,8 +64,54 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 result = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, location);
             }
-            location.State = "Default";
+            location.State = Constants.DefaultOgranizationalUnit;
             return result.Count > 0 ? result : await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, location);
+        }
+
+        public async Task<dynamic> CreateStaticResourcesFromDefaultAsync(Location location)
+        {
+            dynamic stateStaticResources = null;
+            location.County = string.Empty;
+            location.City = string.Empty;
+            location.ZipCode = string.Empty;
+
+            stateStaticResources = await dbClient.FindItemsWhereWithLocationAsync(
+                dbSettings.StaticResourcesCollectionId, Constants.Name, location);
+
+            if (stateStaticResources.Count > 0)
+            {
+                return stateStaticResources;
+            }
+
+            var defaultLocation = new Location
+            {
+                State = Constants.DefaultOgranizationalUnit,
+                City = string.Empty,
+                County = string.Empty,
+                ZipCode = string.Empty
+            };
+
+            var defaultStaticResources = await dbClient.FindItemsWhereWithLocationAsync(
+                dbSettings.StaticResourcesCollectionId, Constants.Name, defaultLocation);
+
+            var createdStaticResources = new List<dynamic>();
+
+            foreach(var staticResource in defaultStaticResources)
+            {
+                var newStaticResource = DeserializeStaticContentData(staticResource);
+
+                newStaticResource.Id = Guid.NewGuid().ToString();
+                newStaticResource.OrganizationalUnit = location.State;
+                newStaticResource.Location = new List<Location> { location };
+
+                var newStaticContentObject =
+                    JsonUtilities.DeserializeDynamicObject<object>(newStaticResource);
+
+                createdStaticResources.Add(
+                    dbService.CreateItemAsync(newStaticResource, dbSettings.StaticResourcesCollectionId));
+            }
+
+            return createdStaticResources;
         }
 
         public async Task<dynamic> UpsertStaticHomePageDataAsync(HomeContent homePageContent)
@@ -166,5 +246,28 @@ namespace Access2Justice.Api.BusinessLogic
             return result; 
         }
 
+        private dynamic DeserializeStaticContentData(dynamic staticContent)
+        {
+            var name = (string)staticContent.name;
+            switch(name)
+            {
+                case Constants.StaticResourceTypes.AboutPage:
+                    return JsonUtilities.DeserializeDynamicObject<AboutContent>(staticContent);
+                case Constants.StaticResourceTypes.GuidedAssistantPrivacyPage:
+                    return JsonUtilities.DeserializeDynamicObject<GuidedAssistantPageContent>(staticContent);
+                case Constants.StaticResourceTypes.HelpAndFAQPage:
+                    return JsonUtilities.DeserializeDynamicObject<HelpAndFaqsContent>(staticContent);
+                case Constants.StaticResourceTypes.HomePage:
+                    return JsonUtilities.DeserializeDynamicObject<HomeContent>(staticContent);
+                case Constants.StaticResourceTypes.Navigation:
+                    return JsonUtilities.DeserializeDynamicObject<Navigation>(staticContent);
+                case Constants.StaticResourceTypes.PersonalizedActionPlanPage:
+                    return JsonUtilities.DeserializeDynamicObject<PersonalizedPlanContent>(staticContent);
+                case Constants.StaticResourceTypes.PrivacyPromisePage:
+                    return JsonUtilities.DeserializeDynamicObject<PrivacyPromiseContent>(staticContent);
+                default:
+                    throw new NotSupportedException($"Not supported type of static content - {name}");
+            }
+        }
     }
 }
