@@ -79,7 +79,7 @@ namespace Access2Justice.Api.BusinessLogic
                     var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(textInfo.ToTitleCase(keyword[1]), location);
                     if (topics != null && topics.Count > 0)
                     {
-                        string topicId = topics[0].id;
+                        string topicId = topics[0].Id;
                         answerObject = new JObject { { "description", bestAnswer }, { "topic", "topics/" + topicId } };
                     }
                     else

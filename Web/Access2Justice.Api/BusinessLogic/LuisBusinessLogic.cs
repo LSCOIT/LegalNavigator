@@ -86,7 +86,7 @@ namespace Access2Justice.Api
             List<string> topicIds = new List<string>();
             foreach (var item in topics)
             {
-                string topicId = item.id;
+                string topicId = item.Id;
                 topicIds.Add(topicId);
             }
 
