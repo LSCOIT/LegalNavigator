@@ -6,10 +6,10 @@ import { By } from "@angular/platform-browser";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { Global } from "../../global";
-import { MapService } from "../../shared/map/map.service";
-import { ArrayUtilityService } from "../../shared/services/array-utility.service";
-import { NavigateDataService } from "../../shared/services/navigate-data.service";
-import { StateCodeService } from "../../shared/services/state-code.service";
+import { MapService } from "../../common/map/map.service";
+import { ArrayUtilityService } from "../../common/services/array-utility.service";
+import { NavigateDataService } from "../../common/services/navigate-data.service";
+import { StateCodeService } from "../../common/services/state-code.service";
 import { PersonalizedPlanService } from "../personalized-plan/personalized-plan.service";
 import { CuratedExperienceResultComponent } from "./curated-experience-result.component";
 

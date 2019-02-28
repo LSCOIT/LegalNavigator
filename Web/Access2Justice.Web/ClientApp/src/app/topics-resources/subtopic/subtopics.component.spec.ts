@@ -6,13 +6,13 @@ import { ActivatedRoute, RouterModule } from "@angular/router";
 import { of } from "rxjs";
 
 import { Global } from "../../global";
-import { MapService } from "../../shared/map/map.service";
-import { PaginationService } from "../../shared/pagination/pagination.service";
-import { NavigateDataService } from "../../shared/services/navigate-data.service";
-import { StateCodeService } from "../../shared/services/state-code.service";
-import { GuidedAssistantSidebarComponent } from "../../shared/sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component";
-import { ServiceOrgSidebarComponent } from "../../shared/sidebars/service-org-sidebar/service-org-sidebar.component";
-import { ShowMoreService } from "../../shared/sidebars/show-more/show-more.service";
+import { MapService } from "../../common/map/map.service";
+import { PaginationService } from "../../common/pagination/pagination.service";
+import { NavigateDataService } from "../../common/services/navigate-data.service";
+import { StateCodeService } from "../../common/services/state-code.service";
+import { GuidedAssistantSidebarComponent } from "../../common/sidebars/guided-assistant-sidebar/guided-assistant-sidebar.component";
+import { ServiceOrgSidebarComponent } from "../../common/sidebars/service-org-sidebar/service-org-sidebar.component";
+import { ShowMoreService } from "../../common/sidebars/show-more/show-more.service";
 import { TopicService } from "../shared/topic.service";
 import { SubtopicsComponent } from "./subtopics.component";
 

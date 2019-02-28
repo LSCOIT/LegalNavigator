@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ShowMoreService } from "../shared/sidebars/show-more/show-more.service";
+import { ShowMoreService } from "../common/sidebars/show-more/show-more.service";
 
 @Component({
   selector: "app-topics-resources",

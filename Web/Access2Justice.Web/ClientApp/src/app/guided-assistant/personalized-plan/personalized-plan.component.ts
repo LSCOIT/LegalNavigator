@@ -3,8 +3,8 @@ import { ActivatedRoute } from "@angular/router";
 
 import {ENV} from 'environment';
 import { Global } from "../../global";
-import { NavigateDataService } from "../../shared/services/navigate-data.service";
-import { StaticResourceService } from "../../shared/services/static-resource.service";
+import { NavigateDataService } from "../../common/services/navigate-data.service";
+import { StaticResourceService } from "../../common/services/static-resource.service";
 import { PersonalizedPlan, PersonalizedPlanDescription, PersonalizedPlanTopic } from "../personalized-plan/personalized-plan";
 import { PersonalizedPlanService } from "../personalized-plan/personalized-plan.service";
 

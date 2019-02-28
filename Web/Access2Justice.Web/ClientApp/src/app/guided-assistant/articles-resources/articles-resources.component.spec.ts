@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { NavigateDataService } from "../../shared/services/navigate-data.service";
+import { NavigateDataService } from "../../common/services/navigate-data.service";
 import { ArticlesResourcesComponent } from "./articles-resources.component";
 
 describe("ArticlesResourcesComponent", () => {

@@ -3,8 +3,8 @@ import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { Global } from "../../global";
-import { NavigateDataService } from "../../shared/services/navigate-data.service";
-import { StaticResourceService } from "../../shared/services/static-resource.service";
+import { NavigateDataService } from "../../common/services/navigate-data.service";
+import { StaticResourceService } from "../../common/services/static-resource.service";
 import { AdminDashboardComponent } from "./admin-dashboard.component";
 
 describe("AdminDashboardComponent", () => {

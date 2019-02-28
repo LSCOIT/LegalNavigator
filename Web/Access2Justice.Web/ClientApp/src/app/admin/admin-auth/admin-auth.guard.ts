@@ -5,7 +5,7 @@ import { Subject, Observable, of } from "rxjs";
 import {map} from 'rxjs/operators';
 
 import { Global } from "../../global";
-import { LoginService } from "../../shared/login/login.service";
+import { LoginService } from "../../common/login/login.service";
 
 @Injectable()
 export class AdminAuthGuard implements CanActivate {

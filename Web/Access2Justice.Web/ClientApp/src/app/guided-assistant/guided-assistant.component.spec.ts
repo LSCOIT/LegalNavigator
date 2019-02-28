@@ -6,10 +6,10 @@ import { Router } from "@angular/router";
 import { of } from "rxjs";
 
 import { Global } from "../global";
-import { MapService } from "../shared/map/map.service";
-import { SearchService } from "../shared/search/search.service";
-import { NavigateDataService } from "../shared/services/navigate-data.service";
-import { StaticResourceService } from "../shared/services/static-resource.service";
+import { MapService } from "../common/map/map.service";
+import { SearchService } from "../common/search/search.service";
+import { NavigateDataService } from "../common/services/navigate-data.service";
+import { StaticResourceService } from "../common/services/static-resource.service";
 import { TopicService } from "../topics-resources/shared/topic.service";
 import { GuidedAssistantComponent } from "./guided-assistant.component";
 

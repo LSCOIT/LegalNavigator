@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import {ENV} from 'environment';
 import { Global } from "../global";
-import { LocationDetails } from "../shared/map/map";
-import { MapService } from "../shared/map/map.service";
-import { StaticResourceService } from "../shared/services/static-resource.service";
+import { LocationDetails } from "../common/map/map";
+import { MapService } from "../common/map/map.service";
+import { StaticResourceService } from "../common/services/static-resource.service";
 import { Carousel, GuidedAssistantOverview, Hero, Home, Privacy, SponsorOverview, Sponsors, TopicAndResources } from "./home";
 
 @Component({

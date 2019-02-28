@@ -2,7 +2,7 @@ import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { BsDropdownModule, TabsModule } from "ngx-bootstrap";
-import { NavigateDataService } from "../shared/services/navigate-data.service";
+import { NavigateDataService } from "../common/services/navigate-data.service";
 import { AboutTemplateComponent } from "./about/about-template.component";
 import { AdminAuthGuard } from "./admin-auth/admin-auth.guard";
 import { AdminDashboardComponent } from "./admin-dashboard/admin-dashboard.component";

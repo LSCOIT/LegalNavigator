@@ -1,0 +1,55 @@
+<div class="row">
+  <div class="col-sm-12">
+    <div class="filter row no-print">
+      <div class="filter-type col-md-8 col-sm-6 col-xs-6">
+        <div class="p">Show:</div>
+        <div class="col-md-11 col-sm-10 desktop-filter" btnRadioGroup [(ngModel)]="typeFilter">
+          <label *ngFor="let countByType of countsByType" class="btn btn-selected"
+                 [btnRadio]="countByType.ResourceName">
+            {{countByType.ResourceName}} ({{countByType.ResourceCount}})
+          </label>
+        </div>
+
+        <div class="btn-group col-sm-6 col-xs-12 mobile-filter" dropdown>
+          <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-btn"
+                  aria-controls="button-basic">
+            {{filterDropdownLabel}}
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            <li *ngFor="let countByType of filterDropdownItems" role="menuitem">
+              <a class="dropdown-item" (keyup.enter)="typeFilter = countByType.ResourceName"
+                 (click)="typeFilter = countByType.ResourceName">
+                {{countByType.ResourceName}} ({{countByType.ResourceCount}})
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="sort-type">
+        <div class="p">Sort:</div>
+        <div class="btn-group" dropdown>
+          <button id="button-basic" dropdownToggle type="button" class="btn btn-selected dropdown-toggle dropdown-btn"
+                  aria-controls="button-basic">
+            {{sortingDropdownLabel}}
+          </button>
+          <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            <li *ngFor="let option of sortingOptions" role="menuitem">
+              <a class="dropdown-item" (keyup.enter)="sortingParams = option.params"
+                 (click)="sortingParams = option.params">
+                {{option.label}}
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <div *ngFor="let resource of processedResources">
+      <app-resource-card [searchResource]="resource" [personalizedResources]="personalizedResources"
+                         [showRemoveOption]="true"></app-resource-card>
+    </div>
+  </div>
+</div>

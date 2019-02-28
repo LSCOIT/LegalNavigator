@@ -1,13 +1,7 @@
-import { Location } from "../../about/about";
-import { MapLocation } from "../../shared/map/map";
+import { Location } from '../../about/about';
+import { MapLocation } from '../../common/map/map';
 
-export interface Resources {
-  url: string;
-  itemId: string;
-  type: string;
-}
-
-export interface SavedResources {
+export interface SavedResource {
   itemId: string;
   resourceType: string;
   resourceDetails: any;
@@ -15,18 +9,13 @@ export interface SavedResources {
 
 export interface ProfileResources {
   oId: string;
-  resourceTags: Array<SavedResources>;
+  resourceTags: SavedResource[];
   type: string;
-}
-
-export interface UserPlan {
-  oId: string;
-  plan: PersonalizedPlan;
 }
 
 export interface PersonalizedPlan {
   id: string;
-  topics: Array<PlanTopic>;
+  topics: PlanTopic[];
   isShared: boolean;
 }
 
@@ -65,6 +54,7 @@ export interface PersonalizedPlanDescription {
   location: Array<Location>;
   organizationalUnit: string;
 }
+
 export interface Image {
   source: string;
   altText: string;

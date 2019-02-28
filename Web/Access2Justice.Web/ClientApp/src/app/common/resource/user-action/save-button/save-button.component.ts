@@ -4,7 +4,7 @@ import { MsalService } from '@azure/msal-angular';
 
 import { ENV } from 'environment';
 import { Global } from '../../../../global';
-import { SavedResources } from '../../../../guided-assistant/personalized-plan/personalized-plan';
+import { SavedResource } from '../../../../guided-assistant/personalized-plan/personalized-plan';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { NavigateDataService } from '../../../services/navigate-data.service';
 import { SaveButtonService } from './save-button.service';
@@ -20,8 +20,8 @@ import { SaveButtonService } from './save-button.service';
 })
 export class SaveButtonComponent {
   @Input() showIcon = true;
-  savedResources: SavedResources;
-  resourceTags: Array<SavedResources> = [];
+  savedResources: SavedResource;
+  resourceTags: Array<SavedResource> = [];
   @Input() id: string;
   @Input() type: string;
   @Input() resourceDetails: any = {};

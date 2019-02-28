@@ -1,19 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { NgxSpinnerModule } from 'ngx-spinner';
-import {
-  AccordionModule,
-  BsDropdownModule,
-  CarouselModule,
-  CollapseModule,
-  ModalModule,
-  ProgressbarConfig,
-  ProgressbarModule,
-  TabsModule
-} from 'ngx-bootstrap';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
+import { ProgressbarConfig } from 'ngx-bootstrap';
 
 import { AboutComponent } from './about/about.component';
 import { AdminModule } from './admin/admin.module';
@@ -30,15 +16,14 @@ import { HelpFaqsComponent } from './help-faqs/help-faqs.component';
 import { HomeComponent } from './home/home.component';
 import { PrivacyPromiseComponent } from './privacy-promise/privacy-promise.component';
 import { ProfileComponent } from './profile/profile.component';
-import { PipeModule } from './shared/pipe/pipe.module';
-import { SharedModule } from './shared/shared.module';
+import { AppCommonModule } from './common/app-common.module';
 import { SubtopicDetailComponent } from './topics-resources/subtopic/subtopic-detail.component';
 import { SubtopicsComponent } from './topics-resources/subtopic/subtopics.component';
 import { TopicsComponent } from './topics-resources/topic/topics.component';
 import { TopicsResourcesComponent } from './topics-resources/topics-resources.component';
 import { CoreModule } from './core/core.module';
-import { metaReducers, reducers } from './core/store/reducers';
-import { AppEffects } from './core/store/effects';
+import { SharedModule } from './shared/shared.module';
+import { SavedResourcesComponent } from './profile/saved-resources/saved-resources.component';
 
 @NgModule({
   declarations: [
@@ -55,27 +40,16 @@ import { AppEffects } from './core/store/effects';
     SubtopicsComponent,
     PersonalizedPlanComponent,
     ProfileComponent,
+    SavedResourcesComponent,
     DidYouKnowComponent,
     ArticlesResourcesComponent,
     CuratedExperienceComponent,
     CuratedExperienceResultComponent
   ],
   imports: [
-    CommonModule,
-    FormsModule,
-    StoreModule.forRoot(reducers, {metaReducers}),
-    EffectsModule.forRoot([AppEffects]),
-    AccordionModule.forRoot(),
-    BsDropdownModule.forRoot(),
-    CarouselModule.forRoot(),
-    CollapseModule.forRoot(),
-    ModalModule.forRoot(),
-    ProgressbarModule.forRoot(),
-    TabsModule.forRoot(),
-    NgxSpinnerModule,
     CoreModule,
     SharedModule,
-    PipeModule,
+    AppCommonModule,
     AdminModule,
     AppRoutingModule,
   ],

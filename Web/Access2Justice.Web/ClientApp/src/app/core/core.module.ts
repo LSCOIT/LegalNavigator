@@ -1,11 +1,27 @@
 import { NgModule } from '@angular/core';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { MsalModule } from '@azure/msal-angular';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MsalModule } from '@azure/msal-angular';
+import {
+  AccordionModule,
+  BsDropdownModule,
+  ButtonsModule,
+  CarouselModule,
+  CollapseModule,
+  ModalModule,
+  ProgressbarModule,
+  TabsModule
+} from 'ngx-bootstrap';
+import { ToastrModule } from 'ngx-toastr';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 
+import { ENV } from 'environment';
 import { ResponseInterceptor } from '../response-interceptor';
 import { TokenInterceptor } from '../token-interceptor';
-import {ENV} from 'environment';
+import { metaReducers, reducers } from './store/reducers';
+import { AppEffects } from './store/effects';
 
 @NgModule({
   declarations: [],
@@ -24,6 +40,8 @@ import {ENV} from 'environment';
   imports: [
     BrowserModule,
     HttpClientModule,
+    BrowserAnimationsModule,
+
     MsalModule.forRoot({
       clientID: ENV.clientID,
       authority: ENV.authority,
@@ -32,6 +50,18 @@ import {ENV} from 'environment';
       navigateToLoginRequestUrl: ENV.navigateToLoginRequestUrl,
       postLogoutRedirectUri: ENV.postLogoutRedirectUri
     }),
+    AccordionModule.forRoot(),
+    BsDropdownModule.forRoot(),
+    CarouselModule.forRoot(),
+    CollapseModule.forRoot(),
+    ModalModule.forRoot(),
+    ProgressbarModule.forRoot(),
+    TabsModule.forRoot(),
+    ButtonsModule.forRoot(),
+    ToastrModule.forRoot(),
+
+    StoreModule.forRoot(reducers, {metaReducers}),
+    EffectsModule.forRoot([AppEffects]),
   ]
 })
 export class CoreModule {

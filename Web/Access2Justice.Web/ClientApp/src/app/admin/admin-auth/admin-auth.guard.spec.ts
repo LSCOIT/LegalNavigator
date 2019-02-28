@@ -1,7 +1,7 @@
 import { fakeAsync, inject, TestBed } from "@angular/core/testing";
 import { Router } from "@angular/router";
 import { Global } from "../../global";
-import { LoginService } from "../../shared/login/login.service";
+import { LoginService } from "../../common/login/login.service";
 import { AdminAuthGuard } from "./admin-auth.guard";
 
 describe("AdminAuthGuard", () => {

@@ -4,7 +4,7 @@ import { ActivatedRouteSnapshot, RouterStateSnapshot } from "@angular/router";
 import { RouterTestingModule } from "@angular/router/testing";
 import { of } from "rxjs";
 
-import { LoginService } from "../shared/login/login.service";
+import { LoginService } from "../common/login/login.service";
 import { ProfileResolver } from "./profile-resolver.service";
 
 describe("ProfileResolverService", () => {

@@ -1,6 +1,6 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { StateCodeService } from "../../shared/services/state-code.service";
+import { StateCodeService } from "../../common/services/state-code.service";
 import { CuratedExperienceComponent } from "./curated-experience.component";
 
 describe("CuratedExperienceComponent", () => {

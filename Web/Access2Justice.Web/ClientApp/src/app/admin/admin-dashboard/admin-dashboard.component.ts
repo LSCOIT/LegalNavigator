@@ -2,8 +2,8 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { Global } from "../../global";
-import { NavigateDataService } from "../../shared/services/navigate-data.service";
-import { StaticResourceService } from "../../shared/services/static-resource.service";
+import { NavigateDataService } from "../../common/services/navigate-data.service";
+import { StaticResourceService } from "../../common/services/static-resource.service";
 
 @Component({
   selector: "app-admin-dashboard",

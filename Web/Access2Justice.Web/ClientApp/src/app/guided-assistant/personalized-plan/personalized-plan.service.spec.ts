@@ -7,7 +7,7 @@ import { Observable, of, from } from "rxjs";
 
 import { api } from "../../../api/api";
 import { Global } from "../../global";
-import { ArrayUtilityService } from "../../shared/services/array-utility.service";
+import { ArrayUtilityService } from "../../common/services/array-utility.service";
 import { ProfileResources } from "./personalized-plan";
 import { PersonalizedPlanService } from "./personalized-plan.service";
 

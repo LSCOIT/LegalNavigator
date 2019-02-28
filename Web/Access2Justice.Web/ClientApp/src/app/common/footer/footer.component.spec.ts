@@ -1,15 +1,12 @@
-import { HttpClientModule } from "@angular/common/http";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { Global } from "../../global";
-import { StateCodeService } from "../../shared/services/state-code.service";
-import { StaticResourceService } from "../../shared/services/static-resource.service";
-import { MapService } from "../map/map.service";
-import { UpperNavComponent } from "./upper-nav.component";
+import { StaticResourceService } from "../services/static-resource.service";
+import { FooterComponent } from "./footer.component";
 
-describe("UpperNavComponent", () => {
-  let component: UpperNavComponent;
-  let fixture: ComponentFixture<UpperNavComponent>;
+describe("FooterComponent", () => {
+  let component: FooterComponent;
+  let fixture: ComponentFixture<FooterComponent>;
   let mockStaticResourceService;
   let navigation;
   let mockGlobal;
@@ -18,7 +15,11 @@ describe("UpperNavComponent", () => {
   beforeEach(async(() => {
     navigation = {
       name: "Navigation",
-      location: [{ state: "Default" }]
+      location: [
+        {
+          state: "Default"
+        }
+      ]
     };
     globalData = [
       {
@@ -38,11 +39,8 @@ describe("UpperNavComponent", () => {
     mockGlobal.getData.and.returnValue(globalData);
 
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      declarations: [UpperNavComponent],
+      declarations: [FooterComponent],
       providers: [
-        MapService,
-        StateCodeService,
         {
           provide: StaticResourceService,
           useValue: mockStaticResourceService
@@ -57,7 +55,7 @@ describe("UpperNavComponent", () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UpperNavComponent);
+    fixture = TestBed.createComponent(FooterComponent);
     component = fixture.componentInstance;
     spyOn(component, "ngOnInit");
     fixture.detectChanges();
@@ -67,14 +65,28 @@ describe("UpperNavComponent", () => {
     expect(component).toBeTruthy();
   });
 
-  it("should set about content to static resource about content if it exists", () => {
+  it("should set about content to static resource if about context exists", () => {
     mockStaticResourceService.getLocation.and.returnValue("Default");
     mockStaticResourceService.navigation = navigation;
-    spyOn(component, "filterUpperNavigationContent");
-    component.getUpperNavigationContent();
+    spyOn(component, "filterNavigationContent");
+    component.getNavigationContent();
     expect(component.navigation).toEqual(mockStaticResourceService.navigation);
-    expect(component.filterUpperNavigationContent).toHaveBeenCalledWith(
+    expect(component.filterNavigationContent).toHaveBeenCalledWith(
       mockStaticResourceService.navigation
     );
+  });
+
+  it("should get content if navigated", () => {
+    mockStaticResourceService.getLocation.and.returnValue("Default");
+    mockStaticResourceService.navigation = navigation;
+    component.getNavigationContent();
+    expect(component.navigation).toEqual(mockStaticResourceService.navigation);
+  });
+
+  it("should get content by :global.getData", () => {
+    mockStaticResourceService.getLocation.and.returnValue("Default");
+    mockStaticResourceService.navigation = "testnode";
+    component.getNavigationContent();
+    expect(component.navigation.name).toContain(globalData[0].name);
   });
 });

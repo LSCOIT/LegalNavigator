@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from "@angular/router";
 import { Observable } from "rxjs";
 
-import { LoginService } from "../shared/login/login.service";
+import { LoginService } from "../common/login/login.service";
 
 @Injectable()
 export class ProfileResolver implements Resolve<any> {

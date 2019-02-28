@@ -1,8 +1,8 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { Global } from "../global";
-import { StateCodeService } from "../shared/services/state-code.service";
-import { StaticResourceService } from "../shared/services/static-resource.service";
+import { StateCodeService } from "../common/services/state-code.service";
+import { StaticResourceService } from "../common/services/static-resource.service";
 import { HelpFaqsComponent } from "./help-faqs.component";
 
 describe("HelpFaqsComponent", () => {

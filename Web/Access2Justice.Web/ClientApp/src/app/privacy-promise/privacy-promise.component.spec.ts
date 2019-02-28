@@ -1,8 +1,8 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { Global } from "../global";
-import { MapService } from "../shared/map/map.service";
-import { StaticResourceService } from "../shared/services/static-resource.service";
+import { MapService } from "../common/map/map.service";
+import { StaticResourceService } from "../common/services/static-resource.service";
 import { PrivacyPromiseComponent } from "./privacy-promise.component";
 
 describe("PrivacyPromiseComponent", () => {

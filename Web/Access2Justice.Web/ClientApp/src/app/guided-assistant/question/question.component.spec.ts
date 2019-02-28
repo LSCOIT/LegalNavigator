@@ -5,7 +5,7 @@ import { FormsModule, NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { of } from "rxjs";
 
-import { NavigateDataService } from "../../shared/services/navigate-data.service";
+import { NavigateDataService } from "../../common/services/navigate-data.service";
 import { QuestionComponent } from "./question.component";
 import { QuestionService } from "./question.service";
 

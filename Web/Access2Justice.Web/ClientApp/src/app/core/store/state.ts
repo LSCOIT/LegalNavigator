@@ -1,5 +1,7 @@
-import { MapLocation } from '../../shared/map/map';
+export interface SavedResourcesState {
+  resources: any[];
+}
 
 export interface State {
-  location: MapLocation;
+  savedResources: SavedResourcesState;
 }

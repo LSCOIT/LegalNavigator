@@ -1,14 +1,14 @@
-import { HttpClientModule } from "@angular/common/http";
-import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { async, ComponentFixture, TestBed } from "@angular/core/testing";
-import { Global } from "../global";
-import { MapService } from "../shared/map/map.service";
-import { PipeModule } from "../shared/pipe/pipe.module";
-import { StateCodeService } from "../shared/services/state-code.service";
-import { StaticResourceService } from "../shared/services/static-resource.service";
-import { HomeComponent } from "./home.component";
+import { HttpClientModule } from '@angular/common/http';
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { Global } from '../global';
+import { MapService } from '../common/map/map.service';
+import { StateCodeService } from '../common/services/state-code.service';
+import { StaticResourceService } from '../common/services/static-resource.service';
+import { HomeComponent } from './home.component';
+import { SharedModule } from '../shared/shared.module';
 
-describe("HomeComponent", () => {
+describe('HomeComponent', () => {
   let component: HomeComponent;
   let fixture: ComponentFixture<HomeComponent>;
   let mockStaticResourceService;
@@ -18,18 +18,18 @@ describe("HomeComponent", () => {
 
   beforeEach(async(() => {
     homeContent = {
-      name: "HomePage",
-      location: [{ state: "Default" }],
+      name: 'HomePage',
+      location: [{state: 'Default'}],
       carousel: {
         slides: [
           {
             quote:
-              "This project will help people understand that the legal system is a public service to use and employ that may help them.",
-            author: "- Alaska community member",
-            location: "",
+              'This project will help people understand that the legal system is a public service to use and employ that may help them.',
+            author: '- Alaska community member',
+            location: '',
             image: {
-              source: "test image",
-              altText: "Sample Image"
+              source: 'test image',
+              altText: 'Sample Image'
             }
           }
         ]
@@ -37,18 +37,18 @@ describe("HomeComponent", () => {
     };
     globalData = [
       {
-        name: "HomePage",
-        location: [{ state: "Default" }],
+        name: 'HomePage',
+        location: [{state: 'Default'}],
         carousel: {
           slides: [
             {
               quote:
-                "This project will help people understand that the legal system is a public service to use and employ that may help them.",
-              author: "- Alaska community member",
-              location: "",
+                'This project will help people understand that the legal system is a public service to use and employ that may help them.',
+              author: '- Alaska community member',
+              location: '',
               image: {
-                source: "test image",
-                altText: "Sample Image"
+                source: 'test image',
+                altText: 'Sample Image'
               }
             }
           ]
@@ -56,14 +56,14 @@ describe("HomeComponent", () => {
       }
     ];
     mockStaticResourceService = jasmine.createSpyObj([
-      "getLocation",
-      "getStaticContents"
+      'getLocation',
+      'getStaticContents'
     ]);
-    mockGlobal = jasmine.createSpyObj(["getData"]);
+    mockGlobal = jasmine.createSpyObj(['getData']);
     mockGlobal.getData.and.returnValue(globalData);
 
     TestBed.configureTestingModule({
-      imports: [HttpClientModule, PipeModule],
+      imports: [HttpClientModule, SharedModule],
       declarations: [HomeComponent],
       providers: [
         MapService,
@@ -85,18 +85,18 @@ describe("HomeComponent", () => {
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
     component.slides = [];
-    spyOn(component, "ngOnInit");
+    spyOn(component, 'ngOnInit');
     fixture.detectChanges();
   });
 
-  it("should create", () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it("should set home content to static resource content if it exists", () => {
-    mockStaticResourceService.getLocation.and.returnValue("Default");
+  it('should set home content to static resource content if it exists', () => {
+    mockStaticResourceService.getLocation.and.returnValue('Default');
     mockStaticResourceService.homeContent = homeContent;
-    spyOn(component, "filterHomeContent");
+    spyOn(component, 'filterHomeContent');
     component.getHomePageContent();
     expect(component.homeContent).toEqual(
       mockStaticResourceService.homeContent

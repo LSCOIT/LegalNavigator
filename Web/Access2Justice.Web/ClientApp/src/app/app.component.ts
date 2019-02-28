@@ -4,11 +4,11 @@ import { MsalService } from "@azure/msal-angular";
 import { NgxSpinnerService } from "ngx-spinner";
 import { Global } from "./global";
 import { PersonalizedPlanService } from "./guided-assistant/personalized-plan/personalized-plan.service";
-import { LoginService } from "./shared/login/login.service";
-import { IUserProfile } from "./shared/login/user-profile.model";
-import { MapService } from "./shared/map/map.service";
-import { SaveButtonService } from "./shared/resource/user-action/save-button/save-button.service";
-import { StaticResourceService } from "./shared/services/static-resource.service";
+import { LoginService } from "./common/login/login.service";
+import { IUserProfile } from "./common/login/user-profile.model";
+import { MapService } from "./common/map/map.service";
+import { SaveButtonService } from "./common/resource/user-action/save-button/save-button.service";
+import { StaticResourceService } from "./common/services/static-resource.service";
 
 @Component({
   selector: "app-root",

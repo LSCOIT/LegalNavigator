@@ -7,9 +7,9 @@ import { ToastrModule, ToastrService } from "ngx-toastr";
 import { of } from "rxjs";
 
 import { Global } from "../../global";
-import { ArrayUtilityService } from "../../shared/services/array-utility.service";
-import { NavigateDataService } from "../../shared/services/navigate-data.service";
-import { StaticResourceService } from "../../shared/services/static-resource.service";
+import { ArrayUtilityService } from "../../common/services/array-utility.service";
+import { NavigateDataService } from "../../common/services/navigate-data.service";
+import { StaticResourceService } from "../../common/services/static-resource.service";
 import { PersonalizedPlanComponent } from "./personalized-plan.component";
 import { PersonalizedPlanService } from "./personalized-plan.service";
 

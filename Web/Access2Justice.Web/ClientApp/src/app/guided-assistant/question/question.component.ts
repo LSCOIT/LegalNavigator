@@ -2,7 +2,7 @@ import { HttpParams } from "@angular/common/http";
 import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { NavigateDataService } from "../../shared/services/navigate-data.service";
+import { NavigateDataService } from "../../common/services/navigate-data.service";
 import { PersonalizedPlan } from "../personalized-plan/personalized-plan";
 import { Answer } from "./answers";
 import { Question } from "./question";

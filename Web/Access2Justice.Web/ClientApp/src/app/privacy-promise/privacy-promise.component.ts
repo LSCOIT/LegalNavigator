@@ -3,7 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import {ENV} from 'environment';
 import { Global } from "../global";
 import { Details, Image, PrivacyContent } from './privacy-promise';
-import { StaticResourceService } from "../shared/services/static-resource.service";
+import { StaticResourceService } from "../common/services/static-resource.service";
 
 @Component({
   selector: "app-privacy-promise",

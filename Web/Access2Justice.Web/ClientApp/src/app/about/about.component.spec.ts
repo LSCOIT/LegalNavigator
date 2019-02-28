@@ -1,7 +1,7 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { Global } from "../global";
-import { StaticResourceService } from "../shared/services/static-resource.service";
+import { StaticResourceService } from "../common/services/static-resource.service";
 import { AboutComponent } from "./about.component";
 
 describe("AboutComponent", () => {

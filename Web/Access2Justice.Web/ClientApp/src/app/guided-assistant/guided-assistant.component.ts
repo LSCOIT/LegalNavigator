@@ -3,11 +3,11 @@ import { Router } from "@angular/router";
 
 import {ENV} from 'environment';
 import { Global } from "../global";
-import { LocationDetails } from "../shared/map/map";
-import { ILuisInput } from "../shared/search/search-results/search-results.model";
-import { SearchService } from "../shared/search/search.service";
-import { NavigateDataService } from "../shared/services/navigate-data.service";
-import { StaticResourceService } from "../shared/services/static-resource.service";
+import { LocationDetails } from "../common/map/map";
+import { ILuisInput } from "../common/search/search-results/search-results.model";
+import { SearchService } from "../common/search/search.service";
+import { NavigateDataService } from "../common/services/navigate-data.service";
+import { StaticResourceService } from "../common/services/static-resource.service";
 import { GuidedAssistant } from "./guided-assistant";
 
 @Component({

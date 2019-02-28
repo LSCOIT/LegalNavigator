@@ -2,7 +2,7 @@ import { Component, Input, OnInit, TemplateRef, ViewChild } from "@angular/core"
 import { Router } from "@angular/router";
 import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Global, UserStatus } from "../../../global";
-import { StateCodeService } from "../../../shared/services/state-code.service";
+import { StateCodeService } from "../../services/state-code.service";
 import { LocationDetails } from "../../map/map";
 
 @Component({
@@ -14,7 +14,6 @@ export class ResourceCardComponent implements OnInit {
   @Input() personalizedResources;
   @Input() resource: any;
   @Input() searchResource: any;
-  @Input() isSearchResults: boolean;
   @Input() showRemoveOption: boolean;
   url: any;
   urlOrigin: string;

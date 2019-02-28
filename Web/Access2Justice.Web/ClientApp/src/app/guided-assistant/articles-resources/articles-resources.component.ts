@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { NavigateDataService } from "../../shared/services/navigate-data.service";
+import { NavigateDataService } from "../../common/services/navigate-data.service";
 
 @Component({
   selector: "app-articles-resources",

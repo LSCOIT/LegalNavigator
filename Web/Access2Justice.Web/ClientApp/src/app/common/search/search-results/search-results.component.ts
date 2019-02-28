@@ -1,23 +1,23 @@
-import {map} from 'rxjs/operators';
-import { Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { NgxSpinnerService } from "ngx-spinner";
+import { map } from 'rxjs/operators';
+import { Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NgxSpinnerService } from 'ngx-spinner';
 
-import {ENV} from 'environment';
-import { Global } from "../../../global";
-import { PersonalizedPlanService } from "../../../guided-assistant/personalized-plan/personalized-plan.service";
-import { LocationDetails } from "../../map/map";
-import { MapService } from "../../map/map.service";
-import { PaginationService } from "../../pagination/pagination.service";
-import { NavigateDataService } from "../../services/navigate-data.service";
-import { SearchService } from "../search.service";
-import { ResourceResult } from "./search-result";
-import { ILuisInput, IResourceFilter } from "./search-results.model";
+import { ENV } from 'environment';
+import { Global } from '../../../global';
+import { PersonalizedPlanService } from '../../../guided-assistant/personalized-plan/personalized-plan.service';
+import { LocationDetails } from '../../map/map';
+import { MapService } from '../../map/map.service';
+import { PaginationService } from '../../pagination/pagination.service';
+import { NavigateDataService } from '../../services/navigate-data.service';
+import { SearchService } from '../search.service';
+import { ResourceResult } from './search-result';
+import { ILuisInput, IResourceFilter } from './search-results.model';
 
 @Component({
-  selector: "app-search-results",
-  templateUrl: "./search-results.component.html",
-  styleUrls: ["./search-results.component.css"]
+  selector: 'app-search-results',
+  templateUrl: './search-results.component.html',
+  styleUrls: ['./search-results.component.css']
 })
 export class SearchResultsComponent implements OnInit, OnChanges {
   @Input() fullPage = false;
@@ -31,25 +31,25 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   filterType: string = ENV.All;
   resourceTypeFilter: any[];
   resourceFilter: IResourceFilter = {
-    ResourceType: "",
-    ContinuationToken: "",
+    ResourceType: '',
+    ContinuationToken: '',
     TopicIds: [],
     ResourceIds: [],
     PageNumber: 0,
     Location: {},
     IsResourceCountRequired: false,
     IsOrder: true,
-    OrderByField: "date",
-    OrderBy: "DESC"
+    OrderByField: 'date',
+    OrderBy: 'DESC'
   };
   luisInput: ILuisInput = {
-    Sentence: "",
+    Sentence: '',
     Location: {},
-    LuisTopScoringIntent: "",
-    TranslateFrom: "",
-    TranslateTo: "",
-    OrderByField: "date",
-    OrderBy: "DESC"
+    LuisTopScoringIntent: '',
+    TranslateFrom: '',
+    TranslateTo: '',
+    OrderByField: 'date',
+    OrderBy: 'DESC'
   };
   location: any;
   topicIds: any[];
@@ -75,10 +75,10 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   locationDetails: LocationDetails;
   orderBy: string;
   searchResultDetails: any = {
-    filterParam: "All",
-    sortParam: "date",
-    order: "DESC",
-    topIntent: ""
+    filterParam: 'All',
+    sortParam: 'date',
+    order: 'DESC',
+    topIntent: ''
   };
   isBindData: boolean;
   showMap: boolean;
@@ -94,17 +94,17 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     private spinner: NgxSpinnerService,
     private router: Router
   ) {
-    if (sessionStorage.getItem("bookmarkedResource")) {
+    if (sessionStorage.getItem('bookmarkedResource')) {
       this.route.data.pipe(map(data => data.cres)).subscribe(response => {
-          if (response) {
-            this.global.setProfileData(
-              response.oId,
-              response.name,
-              response.eMail,
-              response.roleInformation
-            );
-            this.personalizedPlanService.saveResourcesToUserProfile();
-          }
+        if (response) {
+          this.global.setProfileData(
+            response.oId,
+            response.name,
+            response.eMail,
+            response.roleInformation
+          );
+          this.personalizedPlanService.saveResourcesToUserProfile();
+        }
       });
     }
   }
@@ -113,10 +113,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.showDefaultMessage = false;
     this.showNoResultsMessage = false;
     this.searchResults = this.navigateDataService.getData();
-    if (
-      this.searchResults != undefined &&
-      this.personalizedResources === undefined
-    ) {
+    if (this.searchResults && this.personalizedResources === undefined) {
       this.guidedAssistantId = this.searchResults.guidedAssistantId;
       this.cacheSearchResultsData();
       this.isInternalResource = this.searchResults.resources;
@@ -140,14 +137,14 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     } else {
       this.showDefaultMessage = true;
     }
-    if (this.personalizedResources != undefined) {
+    if (this.personalizedResources) {
       this.showDefaultMessage = false;
       this.mapPersonalizedResource(this.personalizedResources);
     }
   }
 
   mapPersonalizedResource(personalizedResources) {
-    this.searchResults = { resources: [] };
+    this.searchResults = {resources: []};
     this.searchResults.resources = personalizedResources.resources.concat(
       personalizedResources.topics,
       personalizedResources.webResources
@@ -171,11 +168,11 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         if (
           (this.searchResults.isItFromTopicPage &&
             this.resourceTypeFilter[index].ResourceName ===
-              this.searchResults.resourceType) ||
+            this.searchResults.resourceType) ||
           (this.resourceTypeFilter[index].ResourceName === this.filterType &&
             !this.searchResults.isItFromTopicPage)
         ) {
-          this.resourceTypeFilter[index]["ResourceList"] = [
+          this.resourceTypeFilter[index]['ResourceList'] = [
             {
               resources: this.searchResults.resources,
               continuationToken: this.searchResults.continuationToken
@@ -199,60 +196,56 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   cacheSearchResultsData() {
-    sessionStorage.removeItem("cacheSearchResults");
+    sessionStorage.removeItem('cacheSearchResults');
     sessionStorage.setItem(
-      "cacheSearchResults",
+      'cacheSearchResults',
       JSON.stringify(this.searchResults)
     );
     if (this.location) {
       sessionStorage.setItem(
-        "searchedLocationMap",
+        'searchedLocationMap',
         JSON.stringify(this.locationDetails)
       );
     }
   }
 
   updateCacheStorage(filterName: string) {
-    if (sessionStorage.getItem("cacheSearchResults")) {
+    if (sessionStorage.getItem('cacheSearchResults')) {
       let sessionData = JSON.parse(
-        sessionStorage.getItem("cacheSearchResults")
+        sessionStorage.getItem('cacheSearchResults')
       );
       sessionData.resources = this.searchResults.resources;
       sessionData.resourceType = filterName;
-      sessionStorage.setItem("cacheSearchResults", JSON.stringify(sessionData));
+      sessionStorage.setItem('cacheSearchResults', JSON.stringify(sessionData));
     }
   }
 
   filterSearchResults(event) {
     this.sortType = event;
-    if (event.filterParam == undefined) {
-      this.sortType.filterParam = "All";
+    if (!event.filterParam) {
+      this.sortType.filterParam = 'All';
     }
-    if (this.isInternalResource && event != undefined) {
+    if (this.isInternalResource && event) {
       this.page = 1;
       this.currentPage = 0;
     }
     if (!this.isPersonalizedresource) {
-      if (
-        this.sortType.sortParam !== this.global.searchResultDetails.sortParam ||
+      if (this.sortType.sortParam !== this.global.searchResultDetails.sortParam ||
         this.sortType.order !== this.global.searchResultDetails.order
       ) {
-        if (
-          this.sortType.filterParam ===
-          this.global.searchResultDetails.filterParam
-        ) {
+        if (this.sortType.filterParam === this.global.searchResultDetails.filterParam) {
           this.searchResultDetails = event;
           this.global.searchResultDetails.sortParam = this.searchResultDetails.sortParam;
           this.global.searchResultDetails.order = this.searchResultDetails.order;
-          this.global.searchResultDetails.filterParam = "All";
+          this.global.searchResultDetails.filterParam = 'All';
           this.isBindData = true;
-          if (sessionStorage.getItem("searchedLocationMap")) {
+          if (sessionStorage.getItem('searchedLocationMap')) {
             this.locationDetails = JSON.parse(
-              sessionStorage.getItem("searchedLocationMap")
+              sessionStorage.getItem('searchedLocationMap')
             );
           } else {
             this.locationDetails = JSON.parse(
-              sessionStorage.getItem("globalMapLocation")
+              sessionStorage.getItem('globalMapLocation')
             );
           }
           this.luisInput.Location = this.locationDetails.location;
@@ -269,8 +262,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
               this.searchResults = response;
               this.navigateDataService.setData(this.searchResults);
               this.router
-                .navigateByUrl("/searchRefresh", { skipLocationChange: true })
-                .then(() => this.router.navigate(["/search"]));
+                .navigateByUrl('/searchRefresh', {skipLocationChange: true})
+                .then(() => this.router.navigate(['/search']));
             }
           });
         } else {
@@ -285,9 +278,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   notifyLocationChange() {
-    if (sessionStorage.getItem("searchedLocationMap")) {
+    if (sessionStorage.getItem('searchedLocationMap')) {
       this.locationDetails = JSON.parse(
-        sessionStorage.getItem("searchedLocationMap")
+        sessionStorage.getItem('searchedLocationMap')
       );
       this.location = this.locationDetails.location;
     }
@@ -307,7 +300,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       TopicIds: this.searchResults.topicIds,
       Location: this.location,
       PageNumber: 0,
-      ContinuationToken: "",
+      ContinuationToken: '',
       IsResourceCountRequired: true,
       ResourceIds: [],
       IsOrder: true,
@@ -334,7 +327,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.luisInput.OrderByField = this.global.searchResultDetails.sortParam;
     this.luisInput.OrderBy = this.global.searchResultDetails.order;
     this.searchService.search(this.luisInput).subscribe(response => {
-      if (response["resources"].length) {
+      if (response['resources'].length) {
         this.searchResults = response;
         this.displayFetchedResources();
       } else {
@@ -348,7 +341,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     this.cacheSearchResultsData();
     this.isInternalResource = true;
     this.mapInternalResource();
-    let event = { filterParam: ENV.All };
+    let event = {filterParam: ENV.All};
     this.filterSearchResults(event);
   }
 
@@ -360,13 +353,13 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   getInternalResource(filterName, pageNumber): void {
     this.checkResource(filterName, pageNumber);
     if (this.isServiceCall) {
-      if (sessionStorage.getItem("searchedLocationMap")) {
+      if (sessionStorage.getItem('searchedLocationMap')) {
         this.locationDetails = JSON.parse(
-          sessionStorage.getItem("searchedLocationMap")
+          sessionStorage.getItem('searchedLocationMap')
         );
       } else {
         this.locationDetails = JSON.parse(
-          sessionStorage.getItem("globalMapLocation")
+          sessionStorage.getItem('globalMapLocation')
         );
       }
       this.resourceFilter.Location = this.locationDetails.location;
@@ -393,8 +386,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       ) {
         this.total = this.resourceTypeFilter[index].ResourceCount;
         this.searchResults = this.resourceTypeFilter[index].ResourceList[
-          this.page - 1
-        ];
+        this.page - 1
+          ];
         if (this.page === 1) {
           this.updateCacheStorage(resourceName);
         }
@@ -404,7 +397,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         this.total = this.resourceTypeFilter[index].ResourceCount;
         this.resourceFilter.ResourceType = this.resourceTypeFilter[
           index
-        ].ResourceName;
+          ].ResourceName;
         this.resourceFilter.PageNumber = this.page - 1;
         this.resourceFilter.TopicIds = this.topicIds;
         if (
@@ -413,8 +406,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         ) {
           this.resourceFilter.ContinuationToken = JSON.stringify(
             this.resourceTypeFilter[index].ResourceList[pageNumber][
-              "continuationToken"
-            ]
+              'continuationToken'
+              ]
           );
         }
         this.isServiceCall = true;
@@ -426,15 +419,15 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   addResource(filterName) {
     for (let index = 0; index < this.resourceTypeFilter.length; index++) {
       if (this.resourceTypeFilter[index].ResourceName === filterName) {
-        if (this.resourceTypeFilter[index]["ResourceList"] == undefined) {
-          this.resourceTypeFilter[index]["ResourceList"] = [
+        if (this.resourceTypeFilter[index]['ResourceList'] == undefined) {
+          this.resourceTypeFilter[index]['ResourceList'] = [
             {
               resources: this.searchResults.resources,
               continuationToken: this.searchResults.continuationToken
             }
           ];
         } else {
-          this.resourceTypeFilter[index]["ResourceList"].push({
+          this.resourceTypeFilter[index]['ResourceList'].push({
             resources: this.searchResults.resources,
             continuationToken: this.searchResults.continuationToken
           });
@@ -455,7 +448,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       },
       error => {
         this.spinner.hide();
-        this.router.navigate(["/error"]);
+        this.router.navigate(['/error']);
       }
     );
   }
@@ -530,13 +523,10 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   applyFilter() {
-    if (
-      this.searchResults != undefined &&
-      this.searchResults.resources != undefined
-    ) {
+    if (this.searchResults && this.searchResults.resources) {
       let allFilter = [
         {
-          ResourceName: "All",
+          ResourceName: 'All',
           ResourceCount: this.searchResults.resources.length
         }
       ];
@@ -557,23 +547,17 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
-    if (
-      !this.navigateDataService.getData() &&
-      sessionStorage.getItem("cacheSearchResults") &&
-      !this.personalizedResources
-    ) {
+    if (!this.navigateDataService.getData() && sessionStorage.getItem('cacheSearchResults') && !this.personalizedResources) {
       this.navigateDataService.setData(
-        JSON.parse(sessionStorage.getItem("cacheSearchResults"))
+        JSON.parse(sessionStorage.getItem('cacheSearchResults'))
       );
     }
     this.bindData();
     this.notifyLocationChange();
     this.showRemoveOption = this.showRemove;
     if (this.searchResults && this.searchResults.searchFilter) {
-      if (
-        this.searchResults.searchFilter.OrderByField === "modifiedTimeStamp"
-      ) {
-        this.searchResults.searchFilter.OrderByField = "date";
+      if (this.searchResults.searchFilter.OrderByField === 'modifiedTimeStamp') {
+        this.searchResults.searchFilter.OrderByField = 'date';
       }
       this.global.searchResultDetails.sortParam = this.searchResults.searchFilter.OrderByField;
       this.global.searchResultDetails.order = this.searchResults.searchFilter.OrderBy;
@@ -581,8 +565,8 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     } else {
       this.sortType = {
         filterParam: undefined,
-        sortParam: "date",
-        order: "DESC"
+        sortParam: 'date',
+        order: 'DESC'
       };
     }
   }

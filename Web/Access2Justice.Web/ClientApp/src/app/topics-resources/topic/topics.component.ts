@@ -1,6 +1,6 @@
 import { Component, HostListener, Input, OnInit, QueryList, ViewChildren } from "@angular/core";
 import { Global } from "../../global";
-import { MapService } from "../../shared/map/map.service";
+import { MapService } from "../../common/map/map.service";
 import { Topic } from "../shared/topic";
 import { TopicService } from "../shared/topic.service";
 

@@ -1,18 +1,18 @@
-import { Component, HostBinding, Input, OnInit } from '@angular/core';
-import { Router } from "@angular/router";
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
-import { Global, UserStatus } from "../../../../global";
-import { ProfileResources, SavedResources } from "../../../../guided-assistant/personalized-plan/personalized-plan";
-import { PersonalizedPlanComponent } from "../../../../guided-assistant/personalized-plan/personalized-plan.component";
-import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
-import { ProfileComponent } from "../../../../profile/profile.component";
-import { EventUtilityService } from "../../../services/event-utility.service";
-import { NavigateDataService } from "../../../services/navigate-data.service";
+import { Global, UserStatus } from '../../../../global';
+import { ProfileResources, SavedResource } from '../../../../guided-assistant/personalized-plan/personalized-plan';
+import { PersonalizedPlanComponent } from '../../../../guided-assistant/personalized-plan/personalized-plan.component';
+import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
+import { ProfileComponent } from '../../../../profile/profile.component';
+import { EventUtilityService } from '../../../services/event-utility.service';
+import { NavigateDataService } from '../../../services/navigate-data.service';
 
 @Component({
-  selector: "app-remove-button",
-  templateUrl: "./remove-button.component.html",
-  styleUrls: ["./remove-button.component.css"],
+  selector: 'app-remove-button',
+  templateUrl: './remove-button.component.html',
+  styleUrls: ['./remove-button.component.css'],
   // tslint:disable-next-line
   host: {
     '[class.app-resource-button]': 'true',
@@ -23,8 +23,8 @@ export class RemoveButtonComponent implements OnInit {
   @Input() resourceType;
   @Input() personalizedResources;
   @Input() selectedPlanDetails;
-  removeResource: SavedResources;
-  profileResources: ProfileResources = { oId: "", resourceTags: [], type: "" };
+  removeResource: SavedResource;
+  profileResources: ProfileResources = {oId: '', resourceTags: [], type: ''};
   resourceDetails: any;
   topicIndex: number;
 
@@ -37,14 +37,7 @@ export class RemoveButtonComponent implements OnInit {
     private global: Global,
     private navigateDataService: NavigateDataService
   ) {
-    if (
-      global.role === UserStatus.Shared &&
-      location.pathname.indexOf(global.shareRouteUrl) >= 0
-    ) {
-      global.showRemove = false;
-    } else {
-      global.showRemove = true;
-    }
+    global.showRemove = !(global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0);
   }
 
   removeSavedResources() {
@@ -74,11 +67,11 @@ export class RemoveButtonComponent implements OnInit {
   }
 
   removePersonalizedPlan() {
-    if (this.router.url.indexOf("/plan") !== -1) {
+    if (this.router.url.indexOf('/plan') !== -1) {
       this.navigateDataService.setData(this.selectedPlanDetails.planDetails);
       this.personalizedPlanComponent.getTopics();
       this.personalizedPlanService.showSuccess(
-        "Removed from Plan successfully"
+        'Removed from Plan successfully'
       );
     } else {
       const params = {
@@ -89,7 +82,7 @@ export class RemoveButtonComponent implements OnInit {
         if (response) {
           this.profileComponent.getPersonalizedPlan();
           this.personalizedPlanService.showSuccess(
-            "Removed from plan successfully"
+            'Removed from plan successfully'
           );
         }
       });
@@ -97,7 +90,7 @@ export class RemoveButtonComponent implements OnInit {
   }
 
   removedSavedResource() {
-    this.removeResource = { itemId: "", resourceType: "", resourceDetails: {} };
+    this.removeResource = {itemId: '', resourceType: '', resourceDetails: {}};
     this.profileResources.resourceTags = [];
     if (this.personalizedResources.resources) {
       this.removeUserSavedResourceFromProfile(
@@ -125,8 +118,8 @@ export class RemoveButtonComponent implements OnInit {
       if (isResource) {
         if (
           resource.id !== this.resourceId &&
-          resource.resourceType !== "Topics" &&
-          resource.resourceType !== "WebResources"
+          resource.resourceType !== 'Topics' &&
+          resource.resourceType !== 'WebResources'
         ) {
           this.removeUserSavedResource(resource);
         }
@@ -156,19 +149,20 @@ export class RemoveButtonComponent implements OnInit {
     this.profileResources = {
       oId: this.global.userId,
       resourceTags: resourceTags,
-      type: "resources"
+      type: 'resources'
     };
     this.personalizedPlanService
       .saveResources(this.profileResources)
       .subscribe(response => {
         if (response != undefined) {
           this.personalizedPlanService.showSuccess(
-            "Resource removed from profile"
+            'Resource removed from profile'
           );
-          this.eventUtilityService.updateSavedResource("RESOURCE REMOVED");
+          this.eventUtilityService.updateSavedResource('RESOURCE REMOVED');
         }
       });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }

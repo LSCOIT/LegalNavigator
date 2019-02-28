@@ -2,7 +2,7 @@ import { TestBed } from "@angular/core/testing";
 import { Observable } from "rxjs";
 
 import { Global } from "../../global";
-import { MapLocation } from "../../shared/map/map";
+import { MapLocation } from "../../common/map/map";
 import { TopicService } from "./topic.service";
 
 describe("TopicService", () => {

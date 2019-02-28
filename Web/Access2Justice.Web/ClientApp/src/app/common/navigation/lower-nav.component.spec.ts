@@ -1,12 +1,16 @@
+import { HttpClientModule } from "@angular/common/http";
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { Global } from "../../global";
-import { StaticResourceService } from "../../shared/services/static-resource.service";
-import { FooterComponent } from "./footer.component";
+import { EventUtilityService } from "../services/event-utility.service";
+import { StateCodeService } from "../services/state-code.service";
+import { StaticResourceService } from "../services/static-resource.service";
+import { MapService } from "../map/map.service";
+import { LowerNavComponent } from "./lower-nav.component";
 
-describe("FooterComponent", () => {
-  let component: FooterComponent;
-  let fixture: ComponentFixture<FooterComponent>;
+describe("LowerNavComponent", () => {
+  let component: LowerNavComponent;
+  let fixture: ComponentFixture<LowerNavComponent>;
   let mockStaticResourceService;
   let navigation;
   let mockGlobal;
@@ -15,11 +19,7 @@ describe("FooterComponent", () => {
   beforeEach(async(() => {
     navigation = {
       name: "Navigation",
-      location: [
-        {
-          state: "Default"
-        }
-      ]
+      location: [{ state: "Default" }]
     };
     globalData = [
       {
@@ -39,8 +39,12 @@ describe("FooterComponent", () => {
     mockGlobal.getData.and.returnValue(globalData);
 
     TestBed.configureTestingModule({
-      declarations: [FooterComponent],
+      imports: [HttpClientModule],
+      declarations: [LowerNavComponent],
       providers: [
+        MapService,
+        EventUtilityService,
+        StateCodeService,
         {
           provide: StaticResourceService,
           useValue: mockStaticResourceService
@@ -55,7 +59,7 @@ describe("FooterComponent", () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FooterComponent);
+    fixture = TestBed.createComponent(LowerNavComponent);
     component = fixture.componentInstance;
     spyOn(component, "ngOnInit");
     fixture.detectChanges();
@@ -65,7 +69,7 @@ describe("FooterComponent", () => {
     expect(component).toBeTruthy();
   });
 
-  it("should set about content to static resource if about context exists", () => {
+  it("should set about content to static resource about content if it exists", () => {
     mockStaticResourceService.getLocation.and.returnValue("Default");
     mockStaticResourceService.navigation = navigation;
     spyOn(component, "filterNavigationContent");
@@ -74,19 +78,5 @@ describe("FooterComponent", () => {
     expect(component.filterNavigationContent).toHaveBeenCalledWith(
       mockStaticResourceService.navigation
     );
-  });
-
-  it("should get content if navigated", () => {
-    mockStaticResourceService.getLocation.and.returnValue("Default");
-    mockStaticResourceService.navigation = navigation;
-    component.getNavigationContent();
-    expect(component.navigation).toEqual(mockStaticResourceService.navigation);
-  });
-
-  it("should get content by :global.getData", () => {
-    mockStaticResourceService.getLocation.and.returnValue("Default");
-    mockStaticResourceService.navigation = "testnode";
-    component.getNavigationContent();
-    expect(component.navigation.name).toContain(globalData[0].name);
   });
 });

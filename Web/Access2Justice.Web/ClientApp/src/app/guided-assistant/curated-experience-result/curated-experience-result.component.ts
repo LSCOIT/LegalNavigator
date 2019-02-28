@@ -3,10 +3,10 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { Global } from "../../global";
-import { LocationDetails } from "../../shared/map/map";
-import { MapService } from "../../shared/map/map.service";
-import { ArrayUtilityService } from "../../shared/services/array-utility.service";
-import { NavigateDataService } from "../../shared/services/navigate-data.service";
+import { LocationDetails } from "../../common/map/map";
+import { MapService } from "../../common/map/map.service";
+import { ArrayUtilityService } from "../../common/services/array-utility.service";
+import { NavigateDataService } from "../../common/services/navigate-data.service";
 import { IntentInput } from "../personalized-plan/personalized-plan";
 import { PersonalizedPlanService } from "../personalized-plan/personalized-plan.service";
 

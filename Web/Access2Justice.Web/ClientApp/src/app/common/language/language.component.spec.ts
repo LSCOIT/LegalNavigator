@@ -1,8 +1,8 @@
 import { NO_ERRORS_SCHEMA } from "@angular/core";
 import { async, ComponentFixture, fakeAsync, TestBed, tick } from "@angular/core/testing";
 import { Global } from "../../global";
-import { EventUtilityService } from "../../shared/services/event-utility.service";
-import { StaticResourceService } from "../../shared/services/static-resource.service";
+import { EventUtilityService } from "../services/event-utility.service";
+import { StaticResourceService } from "../services/static-resource.service";
 import { LanguageComponent } from "./language.component";
 
 describe("LanguageComponent", () => {

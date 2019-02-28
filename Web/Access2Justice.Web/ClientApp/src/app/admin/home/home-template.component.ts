@@ -5,9 +5,9 @@ import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
 
 import {ENV} from 'environment';
-import { MapLocation } from "../../shared/map/map";
-import { NavigateDataService } from "../../shared/services/navigate-data.service";
-import { StaticResourceService } from "../../shared/services/static-resource.service";
+import { MapLocation } from "../../common/map/map";
+import { NavigateDataService } from "../../common/services/navigate-data.service";
+import { StaticResourceService } from "../../common/services/static-resource.service";
 import { AdminService } from "../admin.service";
 
 @Component({

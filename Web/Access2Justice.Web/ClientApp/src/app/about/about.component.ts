@@ -4,7 +4,7 @@ import {ENV} from 'environment';
 import { About } from './about';
 import { Global } from "../global";
 import { HelpText } from "../home/home";
-import { StaticResourceService } from "../shared/services/static-resource.service";
+import { StaticResourceService } from "../common/services/static-resource.service";
 
 @Component({
   selector: "app-about",

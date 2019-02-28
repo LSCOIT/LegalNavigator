@@ -4,7 +4,7 @@ import { Observable } from "rxjs";
 
 import { api } from "../../../api/api";
 import { Global } from "../../global";
-import { LocationDetails, MapLocation } from "../../shared/map/map";
+import { LocationDetails, MapLocation } from "../../common/map/map";
 import { ITopicInput, Topic } from "./topic";
 
 const httpOptions = {
