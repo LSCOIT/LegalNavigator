@@ -392,28 +392,6 @@ describe("ProfileComponent", () => {
     expect(component).toBeDefined();
   });
 
-  it("should assign component values in getSavedResource method", () => {
-    component.webResources = mockwebresources;
-    mockPersonalizedPlanService.getPersonalizedResources.and.returnValue(
-      of(mockresponse)
-    );
-    component.getSavedResource(mockresourceinput);
-    expect(component.personalizedResources).toEqual(
-      mockPersonalizedPlanResources
-    );
-    expect(component.isSavedResources).toBeTruthy();
-  });
-
-  it("should assign component values in getPersonalizedResources method", () => {
-    spyOn(component, "getSavedResource");
-    mockPersonalizedPlanService.getUserSavedResources.and.returnValue(
-      of(mockUserSavedResources)
-    );
-    component.getPersonalizedResources();
-    expect(component.resourceFilter).toEqual(mockresourceinput);
-    expect(component.getSavedResource).toHaveBeenCalledWith(mockresourceinput);
-  });
-
   it("should return filtered topics list based on the input topic and tempTopicsList in filterTopicsList method", () => {
     component.tempTopicsList = mockTopicsList;
     component.filterTopicsList(mockFilterTopicName);

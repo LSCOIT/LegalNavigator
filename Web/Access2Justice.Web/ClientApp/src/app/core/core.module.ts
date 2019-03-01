@@ -14,14 +14,10 @@ import {
   TabsModule
 } from 'ngx-bootstrap';
 import { ToastrModule } from 'ngx-toastr';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
 
 import { ENV } from 'environment';
 import { ResponseInterceptor } from '../response-interceptor';
 import { TokenInterceptor } from '../token-interceptor';
-import { metaReducers, reducers } from './store/reducers';
-import { AppEffects } from './store/effects';
 
 @NgModule({
   declarations: [],
@@ -59,9 +55,6 @@ import { AppEffects } from './store/effects';
     TabsModule.forRoot(),
     ButtonsModule.forRoot(),
     ToastrModule.forRoot(),
-
-    StoreModule.forRoot(reducers, {metaReducers}),
-    EffectsModule.forRoot([AppEffects]),
   ]
 })
 export class CoreModule {

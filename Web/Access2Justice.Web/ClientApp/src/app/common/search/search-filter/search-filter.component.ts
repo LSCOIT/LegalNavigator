@@ -1,25 +1,32 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChildren } from "@angular/core";
+import { AfterViewInit, Component, EventEmitter, Input, OnChanges, OnInit, Output, QueryList, ViewChildren } from '@angular/core';
+
+export interface ParamsChange {
+  filterParam?: string;
+  sortParam?: string;
+  order?: 'ASC' | 'DESC';
+}
 
 @Component({
-  selector: "app-search-filter",
-  templateUrl: "./search-filter.component.html",
-  styleUrls: ["./search-filter.component.css"]
+  selector: 'app-search-filter',
+  templateUrl: './search-filter.component.html',
+  styleUrls: ['./search-filter.component.css']
 })
-export class SearchFilterComponent implements OnInit, OnChanges {
+export class SearchFilterComponent implements OnInit, OnChanges, AfterViewInit {
   @Input()
   resourceResults: any;
   @Input() searchResults: any;
-  @Output() notifyFilterCriteria = new EventEmitter<object>();
-  selectedSortCriteria: string = "Newest to Oldest";
-  selectedFilterCriteria: string = "All";
-  filterParam: string;
-  sortParam: string = "date";
-  @ViewChildren("filterButtons") filterButtons: QueryList<any>;
+  @Output() notifyFilterCriteria = new EventEmitter<ParamsChange>();
+  selectedSortCriteria = 'Newest to Oldest';
+  selectedFilterCriteria = 'All';
+  filterParam = 'All';
+  sortParam = 'date';
+  @ViewChildren('filterButtons') filterButtons: QueryList<any>;
   @Input() initialResourceFilter: string;
   buttonToHighlight = [];
-  orderBy: string = "ASC";
+  order: 'ASC' | 'DESC' = 'ASC';
 
-  constructor() {}
+  constructor() {
+  }
 
   findButtonWith(initialResourceType) {
     this.buttonToHighlight = this.filterButtons.filter(filterButton =>
@@ -30,66 +37,67 @@ export class SearchFilterComponent implements OnInit, OnChanges {
   setInitialHighlightButton() {
     if (this.initialResourceFilter) {
       this.findButtonWith(this.initialResourceFilter);
-      this.buttonToHighlight[0].nativeElement.classList.add("button-highlight");
+      this.buttonToHighlight[0].nativeElement.classList.add('button-highlight');
     } else {
-      this.findButtonWith("All");
-      this.buttonToHighlight[0].nativeElement.classList.add("button-highlight");
+      this.findButtonWith('All');
+      this.buttonToHighlight[0].nativeElement.classList.add('button-highlight');
     }
   }
 
   resetButtonColor() {
     this.filterButtons.forEach(filterButton => {
-      if (filterButton.nativeElement.classList.contains("button-highlight")) {
-        filterButton.nativeElement.classList.remove("button-highlight");
+      if (filterButton.nativeElement.classList.contains('button-highlight')) {
+        filterButton.nativeElement.classList.remove('button-highlight');
       }
     });
   }
 
   sendFilterCriteria(event, resourceType) {
     this.resetButtonColor();
-    event.target["classList"].add("button-highlight");
+    event.target['classList'].add('button-highlight');
     this.filterParam = resourceType;
     this.selectedFilterCriteria = this.filterParam;
     this.notifyFilterCriteria.emit({
       filterParam: this.filterParam,
       sortParam: this.sortParam,
-      order: this.orderBy
+      order: this.order
     });
   }
 
-  sendSortCriteria(resourceType, orderBy) {
-    this.sortParam = resourceType;
-    this.orderBy = orderBy;
+  sendSortCriteria(field: string, order: 'ASC' | 'DESC') {
+    this.sortParam = field;
+    this.order = order;
     this.selectedSortCriteria = this.getOrderByFieldName(
       this.sortParam,
-      this.orderBy
+      this.order
     );
     this.notifyFilterCriteria.emit({
       filterParam: this.filterParam,
       sortParam: this.sortParam,
-      order: this.orderBy
+      order: this.order
     });
   }
 
   getOrderByFieldName(inputFieldName, orderBy): string {
-    let orderByField = "";
-    if (inputFieldName === "name") {
-      if (orderBy === "ASC") {
-        orderByField = "A-Z";
+    let orderByField = '';
+    if (inputFieldName === 'name') {
+      if (orderBy === 'ASC') {
+        orderByField = 'A-Z';
       } else {
-        orderByField = "Z-A";
+        orderByField = 'Z-A';
       }
-    } else if (inputFieldName === "date") {
-      if (orderBy === "DESC") {
-        orderByField = "Newest to Oldest";
+    } else if (inputFieldName === 'date') {
+      if (orderBy === 'DESC') {
+        orderByField = 'Newest to Oldest';
       } else {
-        orderByField = "Oldest to Newest";
+        orderByField = 'Oldest to Newest';
       }
     }
     return orderByField;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 
   ngAfterViewInit() {
     this.setInitialHighlightButton();
@@ -98,13 +106,13 @@ export class SearchFilterComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.searchResults.searchFilter) {
       this.sortParam = this.searchResults.searchFilter.OrderByField;
-      this.orderBy = this.searchResults.searchFilter.OrderBy;
+      this.order = this.searchResults.searchFilter.OrderBy;
       this.selectedSortCriteria = this.getOrderByFieldName(
         this.sortParam,
-        this.orderBy
+        this.order
       );
       if (!this.selectedSortCriteria) {
-        this.selectedSortCriteria = "Newest to Oldest";
+        this.selectedSortCriteria = 'Newest to Oldest';
       }
     }
   }

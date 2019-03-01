@@ -1,52 +1,46 @@
-import { Component, Input, OnChanges, Output, EventEmitter } from "@angular/core";
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 
-import { LatitudeLongitude, MapLocationResult } from "./map-results";
-import { MapResultsService } from "./map-results.service";
+import { LatitudeLongitude } from './map-results';
+import { MapResultsService } from './map-results.service';
 
 @Component({
-  selector: "app-map-results",
-  templateUrl: "./map-results.component.html",
-  styleUrls: ["./map-results.component.css"]
+  selector: 'app-map-results',
+  templateUrl: './map-results.component.html',
+  styleUrls: ['./map-results.component.css']
 })
 export class MapResultsComponent implements OnChanges {
-  addressList: Array<MapLocationResult> = [];
   latitudeLongitude: Array<LatitudeLongitude> = [];
   latlong: LatitudeLongitude;
   @Input() searchResource: any;
-  showMap: boolean = false;
+  showMap = false;
   validAddress = [];
   @Output() mapDisplayEvent = new EventEmitter<boolean>();
 
-  constructor(private mapResultsService: MapResultsService) {}
+  constructor(private mapResultsService: MapResultsService) {
+  }
 
   getAddress() {
-    this.addressList = [];
+    let addresses: string[] = [];
     if (this.searchResource) {
       if (this.searchResource.resources) {
         for (let i = 0; i < this.searchResource.resources.length; i++) {
           if (this.searchResource.resources[i].address) {
-            let addressList = this.searchResource.resources[i].address.split(
-              "|"
-            );
-            if (addressList.length == 1) {
-              this.addressList.push(addressList);
-            } else {
-              this.addressList = this.addressList.concat(addressList);
-            }
+            addresses = addresses.concat(this.searchResource.resources[i].address.split('|'));
           }
         }
       }
-      this.getMapResults(this.addressList);
+      this.getMapResults(addresses);
     }
   }
 
-  getMapResults(address) {
-    this.addressList = address;
+  getMapResults(addresses: string[]) {
     this.latitudeLongitude = [];
-    if (this.addressList.length === 0) {
+    this.validAddress = [];
+
+    if (addresses.length === 0) {
       this.showMap = false;
     } else {
-      this.addressList.forEach(address => {
+      addresses.forEach(address => {
         if (this.hasNumber(address)) {
           this.checkPoBoxAddresses(address);
         }
@@ -63,13 +57,13 @@ export class MapResultsComponent implements OnChanges {
   }
 
   checkPoBoxAddresses(address) {
-    if (!address[0].toLowerCase().includes("p.o.")) {
+    if (!address[0].toLowerCase().includes('p.o.')) {
       this.validAddress.push(address);
     } else {
-      let indexOfComma = address[0].indexOf(",") + 2;
+      let indexOfComma = address[0].indexOf(',') + 2;
       let newAddress = address[0].slice(indexOfComma, -1);
       newAddress = newAddress.trim();
-      this.validAddress.push([newAddress]);
+      this.validAddress.push(newAddress);
     }
   }
 
@@ -80,11 +74,8 @@ export class MapResultsComponent implements OnChanges {
   displayMapResults() {
     let num = 0;
     for (let index = 0, len = this.validAddress.length; index < len; index++) {
-      let address = this.validAddress[index]
-        .toString()
-        .replace("\n", " ")
-        .trim();
-      if (address.toLowerCase() !== "na" || address.toLowerCase() !== "n/a") {
+      const address = this.validAddress[index].toString().trim();
+      if (address.toLowerCase() !== 'na' || address.toLowerCase() !== 'n/a') {
         this.mapResultsService
           .getLocationDetails(address)
           .subscribe(locationCoordinates => {

@@ -1,5 +1,6 @@
-import { Component, OnInit, Optional } from '@angular/core';
+import { Component, OnDestroy, OnInit, Optional } from '@angular/core';
 import { TabDirective } from 'ngx-bootstrap';
+import { Subscription } from 'rxjs';
 
 import { PersonalizedPlanService } from '../../guided-assistant/personalized-plan/personalized-plan.service';
 import { ResourceResult } from '../../common/search/search-results/search-result';
@@ -15,7 +16,7 @@ export interface SortingOptions {
   params: SortingParams;
 }
 
-const sortingOptions: SortingOptions[] = [
+export const SORTING_OPTIONS: SortingOptions[] = [
   {
     label: 'A-Z',
     params: {field: 'name', order: 'ASC'}
@@ -39,7 +40,7 @@ const sortingOptions: SortingOptions[] = [
   templateUrl: './saved-resources.component.html',
   styleUrls: ['./saved-resources.component.scss']
 })
-export class SavedResourcesComponent implements OnInit {
+export class SavedResourcesComponent implements OnInit, OnDestroy {
   personalizedResources: {
     resources: any[];
     topics: any[];
@@ -50,6 +51,7 @@ export class SavedResourcesComponent implements OnInit {
   sortingParams: SortingParams = {field: '_ts', order: 'DESC'};
 
   private resources: any[] = [];
+  private eventsSub: Subscription;
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
@@ -108,7 +110,7 @@ export class SavedResourcesComponent implements OnInit {
 
   get sortingDropdownLabel(): string {
     if (this.sortingParams) {
-      const activeOption = sortingOptions.find(
+      const activeOption = SORTING_OPTIONS.find(
         option => option.params.field === this.sortingParams.field && option.params.order === this.sortingParams.order
       );
       if (activeOption) {
@@ -121,9 +123,9 @@ export class SavedResourcesComponent implements OnInit {
 
   get sortingOptions(): SortingOptions[] {
     if (!this.sortingParams) {
-      return sortingOptions;
+      return SORTING_OPTIONS;
     } else {
-      return sortingOptions.filter(
+      return SORTING_OPTIONS.filter(
         option => !(option.params.field === this.sortingParams.field && option.params.order === this.sortingParams.order)
       );
     }
@@ -136,7 +138,13 @@ export class SavedResourcesComponent implements OnInit {
       this.getResources();
     }
 
-    this.eventUtilityService.resourceUpdated$.subscribe(() => this.getResources());
+    this.eventsSub = this.eventUtilityService.resourceUpdated$.subscribe(() => this.getResources());
+  }
+
+  ngOnDestroy() {
+    if (this.eventsSub) {
+      this.eventsSub.unsubscribe();
+    }
   }
 
   private getResources(): void {

@@ -25,7 +25,7 @@
       <li>Change the location.</li>
     </ul>
   </div>
-  <div class="row" *ngIf="isInternalResource || isPersonalizedresource">
+  <div class="row" *ngIf="isInternalResource">
     <div class="col-sm-12">
       <app-search-filter
         (notifyFilterCriteria)="filterSearchResults($event)"
@@ -37,35 +37,17 @@
   </div>
   <div class="row">
     <div [ngClass]="{ 'col-sm-12': fullPage, 'col-md-8 col-sm-12': !fullPage }">
-      <div *ngIf="isInternalResource || isPersonalizedresource">
+      <div *ngIf="isInternalResource">
         <div
-          *ngFor="
-            let searchResource of (searchResults.resources
-              | searchFilter: { filter: sortType, source: 'internal' })
-          "
-        >
-          <app-resource-card
-            [searchResource]="searchResource"
-            [personalizedResources]="personalizedResources"
-            [showRemoveOption]="showRemoveOption"
-          ></app-resource-card>
+          *ngFor="let searchResource of (searchResults.resources | searchFilter: { filter: sortType, source: 'internal' })">
+          <app-resource-card [searchResource]="searchResource"
+                             [showRemoveOption]="showRemoveOption"></app-resource-card>
         </div>
       </div>
       <div *ngIf="isWebResource">
-        <div
-          *ngIf="
-            searchResults &&
-            searchResults.webResources &&
-            searchResults.webResources.webPages
-          "
-        >
-          <div
-            *ngFor="
-              let webResult of (searchResults.webResources.webPages.value
-                | searchFilter: { filter: sortType, source: 'external' })
-            "
-            class="col-md-12 sidebar"
-          >
+        <div *ngIf="searchResults &&searchResults.webResources &&searchResults.webResources.webPages">
+          <div class="col-md-12 sidebar"
+               *ngFor="let webResult of (searchResults.webResources.webPages.value | searchFilter: { filter: sortType, source: 'external' })">
             <app-web-resource [webResult]="webResult"></app-web-resource>
           </div>
         </div>

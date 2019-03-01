@@ -17,7 +17,7 @@ export class MapResultsService {
   }
 
   getLocationDetails(address): any {
-    return this.http.get(virtualEarthUrl + encodeURIComponent(address.replace('\n', ' ')), {
+    return this.http.get(virtualEarthUrl + encodeURIComponent(address.replace(/(\r\n|\n|\r)/g, ' ')), {
       params: {
         output: 'json',
         key: bingMapKey

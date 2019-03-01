@@ -53,14 +53,14 @@ describe("SearchFilterComponent", () => {
     spyOn(component, "getOrderByFieldName");
     component.sendSortCriteria("name", "DESC");
     expect(component.sortParam).toBe("name");
-    expect(component.orderBy).toBe("DESC");
+    expect(component.order).toBe("DESC");
     expect(component.getOrderByFieldName).toHaveBeenCalledWith("name", "DESC");
   });
 
   it("should set order by and sort criteria", () => {
     component.sendSortCriteria("date", "ASC");
     expect(component.sortParam).toBe("date");
-    expect(component.orderBy).toBe("ASC");
+    expect(component.order).toBe("ASC");
     component.getOrderByFieldName("date", "ASC");
     expect(component.selectedSortCriteria).toEqual("Oldest to Newest");
   });

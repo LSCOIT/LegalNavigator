@@ -1,6 +1,7 @@
-import { map } from 'rxjs/operators';
-import { Component, Input, OnChanges, OnInit, SimpleChange, SimpleChanges } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { NgxSpinnerService } from 'ngx-spinner';
 
 import { ENV } from 'environment';
@@ -13,19 +14,20 @@ import { NavigateDataService } from '../../services/navigate-data.service';
 import { SearchService } from '../search.service';
 import { ResourceResult } from './search-result';
 import { ILuisInput, IResourceFilter } from './search-results.model';
+import { ParamsChange } from '../search-filter/search-filter.component';
 
 @Component({
   selector: 'app-search-results',
   templateUrl: './search-results.component.html',
   styleUrls: ['./search-results.component.css']
 })
-export class SearchResultsComponent implements OnInit, OnChanges {
+export class SearchResultsComponent implements OnInit, OnDestroy {
   @Input() fullPage = false;
+  @Input() searchResults: any;
+  @Input() showRemove: boolean;
   isInternalResource: boolean;
   isWebResource: boolean;
   searchText: string;
-  @Input() searchResults: any;
-  uniqueResources: any;
   sortType: any;
   resourceResults: ResourceResult[] = [];
   filterType: string = ENV.All;
@@ -54,14 +56,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   location: any;
   topicIds: any[];
   isServiceCall: boolean;
-  currentPage: number = 0;
-  @Input()
-  personalizedResources: any;
-  isPersonalizedresource: boolean;
-  subscription: any;
+  currentPage = 0;
   showRemoveOption: boolean;
-  @Input() showRemove: boolean;
-  displayMessage: boolean = false;
+  displayMessage = false;
   total = 0;
   page = 1;
   limit = 0;
@@ -69,19 +66,14 @@ export class SearchResultsComponent implements OnInit, OnChanges {
   pagesToShow = 0;
   topIntent: string;
   initialResourceFilter: string;
-  showDefaultMessage: boolean = false;
-  showNoResultsMessage: boolean = false;
+  showDefaultMessage = false;
+  showNoResultsMessage = false;
   guidedAssistantId: string;
   locationDetails: LocationDetails;
   orderBy: string;
-  searchResultDetails: any = {
-    filterParam: 'All',
-    sortParam: 'date',
-    order: 'DESC',
-    topIntent: ''
-  };
-  isBindData: boolean;
   showMap: boolean;
+
+  private locationSub: Subscription;
 
   constructor(
     private navigateDataService: NavigateDataService,
@@ -94,6 +86,9 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     private spinner: NgxSpinnerService,
     private router: Router
   ) {
+  }
+
+  ngOnInit() {
     if (sessionStorage.getItem('bookmarkedResource')) {
       this.route.data.pipe(map(data => data.cres)).subscribe(response => {
         if (response) {
@@ -107,13 +102,37 @@ export class SearchResultsComponent implements OnInit, OnChanges {
         }
       });
     }
+
+    if (!this.navigateDataService.getData() && sessionStorage.getItem('cacheSearchResults')) {
+      this.navigateDataService.setData(
+        JSON.parse(sessionStorage.getItem('cacheSearchResults'))
+      );
+    }
+    this.bindData();
+    this.notifyLocationChange();
+    this.showRemoveOption = this.showRemove;
+    if (this.searchResults && this.searchResults.searchFilter) {
+      if (this.searchResults.searchFilter.OrderByField === 'modifiedTimeStamp') {
+        this.searchResults.searchFilter.OrderByField = 'date';
+      }
+      this.global.searchResultDetails.sortParam = this.searchResults.searchFilter.OrderByField;
+      this.global.searchResultDetails.order = this.searchResults.searchFilter.OrderBy;
+      this.global.searchResultDetails.filterParam = this.searchResults.resourceType;
+    } else {
+      this.sortType = {
+        filterParam: undefined,
+        sortParam: 'date',
+        order: 'DESC'
+      };
+    }
   }
 
   bindData() {
     this.showDefaultMessage = false;
     this.showNoResultsMessage = false;
     this.searchResults = this.navigateDataService.getData();
-    if (this.searchResults && this.personalizedResources === undefined) {
+
+    if (this.searchResults) {
       this.guidedAssistantId = this.searchResults.guidedAssistantId;
       this.cacheSearchResultsData();
       this.isInternalResource = this.searchResults.resources;
@@ -137,20 +156,6 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     } else {
       this.showDefaultMessage = true;
     }
-    if (this.personalizedResources) {
-      this.showDefaultMessage = false;
-      this.mapPersonalizedResource(this.personalizedResources);
-    }
-  }
-
-  mapPersonalizedResource(personalizedResources) {
-    this.searchResults = {resources: []};
-    this.searchResults.resources = personalizedResources.resources.concat(
-      personalizedResources.topics,
-      personalizedResources.webResources
-    );
-    this.isPersonalizedresource = this.searchResults;
-    this.applyFilter();
   }
 
   mapInternalResource() {
@@ -220,7 +225,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     }
   }
 
-  filterSearchResults(event) {
+  filterSearchResults(event: ParamsChange) {
     this.sortType = event;
     if (!event.filterParam) {
       this.sortType.filterParam = 'All';
@@ -229,52 +234,14 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       this.page = 1;
       this.currentPage = 0;
     }
-    if (!this.isPersonalizedresource) {
-      if (this.sortType.sortParam !== this.global.searchResultDetails.sortParam ||
-        this.sortType.order !== this.global.searchResultDetails.order
-      ) {
-        if (this.sortType.filterParam === this.global.searchResultDetails.filterParam) {
-          this.searchResultDetails = event;
-          this.global.searchResultDetails.sortParam = this.searchResultDetails.sortParam;
-          this.global.searchResultDetails.order = this.searchResultDetails.order;
-          this.global.searchResultDetails.filterParam = 'All';
-          this.isBindData = true;
-          if (sessionStorage.getItem('searchedLocationMap')) {
-            this.locationDetails = JSON.parse(
-              sessionStorage.getItem('searchedLocationMap')
-            );
-          } else {
-            this.locationDetails = JSON.parse(
-              sessionStorage.getItem('globalMapLocation')
-            );
-          }
-          this.luisInput.Location = this.locationDetails.location;
-          this.searchResults.topIntent = this.topIntent;
-          this.luisInput.LuisTopScoringIntent = this.searchResults.topIntent;
-          this.luisInput.Sentence = this.searchResults.topIntent
-            ? this.searchResults.topIntent
-            : this.global.searchResultDetails.topIntent;
-          this.luisInput.OrderByField = this.global.searchResultDetails.sortParam;
-          this.luisInput.OrderBy = this.global.searchResultDetails.order;
-          this.searchService.search(this.luisInput).subscribe(response => {
-            this.spinner.hide();
-            if (response != undefined) {
-              this.searchResults = response;
-              this.navigateDataService.setData(this.searchResults);
-              this.router
-                .navigateByUrl('/searchRefresh', {skipLocationChange: true})
-                .then(() => this.router.navigate(['/search']));
-            }
-          });
-        } else {
-          this.global.searchResultDetails.filterParam = event.filterParam;
-          this.getInternalResource(event.filterParam, 0);
-        }
-      } else {
-        this.global.searchResultDetails.filterParam = event.filterParam;
-        this.getInternalResource(event.filterParam, this.currentPage);
-      }
-    }
+
+    const pageNumber = event.filterParam === this.sortType.filterParam ? this.currentPage : 0;
+
+    this.global.searchResultDetails.filterParam = this.sortType.filterParam;
+    this.global.searchResultDetails.sortParam = this.sortType.sortParam;
+    this.global.searchResultDetails.order = this.sortType.order;
+
+    this.getInternalResource(event.filterParam, pageNumber);
   }
 
   notifyLocationChange() {
@@ -284,7 +251,7 @@ export class SearchResultsComponent implements OnInit, OnChanges {
       );
       this.location = this.locationDetails.location;
     }
-    this.subscription = this.mapService.notifyLocalLocation.subscribe(value => {
+    this.locationSub = this.mapService.notifyLocalLocation.subscribe(value => {
       this.location = value;
       if (this.searchResults.isItFromTopicPage) {
         this.filterResourceByTopicAndLocation();
@@ -522,67 +489,13 @@ export class SearchResultsComponent implements OnInit, OnChanges {
     return Math.ceil(pageNumber * 10) + 1;
   }
 
-  applyFilter() {
-    if (this.searchResults && this.searchResults.resources) {
-      let allFilter = [
-        {
-          ResourceName: 'All',
-          ResourceCount: this.searchResults.resources.length
-        }
-      ];
-      this.uniqueResources = new Set(
-        this.searchResults.resources.map(item => item.resourceType)
-      );
-      let resourceFilters = [];
-      resourceFilters = Array.from(this.uniqueResources).map(resource => {
-        return {
-          ResourceName: resource,
-          ResourceCount: this.searchResults.resources.filter(
-            x => x.resourceType === resource
-          ).length
-        };
-      });
-      this.resourceResults = [...allFilter, ...resourceFilters];
-    }
-  }
-
-  ngOnInit() {
-    if (!this.navigateDataService.getData() && sessionStorage.getItem('cacheSearchResults') && !this.personalizedResources) {
-      this.navigateDataService.setData(
-        JSON.parse(sessionStorage.getItem('cacheSearchResults'))
-      );
-    }
-    this.bindData();
-    this.notifyLocationChange();
-    this.showRemoveOption = this.showRemove;
-    if (this.searchResults && this.searchResults.searchFilter) {
-      if (this.searchResults.searchFilter.OrderByField === 'modifiedTimeStamp') {
-        this.searchResults.searchFilter.OrderByField = 'date';
-      }
-      this.global.searchResultDetails.sortParam = this.searchResults.searchFilter.OrderByField;
-      this.global.searchResultDetails.order = this.searchResults.searchFilter.OrderBy;
-      this.global.searchResultDetails.filterParam = this.searchResults.resourceType;
-    } else {
-      this.sortType = {
-        filterParam: undefined,
-        sortParam: 'date',
-        order: 'DESC'
-      };
-    }
-  }
-
   receiveMapEvent(event) {
     this.showMap = event;
   }
 
   ngOnDestroy() {
-    if (this.subscription != undefined) {
-      this.subscription.unsubscribe();
+    if (this.locationSub) {
+      this.locationSub.unsubscribe();
     }
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    const personalizedResources: SimpleChange = changes.personalizedResources;
-    this.mapPersonalizedResource(personalizedResources.currentValue);
   }
 }
