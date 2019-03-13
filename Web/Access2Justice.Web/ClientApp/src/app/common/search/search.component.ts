@@ -38,11 +38,16 @@ export class SearchComponent implements OnInit {
   onSubmit(searchForm: NgForm): void {
     this.spinner.show();
     this.luisInput.Sentence = searchForm.value.inputText;
-    if (sessionStorage.getItem("globalMapLocation")) {
-      this.locationDetails = JSON.parse(
-        sessionStorage.getItem("globalMapLocation")
+    if (sessionStorage.getItem("mapAddress")) {
+      const address = JSON.parse(
+        sessionStorage.getItem("mapAddress")
       );
-      this.mapLocation = this.locationDetails.location;
+      this.mapLocation = {
+        state: address.state,
+        county: address.county,
+        city: address.city,
+        zipCode: address.zipCode
+      }
     }
     this.luisInput.Location = this.mapLocation;
     sessionStorage.removeItem("cacheSearchResults");
