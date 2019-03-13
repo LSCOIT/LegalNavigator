@@ -101,7 +101,10 @@ describe('SearchComponent', () => {
       }
     };
     mockMapLocationParsed = {
-      state: 'Alaska'
+      state: undefined,
+      county: undefined,
+      city: undefined,
+      zipCode: undefined
     };
     store = {};
     mockSessionStorage = {
