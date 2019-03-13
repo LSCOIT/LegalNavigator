@@ -89,7 +89,7 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  loadScipts() {
+  loadScripts() {
     let polyfill = document.createElement("script");
     polyfill.src =
       "https://cdn.polyfill.io/v2/polyfill.min.js?features=Element.prototype.classList";
@@ -123,7 +123,7 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
         this.getLanguagueNavigationContent();
       }
     );
-    this.loadScipts();
+    this.loadScripts();
   }
 
   ngAfterViewInit() {

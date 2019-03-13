@@ -141,12 +141,31 @@ textarea {
 
 #google_translate_element {
   left: 0;
-  padding: 20px 20px 10px 10px;
+  //padding: 20px 0px 0px 0px;
+  padding-top: 5px;
   position: fixed;
   top: 42px;
   background: #fff;
   width: 275px;
   height: 385px;
+  outline: none;
+  & .skiptranslate {
+    height: 100%;
+    & > div {
+      height: 100%;
+    }
+  }
+  & .goog-te-combo {
+    border: none;
+    box-shadow: none;
+    color: #0d3fb8;
+    height: 100%;
+  }
+  & option {
+    padding: 4px 0;
+    font-weight: 700;
+    text-transform: capitalize;
+  }
 }
 
 #goog-gt-tt {
@@ -302,7 +321,8 @@ textarea {
 
   #google_translate_element {
     left: 1.9%;
-    padding: 30px 20px 10px 20px;
+    //padding-top: 5px;
+    //padding: 5px 0px 0 0px;
   }
 
   .static-img {
