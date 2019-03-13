@@ -299,7 +299,7 @@ namespace Access2Justice.CosmosDb
             {
                 return "";
             }
-            return ArrayContainsWithMulitpleProperties("location", location);
+            return ArrayContainsWithMulitpleProperties("location", location, exactForDefaults: true);
         }
 
         private void EnsureParametersAreNotNullOrEmpty(params string[] parameters)
@@ -313,9 +313,17 @@ namespace Access2Justice.CosmosDb
             }
         }
 
-        private string ArrayContainsWithMulitpleProperties(string propertyName, dynamic input)
+        private string ArrayContainsWithMulitpleProperties(
+            string propertyName,
+            dynamic input,
+            bool exactForDefaults = false)
         {
             var jsonSettings = JsonUtilities.JSONSanitizer();
+
+            if (exactForDefaults)
+            {
+                jsonSettings.DefaultValueHandling = DefaultValueHandling.Include;
+            }
 
             string arrayContainsClause = JsonConvert.SerializeObject(input, jsonSettings);
             string query = $" (ARRAY_CONTAINS(c.{propertyName},{{0}}))";
