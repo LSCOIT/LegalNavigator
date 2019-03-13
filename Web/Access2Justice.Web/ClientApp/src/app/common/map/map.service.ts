@@ -163,6 +163,15 @@ export class MapService {
     this.mapLocation.city = this.location.address.locality;
     this.mapLocation.zipCode = this.location.address.postalCode;
     let country: string;
+    sessionStorage.setItem(
+      'mapAddress',
+      JSON.stringify({
+        state: location.address.adminDistrict,
+        county: location.address.district,
+        city: location.address.locality,
+        zipCode: location.address.postalCode
+      })
+    );
     const fullStateName = this.location.address.formattedAddress;
     if (fullStateName.indexOf(',') > 0) {
       country = this.location.address.countryRegion;
