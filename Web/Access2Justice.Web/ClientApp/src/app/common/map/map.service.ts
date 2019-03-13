@@ -163,7 +163,6 @@ export class MapService {
     this.mapLocation.city = this.location.address.locality;
     this.mapLocation.zipCode = this.location.address.postalCode;
     let country: string;
-    console.log(location.address);
     sessionStorage.setItem(
       'mapAddress',
       JSON.stringify({
