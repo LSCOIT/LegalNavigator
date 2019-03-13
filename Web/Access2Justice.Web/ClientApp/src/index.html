@@ -26,6 +26,21 @@
       }
     }
   </script>
+  <script>
+    if(navigator.userAgent.indexOf("MSIE ") > -1 || navigator.userAgent.indexOf("Trident/") > -1){
+      alert('This browser is currently not supported. Please open the app using Chrome');
+    }
+    // /* Sample function that returns boolean in case the browser is Internet Explorer*/
+    // function isIE() {
+    //   ua = navigator.userAgent;
+    //   /* MSIE used to detect old browsers and Trident used to newer ones*/
+    //   var is_ie = ua.indexOf("MSIE ") > -1 || ua.indexOf("Trident/") > -1;
+    //   return is_ie;
+    // }
+    // if (isIE()){
+    //   alert('This browser is currently not supported. Please open the app using Chrome');
+    // }
+  </script>
   <script type="text/javascript"
           src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
