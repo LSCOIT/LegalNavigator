@@ -1,12 +1,20 @@
-﻿
-
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.ComponentModel;
 
 namespace Access2Justice.Shared.Models
 {
     public class Location
     {
+        public Location() { }
+
+        public Location(string state, string county, string city, string zipCode)
+        {
+            State = state;
+            County = county;
+            City = city;
+            ZipCode = zipCode;
+        }
+
         [DefaultValue("")]
         [JsonProperty(PropertyName = "state")]
         public string State { get; set; }

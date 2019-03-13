@@ -98,22 +98,44 @@ namespace Access2Justice.Api
                 };
             }
 
-            ResourceFilter resourceFilter = new ResourceFilter { TopicIds = topicIds, PageNumber = 0, ResourceType = Constants.All, Location = location };
-            var GetResourcesTask = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
-            ResourceFilter sortResourceFilter = resourceFilter;
-            sortResourceFilter.IsOrder = true;
-            sortResourceFilter.OrderByField = luisInput.OrderByField;
-            sortResourceFilter.OrderBy = luisInput.OrderBy;
-            var ApplyPaginationTask = topicsResourcesBusinessLogic.ApplyPaginationAsync(sortResourceFilter);
-            //To get guided assistant id
-            resourceFilter.ResourceType = Constants.GuidedAssistant;
-            var GetGuidedAssistantId = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-            await Task.WhenAll(GetResourcesTask, ApplyPaginationTask, GetGuidedAssistantId);
+            ResourceFilter resourceFilter = null;
+            PagedResources resources = null;
+            dynamic groupedResourceType = null;
+            dynamic guidedAssistantResult = null;
 
-            var groupedResourceType = GetResourcesTask.Result;
-            PagedResources resources = ApplyPaginationTask.Result;
-            PagedResources guidedAssistantResponse = GetGuidedAssistantId.Result;
-            var guidedAssistantResult = guidedAssistantResponse != null ? JsonUtilities.DeserializeDynamicObject<GuidedAssistant>(guidedAssistantResponse.Results.FirstOrDefault()) : null;
+            foreach (var searchLocation in LocationUtilities.GetSearchLocations(location))
+            {
+                resourceFilter = new ResourceFilter
+                {
+                    TopicIds = topicIds,
+                    PageNumber = 0,
+                    ResourceType = Constants.All,
+                    Location = searchLocation
+                };
+
+                var GetResourcesTask = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+                ResourceFilter sortResourceFilter = resourceFilter;
+                sortResourceFilter.IsOrder = true;
+                sortResourceFilter.OrderByField = luisInput.OrderByField;
+                sortResourceFilter.OrderBy = luisInput.OrderBy;
+                var ApplyPaginationTask = topicsResourcesBusinessLogic.ApplyPaginationAsync(sortResourceFilter);
+                //To get guided assistant id
+                resourceFilter.ResourceType = Constants.GuidedAssistant;
+                var GetGuidedAssistantId = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+                await Task.WhenAll(GetResourcesTask, ApplyPaginationTask, GetGuidedAssistantId);
+
+                groupedResourceType = GetResourcesTask.Result;
+                resources = ApplyPaginationTask.Result;
+                PagedResources guidedAssistantResponse = GetGuidedAssistantId.Result;
+                guidedAssistantResult = guidedAssistantResponse != null ? JsonUtilities.DeserializeDynamicObject<GuidedAssistant>(guidedAssistantResponse.Results.FirstOrDefault()) : null;
+
+                if (resources != null &&
+                    resources.Results != null &&
+                    resources.Results.Count() > 0)
+                {
+                    break;
+                }
+            }
 
             dynamic searchFilter = new JObject();
             searchFilter.OrderByField = resourceFilter.OrderByField;
