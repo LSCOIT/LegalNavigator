@@ -111,6 +111,7 @@ export class MapService {
         return this.stateCodeService.getStateCode(this.locationDetails.location.state).pipe(map(response => {
           this.stateCode = response ? response : 'Default';
           this.locationDetails.location.state = this.stateCode;
+          this.setGlobalMapLocationDetails();
 
           return this.locationDetails;
         }));
