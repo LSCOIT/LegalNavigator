@@ -151,7 +151,7 @@ export class MapService {
     this.notifyLocalLocation.next(this.mapLocation);
   }
 
-  mapLocationDetails(location): any {
+  mapLocationDetails(location) {
     let pos = location.address;
     this.location = location;
     this.mapLocation = {state: '', city: '', county: '', zipCode: ''};
@@ -164,8 +164,6 @@ export class MapService {
     this.mapLocation.city = this.location.address.locality;
     this.mapLocation.zipCode = this.location.address.postalCode;
     let country: string;
-
-    console.log(location);
     sessionStorage.setItem(
       'mapAddress',
       JSON.stringify({
