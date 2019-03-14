@@ -152,6 +152,7 @@ export class MapService {
   }
 
   mapLocationDetails(location) {
+    let pos = location.address;
     this.location = location;
     this.mapLocation = {state: '', city: '', county: '', zipCode: ''};
     this.displayLocation = {locality: '', address: ''};
@@ -166,10 +167,10 @@ export class MapService {
     sessionStorage.setItem(
       'mapAddress',
       JSON.stringify({
-        state: location.address.adminDistrict,
-        county: location.address.district,
-        city: location.address.locality,
-        zipCode: location.address.postalCode
+        state: location.entityType ? location.name.substr(location.name.length - 2) : pos.formattedAddress.substr(pos.length - 2),
+        county: pos.district,
+        city: pos.locality,
+        zipCode: pos.postalCode
       })
     );
     const fullStateName = this.location.address.formattedAddress;
