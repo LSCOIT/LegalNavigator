@@ -167,7 +167,7 @@ export class MapService {
     sessionStorage.setItem(
       'mapAddress',
       JSON.stringify({
-        state: location.entityType ? location.name.substr(location.name.length - 2) : pos.formattedAddress.substr(pos.length - 2),
+        state: location.entityType === "Postcode1" ? location.name.substr(location.name.length - 2) : pos.adminDistrict,
         county: pos.district,
         city: pos.locality,
         zipCode: pos.postalCode
