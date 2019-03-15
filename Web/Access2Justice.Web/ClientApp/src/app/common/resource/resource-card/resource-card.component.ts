@@ -90,6 +90,7 @@ export class ResourceCardComponent implements OnInit {
       .getStateName(this.locationDetails.location.state)
       .subscribe(async response => {
         if (response) {
+          console.log(response);
           let stateName = response.toString();
           this.locationDetails.location.state = stateName;
           this.locationDetails.displayLocationDetails.address = stateName;
@@ -117,7 +118,6 @@ export class ResourceCardComponent implements OnInit {
     } else {
       this.resource = this.resource;
     }
-    console.log(this.resource);
     if (this.resource.itemId) {
       this.resource.id = this.resource.itemId;
     }
