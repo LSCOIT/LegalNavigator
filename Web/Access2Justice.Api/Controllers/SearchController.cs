@@ -39,6 +39,17 @@ namespace Access2Justice.Api.Controllers
                 return BadRequest("search term cannot be empty string.");
             }
 
+            if (luisInput.Location != null &&
+                !string.IsNullOrWhiteSpace(luisInput.Location.State) &&
+                luisInput.Location.State.Length > 2)
+            {
+                var state = USState.GetByName(luisInput.Location.State);
+                if (state != null)
+                {
+                    luisInput.Location.State = state.Abbreviation;
+                }
+            }
+
             var resources = await luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput);
             return Content(resources);
         }
