@@ -14,7 +14,8 @@ p {
 .edit-location {
   padding: 15px;
   cursor: pointer;
-  height: 52px;
+  min-height: 52px;
+  text-align: left;
 }
 
 #my-map {
@@ -146,7 +147,7 @@ p {
 @media only screen and (min-width: 768px) {
   .edit-location {
     padding: 15px 10px;
-    height: 52px;
+    min-height: 52px;
   }
 
   #search-box {
