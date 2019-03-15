@@ -117,6 +117,7 @@ export class ResourceCardComponent implements OnInit {
     } else {
       this.resource = this.resource;
     }
+    console.log(this.resource);
     if (this.resource.itemId) {
       this.resource.id = this.resource.itemId;
     }
