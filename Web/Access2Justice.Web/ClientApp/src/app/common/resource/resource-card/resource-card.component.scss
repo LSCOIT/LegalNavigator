@@ -183,19 +183,18 @@ h4 {
   }
 
   .media-left {
-    width: auto;
-    margin: -20px 0 -20px -20px;
-    & img {
-      display: none;
-    }
-    & iframe {
-      display: block;
-      width: 300px;
-      height: 190px;
-      padding: 0;
-    }
-    & .ytp-title {
-      display: none;
+    &.media-left--video{
+      width: auto;
+      margin: -20px 0 -20px -20px;
+      & img {
+        display: none;
+      }
+      & iframe {
+        display: block;
+        width: 300px;
+        height: 190px;
+        padding: 0;
+      }
     }
   }
 }

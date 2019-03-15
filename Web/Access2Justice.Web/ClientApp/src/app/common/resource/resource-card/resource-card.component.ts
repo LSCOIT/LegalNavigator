@@ -4,6 +4,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Global, UserStatus } from "../../../global";
 import { StateCodeService } from "../../services/state-code.service";
 import { LocationDetails } from "../../map/map";
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: "app-resource-card",
@@ -48,7 +49,8 @@ export class ResourceCardComponent implements OnInit {
     private global: Global,
     private modalService: BsModalService,
     private router: Router,
-    private stateCodeService: StateCodeService
+    private stateCodeService: StateCodeService,
+    public sanitizer: DomSanitizer
   ) {
     if (
       global.role === UserStatus.Shared &&
@@ -90,7 +92,6 @@ export class ResourceCardComponent implements OnInit {
       .getStateName(this.locationDetails.location.state)
       .subscribe(async response => {
         if (response) {
-          console.log(response);
           let stateName = response.toString();
           this.locationDetails.location.state = stateName;
           this.locationDetails.displayLocationDetails.address = stateName;
@@ -112,8 +113,15 @@ export class ResourceCardComponent implements OnInit {
       });
   }
 
+  youtubeUrlToIframe(url){
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url.replace('watch?v=','embed/'));
+  }
+
   ngOnInit() {
     if (this.searchResource != null || this.searchResource != undefined) {
+      if(this.searchResource.resourceType === "Videos"){
+        this.searchResource.iframeUrl = this.youtubeUrlToIframe(this.searchResource.url);
+      }
       this.resource = this.searchResource;
     } else {
       this.resource = this.resource;
