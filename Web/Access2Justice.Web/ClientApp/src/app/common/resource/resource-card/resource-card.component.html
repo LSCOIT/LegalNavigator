@@ -120,12 +120,18 @@
           </div>
         </div>
         <div *ngIf="resource.resourceType === 'Videos'" class="media">
-          <div class="media-left no-print">
+          <div class="media-left media-left--video no-print">
             <img
               class="media-object"
               src="/assets/images/icons/videos.svg"
               [alt]="resource.resourceType"
             />
+            <iframe [src]='resource.iframeUrl'
+                    frameborder="0"
+                    allowfullscreen
+            >
+            </iframe>
+
           </div>
           <div class="media-body">
             <a
