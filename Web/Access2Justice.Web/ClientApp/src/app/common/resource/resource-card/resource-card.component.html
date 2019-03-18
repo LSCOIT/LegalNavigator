@@ -126,7 +126,7 @@
               src="/assets/images/icons/videos.svg"
               [alt]="resource.resourceType"
             />
-            <iframe [src]='resource.iframeUrl'
+            <iframe [src]='resource.iframeUrl | sanitize'
                     frameborder="0"
                     allowfullscreen
             >
@@ -235,11 +235,12 @@
                   />
                 </div>
                 <div class="col-sm-9 col-xs-9">
-                  <a
+                  <a *ngIf="resource.address !== 'NA'"
                     [routerLink]="['/resource', resource.id]"
                     class="link pxs"
                   >{{ resource.address }}</a
                   >
+                  <span *ngIf="resource.address === 'NA'">NA</span>
                 </div>
               </div>
               <div
@@ -254,9 +255,10 @@
                   />
                 </div>
                 <div class="col-sm-9 col-xs-9">
-                  <a class="link pxs" [href]="'tel:' + resource.telephone">{{
+                  <a class="link pxs" *ngIf="resource.telephone !== 'NA'" [href]="'tel:' + resource.telephone">{{
                     resource.telephone
                     }}</a>
+                  <span *ngIf="resource.telephone === 'NA'">NA</span>
                 </div>
               </div>
               <div class="col-sm-4 col-xs-12" *ngIf="resource.url.length > 0">
@@ -270,10 +272,11 @@
                 <div class="col-sm-9 col-xs-9">
                   <a
                     class="link pxs"
-                    *ngIf="resource.url"
+                    *ngIf="resource.url && resource.url !== 'NA'"
                     [href]="resource.url | sanitize"
                   >{{ urlOrigin }}</a
                   >
+                  <span *ngIf="resource.url === 'NA'">NA</span>
                 </div>
               </div>
             </div>

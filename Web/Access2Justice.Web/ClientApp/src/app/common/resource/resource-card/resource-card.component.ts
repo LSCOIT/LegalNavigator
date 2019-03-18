@@ -4,7 +4,6 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Global, UserStatus } from "../../../global";
 import { StateCodeService } from "../../services/state-code.service";
 import { LocationDetails } from "../../map/map";
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: "app-resource-card",
@@ -50,7 +49,6 @@ export class ResourceCardComponent implements OnInit {
     private modalService: BsModalService,
     private router: Router,
     private stateCodeService: StateCodeService,
-    public sanitizer: DomSanitizer
   ) {
     if (
       global.role === UserStatus.Shared &&
@@ -114,7 +112,7 @@ export class ResourceCardComponent implements OnInit {
   }
 
   youtubeUrlToIframe(url){
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url.replace('watch?v=','embed/'));
+    return url.replace('watch?v=','embed/');
   }
 
   ngOnInit() {
