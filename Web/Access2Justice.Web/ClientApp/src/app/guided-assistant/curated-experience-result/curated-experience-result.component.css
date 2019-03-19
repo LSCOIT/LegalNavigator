@@ -53,7 +53,8 @@ h5 {
 }
 
 input[type="checkbox"]:checked ~ .check::before {
-  padding-left: 3px;
+  padding-left: 2px;
+  top: -1px;
 }
 
 .link {
