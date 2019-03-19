@@ -31,6 +31,12 @@ label:focus {
   margin: 0 20px;
 }
 
+.multi-button {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .multi-button li {
   width: 100%;
   margin: 10px 0;
@@ -40,7 +46,29 @@ label:focus {
   background-color: #d9f2f8;
 }
 
+.multi-button li.double {
+  font-size: 0;
+  color: transparent;
+  width: 25%;
+  margin: 10px 15px;
+}
+
+.multi-button li.double label {
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+
 .multi-button li label {
+  cursor: pointer;
   text-align: center;
   padding: 15px 20px;
+}
+
+.multi-button li label.no {
+  background-image: url("assets/images/secondary-illustrations/cancel.svg");
+}
+
+.multi-button li label.yes {
+  background-image: url("assets/images/secondary-illustrations/accept.svg");
 }
