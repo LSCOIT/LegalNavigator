@@ -111,8 +111,8 @@ export class ResourceCardComponent implements OnInit {
       });
   }
 
-  youtubeUrlToIframe(url){
-    return url.replace('watch?v=','embed/');
+  youtubeUrlToIframe(url) {
+    return url.replace('watch?v=','embed/').concat('?controls=2&iv_load_policy=3&modestbranding=1&showinfo=1');
   }
 
   ngOnInit() {

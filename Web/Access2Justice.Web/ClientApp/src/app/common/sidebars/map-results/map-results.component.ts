@@ -24,7 +24,7 @@ export class MapResultsComponent implements OnChanges {
     let addresses: string[] = [];
     const arrToString = arrAddress => {
       arrAddress.forEach(function (o) {
-        addresses = addresses.concat(o.address.split('|'));
+        if(o.address){ addresses = addresses.concat(o.address.split('|')) }
       });
     };
     if (this.searchResource) {
