@@ -12,6 +12,7 @@ export class MapResultsComponent implements OnChanges {
   latitudeLongitude: Array<LatitudeLongitude> = [];
   latlong: LatitudeLongitude;
   @Input() searchResource: any;
+  @Input() addressArr: boolean;
   showMap = false;
   validAddress = [];
   @Output() mapDisplayEvent = new EventEmitter<boolean>();
@@ -21,13 +22,17 @@ export class MapResultsComponent implements OnChanges {
 
   getAddress() {
     let addresses: string[] = [];
+    const arrToString = arrAddress => {
+      arrAddress.forEach(function (o) {
+        addresses = addresses.concat(o.address.split('|'));
+      });
+    };
     if (this.searchResource) {
+      if(this.addressArr === true){
+        arrToString(this.searchResource);
+      }
       if (this.searchResource.resources) {
-        for (let i = 0; i < this.searchResource.resources.length; i++) {
-          if (this.searchResource.resources[i].address) {
-            addresses = addresses.concat(this.searchResource.resources[i].address.split('|'));
-          }
-        }
+        arrToString(this.searchResource.resources);
       }
       this.getMapResults(addresses);
     }
@@ -107,5 +112,6 @@ export class MapResultsComponent implements OnChanges {
 
   ngOnChanges() {
     this.getAddress();
+    console.log(this.searchResource);
   }
 }

@@ -122,7 +122,8 @@ import { SharedModule } from '../shared/shared.module';
     HelplineComponent,
     LoginComponent,
     BrowserTabCloseComponent,
-    UnauthorizedComponent
+    UnauthorizedComponent,
+    MapResultsComponent
   ],
   providers: [
     MapService,
