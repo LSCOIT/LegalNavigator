@@ -112,6 +112,5 @@ export class MapResultsComponent implements OnChanges {
 
   ngOnChanges() {
     this.getAddress();
-    console.log(this.searchResource);
   }
 }
