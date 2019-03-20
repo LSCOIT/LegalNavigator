@@ -127,6 +127,9 @@
       </div>
     </div>
     <div class="col-md-4 col-sm-12 sidebars">
+      <div class="mapWrap">
+        <app-map-results [searchResource]="organizationData" [addressArr]="true"></app-map-results>
+      </div>
       <app-guided-assistant-sidebar
         [activeSubTopic]="guidedSutopicDetailsInput">
       </app-guided-assistant-sidebar>

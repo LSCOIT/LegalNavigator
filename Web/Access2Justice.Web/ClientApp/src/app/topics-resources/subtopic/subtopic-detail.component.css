@@ -28,6 +28,11 @@
   display: block;
 }
 
+.mapWrap {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 @media only screen and (min-width: 768px) {
   .mobile-hidden {
     display: inline-block;
@@ -49,5 +54,10 @@
 
   .col-md-4 {
     padding-left: 5%;
+  }
+
+  .mapWrap {
+    padding-top: 45px;
+    padding-bottom: 15px;
   }
 }
