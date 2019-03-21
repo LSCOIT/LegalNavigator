@@ -111,14 +111,11 @@ export class ResourceCardComponent implements OnInit {
       });
   }
 
-  youtubeUrlToIframe(url) {
-    return url.replace('watch?v=','embed/').concat('?controls=2&iv_load_policy=3&modestbranding=1&showinfo=1');
-  }
-
   ngOnInit() {
+    const youtubeUrlToIframe = url => url.replace('watch?v=','embed/').concat('?controls=2&iv_load_policy=3&modestbranding=1&showinfo=1');
     if (this.searchResource != null || this.searchResource != undefined) {
       if(this.searchResource.resourceType === "Videos"){
-        this.searchResource.iframeUrl = this.youtubeUrlToIframe(this.searchResource.url);
+        this.searchResource.iframeUrl = youtubeUrlToIframe(this.searchResource.url);
       }
       this.resource = this.searchResource;
     } else {
