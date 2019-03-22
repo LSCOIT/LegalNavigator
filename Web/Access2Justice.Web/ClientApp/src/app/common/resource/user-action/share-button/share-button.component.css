@@ -2,14 +2,6 @@
   display: inline-block;
 }
 
-input {
-  height: 45px;
-  width: 64%;
-  float: left;
-  margin-left: 10%;
-  padding: 5px;
-}
-
 p {
   margin: 20px auto;
   clear: both;
@@ -19,12 +11,20 @@ h4 {
   margin-bottom: 20px;
 }
 
-#input-button {
+.input-button {
   margin: 0 10%;
   height: 40px;
 }
 
-#copy-btn {
+.input-button input {
+  height: 45px;
+  width: 64%;
+  float: left;
+  margin-left: 10%;
+  padding: 5px;
+}
+
+.copy-btn {
   background-color: #0d3fb8;
   padding: 3px;
   border-radius: 0 5px 5px 0;
@@ -33,6 +33,12 @@ h4 {
   font-weight: 600;
   float: left;
   height: 45px;
+  transition: background-color 0.2s ease;
+}
+
+.copy-btn:disabled {
+  cursor: not-allowed;
+  background-color: #d4d4d4;
 }
 
 .text-center {
@@ -47,6 +53,15 @@ h4 {
 .remove-share {
   border-top: 1px solid #ddd;
   padding-top: 40px;
+}
+
+.share-to-user {
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}
+
+.share-to-user p {
+  margin: 20px 0 0 0;
 }
 
 .close {

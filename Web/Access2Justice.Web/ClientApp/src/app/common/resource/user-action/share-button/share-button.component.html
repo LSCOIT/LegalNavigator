@@ -18,9 +18,9 @@
         </button>
       </div>
       <div *ngIf="!showGenerateLink">
-        <div id="input-button">
+        <div id="input-button" class="input-button">
           <input type="text" name="name" value="{{ permaLink }}" #userinput/>
-          <button type="button" id="copy-btn" (click)="copyLink(userinput)">
+          <button type="button" id="copy-btn" class="copy-btn" (click)="copyLink(userinput)">
             Copy Link
           </button>
         </div>
@@ -28,6 +28,20 @@
           Note: Anyone with this link will be able to access this content.
           <br/>Link will automatically expire after 12 months.
         </p>
+        <div class="share-to-user row">
+          <h4>Share link to other user</h4>
+          <form [formGroup]="sendForm" class="input-button" (ngSubmit)="onSubmit()">
+            <input type="email" formControlName="email"/>
+            <button type="submit" [disabled]="!sendForm.valid" class="copy-btn">
+              Send Link
+            </button>
+          </form>
+
+          <p class="pxs">
+            Send link to user in private cabinet
+            <br/>Tabs "shared links"
+          </p>
+        </div>
         <div class="remove-share row">
           <h4>Disable Link</h4>
           <p>
