@@ -114,9 +114,6 @@ export class ResourceCardComponent implements OnInit {
   ngOnInit() {
     const youtubeUrlToIframe = url => url.replace('watch?v=','embed/').concat('?controls=2&iv_load_policy=3&modestbranding=1&showinfo=1');
     if (this.searchResource != null || this.searchResource != undefined) {
-      if(this.searchResource.resourceType === "Videos"){
-        this.searchResource.iframeUrl = youtubeUrlToIframe(this.searchResource.url);
-      }
       this.resource = this.searchResource;
     } else {
       this.resource = this.resource;
@@ -128,6 +125,9 @@ export class ResourceCardComponent implements OnInit {
       this.urlOrigin = new URL(this.resource.url).origin;
     } catch (e) {
       this.urlOrigin = this.resource.url;
+    }
+    if(this.resource.resourceType === "Videos"){
+      this.resource.iframeUrl = youtubeUrlToIframe(this.resource.url);
     }
   }
 }
