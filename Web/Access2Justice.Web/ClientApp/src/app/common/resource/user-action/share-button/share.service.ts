@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 
 import { api } from "../../../../../api/api";
-import { Share, ShareView } from "./share.model";
+import { Share, ShareView, ShareData } from "./share.model";
 
 @Injectable()
 export class ShareService {
@@ -29,6 +29,14 @@ export class ShareService {
       shareInput,
       httpOptions
     );
+  }
+
+  shareLinkToUser(shareData: ShareData) {
+    // console.log(shareData);
+    const httpOptions = {
+      headers: new HttpHeaders({ "Content-Type": "application/json" })
+    };
+    return shareData;
   }
 
   removeLink(unShareInput: Share) {

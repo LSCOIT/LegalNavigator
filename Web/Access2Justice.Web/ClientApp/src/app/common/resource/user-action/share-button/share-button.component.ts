@@ -158,8 +158,12 @@ export class ShareButtonComponent implements OnInit {
     this.msalService.loginRedirect(ENV.consentScopes);
   }
 
-  onSubmit() {
-    console.log(this.sendForm);
+  submitShareLink() {
+    this.shareService.shareLinkToUser({
+      link: this.permaLink,
+      email: this.sendForm.value.email
+    });
+    this.sendForm.reset();
   }
 
   ngOnInit() {
