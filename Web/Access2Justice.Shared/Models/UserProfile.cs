@@ -51,6 +51,8 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "savedResourcesId")]
         public Guid SavedResourcesId { get; set; }
+        [JsonProperty(PropertyName = "incomingResourcesId")]
+        public Guid IncomingResourcesId { get; set; }
 
         [JsonProperty(PropertyName = "roleInformationId")]
         public List<Guid> RoleInformationId { get; set; }
@@ -58,6 +60,25 @@ namespace Access2Justice.Shared.Models
         public UserProfile()
         {
             RoleInformationId = new List<Guid>();
+        }
+
+        public string FullName
+        {
+            get
+            {
+                if (!string.IsNullOrWhiteSpace(Name))
+                {
+                    return Name;
+                }
+
+                if (!string.IsNullOrWhiteSpace(FirstName) ||
+                    !string.IsNullOrWhiteSpace(LastName))
+                {
+                    return $"{FirstName} {LastName}".Trim();
+                }
+
+                return EMail;
+            }
         }
     }
 
@@ -85,13 +106,16 @@ namespace Access2Justice.Shared.Models
         public Guid CuratedExperienceAnswersId { get; set; }
 
         [JsonProperty(PropertyName = "savedResourcesId")]
-        public Guid SavedResourcesId { get; set; }        
+        public Guid SavedResourcesId { get; set; }
 
-        [JsonProperty(PropertyName = "roleInformationId")]        
+        [JsonProperty(PropertyName = "incomingResourcesId")]
+        public Guid IncomingResourcesId { get; set; }
+
+        [JsonProperty(PropertyName = "roleInformationId")]
         public List<string> RoleInformationId { get; set; }
 
         [JsonProperty(PropertyName = "roleInformation")]
-        public List<RoleViewModel> RoleInformation { get; set; }        
+        public List<RoleViewModel> RoleInformation { get; set; }
 
         public UserProfileViewModel()
         {
