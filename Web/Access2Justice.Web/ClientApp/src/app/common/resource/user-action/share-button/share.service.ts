@@ -32,7 +32,6 @@ export class ShareService {
   }
 
   shareLinkToUser(shareData: ShareData) {
-    // console.log(shareData);
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
