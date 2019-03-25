@@ -24,6 +24,19 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
+        /// Adds shared link to anothe user's saved resources list
+        /// </summary>
+        /// <param name="sendLinkInput"></param>
+        /// <response code="200">Link sent</response>
+        /// <response code="500">Failure</response>
+        [Permission(PermissionName.generatepermalink)]
+        [HttpPost("link/send")]
+        public async Task<IActionResult> SendLinkAsync([FromBody] SendLinkInput sendLinkInput)
+        {
+            return Ok();
+        }
+
+        /// <summary>
         /// Get permalink created
         /// </summary>
         /// <remarks>
