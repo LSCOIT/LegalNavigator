@@ -24,6 +24,7 @@ import { TopicsResourcesComponent } from './topics-resources/topics-resources.co
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { SavedResourcesComponent } from './profile/saved-resources/saved-resources.component';
+import { IncomingResourcesComponent } from './profile/incoming-resources/incoming-resources.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { SavedResourcesComponent } from './profile/saved-resources/saved-resourc
     DidYouKnowComponent,
     ArticlesResourcesComponent,
     CuratedExperienceComponent,
-    CuratedExperienceResultComponent
+    CuratedExperienceResultComponent,
+    IncomingResourcesComponent
   ],
   imports: [
     CoreModule,
