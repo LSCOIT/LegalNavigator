@@ -1,5 +1,4 @@
-﻿using Access2Justice.Shared.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -23,5 +22,13 @@ namespace Access2Justice.Shared
             UniqueId = Guid.Empty;
             ResourceId = Guid.Empty;
         }
+    }
+
+    public class SendLinkInput
+    {
+        [Required]
+        public string Email { get; set; }
+        [Required]
+        public string Link { get; set; }
     }
 }
