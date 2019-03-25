@@ -106,6 +106,38 @@ namespace Access2Justice.Api.BusinessLogic
             };
         }
 
+        public async Task<dynamic> ShareResourceAsync(SendLinkInput sendLinkInput)
+        {
+            dynamic response = null;
+
+            if (string.IsNullOrWhiteSpace(sendLinkInput.UserId) ||
+                string.IsNullOrWhiteSpace(sendLinkInput.Email))
+            {
+                return null;
+            }
+
+            UserProfile senderUserProfile = await dbUserProfile.GetUserProfileDataAsync(sendLinkInput.UserId);
+            var recipientUserProfile = await dbUserProfile.GetUserProfileByEmailAsync(sendLinkInput.Email);
+
+            if (senderUserProfile == null ||
+                recipientUserProfile == null)
+            {
+                return null;
+            }
+
+            var incomingResource = new IncomingResource
+            {
+                ResourceId = sendLinkInput.ResourceId,
+                ResourceDetails = sendLinkInput.ResourceDetails,
+                ResourceType = sendLinkInput.ResourceType,
+                SharedBy = senderUserProfile.FullName
+            };
+
+            response = await UpsertIncomingResourceAsync(recipientUserProfile, incomingResource);
+
+            return response;
+        }
+
         public async Task<object> UpsertSharedResource(UserProfile userProfile, SharedResource sharedResource)
         {
             List<SharedResource> sharedResources = new List<SharedResource>();
@@ -141,6 +173,72 @@ namespace Access2Justice.Api.BusinessLogic
                 await dbService.UpdateItemAsync(userProfile.Id, userProfile,
                 dbSettings.ProfilesCollectionId);
                 response = await dbService.CreateItemAsync((userSharedResources), dbSettings.UserResourcesCollectionId);
+            }
+            return response;
+        }
+
+        public async Task<object> UpsertIncomingResourceAsync(
+            UserProfile userProfile,
+            IncomingResource resource)
+        {
+            var incomingResources = new List<IncomingResource>();
+            dynamic userIncomingResourcesDBData = null;
+            dynamic response = null;
+            if (userProfile?.IncomingResourcesId != null &&
+                userProfile.IncomingResourcesId != Guid.Empty)
+            {
+                userIncomingResourcesDBData =
+                    await dbClient.FindItemsWhereAsync(
+                        dbSettings.UserResourcesCollectionId,
+                        Constants.Id,
+                        Convert.ToString(userProfile.IncomingResourcesId, CultureInfo.InvariantCulture));
+            }
+
+            if (userIncomingResourcesDBData != null &&
+                userIncomingResourcesDBData.Count > 0)
+            {
+                List<UserIncomingResources> userIncomingResources = 
+                    JsonUtilities.DeserializeDynamicObject<List<UserIncomingResources>>(userIncomingResourcesDBData);
+
+                userIncomingResources[0].IncomingResourcesId = userProfile.IncomingResourcesId;
+
+                if (!userIncomingResources[0].Resources.Any(
+                    r =>
+                        r.ResourceId == resource.ResourceId &&
+                        r.ResourceType == resource.ResourceType &&
+                        r.SharedBy == resource.SharedBy))
+                {
+                    userIncomingResources[0].Resources.Add(resource);
+                }
+
+                response = await dbService.UpdateItemAsync(
+                    userProfile.IncomingResourcesId.ToString(),
+                    userIncomingResources[0],
+                    dbSettings.UserResourcesCollectionId);
+            }
+            else
+            {
+                var userIncomingResources = new UserIncomingResources();
+                if (userIncomingResourcesDBData != null)
+                {
+                    userIncomingResources.IncomingResourcesId = userProfile.SharedResourceId;
+                }
+                else
+                {
+                    userIncomingResources.IncomingResourcesId = Guid.NewGuid();
+                }
+                incomingResources.Add(resource);
+                userIncomingResources.Resources = incomingResources;
+                userProfile.IncomingResourcesId = userIncomingResources.IncomingResourcesId;
+
+                await dbService.UpdateItemAsync(
+                    userProfile.Id,
+                    userProfile,
+                    dbSettings.ProfilesCollectionId);
+
+                response = await dbService.CreateItemAsync(
+                    userIncomingResources,
+                    dbSettings.UserResourcesCollectionId);
             }
             return response;
         }

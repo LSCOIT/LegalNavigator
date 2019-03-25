@@ -4,47 +4,48 @@ using System.Collections.Generic;
 
 namespace Access2Justice.Shared.Models
 {
-    public class UserSavedResources
+    public class UserIncomingResources
     {
         [JsonProperty(PropertyName = "id")]
-        public Guid SavedResourcesId { get; set; }
+        public Guid IncomingResourcesId { get; set; }
 
         [JsonProperty(PropertyName = "resources")]
-        public List<SavedResource> Resources { get; set; }
+        public List<IncomingResource> Resources { get; set; }
 
-        public UserSavedResources()
+        public UserIncomingResources()
         {
-            Resources = new List<SavedResource>();
+            Resources = new List<IncomingResource>();
         }
     }
 
-    public class SavedResource
+    public class IncomingResource
     {
         [JsonProperty(PropertyName = "itemId")]
         public string ResourceId { get; set; }
 
         [JsonProperty(PropertyName = "resourceType")]
         public string ResourceType { get; set; }
+        [JsonProperty(PropertyName = "sharedBy")]
+        public string SharedBy { get; set; }
 
         [JsonProperty(PropertyName = "resourceDetails")]
         public dynamic ResourceDetails { get; set; }
     }
 
-    public class ProfileResources
+    public class ProfileIncomingResources
     {
         [JsonProperty(PropertyName = "oId")]
         public string OId { get; set; }
 
         [JsonProperty(PropertyName = "resourceTags")]
-        public List<SavedResource> Resources { get; set; }
+        public List<IncomingResource> Resources { get; set; }
 
         [JsonProperty(PropertyName = "type")]
         public string Type { get; set; }
 
-        public ProfileResources()
+        public ProfileIncomingResources()
         {
-            Resources = new List<SavedResource>();
+            Resources = new List<IncomingResource>();
         }
     }
-
 }

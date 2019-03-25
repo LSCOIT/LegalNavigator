@@ -26,9 +26,21 @@ namespace Access2Justice.Shared
 
     public class SendLinkInput
     {
+        [JsonProperty(PropertyName = "oId")]
+        public string UserId { get; set; }
+
         [Required]
         public string Email { get; set; }
+
         [Required]
-        public string Link { get; set; }
+        [JsonProperty(PropertyName = "itemId")]
+        public string ResourceId { get; set; }
+
+        [Required]
+        [JsonProperty(PropertyName = "resourceType")]
+        public string ResourceType { get; set; }
+
+        [JsonProperty(PropertyName = "resourceDetails")]
+        public dynamic ResourceDetails { get; set; }
     }
 }
