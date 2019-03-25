@@ -35,7 +35,7 @@ export class ShareService {
     const httpOptions = {
       headers: new HttpHeaders({ "Content-Type": "application/json" })
     };
-    return shareData;
+    return this.http.post(api.shareLinkToUser, shareData, httpOptions);
   }
 
   removeLink(unShareInput: Share) {

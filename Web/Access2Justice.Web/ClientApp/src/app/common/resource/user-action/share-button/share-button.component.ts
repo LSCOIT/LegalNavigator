@@ -162,8 +162,9 @@ export class ShareButtonComponent implements OnInit {
     this.shareService.shareLinkToUser({
       link: this.permaLink,
       email: this.sendForm.value.email
+    }).subscribe(() => {
+      this.sendForm.reset();
     });
-    this.sendForm.reset();
   }
 
   ngOnInit() {

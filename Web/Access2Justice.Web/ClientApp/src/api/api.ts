@@ -30,7 +30,7 @@ export const api = {
   resourceUrl: topic + "/resources",
   getContentsUrl: contentUrl,
   shareUrl: apiUrl + "/share/permalink/generate",
-  shareLinkToUser: apiUrl + '',
+  shareLinkToUser: apiUrl + '/share/link/send',
   unShareUrl: apiUrl + "/share/permalink/remove",
   getResourceLink: apiUrl + "/share/permalink/resource",
   checkPermaLink: apiUrl + "/share/permalink/check",
