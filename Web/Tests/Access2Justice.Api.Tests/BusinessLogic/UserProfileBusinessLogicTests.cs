@@ -180,7 +180,12 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
         [Theory]
         [MemberData(nameof(UserPersonalizedPlanTestData.UserProfileResponseData), MemberType = typeof(UserPersonalizedPlanTestData))]
-        public void UpsertUserProfileAsyncShouldValidate(UserProfile inputJson, JArray findResponse, JArray createResponse, dynamic expectedResult, string id)
+        public void UpsertUserProfileAsyncShouldValidate(
+            UserProfile inputJson,
+            JArray findResponse,
+            JArray createResponse,
+            dynamic expectedResult,
+            string id)
         {
             //arrange
             Document document = new Document();

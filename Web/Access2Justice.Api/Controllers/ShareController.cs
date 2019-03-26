@@ -3,7 +3,6 @@ using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System.Net;
 using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
 using Pomelo.AntiXSS;
@@ -33,6 +32,8 @@ namespace Access2Justice.Api.Controllers
         [HttpPost("link/send")]
         public async Task<IActionResult> SendLinkAsync([FromBody] SendLinkInput sendLinkInput)
         {
+            await shareBusinessLogic.ShareResourceAsync(sendLinkInput);
+
             return Ok();
         }
 

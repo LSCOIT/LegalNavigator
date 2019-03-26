@@ -12,11 +12,13 @@
         public const string LuisResponse = "luisResponse";
         public const string Topics = "topics";
         public const string Resources = "resources";
+        public const string IncomingResources = "incoming-resources";
         public const string TopIntent = "topIntent";
         public const string WebResources = "webResources";
         public const string Name = "name";
         public const string ResourceType = "resourceType";
         public const string OId = "oId";
+        public const string Email = "eMail";
         public const string PlanId = "planId";
         public const string Type = "type";
         public const string Organization = "Organizations";
