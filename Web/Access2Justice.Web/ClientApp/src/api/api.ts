@@ -22,6 +22,7 @@ export const api = {
   getPersonalizedResourcesUrl: topic + "/personalized-resources",
   getProfileUrl: userProfile + "/profile",
   userPlanUrl: userProfile + "/personalized-plan/upsert",
+  removeSharedResources: userProfile + 'resources/delete',
   upsertUserProfileUrl: userProfile + "/profile/upsert",
   getOrganizationDetailsUrl: topic + "/organizations",
   questionUrl: curatedExperience + "/start",

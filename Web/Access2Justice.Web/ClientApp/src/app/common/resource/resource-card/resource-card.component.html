@@ -27,6 +27,7 @@
             </li>
             <li role="menuitem" *ngIf="showRemoveOption">
               <app-remove-button class="dropdown-item" [resourceId]="resource.id" [resourceType]="resource.resourceType"
+                                 [sharedResources]="true"
                                  [personalizedResources]="personalizedResources"></app-remove-button>
             </li>
           </ul>

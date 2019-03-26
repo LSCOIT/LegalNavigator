@@ -8,6 +8,8 @@
   <div class="col-sm-12">
     <div *ngFor="let resource of incomingResources">
       <app-resource-card [searchResource]="resource"
+                         [sharedResources]="true"
+                         [personalizedResources]="incomingResources"
                          [showRemoveOption]="true"></app-resource-card>
     </div>
   </div>

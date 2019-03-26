@@ -13,6 +13,13 @@ export interface ProfileResources {
   type: string;
 }
 
+export interface RemovedElem {
+  Oid?: string;
+  ItemId?: string;
+  ResourceType?: string;
+  SharedBy?: string;
+}
+
 export interface PersonalizedPlan {
   id: string;
   topics: PlanTopic[];

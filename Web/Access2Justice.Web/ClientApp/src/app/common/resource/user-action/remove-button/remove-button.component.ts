@@ -23,6 +23,7 @@ export class RemoveButtonComponent implements OnInit {
   @Input() resourceType;
   @Input() personalizedResources;
   @Input() selectedPlanDetails;
+  @Input() sharedResources;
   removeResource: SavedResource;
   profileResources: ProfileResources = {oId: '', resourceTags: [], type: ''};
   resourceDetails: any;
@@ -44,7 +45,9 @@ export class RemoveButtonComponent implements OnInit {
     if (this.selectedPlanDetails) {
       this.removeSavedPlan();
     }
-    if (this.resourceId) {
+    if(this.resourceId && this.sharedResources){
+      this.removeSharedResources();
+    }else if (this.resourceId) {
       this.removedSavedResource();
     }
   }
@@ -162,6 +165,23 @@ export class RemoveButtonComponent implements OnInit {
         }
       });
   }
+
+  removeSharedResources(){
+    console.log(this);
+    const t = this.personalizedResources.find(o => {
+      return o.id === this.resourceId
+    });
+    const removedElem = {
+      Oid: this.global.userId,
+      itemId: this.resourceId,
+      resourceType: this.resourceType,
+      sharedBy: t.shared.sharedBy
+    };
+    this.personalizedPlanService.removeSharedResources(removedElem).subscribe(response =>{
+      console.log(response);
+    });
+  }
+
 
   ngOnInit() {
   }

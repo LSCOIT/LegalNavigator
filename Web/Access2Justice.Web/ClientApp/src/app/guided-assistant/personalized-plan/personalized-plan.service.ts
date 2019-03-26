@@ -11,7 +11,7 @@ import { Global } from '../../global';
 import { LocationDetails } from '../../common/map/map';
 import { IResourceFilter } from '../../common/search/search-results/search-results.model';
 import { ArrayUtilityService } from '../../common/services/array-utility.service';
-import { IntentInput, PersonalizedPlan, PersonalizedPlanTopic, ProfileResources, SavedResource} from './personalized-plan';
+import { IntentInput, PersonalizedPlan, PersonalizedPlanTopic, ProfileResources, SavedResource, RemovedElem} from './personalized-plan';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -129,6 +129,10 @@ export class PersonalizedPlanService {
 
   saveResources(resource: ProfileResources) {
     return this.http.post(api.userPlanUrl, resource, httpOptions);
+  }
+
+  removeSharedResources(resource: RemovedElem){
+    return this.http.post(api.removeSharedResources, resource, httpOptions);
   }
 
   userPlan(plan): Observable<any> {
