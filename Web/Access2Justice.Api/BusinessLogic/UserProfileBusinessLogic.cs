@@ -1,11 +1,9 @@
 ﻿using Access2Justice.Api.Authorization;
-using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -174,6 +172,18 @@ namespace Access2Justice.Api.BusinessLogic
             return result;
         }
 
+        public async Task<dynamic> DeleteUserProfileResourceAsync(UserProfileResource resource)
+        {
+            switch(resource.ResourcesType)
+            {
+                case Constants.Resources:
+                    return await DeleteSavedResourceAsync(resource);
+                case Constants.IncomingResources:
+                    return await DeleteIncomingResourceAsync(resource);
+                default: throw new NotSupportedException($"Resource type {resource.ResourcesType} is not supported");
+            }
+        }
+
         public async Task<dynamic> CreateUserIncomingResourcesAsync(ProfileIncomingResources userResources)
         {
             var userDocument = new UserIncomingResources()
@@ -291,6 +301,89 @@ namespace Access2Justice.Api.BusinessLogic
                 userRole = JsonUtilities.DeserializeDynamicObject<List<Role>>(roleData);
             }
             return userRole;
+        }
+
+        private async Task<dynamic> DeleteSavedResourceAsync(UserProfileResource resource)
+        {
+            var userProfile = await GetUserProfileDataAsync(resource.OId);
+            dynamic userResourcesDBData = null;
+
+            if (userProfile?.SavedResourcesId != null &&
+                userProfile?.SavedResourcesId != Guid.Empty)
+            {
+                userResourcesDBData = await dbClient.FindItemsWhereAsync(
+                    dbSettings.UserResourcesCollectionId,
+                    Constants.Id,
+                    Convert.ToString(userProfile.SavedResourcesId, CultureInfo.InvariantCulture));
+
+                if (userResourcesDBData != null &&
+                    userResourcesDBData?.Count > 0)
+                {
+                    UserSavedResources userResources = JsonUtilities.DeserializeDynamicObject<UserSavedResources>(userResourcesDBData[0]);
+
+                    if (userResources.Resources != null)
+                    {
+                        var resourceToRemove = userResources.Resources.FirstOrDefault(
+                            r => r.ResourceId == resource.ResourceId && r.ResourceType == resource.ResourceType);
+
+                        if (resourceToRemove != null)
+                        {
+                            userResources.Resources.Remove(resourceToRemove);
+                        }
+
+                        var document = JsonConvert.DeserializeObject<UserSavedResources>(JsonConvert.SerializeObject(userResources));
+                        userResourcesDBData = await dbService.UpdateItemAsync(
+                            userResources.SavedResourcesId.ToString(),
+                            document,
+                            dbSettings.UserResourcesCollectionId);
+                    }
+                }
+            }
+
+            return userResourcesDBData;
+        }
+
+        private async Task<dynamic> DeleteIncomingResourceAsync(UserProfileResource resource)
+        {
+            var userProfile = await GetUserProfileDataAsync(resource.OId);
+            dynamic userResourcesDBData = null;
+
+            if (userProfile?.IncomingResourcesId != null &&
+                userProfile?.IncomingResourcesId != Guid.Empty)
+            {
+                userResourcesDBData = await dbClient.FindItemsWhereAsync(
+                    dbSettings.UserResourcesCollectionId,
+                    Constants.Id,
+                    Convert.ToString(userProfile.IncomingResourcesId, CultureInfo.InvariantCulture));
+
+                if (userResourcesDBData != null &&
+                    userResourcesDBData?.Count > 0)
+                {
+                    UserIncomingResources userResources = JsonUtilities.DeserializeDynamicObject<UserIncomingResources>(userResourcesDBData[0]);
+
+                    if (userResources.Resources != null)
+                    {
+                        var resourceToRemove = userResources.Resources.FirstOrDefault(
+                            r =>
+                                r.ResourceId == resource.ResourceId &&
+                                r.ResourceType == resource.ResourceType &&
+                                r.SharedBy == resource.SharedBy);
+
+                        if (resourceToRemove != null)
+                        {
+                            userResources.Resources.Remove(resourceToRemove);
+                        }
+
+                        var document = JsonConvert.DeserializeObject<UserIncomingResources>(JsonConvert.SerializeObject(userResources));
+                        userResourcesDBData = await dbService.UpdateItemAsync(
+                            userResources.IncomingResourcesId.ToString(),
+                            document,
+                            dbSettings.UserResourcesCollectionId);
+                    }
+                }
+            }
+
+            return userResourcesDBData;
         }
     }
 }

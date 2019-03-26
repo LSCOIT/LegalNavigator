@@ -84,6 +84,27 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
+        /// Deletes a resource from user's profile
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        /// <param name="resource"></param>
+        /// <response code="200">Get user's profile resources</response>
+        /// <response code="500">Failure</response>
+        [ExcludeFromCodeCoverage]
+        //[Permission(PermissionName.upsertuserpersonalizedplan)]
+        [HttpPost]
+        [Route("resources/delete")]
+        public async Task<IActionResult> DeleteUserProfileResourceAsync([FromBody]UserProfileResource resource)
+        {
+            if (resource != null)
+            {
+                return Ok(await userProfileBusinessLogic.DeleteUserProfileResourceAsync(resource));
+            }
+            return StatusCode(400);
+        }
+
+        /// <summary>
         ///  Upsert user profile
         /// </summary>
         /// <remarks>
