@@ -1,8 +1,14 @@
-<div class="row mainBlock">
-  <div class="col-12">
-    дрочильня с фильтрами
-  </div>
-</div>
+<!--todo filters place start write-->
+<!--<div class="row mainBlock">-->
+  <!--<div class="col-12">-->
+    <!--дрочильня с фильтрами-->
+  <!--</div>-->
+<!--</div>-->
 <div class="row">
-  дрочильня с карточками
+  <div class="col-sm-12">
+    <div *ngFor="let resource of incomingResources">
+      <app-resource-card [searchResource]="resource"
+                         [showRemoveOption]="true"></app-resource-card>
+    </div>
+  </div>
 </div>

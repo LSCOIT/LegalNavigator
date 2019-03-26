@@ -7,12 +7,6 @@ export interface SavedResource {
   resourceDetails: any;
 }
 
-export interface IncomingResource {
-  itemId: string;
-  resourceType: string;
-  resourceDetails: any;
-}
-
 export interface ProfileResources {
   oId: string;
   resourceTags: SavedResource[];

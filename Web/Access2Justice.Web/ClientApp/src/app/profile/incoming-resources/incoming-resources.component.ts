@@ -11,15 +11,22 @@ import { PersonalizedPlanService } from '../../guided-assistant/personalized-pla
 })
 export class IncomingResourcesComponent implements OnInit {
 
+  private incomingResources = [];
+  private some: any;
+
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
     @Optional() private tab: TabDirective,
   ) { }
 
   private getIncomingResources(): void {
-    this.personalizedPlanService.getPersonalizedResources('incoming-resources').subscribe(personalizedResources => {
-      console.log(personalizedResources);
-      // this.personalizedResources = personalizedResources;
+    this.personalizedPlanService.getPersonalizedResources('incoming-resources').subscribe(incomingResources => {
+      for (let key in incomingResources) {
+        incomingResources[key].forEach(i => {
+          this.incomingResources.push(i);
+          console.log(this);
+        });
+      }
     });
   }
 
