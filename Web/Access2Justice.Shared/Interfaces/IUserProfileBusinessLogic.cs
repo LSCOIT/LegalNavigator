@@ -13,6 +13,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetUserResourceProfileDataAsync(UserProfile userProfile, string type);
         Task<dynamic> UpsertUserSavedResourcesAsync(ProfileResources userResources);
         Task<dynamic> UpsertUserIncomingResourcesAsync(ProfileIncomingResources userData);
+        Task<dynamic> DeleteUserProfileResourceAsync(UserProfileResource resource);
         Task<UserProfileViewModel> UpsertUserProfileAsync(UserProfile userProfile);
         Task<Guid> GetDefaultUserRole();
         Task<List<Role>> GetRoleDetailsAsync(List<string> roleInformationId);

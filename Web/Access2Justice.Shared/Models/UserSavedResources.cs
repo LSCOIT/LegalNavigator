@@ -47,4 +47,19 @@ namespace Access2Justice.Shared.Models
         }
     }
 
+    public class UserProfileResource
+    {
+        [JsonProperty(PropertyName = "oId")]
+        public string OId { get; set; }
+        [JsonProperty(PropertyName = "type")]
+        public string ResourcesType { get; set; }
+
+        [JsonProperty(PropertyName = "itemId")]
+        public string ResourceId { get; set; }
+
+        [JsonProperty(PropertyName = "resourceType")]
+        public string ResourceType { get; set; }
+        [JsonProperty(PropertyName = "sharedBy")]
+        public string SharedBy { get; set; }
+    }
 }
