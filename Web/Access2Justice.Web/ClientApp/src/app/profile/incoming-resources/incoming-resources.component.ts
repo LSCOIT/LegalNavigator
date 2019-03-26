@@ -1,8 +1,7 @@
-import { Component, OnInit, Optional } from '@angular/core';
+import {Component, OnInit, Optional} from '@angular/core';
 import { TabDirective } from "ngx-bootstrap";
 
 import { PersonalizedPlanService } from '../../guided-assistant/personalized-plan/personalized-plan.service';
-
 
 @Component({
   selector: 'app-incoming-resources',
@@ -11,6 +10,7 @@ import { PersonalizedPlanService } from '../../guided-assistant/personalized-pla
 })
 export class IncomingResourcesComponent implements OnInit {
 
+  private incomingResourcesIds = [];
   private incomingResources = [];
 
   constructor(
@@ -19,9 +19,14 @@ export class IncomingResourcesComponent implements OnInit {
   ) { }
 
   private getIncomingResources(): void {
+    this.personalizedPlanService.getUserSavedResources('incoming-resources').subscribe(incResIds => { this.incomingResourcesIds = incResIds });
     this.personalizedPlanService.getPersonalizedResources('incoming-resources').subscribe(incomingResources => {
+      this.incomingResources = [];
       for (let key in incomingResources) {
-        incomingResources[key].forEach(i => {this.incomingResources.push(i)});
+        incomingResources[key].forEach(i => {
+          i.shared = this.incomingResourcesIds.find(o => o.itemId === i.id);
+          this.incomingResources.push(i)
+        });
       }
     });
   }

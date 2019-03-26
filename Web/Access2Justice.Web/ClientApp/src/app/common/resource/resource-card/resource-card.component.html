@@ -346,7 +346,7 @@
           </div>
         </div>
       </ng-template>
-      <div >я ебу алибабу</div>
+      <div class="shared-by" *ngIf="resource.shared">Shared by: {{resource.shared.sharedBy}}</div>
     </div>
   </div>
   <ng-template #template>

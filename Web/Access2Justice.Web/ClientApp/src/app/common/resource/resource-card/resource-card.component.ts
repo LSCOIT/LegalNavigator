@@ -129,7 +129,6 @@ export class ResourceCardComponent implements OnInit {
     if(this.resource.resourceType === "Videos"){
       this.resource.iframeUrl = youtubeUrlToIframe(this.resource.url);
     }
-    console.log(this.resource);
   }
 }
 
