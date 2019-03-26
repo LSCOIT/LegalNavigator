@@ -240,18 +240,7 @@ namespace Access2Justice.CosmosDb
 
         private string InClause(string propertyName, IEnumerable<string> values)
         {
-            var inClause = string.Empty;
-            var lastItem = values.LastOrDefault();
-
-            foreach (var value in values)
-            {
-                inClause += $"'" + value + "'";
-                if (value != lastItem)
-                {
-                    inClause += ",";
-                }
-            }
-            return inClause;
+            return string.Join(',', values.Select(v => $"'{v}'"));
         }
 
         public async Task<dynamic> FindFieldWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, string value, string dateProperty)
