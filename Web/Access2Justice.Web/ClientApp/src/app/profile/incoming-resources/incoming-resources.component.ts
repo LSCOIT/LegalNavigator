@@ -12,7 +12,6 @@ import { PersonalizedPlanService } from '../../guided-assistant/personalized-pla
 export class IncomingResourcesComponent implements OnInit {
 
   private incomingResources = [];
-  private some: any;
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
@@ -22,10 +21,7 @@ export class IncomingResourcesComponent implements OnInit {
   private getIncomingResources(): void {
     this.personalizedPlanService.getPersonalizedResources('incoming-resources').subscribe(incomingResources => {
       for (let key in incomingResources) {
-        incomingResources[key].forEach(i => {
-          this.incomingResources.push(i);
-          console.log(this);
-        });
+        incomingResources[key].forEach(i => {this.incomingResources.push(i)});
       }
     });
   }
