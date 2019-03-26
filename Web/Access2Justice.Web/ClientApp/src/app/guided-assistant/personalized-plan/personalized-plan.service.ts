@@ -116,6 +116,8 @@ export class PersonalizedPlanService {
 
         return this.http.put<any>(api.getPersonalizedResourcesUrl, resourcesFilter, httpOptions).pipe(
           map(response => {
+            console.log()
+            console.log(response);
             if (response) {
               personalizedResources.resources = response['resources'];
               personalizedResources.topics = response['topics'];
