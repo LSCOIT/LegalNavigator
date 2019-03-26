@@ -13,6 +13,9 @@ export interface ShareView {
 }
 
 export interface ShareData {
-  link?: string;
-  email?: string;
+  Oid?: string;
+  Email?: string;
+  ItemId?: string;
+  ResourceType?: string;
+  ResourceDetails?: any;
 }

@@ -160,8 +160,11 @@ export class ShareButtonComponent implements OnInit {
 
   submitShareLink() {
     this.shareService.shareLinkToUser({
-      link: this.permaLink,
-      email: this.sendForm.value.email
+      Oid: this.global.userId,
+      Email: this.sendForm.value.email,
+      ItemId: this.id,
+      ResourceType: this.type,
+      ResourceDetails: {}
     }).subscribe(() => {
       this.sendForm.reset();
     });
