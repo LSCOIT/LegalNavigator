@@ -76,10 +76,12 @@ export class ShareButtonComponent implements OnInit {
     } else {
       this.checkPermalink();
     }
+    console.log(this);
   }
 
   close() {
     this.modalRef.hide();
+    this.sendForm.reset();
   }
 
   checkPermalink() {

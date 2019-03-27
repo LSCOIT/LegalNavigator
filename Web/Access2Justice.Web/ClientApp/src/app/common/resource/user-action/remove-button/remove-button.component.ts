@@ -184,7 +184,7 @@ export class RemoveButtonComponent implements OnInit {
       this.eventUtilityService.updateSharedResource('RESOURCE REMOVED');
     });
   }
-  
+
   ngOnInit() {
   }
 }

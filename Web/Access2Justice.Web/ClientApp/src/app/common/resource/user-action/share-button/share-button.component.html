@@ -28,7 +28,7 @@
           Note: Anyone with this link will be able to access this content.
           <br/>Link will automatically expire after 12 months.
         </p>
-        <div class="share-to-user row">
+        <div *ngIf="type !== 'WebResources'" class="share-to-user row">
           <h4>Share link to other user</h4>
           <form [formGroup]="sendForm" class="input-button" (ngSubmit)="submitShareLink()">
             <input type="email" formControlName="email"/>

@@ -246,9 +246,10 @@ export class PersonalizedPlanService {
     this.resourceTags = [];
 
     this.getUserSavedResources().subscribe(resources => {
-      if (!resources.length) {
-        return;
-      }
+      // todo for what this was need i don't know
+      // if (!resources.length) {
+      //   return;
+      // }
 
       this.spinner.show();
 
