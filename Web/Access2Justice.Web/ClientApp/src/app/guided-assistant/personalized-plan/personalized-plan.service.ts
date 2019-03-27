@@ -11,7 +11,7 @@ import { Global } from '../../global';
 import { LocationDetails } from '../../common/map/map';
 import { IResourceFilter } from '../../common/search/search-results/search-results.model';
 import { ArrayUtilityService } from '../../common/services/array-utility.service';
-import { IntentInput, PersonalizedPlan, PersonalizedPlanTopic, ProfileResources, SavedResource, } from './personalized-plan';
+import { IntentInput, PersonalizedPlan, PersonalizedPlanTopic, ProfileResources, SavedResource, RemovedElem} from './personalized-plan';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -68,8 +68,8 @@ export class PersonalizedPlanService {
     );
   }
 
-  getUserSavedResources(): Observable<SavedResource[]> {
-    return this.http.post<any>(api.getProfileUrl, null, {params: {oid: this.getUserId(), type: 'resources'}}).pipe(
+  getUserSavedResources(type = 'resources'): Observable<SavedResource[]> {
+    return this.http.post<any>(api.getProfileUrl, null, {params: {oid: this.getUserId(), type: type}}).pipe(
       map(response => {
         if (Array.isArray(response)) {
           return response[0] ? response[0].resources || [] : [];
@@ -80,8 +80,8 @@ export class PersonalizedPlanService {
     );
   }
 
-  getPersonalizedResources(): Observable<any> {
-    return this.getUserSavedResources().pipe(
+  getPersonalizedResources(type = 'resources'): Observable<any> {
+    return this.getUserSavedResources(type).pipe(
       switchMap(resources => {
         const webResources = [];
 
@@ -120,7 +120,6 @@ export class PersonalizedPlanService {
               personalizedResources.resources = response['resources'];
               personalizedResources.topics = response['topics'];
             }
-
             return personalizedResources;
           })
         );
@@ -130,6 +129,10 @@ export class PersonalizedPlanService {
 
   saveResources(resource: ProfileResources) {
     return this.http.post(api.userPlanUrl, resource, httpOptions);
+  }
+
+  removeSharedResources(resource: RemovedElem){
+    return this.http.post(api.removeSharedResources, resource, httpOptions);
   }
 
   userPlan(plan): Observable<any> {
@@ -243,9 +246,10 @@ export class PersonalizedPlanService {
     this.resourceTags = [];
 
     this.getUserSavedResources().subscribe(resources => {
-      if (!resources.length) {
-        return;
-      }
+      // todo for what this was need i don't know
+      // if (!resources.length) {
+      //   return;
+      // }
 
       this.spinner.show();
 

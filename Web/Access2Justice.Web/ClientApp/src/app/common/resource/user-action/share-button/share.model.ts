@@ -11,3 +11,11 @@ export interface ShareView {
   IsShared?: boolean;
   ResourceUrl?: string;
 }
+
+export interface ShareData {
+  Oid?: string;
+  Email?: string;
+  ItemId?: string;
+  ResourceType?: string;
+  ResourceDetails?: any;
+}

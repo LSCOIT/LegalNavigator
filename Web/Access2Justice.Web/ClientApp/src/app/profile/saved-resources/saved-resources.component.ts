@@ -83,7 +83,6 @@ export class SavedResourcesComponent implements OnInit, OnDestroy {
         }
       });
     }
-
     return result;
   }
 

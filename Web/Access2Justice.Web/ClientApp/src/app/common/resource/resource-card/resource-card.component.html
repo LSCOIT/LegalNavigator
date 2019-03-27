@@ -27,6 +27,7 @@
             </li>
             <li role="menuitem" *ngIf="showRemoveOption">
               <app-remove-button class="dropdown-item" [resourceId]="resource.id" [resourceType]="resource.resourceType"
+                                 [sharedResources]="true"
                                  [personalizedResources]="personalizedResources"></app-remove-button>
             </li>
           </ul>
@@ -346,6 +347,7 @@
           </div>
         </div>
       </ng-template>
+      <div class="shared-by" *ngIf="resource.shared">Shared by: {{resource.shared.sharedBy}}</div>
     </div>
   </div>
   <ng-template #template>
