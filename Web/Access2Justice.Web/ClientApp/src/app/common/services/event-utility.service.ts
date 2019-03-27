@@ -17,7 +17,6 @@ export class EventUtilityService {
   }
 
   updateSharedResource(event: any) {
-    console.log(1);
     this.sharedResourceUpdatedSource.next(event);
   }
 

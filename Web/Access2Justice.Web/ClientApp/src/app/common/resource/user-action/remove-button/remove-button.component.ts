@@ -177,14 +177,14 @@ export class RemoveButtonComponent implements OnInit {
       sharedBy: resource.shared.sharedBy,
       type: 'incoming-resources'
     };
-    this.personalizedPlanService.removeSharedResources(removedElem).subscribe(response =>{
-      // this.personalizedResources = response.resources;
-      console.log(response);
+    this.personalizedPlanService.removeSharedResources(removedElem).subscribe(() =>{
+      this.personalizedPlanService.showSuccess(
+        'Shared resource removed from profile'
+      );
       this.eventUtilityService.updateSharedResource('RESOURCE REMOVED');
     });
   }
-
-
+  
   ngOnInit() {
   }
 }
