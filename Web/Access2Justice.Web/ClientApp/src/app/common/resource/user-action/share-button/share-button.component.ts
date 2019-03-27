@@ -76,7 +76,6 @@ export class ShareButtonComponent implements OnInit {
     } else {
       this.checkPermalink();
     }
-    console.log(this);
   }
 
   close() {
