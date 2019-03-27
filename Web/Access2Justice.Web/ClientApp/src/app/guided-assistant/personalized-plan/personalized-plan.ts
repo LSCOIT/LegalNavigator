@@ -18,6 +18,7 @@ export interface RemovedElem {
   ItemId?: string;
   ResourceType?: string;
   SharedBy?: string;
+  Type?: string;
 }
 
 export interface PersonalizedPlan {

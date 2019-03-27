@@ -167,18 +167,20 @@ export class RemoveButtonComponent implements OnInit {
   }
 
   removeSharedResources(){
-    console.log(this);
-    const t = this.personalizedResources.find(o => {
+    const resource = this.personalizedResources.find(o => {
       return o.id === this.resourceId
     });
     const removedElem = {
       Oid: this.global.userId,
       itemId: this.resourceId,
       resourceType: this.resourceType,
-      sharedBy: t.shared.sharedBy
+      sharedBy: resource.shared.sharedBy,
+      type: 'incoming-resources'
     };
     this.personalizedPlanService.removeSharedResources(removedElem).subscribe(response =>{
+      // this.personalizedResources = response.resources;
       console.log(response);
+      this.eventUtilityService.updateSharedResource('RESOURCE REMOVED');
     });
   }
 
