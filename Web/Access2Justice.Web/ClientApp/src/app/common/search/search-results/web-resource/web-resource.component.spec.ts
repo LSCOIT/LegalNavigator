@@ -4,6 +4,7 @@ import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { SaveButtonComponent } from "../../../resource/user-action/save-button/save-button.component";
 import { ShareButtonComponent } from "../../../resource/user-action/share-button/share-button.component";
 import { WebResourceComponent } from "./web-resource.component";
+import { ReactiveFormsModule } from '@angular/forms';
 
 describe("WebResourceComponent", () => {
   let component: WebResourceComponent;
@@ -82,7 +83,10 @@ describe("WebResourceComponent", () => {
   };
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
+      imports: [
+        HttpClientModule,
+        ReactiveFormsModule
+      ],
       declarations: [
         WebResourceComponent,
         SaveButtonComponent,

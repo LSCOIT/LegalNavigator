@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { MsalService } from "@azure/msal-angular";
 import { BsModalRef, BsModalService, ComponentLoaderFactory, PositioningService } from "ngx-bootstrap";
 import { from } from "rxjs";
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { Global } from "../../../../global";
 import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
@@ -45,7 +46,10 @@ describe("ShareButtonComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
+      imports: [
+        HttpClientModule,
+        ReactiveFormsModule
+      ],
       declarations: [ShareButtonComponent],
       providers: [
         BsModalRef,
