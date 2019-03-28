@@ -1,5 +1,5 @@
 import { Component, HostListener, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators} from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MsalService } from '@azure/msal-angular';
 import { BsModalService } from 'ngx-bootstrap/modal';
@@ -36,7 +36,6 @@ export class ShareButtonComponent implements OnInit {
     UserId: '',
     Url: ''
   };
-  sendForm: any;
   shareView: any;
   blank: string = '';
   permaLink: string = '';
@@ -55,7 +54,6 @@ export class ShareButtonComponent implements OnInit {
     private navigateDataService: NavigateDataService,
     private router: Router,
     private personalizedPlanService: PersonalizedPlanService,
-    private formBuilder: FormBuilder
   ) {
     if (
       global.role === UserStatus.Shared &&
@@ -78,9 +76,13 @@ export class ShareButtonComponent implements OnInit {
     }
   }
 
+  formSharedResources = new FormGroup({
+    email: new FormControl('', [Validators.required, Validators.email])
+  });
+
   close() {
     this.modalRef.hide();
-    this.sendForm.reset();
+    this.formSharedResources.reset();
   }
 
   checkPermalink() {
@@ -162,19 +164,16 @@ export class ShareButtonComponent implements OnInit {
   submitShareLink() {
     this.shareService.shareLinkToUser({
       Oid: this.global.userId,
-      Email: this.sendForm.value.email,
+      Email: this.formSharedResources.value.email,
       ItemId: this.id,
       ResourceType: this.type,
       ResourceDetails: {}
     }).subscribe(() => {
-      this.sendForm.reset();
+      this.formSharedResources.reset();
     });
   }
 
   ngOnInit() {
-    this.sendForm = this.formBuilder.group({
-      email: ['', [Validators.required, Validators.email]]
-    });
     if (this.global.userId) {
       const hasLoggedIn = sessionStorage.getItem(this.sessionKey);
       if (hasLoggedIn) {

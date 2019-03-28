@@ -30,9 +30,9 @@
         </p>
         <div *ngIf="type !== 'WebResources'" class="share-to-user row">
           <h4>Share link to other user</h4>
-          <form [formGroup]="sendForm" class="input-button" (ngSubmit)="submitShareLink()">
+          <form [formGroup]="formSharedResources" class="input-button" (ngSubmit)="submitShareLink()">
             <input type="email" formControlName="email"/>
-            <button type="submit" [disabled]="!sendForm.valid" class="copy-btn">
+            <button type="submit" [disabled]="!formSharedResources.valid" class="copy-btn">
               Send Link
             </button>
           </form>
