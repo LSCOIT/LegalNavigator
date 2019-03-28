@@ -12,8 +12,8 @@ import { EventUtilityService } from "../../common/services/event-utility.service
 })
 export class IncomingResourcesComponent implements OnInit, OnDestroy {
 
+  public incomingResources = [];
   private incomingResourcesIds = [];
-  private incomingResources = [];
   private eventsSub: Subscription;
 
   constructor(
