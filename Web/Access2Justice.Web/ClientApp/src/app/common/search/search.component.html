@@ -22,4 +22,16 @@
       />
     </button>
   </div>
+  <div class="searchBlock"
+  >
+    <div *ngFor="let suggestion of mock.suggestions">
+      <div>{{suggestion}}</div>
+    </div>
+    <div *ngIf="mock.resources">
+      <div>Articles</div>
+      <div *ngFor="let suggestion of mock.resources">
+
+      </div>
+    </div>
+  </div>
 </form>

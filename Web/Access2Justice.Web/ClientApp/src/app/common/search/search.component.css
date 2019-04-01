@@ -25,6 +25,18 @@ form > div {
   margin-right: -5px;
 }
 
+.searchBlock {
+  float: right;
+  position: relative;
+  top: 10px;
+  width: 350px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.1);
+}
+
 #search {
   width: 90%;
   display: inline-block;

@@ -149,7 +149,7 @@ export class SavedResourcesComponent implements OnInit, OnDestroy {
   private getResources(): void {
     this.personalizedPlanService.getPersonalizedResources().subscribe(personalizedResources => {
       this.personalizedResources = personalizedResources;
-
+      console.log(personalizedResources);
       if (this.personalizedResources) {
         this.resources = this.personalizedResources.resources.concat(
           this.personalizedResources.topics,

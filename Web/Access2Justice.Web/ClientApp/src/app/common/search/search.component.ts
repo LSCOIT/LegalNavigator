@@ -27,6 +27,7 @@ export class SearchComponent implements OnInit {
   };
   mapLocation: MapLocation;
   locationDetails: LocationDetails;
+  mock: any;
 
   constructor(
     private searchService: SearchService,
@@ -70,5 +71,23 @@ export class SearchComponent implements OnInit {
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.mock = {
+      suggestions: [
+        'lol kek',
+        'cheburek',
+        'chicki-briki'
+      ],
+        resources: [
+          'Lorem ipsum dolor sit amet, consectetur adipisicing',
+          'Lorem ipsum dolor sit amet, consectetur adipisicing',
+          'Lorem ipsum dolor sit amet, consectetur adipisicing'
+        ],
+        relatedTopics: [
+          'Lorem ipsum dolor sit amet, consectetur adipisicing',
+          'Lorem ipsum dolor sit amet, consectetur adipisicing',
+          'Lorem ipsum dolor sit amet, consectetur adipisicing'
+        ]
+    };
+  }
 }
