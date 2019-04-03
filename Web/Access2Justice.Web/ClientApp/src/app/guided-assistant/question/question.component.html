@@ -119,7 +119,7 @@
         </ng-template>
       </div>
     </div>
-    <div *ngIf="question.questionsRemaining > 1; else viewPlanBlock">
+    <div *ngIf="question.questionsRemaining > 0; else viewPlanBlock">
       <div class="row button-row" *ngIf="question.buttons">
         <div *ngIf="question.buttons.length > 1" class="button-container">
           <ul class="multi-button">

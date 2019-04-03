@@ -115,7 +115,6 @@ export class QuestionComponent implements OnInit {
         this.router.navigate(["/plan", response.id]);
       }
     });
-    console.log(this.question);
   }
 
   ngOnInit() {
