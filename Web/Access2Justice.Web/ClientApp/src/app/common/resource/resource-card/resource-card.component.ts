@@ -113,7 +113,6 @@ export class ResourceCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    const youtubeUrlToIframe = url => url.replace('watch?v=','embed/').concat('?controls=2&iv_load_policy=3&modestbranding=1&showinfo=1');
     if (this.searchResource != null || this.searchResource != undefined) {
       this.resource = this.searchResource;
     } else {
@@ -127,8 +126,12 @@ export class ResourceCardComponent implements OnInit {
     } catch (e) {
       this.urlOrigin = this.resource.url;
     }
-    if(this.resource.resourceType === "Videos"){
-      this.resource.iframeUrl = youtubeUrlToIframe(this.resource.url);
+    if(this.resource.resourceType === "Videos") {
+      var match = this.resource.url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
+      var videoId = match && match[2];
+      if (videoId && videoId.length === 11) {
+        this.resource.iframeUrl = '//www.youtube.com/embed/' + videoId;
+      }
     }
   }
 }
