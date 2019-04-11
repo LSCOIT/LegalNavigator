@@ -1,3 +1,4 @@
+[![Build status](https://dev.azure.com/asaperski/LegalNav/_apis/build/status/LegalNav-CI-Build)](https://dev.azure.com/asaperski/LegalNav/_build/latest?definitionId=3)
 
 # Contributing
 
