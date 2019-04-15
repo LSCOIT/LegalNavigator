@@ -2,7 +2,7 @@
   *ngIf="question"
   class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 text-center question"
 >
-  <h4 *ngIf="question.text" id="question-text" [innerHTML]="question.text"></h4>
+  <h3 *ngIf="question.text" id="question-text" [innerHTML]="question.text"></h3>
   <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
     <div *ngIf="question.fields">
       <div *ngFor="let field of question.fields">
@@ -123,8 +123,7 @@
       <div class="row button-row" *ngIf="question.buttons">
         <div *ngIf="question.buttons.length > 1" class="button-container">
           <ul class="multi-button">
-            <li *ngFor="let button of question.buttons"
-                [ngClass]="button.label === 'Yes' || button.label === 'No' ? 'double': ''">
+            <li *ngFor="let button of question.buttons">
               <input
                 *ngIf="button.label !== 'Continue'"
                 type="radio"
@@ -135,7 +134,6 @@
               />
               <label
                 tabindex="0"
-                [ngClass]="{'yes':button.label === 'Yes', 'no':button.label === 'No'}"
                 (keyup.enter)="$event.target.click()"
                 class="p"
                 *ngIf="button.label !== 'Continue'"
