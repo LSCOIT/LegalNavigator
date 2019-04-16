@@ -41,8 +41,8 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     Location: {},
     IsResourceCountRequired: false,
     IsOrder: true,
-    OrderByField: 'date',
-    OrderBy: 'DESC'
+    OrderByField: 'name',
+    OrderBy: 'ASC'
   };
   luisInput: ILuisInput = {
     Sentence: '',
@@ -50,8 +50,8 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     LuisTopScoringIntent: '',
     TranslateFrom: '',
     TranslateTo: '',
-    OrderByField: 'date',
-    OrderBy: 'DESC'
+    OrderByField: 'name',
+    OrderBy: 'ASC'
   };
   location: any;
   topicIds: any[];

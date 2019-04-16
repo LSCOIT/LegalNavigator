@@ -22,8 +22,8 @@ export class SearchComponent implements OnInit {
     TranslateFrom: "",
     TranslateTo: "",
     LuisTopScoringIntent: "",
-    OrderByField: "date",
-    OrderBy: "DESC"
+    OrderByField: 'name',
+    OrderBy: 'ASC'
   };
   mapLocation: MapLocation;
   locationDetails: LocationDetails;

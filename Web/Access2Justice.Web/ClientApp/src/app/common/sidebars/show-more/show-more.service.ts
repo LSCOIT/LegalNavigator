@@ -21,7 +21,7 @@ export class ShowMoreService {
       zipCode: ""
     },
     IsResourceCountRequired: true,
-    IsOrder: false,
+    IsOrder: true,
     OrderByField: "",
     OrderBy: ""
   };
@@ -51,8 +51,8 @@ export class ShowMoreService {
     }
     this.resourceFilter.Location = this.locationDetails.location;
     this.resourceFilter.IsResourceCountRequired = true;
-    this.resourceFilter.OrderBy = "DESC";
-    this.resourceFilter.OrderByField = "date";
+    this.resourceFilter.OrderBy = "ASC";
+    this.resourceFilter.OrderByField = "name";
     this.paginationService
       .getPagedResources(this.resourceFilter)
       .subscribe(response => {
