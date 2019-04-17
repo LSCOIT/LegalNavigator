@@ -115,7 +115,7 @@ export class SubtopicDetailComponent implements OnInit {
     this.topicService
       .getSubtopicDetail(this.activeSubtopicParam)
       .subscribe(data => {
-        this.subtopicDetails = data;
+        this.subtopicDetails = data.sort((a, b) => a.name === b.name ? 0 : (a.name < b.name ? -1 : 1));
         this.filterSubtopicDetail();
       });
   }
