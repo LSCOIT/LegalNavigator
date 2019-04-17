@@ -30,6 +30,8 @@
       <app-share-button
         [showIcon]="false"
         [addLinkClass]="true"
+        [id]="resourceId"
+        [type]="resourceType"
       ></app-share-button>
     </div>
     <div class="col-sm-4 sidebar-block">
@@ -50,7 +52,10 @@
   <li *ngIf="showSave">
     <app-save-button [id]="resourceId" [type]="resourceType"></app-save-button>
   </li>
-  <li><app-share-button></app-share-button></li>
+  <li><app-share-button
+    [id]="resourceId"
+    [type]="resourceType"
+  ></app-share-button></li>
   <li *ngIf="showPrint"><app-print-button></app-print-button></li>
   <li class="popover-wrapper" *ngIf="showDownload">
     <app-download-button></app-download-button>

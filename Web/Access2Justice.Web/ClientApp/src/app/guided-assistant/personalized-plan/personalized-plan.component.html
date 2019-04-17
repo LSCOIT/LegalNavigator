@@ -88,13 +88,19 @@
   <app-service-org-sidebar [fullPage]="true"></app-service-org-sidebar>
 </div>
 <div class="row user-action mobile-hidden">
-  <app-user-action-sidebar [mobile]="false"></app-user-action-sidebar>
+  <app-user-action-sidebar
+    [mobile]="false"
+    [id]="activeActionPlan"
+    [type]="type"
+  ></app-user-action-sidebar>
 </div>
 <div class="row user-action web-hidden text-center">
   <app-user-action-sidebar
     [mobile]="true"
     [showPrint]="true"
     [showDownload]="true"
+    [id]="activeActionPlan"
+    [type]="type"
   >
   </app-user-action-sidebar>
 </div>

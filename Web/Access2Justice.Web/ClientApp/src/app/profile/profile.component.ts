@@ -25,6 +25,7 @@ export class ProfileComponent implements OnInit {
   planTopic: PersonalizedPlanTopic;
   userId: string;
   userName: string;
+  sharedResourceId: string;
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
@@ -38,6 +39,7 @@ export class ProfileComponent implements OnInit {
       this.route.data.pipe(map(data => data.cres)).subscribe(response => {
         if (response) {
           this.userId = response.oId;
+          this.sharedResourceId = response.sharedResourceId;
           this.global.setProfileData(
             response.oId,
             response.name,
