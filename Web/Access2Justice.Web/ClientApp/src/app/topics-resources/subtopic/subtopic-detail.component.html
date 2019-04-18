@@ -24,21 +24,8 @@
             <h2>Overview</h2>
             <p>{{ subtopics.overview }}</p>
           </div>
-          <div class="row" *ngIf="relatedLinksData.length">
-            <h5>Additional Readings</h5>
-            <ul>
-              <li *ngFor="let resource of relatedLinksData">
-                <a class="link p" href="{{ resource.url }}">
-                  {{resource.name}}
-                </a>
-                <div class="print-only">
-                  {{ resource.url }}
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
       </div>
+    </div>
       <div *ngIf="actionPlanData.length > 0" class="row">
         <a [routerLink]="['/resource', '123']"> 
           <h3>Action Plans</h3>
@@ -125,6 +112,17 @@
           See more Forms
         </button>
       </div>
+      <div class="row" *ngIf="relatedLinksData.length">
+        <h3>Additional Readings</h3>
+        <div *ngFor="let resource of relatedLinksData;">
+        <app-resource-card
+          [resource]="resource"
+          [showRemoveOption]="false"
+          [sharedResources]="false"
+        >
+        </app-resource-card>
+      </div>
+    </div>
     </div>
     <div class="col-md-4 col-sm-12 sidebars">
       <div class="mapWrap">
