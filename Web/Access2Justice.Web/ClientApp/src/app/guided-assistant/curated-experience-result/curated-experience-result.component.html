@@ -46,7 +46,7 @@
     </ng-template>
     <div class="row" *ngIf="relevantIntents.length > 0">
       <div class="col-sm-12 relevant-intent">
-        <h5>You may also be interested in the following topic:</h5>
+        <h5>You may also be interested in the following topic{{ relevantIntents.length > 1 ? 's' : '' }}:</h5>
         <form>
           <div class="button-container">
             <ul>
