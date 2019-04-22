@@ -888,9 +888,35 @@ namespace Access2Justice.Api.BusinessLogic
                     await dbClient.FindItemsWhereInClauseAsync(
                         dbSettings.TopicsCollectionId, "id", resourceFilter.TopicIds) ?? Array.Empty<string>());
             }
+
             if (resourceFilter.ResourceIds != null && resourceFilter.ResourceIds.Count() > 0)
             {
-                Resources = await dbClient.FindItemsWhereInClauseAsync(dbSettings.ResourcesCollectionId, "id", resourceFilter.ResourceIds) ?? Array.Empty<string>();
+                Resources = await dbClient.FindItemsWhereInClauseAsync(dbSettings.ResourcesCollectionId, "id", resourceFilter.ResourceIds);
+
+                var resourcesList = Resources as List<dynamic>;
+
+                if (resourcesList == null)
+                {
+                    resourcesList = new List<dynamic>();
+                    Resources = resourcesList;
+                }
+
+                if (resourcesList.Count != resourceFilter.ResourceIds.Count())
+                {
+                    var sharedPlansList = await dbClient.
+                        FindItemsWhereInClauseAsync(dbSettings.ActionPlansCollectionId, "id", resourceFilter.ResourceIds) as List<dynamic>;
+
+                    if (sharedPlansList != null &&
+                        sharedPlansList.Count > 0)
+                    {
+                        resourcesList.AddRange(sharedPlansList);
+                    }
+                }
+
+                if (Resources == null)
+                {
+                    Resources = Array.Empty<string>();
+                }
             }
             Topics = JsonConvert.SerializeObject(Topics);
             Resources = JsonConvert.SerializeObject(Resources);
