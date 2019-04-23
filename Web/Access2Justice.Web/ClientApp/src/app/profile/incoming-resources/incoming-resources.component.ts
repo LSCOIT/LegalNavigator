@@ -13,6 +13,7 @@ import { EventUtilityService } from "../../common/services/event-utility.service
 export class IncomingResourcesComponent implements OnInit, OnDestroy {
 
   public incomingResources = [];
+  public planDetails = [];
   private incomingResourcesIds = [];
   private eventsSub: Subscription;
 
@@ -26,12 +27,27 @@ export class IncomingResourcesComponent implements OnInit, OnDestroy {
     this.personalizedPlanService.getUserSavedResources('incoming-resources').subscribe(incResIds => { this.incomingResourcesIds = incResIds });
     this.personalizedPlanService.getPersonalizedResources('incoming-resources').subscribe(incomingResources => {
       this.incomingResources = [];
+      var planDetailTags = {
+        topics: []
+      };
+
       for (let key in incomingResources) {
         incomingResources[key].forEach(i => {
-          i.shared = this.incomingResourcesIds.find(o => o.itemId === i.id);
-          this.incomingResources.push(i)
+          var isSharedPlan = i.topics;
+          var resource = isSharedPlan ? i.topics[0] : i;
+          resource.shared = this.incomingResourcesIds.find(o => o.itemId === i.id);
+
+          if (isSharedPlan) {
+            planDetailTags.topics.push(resource);
+          } else {
+            this.incomingResources.push(resource);
+          }
         });
       }
+
+      this.planDetails = this.personalizedPlanService.getPlanDetails(
+        planDetailTags.topics, planDetailTags
+      );
     });
   }
 

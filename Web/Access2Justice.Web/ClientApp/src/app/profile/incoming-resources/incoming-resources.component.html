@@ -7,10 +7,17 @@
 <div class="row">
   <div class="col-sm-12">
     <div *ngFor="let resource of incomingResources">
-      <app-resource-card [searchResource]="resource"
-                         [sharedResources]="true"
-                         [personalizedResources]="incomingResources"
-                         [showRemoveOption]="true"></app-resource-card>
+      <app-resource-card
+        [searchResource]="resource"
+        [sharedResources]="true"
+        [personalizedResources]="incomingResources"
+        [showRemoveOption]="true"
+      >
+      </app-resource-card>
     </div>
+    <app-action-plans
+      [planDetails]="planDetails"
+    >
+    </app-action-plans>
   </div>
 </div>
