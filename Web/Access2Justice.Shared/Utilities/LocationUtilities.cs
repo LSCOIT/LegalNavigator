@@ -5,14 +5,14 @@ namespace Access2Justice.Shared.Utilities
 {
     public static class LocationUtilities
     {
-        public static IEnumerable<Location> GetSearchLocations(Location initialLoation)
+        public static IEnumerable<Location> GetSearchLocations(Location initialLocation)
         {
-            if (initialLoation != null)
+            if (initialLocation != null)
             {
-                var state = initialLoation.State ?? string.Empty;
-                var county = initialLoation.County ?? string.Empty;
-                var city = initialLoation.City ?? string.Empty;
-                var zipCode = initialLoation.ZipCode ?? string.Empty;
+                var state = initialLocation.State ?? string.Empty;
+                var county = initialLocation.County ?? string.Empty;
+                var city = initialLocation.City ?? string.Empty;
+                var zipCode = initialLocation.ZipCode ?? string.Empty;
 
                 if (!string.IsNullOrWhiteSpace(zipCode))
                 {
@@ -20,13 +20,13 @@ namespace Access2Justice.Shared.Utilities
                 }
                 zipCode = string.Empty;
 
-                if (!string.IsNullOrWhiteSpace(initialLoation.City))
+                if (!string.IsNullOrWhiteSpace(initialLocation.City))
                 {
                     yield return new Location(state, county, city, zipCode);
                 }
                 city = string.Empty;
 
-                if (!string.IsNullOrWhiteSpace(initialLoation.County))
+                if (!string.IsNullOrWhiteSpace(initialLocation.County))
                 {
                     yield return new Location(state, county, city, zipCode);
                 }
@@ -36,8 +36,18 @@ namespace Access2Justice.Shared.Utilities
             }
             else
             {
-                yield return initialLoation;
+                yield return initialLocation;
             }
+        }
+
+        public static Location GetNotNullLocation(Location initialLocation)
+        {
+            var state = initialLocation?.State ?? string.Empty;
+            var county = initialLocation?.County ?? string.Empty;
+            var city = initialLocation?.City ?? string.Empty;
+            var zipCode = initialLocation?.ZipCode ?? string.Empty;
+
+            return new Location(state, county, city, zipCode);
         }
     }
 }

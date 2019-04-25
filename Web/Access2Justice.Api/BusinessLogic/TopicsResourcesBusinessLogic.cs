@@ -53,10 +53,19 @@ namespace Access2Justice.Api.BusinessLogic
         {
             dynamic topics = new List<dynamic>();
 
+            var searchKeyword = string.IsNullOrWhiteSpace(keyword) ?
+                keyword :
+                keyword.ToLower();
+
             foreach (var searchLocation in LocationUtilities.GetSearchLocations(location))
             {
-                topics = await dbClient.FindItemsWhereContainsWithLocationAsync(
-                        dbSettings.TopicsCollectionId, "keywords", keyword, searchLocation);
+                topics = await dbClient.
+                    FindItemsWhereContainsWithLocationAsync(
+                        dbSettings.TopicsCollectionId,
+                        "keywords",
+                        searchKeyword,
+                        searchLocation,
+                        ignoreCase: true);
 
                 if (topics.Count > 0)
                 {

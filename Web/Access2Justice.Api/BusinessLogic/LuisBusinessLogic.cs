@@ -81,7 +81,7 @@ namespace Access2Justice.Api
             TextInfo textInfo = cultureInfo.TextInfo;
             Location location = luisInput.Location;
 
-            var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(textInfo.ToTitleCase(keyword), location);
+            var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
 
             List<string> topicIds = new List<string>();
             foreach (var item in topics)
