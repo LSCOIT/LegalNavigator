@@ -28,6 +28,8 @@
           [src]="'data:image/jpg;base64,' + image?.source"
           [alt]="image?.altText"
         />
+        <br>
+        {{ personalizedPlanContent.organizationalUnit === "AK" ? image.altText : "" }}
       </div>
     </div>
   </div>
