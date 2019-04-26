@@ -117,7 +117,14 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> UpsertStaticHomePageDataAsync(HomeContent homePageContent)
         {
             dynamic result = null;
-            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, homePageContent.Name, homePageContent.Location.FirstOrDefault());
+            EnsureNotNullLocation(homePageContent);
+
+            var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(
+                dbSettings.StaticResourcesCollectionId,
+                Constants.Name,
+                homePageContent.Name,
+                homePageContent.Location.FirstOrDefault());
+
             if (pageDBData?.Count > 0)
             {
                 string id = pageDBData[0].id;
@@ -136,6 +143,8 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> UpsertStaticPrivacyPromisePageDataAsync(PrivacyPromiseContent privacyPromisePageContent)
         {
             dynamic result = null;
+            EnsureNotNullLocation(privacyPromisePageContent);
+
             var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, privacyPromisePageContent.Name, privacyPromisePageContent.Location.FirstOrDefault());
             if (pageDBData?.Count > 0)
             {
@@ -155,6 +164,8 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> UpsertStaticHelpAndFAQPageDataAsync(HelpAndFaqsContent helpAndFAQPageContent)
         {
             dynamic result = null;
+            EnsureNotNullLocation(helpAndFAQPageContent);
+
             var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, helpAndFAQPageContent.Name, helpAndFAQPageContent.Location.FirstOrDefault());
             if (pageDBData?.Count > 0)
             {
@@ -174,6 +185,8 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> UpsertStaticNavigationDataAsync(Navigation navigationContent)
         {
             dynamic result = null;
+            EnsureNotNullLocation(navigationContent);
+
             var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, navigationContent.Name, navigationContent.Location.FirstOrDefault());
             if (pageDBData?.Count > 0)
             {
@@ -193,6 +206,8 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> UpsertStaticAboutPageDataAsync(AboutContent aboutPageContent)
         {
             dynamic result = null;
+            EnsureNotNullLocation(aboutPageContent);
+
             var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, aboutPageContent.Name, aboutPageContent.Location.FirstOrDefault());
             if (pageDBData?.Count > 0)
             {
@@ -212,6 +227,8 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> UpsertStaticPersnalizedPlanPageDataAsync(PersonalizedPlanContent personalizedPlanContent)
         {
             dynamic result = null;
+            EnsureNotNullLocation(personalizedPlanContent);
+
             var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, personalizedPlanContent.Name, personalizedPlanContent.Location.FirstOrDefault());
             if (pageDBData?.Count > 0)
             {
@@ -230,6 +247,8 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> UpsertStaticGuidedAssistantPageDataAsync(GuidedAssistantPageContent guidedAssistantPageContent)
         {
             dynamic result = null;
+            EnsureNotNullLocation(guidedAssistantPageContent);
+
             var pageDBData = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId, Constants.Name, guidedAssistantPageContent.Name, guidedAssistantPageContent.Location.FirstOrDefault());
             if (pageDBData?.Count > 0)
             {
@@ -246,7 +265,20 @@ namespace Access2Justice.Api.BusinessLogic
             return result; 
         }
 
-        private dynamic DeserializeStaticContentData(dynamic staticContent)
+        private static void EnsureNotNullLocation(NameLocation staticResource)
+        {
+            if (staticResource?.Location != null &&
+                staticResource.Location.Count > 0)
+            {
+                staticResource.Location =
+                    staticResource.
+                        Location.
+                        Select(LocationUtilities.GetNotNullLocation).
+                        ToList();
+            }
+        }
+
+        private static dynamic DeserializeStaticContentData(dynamic staticContent)
         {
             var name = (string)staticContent.name;
             switch(name)
