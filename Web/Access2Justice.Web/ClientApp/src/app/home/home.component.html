@@ -144,9 +144,10 @@
       <h2>{{ sponsorOverviewData?.heading }}</h2>
       <div class="row" [innerHTML]="sponsorOverviewData?.description"></div>
       <div class="row">
-        <div *ngFor="let sponsor of sponsors" class="col-sm-6 sponsor-img">
+        <div *ngFor="let sponsor of sponsors" class="col-sm-4 sponsor-block">
           <img
             *ngIf="sponsor.source"
+            class="sponsor-img"
             [src]="'data:image/jpg;base64,' + sponsor?.source | sanitize"
             [alt]="sponsor.altText"
           />

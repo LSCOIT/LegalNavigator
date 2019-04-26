@@ -207,9 +207,16 @@ ul > li > span {
     width: 100%;
   }
 
-  .sponsor-img {
+  .sponsor-block {
     padding: 0 30px;
     margin-bottom: 0;
+  }
+
+  .sponsor-img {
+    width: auto;
+    height: auto;
+    max-height: 200px;
+    max-width: 300px;
   }
 }
 
