@@ -1,7 +1,4 @@
 <div class="search-result" [ngClass]="{ 'no-container': fullPage, container: !fullPage }">
-  <div class="row result-heading" *ngIf="isInternalResource || displayMessage">
-    <h2>Results for {{ topIntent }}</h2>
-  </div>
   <div *ngIf="isInternalResource || displayMessage">
     <div class="panel-heading box-shadow">
       <span class="label-display">Showing Information for </span>
