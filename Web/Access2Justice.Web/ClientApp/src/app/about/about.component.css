@@ -33,13 +33,11 @@ button {
 }
 
 .sponsor-logo {
-  height: 50px;
-  width: 200px;
+  max-height: 90px;
 }
 
-.sponsors .sponsor-logo:nth-child(odd) {
-  margin-right: 30px;
-  margin-bottom: 30px;
+.sponsors {
+  height: 90px;
 }
 
 .browse-topic {

@@ -14,10 +14,9 @@
       <h3>{{ aboutContent?.mission.title }}</h3>
       <div [innerHTML]="aboutContent?.mission.description"></div>
       <div class="row">
-        <div class="sponsors">
+        <div *ngFor="let sponsor of aboutContent?.mission?.sponsors" class="sponsors col-md-4 text-center d-flex">
           <img
-            *ngFor="let sponsor of aboutContent?.mission?.sponsors"
-            class="col-md-3 col-sm-12 sponsor-logo"
+            class="sponsor-logo mx-auto my-auto"
             [src]="'data:image/jpg;base64,' + sponsor.source"
             [alt]="sponsor.altText"
           />
