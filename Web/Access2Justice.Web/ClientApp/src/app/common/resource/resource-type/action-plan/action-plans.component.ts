@@ -78,6 +78,10 @@ export class ActionPlansComponent implements OnChanges {
 
   sortStepsByOrder(planDetails) {
     planDetails.topics.forEach(topic => {
+      topic.steps.forEach(step => {
+        // Match all URLs outside <a> tags. Next these urls will be wrapped with <a> tag.
+        step.description = step.description.replace(/(([--:\w?@%&+~#=]*\.[a-z]{2,4}\/{0,2})((?:[?&](?:\w+)=(?:\w+))+|[\w?@%&+~#=;\/\-]+)?)(?![^<>]*>|[^"]*?<\/a)/g, '<a href=\"$1\">$1</a>');
+      });
       topic.steps = this.orderBy(topic.steps, this.sortOrder);
     });
   }
