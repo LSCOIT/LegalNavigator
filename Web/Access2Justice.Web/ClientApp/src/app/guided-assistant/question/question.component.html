@@ -13,7 +13,7 @@
             else elseBlock
           "
         >
-          <ul>
+          <ul class="{{ field.label === 'Yes' || field.label === 'No' ? 'multi-button' : '' }}">
             <li>
               <input
                 *ngIf="field.type === 'radio'"
@@ -39,7 +39,7 @@
               >
               {{ field.label }}
               </label>
-              <div class="check"></div>
+              <div *ngIf="field.label !== 'Yes' && field.label !== 'No'" class="check"></div>
             </li>
           </ul>
         </div>
