@@ -19,6 +19,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Access2Justice.Shared.Admin;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -28,59 +29,95 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly ICosmosDbSettings cosmosDbSettings;
         private readonly IBackendDatabaseService backendDatabaseService;
         private readonly IHostingEnvironment hostingEnvironment;
-        private readonly ICuratedExperienceConvertor a2jAuthorBuisnessLogic;
+        private readonly ICuratedExperienceConvertor a2jAuthorBusinessLogic;
         private readonly IAdminSettings adminSettings;
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
 
         public AdminBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
             IBackendDatabaseService backendDatabaseService, IHostingEnvironment hostingEnvironment,
-            ICuratedExperienceConvertor a2jAuthorBuisnessLogic, IAdminSettings adminSettings,
+            ICuratedExperienceConvertor a2jAuthorBusinessLogic, IAdminSettings adminSettings,
             ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic)
         {
             this.dynamicQueries = dynamicQueries;
             this.cosmosDbSettings = cosmosDbSettings;
             this.backendDatabaseService = backendDatabaseService;
             this.hostingEnvironment = hostingEnvironment;
-            this.a2jAuthorBuisnessLogic = a2jAuthorBuisnessLogic;
+            this.a2jAuthorBusinessLogic = a2jAuthorBusinessLogic;
             this.adminSettings = adminSettings;
             this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
         }
 
-        public async Task<dynamic> UploadCuratedContentPackage(CuratedTemplate curatedTemplate)
+        public async Task<JsonUploadResult> UploadCuratedContentPackage(CuratedTemplate curatedTemplate)
         {
-            IFormFile file = curatedTemplate.TemplateFile.First();
-            if (file.Length > 0 && Path.GetExtension(file.FileName) == Constants.A2JTemplateFileExtension)
+            var file = curatedTemplate.TemplateFile.First();
+            if (file.Length <= 0 || Path.GetExtension(file.FileName) != Constants.A2JTemplateFileExtension)
             {
-                var templateOrder = new List<JToken>();
-                List<CuratedExperiencePackageTemplateModel> templateModel = new
-                    List<CuratedExperiencePackageTemplateModel>();
-
-                ExtractZipContent(file, out templateOrder, out templateModel);
-
-                var newTemplateId = Guid.NewGuid();
-                string resourceTitle = string.Empty;
-
-                GetTemplates(templateOrder, templateModel, out JObject mainTemplate, out JObject guideTemplate, out resourceTitle);
-
-                if (resourceTitle.ToUpperInvariant() == curatedTemplate.Name.ToUpperInvariant())
+                return new JsonUploadResult
                 {
-                    var response = await ImportA2JTemplate(mainTemplate, newTemplateId);
-                    if (response != null && response.Id != null)
-                    {
-                        var curatedDocumentResponse = ImportCuratedTemplate(guideTemplate, newTemplateId);
-                        if (curatedDocumentResponse != null && curatedDocumentResponse.CuratedExperienceId != null)
-                        {
-                            return await CreateGuidedAssistantResource(resourceTitle, curatedTemplate, curatedDocumentResponse.CuratedExperienceId.ToString());
-                        }
-                    }
-                }
-                else
-                    return adminSettings.NameValidationMessage;
+                    Message = adminSettings.FileExtensionMessage,
+                    ErrorCode = JsonUploadError.FileExtensionIsInvalid
+                };
             }
-            return adminSettings.FileExtensionMessage;
+            ExtractZipContent(file, out var templateOrder, out var templateModel);
+            if (templateOrder == null || templateOrder.Count == 0)
+            {
+                return new JsonUploadResult
+                {
+                    Message = string.Format(CultureInfo.InvariantCulture, adminSettings.CouldNotRetrieveTemplateOrderMessage, adminSettings.BaseTemplateFileFullName),
+                    ErrorCode = JsonUploadError.CouldNotRetrieveTemplateOrder
+                };
+            }
+            if (templateModel == null || templateModel.Count == 0)
+            {
+                return new JsonUploadResult
+                {
+                    Message = adminSettings.NoTemplateFilesMessage,
+                    ErrorCode = JsonUploadError.FilesNotFound
+                };
+            }
+            var newTemplateId = Guid.NewGuid();
+
+            var getTemplatesResult = GetTemplates(templateOrder, templateModel, out var mainTemplate, out var guideTemplate, out var resourceTitle);
+            if (getTemplatesResult?.ErrorCode != null)
+            {
+                return getTemplatesResult;
+            }
+
+            if (!string.Equals(resourceTitle, curatedTemplate.Name, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return new JsonUploadResult
+                {
+                    Message = adminSettings.NameValidationMessage,
+                    ErrorCode = JsonUploadError.NameIsIncorrect,
+                    Details =
+                        string.Format(CultureInfo.InvariantCulture, adminSettings.SameTitleInModelAndFileMessage,
+                            fullFileName(templateOrder.FirstOrDefault()?.ToString()))
+                };
+            }
+
+            var response = await ImportA2JTemplate(mainTemplate, newTemplateId);
+            if (response?.Id == null)
+            {
+                return new JsonUploadResult
+                {
+                    Message = adminSettings.A2JTemplateDbSaveError,
+                    ErrorCode = JsonUploadError.MainTemplateDbSaveError
+                };
+            }
+            var curatedDocumentResponse = ImportCuratedTemplate(guideTemplate, newTemplateId);
+            if (curatedDocumentResponse == null || curatedDocumentResponse.CuratedExperienceId == Guid.Empty)
+            {
+                return new JsonUploadResult
+                {
+                    Message = adminSettings.CuratedTemplateDbSaveError,
+                    ErrorCode = JsonUploadError.CuratedTemplateDbSaveError
+                };
+            }
+            return await CreateGuidedAssistantResource(resourceTitle, curatedTemplate, curatedDocumentResponse.CuratedExperienceId.ToString());
+
         }
 
-        private void GetTemplates(List<JToken> templateOrder, List<CuratedExperiencePackageTemplateModel> templateModel,
+        private JsonUploadResult GetTemplates(List<JToken> templateOrder, List<CuratedExperiencePackageTemplateModel> templateModel,
             out JObject mainTemplate, out JObject guideTemplate, out string resourceTitle)
         {
             var parentTemplateId = templateOrder.FirstOrDefault().ToString();
@@ -91,29 +128,72 @@ namespace Access2Justice.Api.BusinessLogic
 
             foreach (var model in templateModel)
             {
+                if (string.Equals(model.TemplateName, adminSettings.GuideTemplateFileName,
+                    StringComparison.InvariantCultureIgnoreCase))
+                {
+                    guideTemplate = model.Template;
+                    continue;
+                }
+
+                if (!model.Template.ContainsKey(adminSettings.RootNode))
+                {
+                    return new JsonUploadResult
+                    {
+                        Message = string.Format(CultureInfo.InvariantCulture, adminSettings.MissingNodeMessage, fullFileName(model.TemplateName)),
+                        ErrorCode = JsonUploadError.RootNodeIsMissing
+                    };
+                }
+                var rootNode = (JObject)model.Template[adminSettings.RootNode];
+                if (!rootNode.ContainsKey(adminSettings.ChildrenNode))
+                {
+                    return new JsonUploadResult
+                    {
+                        Message = string.Format(CultureInfo.InvariantCulture, adminSettings.MissingNodeMessage,
+                            fullFileName(model.TemplateName), "Children"),
+                        ErrorCode = JsonUploadError.ChildrenNodeIsMissing
+                    };
+                }
                 if (model.TemplateName == parentTemplateId)
                 {
                     mainTemplate = model.Template;
+                    if (!mainTemplate.ContainsKey("title"))
+                    {
+                        return new JsonUploadResult
+                        {
+                            Message = string.Format(CultureInfo.InvariantCulture, adminSettings.MissingNodeMessage,
+                                fullFileName(model.TemplateName), "Title"),
+                            ErrorCode = JsonUploadError.ChildrenNodeIsMissing
+                        };
+                    }
                     resourceTitle = mainTemplate.GetValue("title").ToString();
-                    JObject rootNode = (JObject)mainTemplate[adminSettings.RootNode];
+                    // var rootNode = (JObject)mainTemplate[adminSettings.RootNode];
                     mainTemplateChildren = (JArray)rootNode[adminSettings.ChildrenNode];
                 }
-                else if (model.TemplateName != parentTemplateId && model.TemplateName.ToUpperInvariant() != adminSettings.GuideTemplateFileName.ToUpperInvariant())
+                else if (model.TemplateName != parentTemplateId 
+                         && !string.Equals(model.TemplateName, adminSettings.GuideTemplateFileName, 
+                             StringComparison.InvariantCultureIgnoreCase))
                 {
-                    JObject childTemplate = model.Template;
-                    JObject childRootNode = (JObject)childTemplate[adminSettings.RootNode];
-                    JArray childrenNode = (JArray)childRootNode[adminSettings.ChildrenNode];
+                    if (mainTemplateChildren == null)
+                    {
+                        return new JsonUploadResult
+                        {
+                            Message = string.Format(CultureInfo.InvariantCulture, adminSettings.MissingNodeMessage,
+                                fullFileName(parentTemplateId), "Children"),
+                            ErrorCode = JsonUploadError.ChildrenNodeIsMissing
+                        };
+                    }
+                    var childrenNode = (JArray)rootNode[adminSettings.ChildrenNode];
                     foreach (var child in childrenNode)
                     {
                         mainTemplateChildren.Add(child);
                     }
                 }
-                else if (model.TemplateName.ToUpperInvariant() == adminSettings.GuideTemplateFileName.ToUpperInvariant())
-                {
-                    guideTemplate = model.Template;
-                }
             }
+
+            return null;
         }
+
+        private string fullFileName(string x) => $"{adminSettings.TemplateFileName}{x}.json";
 
         public async Task<Document> ImportA2JTemplate(JObject mainTemplate, Guid newTemplateId)
         {
@@ -125,23 +205,26 @@ namespace Access2Justice.Api.BusinessLogic
 
         public CuratedExperience ImportCuratedTemplate(JObject guideTemplate, Guid newTemplateId)
         {
-            return a2jAuthorBuisnessLogic.ConvertA2JAuthorToCuratedExperience(guideTemplate, true, newTemplateId);
+            return a2jAuthorBusinessLogic.ConvertA2JAuthorToCuratedExperience(guideTemplate, true, newTemplateId);
         }
 
-        public async Task<object> CreateGuidedAssistantResource(string resourceTitle, CuratedTemplate curatedTemplate, string curatedExperienceId)
+        public async Task<JsonUploadResult> CreateGuidedAssistantResource(string resourceTitle, CuratedTemplate curatedTemplate, string curatedExperienceId)
         {
             var resourceDetails = await topicsResourcesBusinessLogic.GetResourceDetailAsync(resourceTitle, Constants.GuidedAssistant);
             List<GuidedAssistant> resources = JsonUtilities.DeserializeDynamicObject<List<GuidedAssistant>>(resourceDetails);
-            Int64 maxVersion = default(Int64);
+            long maxVersion = default;
             foreach (var resource in resources)
             {
                 var resourceDetail = JsonUtilities.DeserializeDynamicObject<GuidedAssistant>(resource);
-                if (resourceDetail.Version == default(Int64))
+                if (resourceDetail.Version == default)
                 {
-                    resourceDetail.Version = IncrementVersion(default(Int64));
+                    resourceDetail.Version = IncrementVersion(default);
                 }
+
                 if (maxVersion.CompareTo(resourceDetail.Version) < 0)
+                {
                     maxVersion = resourceDetail.Version;
+                }
                 resourceDetail.IsActive = false;
 
                 await backendDatabaseService.UpdateItemAsync(resourceDetail.ResourceId.ToString(),
@@ -150,35 +233,43 @@ namespace Access2Justice.Api.BusinessLogic
 
             var topicDetails = await topicsResourcesBusinessLogic.GetTopicDetailsAsync(resourceTitle);
             List<Topic> topics = JsonUtilities.DeserializeDynamicObject<List<Topic>>(topicDetails);
-            if (topics.Count > 0)
+
+            if (topics.Count == 0)
             {
-                var guidedAssistantResource = new GuidedAssistant();
-                List<TopicTag> topicTags = new List<TopicTag>();
-                List<Location> locations = new List<Location>();
-
-                foreach (var topic in topics)
+                return new JsonUploadResult
                 {
-                    topicTags.Add(new TopicTag { TopicTags = topic.Id });
-                    foreach (var location in topic.Location)
-                    {
-                        locations.Add(location);
-                    }
-                }
-
-                guidedAssistantResource.ResourceId = Guid.NewGuid();
-                guidedAssistantResource.Name = curatedTemplate.Name;
-                guidedAssistantResource.Description = curatedTemplate.Description;
-                guidedAssistantResource.TopicTags = topicTags;
-                guidedAssistantResource.Location = locations;
-                guidedAssistantResource.Version = IncrementVersion(maxVersion);
-                guidedAssistantResource.IsActive = true;
-                guidedAssistantResource.ResourceType = Constants.GuidedAssistant;
-                guidedAssistantResource.CuratedExperienceId = curatedExperienceId;
-
-                await backendDatabaseService.CreateItemAsync(guidedAssistantResource, cosmosDbSettings.ResourcesCollectionId);
-                return adminSettings.SuccessMessage + " New Curated Experience ID " + curatedExperienceId;
+                    Message = string.Format(CultureInfo.InvariantCulture, adminSettings.MissingTopicMessage,
+                        resourceTitle),
+                    ErrorCode = JsonUploadError.MissingTopic
+                };
             }
-            return string.Format(CultureInfo.InvariantCulture, adminSettings.MissingTopicMessage, resourceTitle);
+
+            var guidedAssistantResource = new GuidedAssistant();
+            var topicTags = new List<TopicTag>();
+            var locations = new List<Location>();
+
+            foreach (var topic in topics)
+            {
+                topicTags.Add(new TopicTag { TopicTags = topic.Id });
+                locations.AddRange(topic.Location);
+            }
+
+            guidedAssistantResource.ResourceId = Guid.NewGuid();
+            guidedAssistantResource.Name = curatedTemplate.Name;
+            guidedAssistantResource.Description = curatedTemplate.Description;
+            guidedAssistantResource.TopicTags = topicTags;
+            guidedAssistantResource.Location = locations;
+            guidedAssistantResource.Version = IncrementVersion(maxVersion);
+            guidedAssistantResource.IsActive = true;
+            guidedAssistantResource.ResourceType = Constants.GuidedAssistant;
+            guidedAssistantResource.CuratedExperienceId = curatedExperienceId;
+
+            await backendDatabaseService.CreateItemAsync(guidedAssistantResource, cosmosDbSettings.ResourcesCollectionId);
+            return new JsonUploadResult
+            {
+                Message = adminSettings.SuccessMessage + " New Curated Experience ID " + curatedExperienceId
+            };
+
         }
 
         private void GetFilePath(IFormFile file, out string fullPath, out string uploadPath)
@@ -212,61 +303,73 @@ namespace Access2Justice.Api.BusinessLogic
         private void ExtractZipContent(IFormFile file, out List<JToken> templateOrder,
             out List<CuratedExperiencePackageTemplateModel> templateModel)
         {
-            string fullPath = string.Empty;
-            string uploadPath = string.Empty;
-
-            GetFilePath(file, out fullPath, out uploadPath);
+            GetFilePath(file, out var fullPath, out var uploadPath);
 
             templateModel = new List<CuratedExperiencePackageTemplateModel>();
             templateOrder = new List<JToken>();
 
-            using (ZipArchive archive = ZipFile.OpenRead(fullPath))
+            using (var archive = ZipFile.OpenRead(fullPath))
             {
-                string destinationPath = string.Empty;
-                foreach (ZipArchiveEntry entry in archive.Entries)
+                foreach (var entry in archive.Entries)
                 {
+                    string destinationPath;
                     if (entry.FullName.Equals(adminSettings.BaseTemplateFileFullName))
                     {
                         destinationPath = Path.GetFullPath(Path.Combine(uploadPath, entry.FullName));
 
                         if (destinationPath.StartsWith(uploadPath, StringComparison.Ordinal))
-                            entry.ExtractToFile(destinationPath);
-
-                        using (StreamReader reader = new StreamReader(destinationPath))
                         {
-                            string json = reader.ReadToEnd();
-                            var parser = JObject.Parse(json);
-                            templateOrder = parser.Properties().GetArrayValue(adminSettings.BaseTemplatePropertyForTemplateOrder)
-                                   .FirstOrDefault().ToList();
+                            entry.ExtractToFile(destinationPath);
                         }
+
+                        using (var reader = new StreamReader(destinationPath))
+                        {
+                            var json = reader.ReadToEnd();
+                            var parser = JObject.Parse(json);
+                            var templates = parser.Properties()
+                                .GetArrayValue(adminSettings.BaseTemplatePropertyForTemplateOrder)
+                                .FirstOrDefault();
+                            if (templates == null)
+                            {
+                                return;
+                            }
+                            templateOrder = templates.ToList();
+                        }
+
                         //Delete uploaded json file
                         DeleteFile(destinationPath);
                     }
 
-                    Match match = Regex.Match(entry.FullName, @"(" + adminSettings.TemplateFileName +
-                        @"([0-9\-]+)\.json$)|(" + adminSettings.GuideTemplateFileName + @"\.json)",
+                    var match = Regex.Match(entry.FullName,
+                        $@"({adminSettings.TemplateFileName}([0-9\-]+)\.json$)|({adminSettings.GuideTemplateFileName}\.json)",
                         RegexOptions.IgnoreCase);
 
-                    if (match.Success)
+                    if (!match.Success)
                     {
-                        destinationPath = Path.GetFullPath(Path.Combine(uploadPath, entry.FullName));
-
-                        if (destinationPath.StartsWith(uploadPath, StringComparison.Ordinal))
-                            entry.ExtractToFile(destinationPath);
-
-                        using (StreamReader reader = new StreamReader(destinationPath))
-                        {
-                            string json = reader.ReadToEnd();
-                            templateModel.Add(new CuratedExperiencePackageTemplateModel
-                            {
-                                TemplateName = Path.GetFileNameWithoutExtension(entry.FullName).
-                                Replace(adminSettings.TemplateFileName, ""),
-                                Template = JObject.Parse(json)
-                            });
-                        }
-                        //Delete uploaded json file
-                        DeleteFile(destinationPath);
+                        continue;
                     }
+
+                    destinationPath = Path.GetFullPath(Path.Combine(uploadPath, entry.FullName));
+
+                    if (destinationPath.StartsWith(uploadPath, StringComparison.Ordinal))
+                    {
+                        entry.ExtractToFile(destinationPath);
+                    }
+
+                    using (var reader = new StreamReader(destinationPath))
+                    {
+                        var json = reader.ReadToEnd();
+                        templateModel.Add(new CuratedExperiencePackageTemplateModel
+                        {
+                            TemplateName = Path.GetFileNameWithoutExtension(entry.FullName)
+                                .Replace(adminSettings.TemplateFileName, ""),
+                            Template = JObject.Parse(json)
+                        });
+                    }
+
+                    //Delete uploaded json file
+                    DeleteFile(destinationPath);
+
                 }
             }
 
@@ -282,7 +385,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
         }
 
-        private Int64 IncrementVersion(Int64 version)
+        private long IncrementVersion(long version)
         {
             return version + 1;
         }
