@@ -19,6 +19,12 @@ namespace Access2Justice.Shared
         string ValidationMessage { get; }
         string NameValidationMessage { get; }
         string MissingTopicMessage { get; }
-
+        string ModelStateInvalidMessage { get; }
+        string CouldNotRetrieveTemplateOrderMessage { get; }
+        string NoTemplateFilesMessage { get; }
+        string SameTitleInModelAndFileMessage { get; }
+        string A2JTemplateDbSaveError { get; }
+        string CuratedTemplateDbSaveError { get; }
+        string MissingNodeMessage { get; }
     }
 }

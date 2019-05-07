@@ -26,6 +26,14 @@ namespace Access2Justice.Shared.Admin
                 ValidationMessage = configuration.GetSection("CuratedExpImport:ValidationMessage").Value;
                 NameValidationMessage = configuration.GetSection("CuratedExpImport:NameValidationMessage").Value;
                 MissingTopicMessage = configuration.GetSection("CuratedExpImport:MissingTopicMessage").Value;
+                ModelStateInvalid = configuration.GetSection("CuratedExpImport:ModelStateInvalid").Value;
+                CouldNotRetrieveTemplateOrder = configuration.GetSection("CuratedExpImport:CouldNotRetrieveTemplateOrder").Value;
+                NoTemplateFilesMessage = configuration.GetSection("CuratedExpImport:NoTemplateFilesMessage").Value;
+                SameTitleInModelAndFileMessage =
+                    configuration.GetSection("CuratedExpImport:SameTitleInModelAndFileMessage").Value;
+                MissingNodeMessage = configuration.GetSection("CuratedExpImport:MissingNodeMessage").Value;
+                A2JTemplateDbSaveError = configuration.GetSection("CuratedExpImport:A2JTemplateDbSaveError").Value;
+                CuratedTemplateDbSaveError = configuration.GetSection("CuratedExpImport:CuratedTemplateDbSaveError").Value;
             }
             catch
             {
@@ -59,7 +67,18 @@ namespace Access2Justice.Shared.Admin
         public string NameValidationMessage { get; set; }
 
         public string MissingTopicMessage { get; set; }
+        public string ModelStateInvalidMessage { get; set; }
+        public string CouldNotRetrieveTemplateOrderMessage { get; set; }
+        public string NoTemplateFilesMessage { get; set; }
+        public string SameTitleInModelAndFileMessage { get; set; }
+        public string A2JTemplateDbSaveError { get; set; }
+        public string CuratedTemplateDbSaveError { get; set; }
+        public string MissingNodeMessage { get; set; }
 
         public string ValidationMessage { get; set; }
+
+        public string ModelStateInvalid { get; set; }
+
+        public string CouldNotRetrieveTemplateOrder { get; set; }
     }
 }
