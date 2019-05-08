@@ -9,6 +9,7 @@
     <NoWarn>$(NoWarn);1591</NoWarn>
     <ApplicationInsightsResourceId>/subscriptions/892808ef-ec24-447c-9441-2a832d7a3d04/resourcegroups/A2J-develop-rg/providers/microsoft.insights/components/Access2JusticeApiAppInsights</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/892808ef-ec24-447c-9441-2a832d7a3d04/resourcegroups/A2J-develop-rg/providers/microsoft.insights/components/Access2JusticeApiAppInsights</ApplicationInsightsAnnotationResourceId>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

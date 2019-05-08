@@ -212,13 +212,13 @@ namespace Access2Justice.Api.BusinessLogic
         {
             var resourceDetails = await topicsResourcesBusinessLogic.GetResourceDetailAsync(resourceTitle, Constants.GuidedAssistant);
             List<GuidedAssistant> resources = JsonUtilities.DeserializeDynamicObject<List<GuidedAssistant>>(resourceDetails);
-            long maxVersion = default;
+            var maxVersion = default(long);
             foreach (var resource in resources)
             {
                 var resourceDetail = JsonUtilities.DeserializeDynamicObject<GuidedAssistant>(resource);
-                if (resourceDetail.Version == default)
+                if (resourceDetail.Version == default(long))
                 {
-                    resourceDetail.Version = IncrementVersion(default);
+                    resourceDetail.Version = IncrementVersion(default(long));
                 }
 
                 if (maxVersion.CompareTo(resourceDetail.Version) < 0)
