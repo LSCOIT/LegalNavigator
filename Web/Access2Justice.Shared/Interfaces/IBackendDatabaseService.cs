@@ -32,7 +32,7 @@ namespace Access2Justice.Shared.Interfaces
         Task DeleteItemAsync(string id, string collectionId);
         Task<T> GetItemAsync<T>(string id, string collectionId);
         Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate,string collectionId);
-        Task<dynamic> QueryItemsAsync(string collectionId, string query);
+        Task<dynamic> QueryItemsAsync(string collectionId, string query, Dictionary<string, object> sqlParams = null);
         Task<ICollection<T>> QueryItemsAsync<T>(string collectionId, params Expression<Func<T, bool>>[] whereCondition);
         Task<dynamic> ExecuteStoredProcedureAsync(string collectionId, string storedProcName, string partitionKey, params dynamic[] procedureParams);
         Task<Document> UpdateItemAsync<T>(string id, T item, string collectionId);

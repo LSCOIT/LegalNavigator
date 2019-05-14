@@ -36,17 +36,19 @@ namespace Access2Justice.CosmosDb
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
 
-            var query = string.Empty;
+            string query;
+            Dictionary<string, object> sqlParams = null;
             if (string.IsNullOrWhiteSpace(value))
             {
                 query = $"SELECT * FROM c WHERE c.{propertyName}=[]";
             }
             else
             {
-                query = $"SELECT * FROM c WHERE c.{propertyName}='{value}'";
+                query = $"SELECT * FROM c WHERE c.{propertyName}=@valueToSearch";
+                sqlParams = new Dictionary<string, object> { { "valueToSearch", value } };
             }
 
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, sqlParams);
         }
 
         public async Task<dynamic> FindItemsWhereAsync(string collectionId, List<string> propertyNames, List<string> values)

@@ -29,7 +29,7 @@ namespace Access2Justice.Api.BusinessLogic
         {
             var resultUserData = await dbClient.FindItemsWhereAsync(
                 dbSettings.ProfilesCollectionId,
-                Constants.Email, email);
+                Constants.Email, email.ToLower());
 
             return ConvertUserProfile(resultUserData);
         }

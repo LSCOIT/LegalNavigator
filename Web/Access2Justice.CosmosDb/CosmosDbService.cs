@@ -91,11 +91,21 @@ namespace Access2Justice.CosmosDb
                 UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, collectionId, id));
         }
 
-        public async Task<dynamic> QueryItemsAsync(string collectionId, string query)
+        public async Task<dynamic> QueryItemsAsync(string collectionId, string query, Dictionary<string, object> sqlParams = null)
         {
             var uri = UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId);
             var options = new FeedOptions { EnableCrossPartitionQuery = true };
-            var docQuery = documentClient.CreateDocumentQuery<dynamic>(uri, query, options).AsDocumentQuery();
+            var sqlParameters = new SqlParameterCollection();
+            if (sqlParams != null)
+            {
+                sqlParameters = new SqlParameterCollection(
+                    sqlParams.Select(x => new SqlParameter($"@{x.Key}", x.Value)));
+            }
+            var docQuery = documentClient.CreateDocumentQuery<dynamic>(
+                uri,
+                new SqlQuerySpec(query) { Parameters = sqlParameters },
+                options
+            ).AsDocumentQuery();
 
             var results = new List<dynamic>();
             while (docQuery.HasMoreResults)
