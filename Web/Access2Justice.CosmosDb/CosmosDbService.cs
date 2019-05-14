@@ -106,6 +106,30 @@ namespace Access2Justice.CosmosDb
             return results;
         }
 
+        public async Task<ICollection<T>> QueryItemsAsync<T>(string collectionId, params Expression<Func<T, bool>> [] whereCondition)
+        {
+            var uri = UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId);
+            var options = new FeedOptions { EnableCrossPartitionQuery = true };
+            var query = documentClient.CreateDocumentQuery<T>(uri, options).AsQueryable();
+            if (whereCondition != null && whereCondition.Length != 0)
+            {
+                foreach (var expression in whereCondition)
+                {
+                    query = query.Where(expression);
+                }
+            }
+
+            var docQuery = query.AsDocumentQuery();
+
+            var results = new List<T>();
+            while (docQuery.HasMoreResults)
+            {
+                results.AddRange(await docQuery.ExecuteNextAsync<T>());
+            }
+
+            return results;
+        }
+
         public async Task<dynamic> QueryItemsPaginationAsync(string collectionId, string query, FeedOptions feedOptions)
         {
 
@@ -143,6 +167,30 @@ namespace Access2Justice.CosmosDb
         public async Task<dynamic> QueryResourcesCountAsync(string query)
         {
             return await GetFirstPageResourceAsync(query, true);
+        }
+
+        public async Task<ICollection<UserIncomingResources>> FindIncomingSharedResource(IncomingSharedResourceRetrieveParam incomingSharedResourceRetrieveParam)
+        {
+            var stringResourceIds = incomingSharedResourceRetrieveParam.ResourceIds.Select(x => x.ToString());
+            
+            var whereCondition =
+                new List<Expression<Func<UserIncomingResources, bool>>>
+                {
+                    x => x.Resources.Any(y => stringResourceIds.Contains(y.ResourceId))
+
+                };
+            if (incomingSharedResourceRetrieveParam.SharedFromResourcesId != Guid.Empty)
+            {
+                whereCondition.Add(x => x.Resources.Any(y =>
+                        y.SharedFromResourceId == incomingSharedResourceRetrieveParam.SharedFromResourcesId));
+            }
+
+            if (incomingSharedResourceRetrieveParam.IncomingShareId != Guid.Empty)
+            {
+                whereCondition.Add(x => x.IncomingResourcesId == incomingSharedResourceRetrieveParam.IncomingShareId);
+            }
+
+            return await QueryItemsAsync(cosmosDbSettings.UserResourcesCollectionId, whereCondition.ToArray());
         }
 
         public async Task<dynamic> GetFirstPageResourceAsync(string query, bool isInitialPage = false)

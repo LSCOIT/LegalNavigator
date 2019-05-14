@@ -9,6 +9,7 @@ namespace Access2Justice.Api.Interfaces
     {
         Task<ShareViewModel> ShareResourceDataAsync(ShareInput shareInput);
         Task<dynamic> ShareResourceAsync(SendLinkInput sendLinkInput);
+        Task<dynamic> TakeResourceAsync(SendLinkInput sendLinkInput);
         Task<ShareViewModel> CheckPermaLinkDataAsync(ShareInput shareInput);
         Task<object> UnshareResourceDataAsync(ShareInput shareInput);
         Task UpdatePlanIsSharedStatus(string planId, bool isShared);

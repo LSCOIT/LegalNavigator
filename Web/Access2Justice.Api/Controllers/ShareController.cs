@@ -38,6 +38,21 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
+        /// Removes shared link from another user's saved resources list
+        /// </summary>
+        /// <param name="sendLinkInput"></param>
+        /// <response code="200">Link sent</response>
+        /// <response code="500">Failure</response>
+        [Permission(PermissionName.generatepermalink)]
+        [HttpPost("link/unshare")]
+        public async Task<IActionResult> TakeLinkAsync([FromBody] SendLinkInput sendLinkInput)
+        {
+            await shareBusinessLogic.TakeResourceAsync(sendLinkInput);
+
+            return Ok();
+        }
+
+        /// <summary>
         /// Get permalink created
         /// </summary>
         /// <remarks>

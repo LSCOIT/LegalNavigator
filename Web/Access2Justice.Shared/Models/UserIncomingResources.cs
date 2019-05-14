@@ -25,11 +25,15 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "resourceType")]
         public string ResourceType { get; set; }
+
         [JsonProperty(PropertyName = "sharedBy")]
         public string SharedBy { get; set; }
 
         [JsonProperty(PropertyName = "resourceDetails")]
         public dynamic ResourceDetails { get; set; }
+
+        [JsonProperty(PropertyName = "sharedFromResourceId")]
+        public Guid SharedFromResourceId { get; set; }
     }
 
     public class ProfileIncomingResources

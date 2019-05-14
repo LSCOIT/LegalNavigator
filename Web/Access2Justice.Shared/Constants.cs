@@ -48,8 +48,10 @@
         public const string RTMSessionId = "session_id";
         public const string EFormFormFields = "onboardingInfo";
         public const string Plans = "plan";
+        public const string SharedResources = "shared-resources";
         public const string Code = "code";
         public const string DefaultOgranizationalUnit = "Default";
+        public static readonly int StrigifiedGuidLength = System.Guid.Empty.ToString().Length;
 
         public static class ReasourceTypes
         {

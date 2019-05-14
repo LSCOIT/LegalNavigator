@@ -4,7 +4,6 @@ using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
-using Microsoft.Azure.Documents;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -130,12 +129,81 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceId = sendLinkInput.ResourceId,
                 ResourceDetails = sendLinkInput.ResourceDetails,
                 ResourceType = sendLinkInput.ResourceType,
-                SharedBy = senderUserProfile.FullName
+                SharedBy = senderUserProfile.FullName,
+                SharedFromResourceId = senderUserProfile.SharedResourceId
             };
 
             response = await UpsertIncomingResourceAsync(recipientUserProfile, incomingResource);
 
             return response;
+        }
+
+        public async Task<dynamic> TakeResourceAsync(SendLinkInput sendLinkInput)
+        {
+            dynamic response = null;
+
+            if (string.IsNullOrWhiteSpace(sendLinkInput.UserId) ||
+                string.IsNullOrWhiteSpace(sendLinkInput.Email))
+            {
+                return null;
+            }
+
+            UserProfile senderUserProfile = await dbUserProfile.GetUserProfileDataAsync(sendLinkInput.UserId);
+            var recipientUserProfile = await dbUserProfile.GetUserProfileByEmailAsync(sendLinkInput.Email);
+
+            if (senderUserProfile == null ||
+                recipientUserProfile == null)
+            {
+                return null;
+            }
+
+            var incomingResource = new IncomingResource
+            {
+                ResourceId = sendLinkInput.ResourceId,
+                ResourceDetails = sendLinkInput.ResourceDetails,
+                ResourceType = sendLinkInput.ResourceType,
+                SharedBy = senderUserProfile.FullName,
+                SharedFromResourceId = senderUserProfile.SharedResourceId
+            };
+
+            response = await DeleteIncomingResourceAsync(recipientUserProfile, incomingResource);
+
+            return response;
+        }
+
+        private async Task<object> DeleteIncomingResourceAsync(UserProfile recipientUserProfile, IncomingResource incomingResource)
+        {
+            if (recipientUserProfile?.IncomingResourcesId == null ||
+                recipientUserProfile.IncomingResourcesId == Guid.Empty)
+            {
+                return null;
+            }
+
+            var userIncomingResourcesDbData = await dbClient.FindItemsWhereAsync(
+                dbSettings.UserResourcesCollectionId,
+                Constants.Id,
+                Convert.ToString(recipientUserProfile.IncomingResourcesId, CultureInfo.InvariantCulture));
+
+            if (userIncomingResourcesDbData == null || userIncomingResourcesDbData.Count <= 0)
+            {
+                return null;
+            }
+
+            List<UserIncomingResources> userIncomingResources =
+                JsonUtilities.DeserializeDynamicObject<List<UserIncomingResources>>(userIncomingResourcesDbData);
+
+            userIncomingResources[0].IncomingResourcesId = recipientUserProfile.IncomingResourcesId;
+
+            userIncomingResources[0].Resources
+                .RemoveAll(x => x.ResourceId == incomingResource.ResourceId &&
+                                x.ResourceType == incomingResource.ResourceType &&
+                                (x.SharedFromResourceId == incomingResource.SharedFromResourceId 
+                                 || x.SharedBy == incomingResource.SharedBy && x.SharedFromResourceId == Guid.Empty));
+
+            return await dbService.UpdateItemAsync(
+                recipientUserProfile.IncomingResourcesId.ToString(),
+                userIncomingResources[0],
+                dbSettings.UserResourcesCollectionId);
         }
 
         public async Task<object> UpsertSharedResource(UserProfile userProfile, SharedResource sharedResource)
@@ -206,7 +274,8 @@ namespace Access2Justice.Api.BusinessLogic
                     r =>
                         r.ResourceId == resource.ResourceId &&
                         r.ResourceType == resource.ResourceType &&
-                        r.SharedBy == resource.SharedBy))
+                        (r.SharedBy == resource.SharedBy && r.SharedFromResourceId == Guid.Empty ||
+                         r.SharedFromResourceId == resource.SharedFromResourceId)))
                 {
                     userIncomingResources[0].Resources.Add(resource);
                 }
@@ -284,11 +353,20 @@ namespace Access2Justice.Api.BusinessLogic
             Contains(unShareInput.Url.OriginalString));
             var response = await dbService.UpdateItemAsync(userSharedResources[0].SharedResourceId.ToString(), userSharedResources[0],
                 dbSettings.UserResourcesCollectionId);
+
             if (unShareInput.Url.OriginalString.Contains("plan"))
             {
                 string planId = unShareInput.Url.OriginalString.Substring(6);
                 await UpdatePlanIsSharedStatus(planId, false);
             }
+
+            if (response != null)
+            {
+                var resourceId =
+                    Guid.Parse(unShareInput.Url.OriginalString.Substring(unShareInput.Url.OriginalString.Length - Constants.StrigifiedGuidLength));
+                await UnshareAllIncomingResources(resourceId, userSharedResources[0].SharedResourceId);
+            }
+
             return response == null ? false : true;
         }
 
@@ -331,6 +409,57 @@ namespace Access2Justice.Api.BusinessLogic
         private string GetPermaLink(string permaLink)
         {
             return permaLink.Substring(0, dbShareSettings.PermaLinkMaxLength);
+        }
+
+        private async Task UnshareAllIncomingResources(Guid resourceId, Guid sharedFromResourcesId)
+        {
+            var retrieveParam = new IncomingSharedResourceRetrieveParam
+            {
+                ResourceIds = new[] { resourceId },
+                SharedFromResourcesId = sharedFromResourcesId
+            };
+            var stringResource = resourceId.ToString();
+            await unshareIncomingResources(retrieveParam,
+                x => x.ResourceId == stringResource && x.SharedFromResourceId == sharedFromResourcesId);
+        }
+
+        private async Task UnshareIncomingResource(Guid resourceId, Guid incomingResourcesId)
+        {
+            var retrieveParam = new IncomingSharedResourceRetrieveParam
+            {
+                ResourceIds = new [] { resourceId },
+                IncomingShareId = incomingResourcesId
+            };
+            var stringResource = resourceId.ToString();
+            await unshareIncomingResources(retrieveParam,
+                x => x.ResourceId == stringResource);
+        }
+
+        private async Task unshareIncomingResources(IncomingSharedResourceRetrieveParam retrieveParam,
+            Predicate<IncomingResource> removeResourceCondition)
+        {
+            var incomingShare = await dbService.FindIncomingSharedResource(retrieveParam);
+            if (incomingShare == null || incomingShare.Count == 0)
+            {
+                return;
+            }
+
+
+            foreach (var userIncomingResource in incomingShare)
+            {
+                userIncomingResource.Resources.RemoveAll(removeResourceCondition);
+                if (userIncomingResource.Resources.Count == 0)
+                {
+                    await dbService.DeleteItemAsync(userIncomingResource.IncomingResourcesId.ToString(),
+                        dbSettings.UserResourcesCollectionId);
+                }
+                else
+                {
+                    await dbService.UpdateItemAsync(userIncomingResource.IncomingResourcesId.ToString(),
+                        userIncomingResource,
+                        dbSettings.UserResourcesCollectionId);
+                }
+            }
         }
     }
 }

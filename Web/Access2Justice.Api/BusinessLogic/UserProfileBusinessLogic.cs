@@ -81,7 +81,58 @@ namespace Access2Justice.Api.BusinessLogic
                     Convert.ToString(userProfile.PersonalizedActionPlanId, CultureInfo.InvariantCulture));
             }
 
+            if (type == Constants.SharedResources
+                && userProfile != null
+                && userProfile.SharedResourceId != Guid.Empty)
+            {
+                userResourcesDBData = await dbClient.FindItemsWhereAsync(
+                    dbSettings.UserResourcesCollectionId,
+                    Constants.Id,
+                    Convert.ToString(userProfile.SharedResourceId, CultureInfo.InvariantCulture));
+                var sharedResources = new List<SharedResources>();
+                foreach (var resource in userResourcesDBData)
+                {
+                    var sharedResource = (SharedResources)JsonUtilities.DeserializeDynamicObject<SharedResources>(resource);
+                    sharedResources.Add(sharedResource);
+                    sharedResource.SharedResource =
+                        sharedResource.SharedResource.Select(x => (SharedResource)new SharedResourceView(x)).ToList();
+                    await fillSentTo(sharedResource);
+                }
+
+                userResourcesDBData = sharedResources;
+            }
+
             return userResourcesDBData;
+        }
+
+        private async Task fillSentTo(SharedResources userResourcesDbData)
+        {
+            var incomingResources = await dbService.FindIncomingSharedResource(new IncomingSharedResourceRetrieveParam
+            {
+                SharedFromResourcesId = userResourcesDbData.SharedResourceId,
+                ResourceIds = userResourcesDbData.SharedResource
+                    .Select(x => Guid.Parse(((SharedResourceView)x).Id))
+            });
+            var incomingCollections = incomingResources.Select(x => x.IncomingResourcesId);
+            var users = (await dbService.QueryItemsAsync<UserProfile>(dbSettings.ProfilesCollectionId,
+                    x => incomingCollections.Contains(x.IncomingResourcesId)))
+                .ToDictionary(x => x.IncomingResourcesId, x => x.EMail);
+            foreach (var sharedResource in userResourcesDbData.SharedResource.Select(x=>(SharedResourceView)x))
+            {
+                var incomingCollection =
+                    incomingResources.FirstOrDefault(x => x.Resources.Any(y => y.ResourceId == sharedResource.Id));
+                if (incomingCollection == null)
+                {
+                    continue;
+                }
+
+                if (sharedResource.SharedTo == null)
+                {
+                    sharedResource.SharedTo = new List<string>();
+                }
+
+                sharedResource.SharedTo.Add(users[incomingCollection.IncomingResourcesId]);
+            }
         }
 
         private UserProfile ConvertUserProfile(dynamic convObj)
@@ -367,7 +418,11 @@ namespace Access2Justice.Api.BusinessLogic
                             r =>
                                 r.ResourceId == resource.ResourceId &&
                                 r.ResourceType == resource.ResourceType &&
-                                r.SharedBy == resource.SharedBy);
+                                (
+                                    r.SharedFromResourceId != Guid.Empty && r.SharedFromResourceId == userProfile.SharedResourceId
+                                    || r.SharedFromResourceId == Guid.Empty && r.SharedBy == resource.SharedBy
+                                )
+                        );
 
                         if (resourceToRemove != null)
                         {

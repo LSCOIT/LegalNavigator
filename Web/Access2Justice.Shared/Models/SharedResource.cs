@@ -33,4 +33,33 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "url")]
         public Uri Url { get; set; }
     }
+
+    public class SharedResourceView: SharedResource
+    {
+        public SharedResourceView(SharedResource other)
+        {
+            Url = other.Url;
+            IsShared = other.IsShared;
+            ExpirationDate = other.ExpirationDate;
+            PermaLink = other.PermaLink;
+        }
+
+        public SharedResourceView()
+        {
+        }
+
+        [JsonIgnore]
+        public string Id
+        {
+            get
+            {
+                var url = Url.OriginalString.TrimEnd('/');
+                return url.Substring(url.Length - Constants.StrigifiedGuidLength);
+            }
+        }
+
+        [JsonProperty("sharedTo", NullValueHandling = NullValueHandling.Ignore)]
+        public List<string> SharedTo { get; set; }
+    }
+
 }
