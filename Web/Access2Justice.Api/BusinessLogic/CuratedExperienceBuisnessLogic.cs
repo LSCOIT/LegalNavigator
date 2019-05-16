@@ -19,13 +19,15 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
         private readonly IA2JAuthorLogicParser parser;
+        private readonly IUserProfileBusinessLogic userProfileBusinessLogic;
 
         public CuratedExperienceBuisnessLogic(ICosmosDbSettings cosmosDbSettings, IBackendDatabaseService backendDatabaseService,
-            IA2JAuthorLogicParser parser)
+            IA2JAuthorLogicParser parser, IUserProfileBusinessLogic userProfileBusinessLogic)
         {
             dbSettings = cosmosDbSettings;
             dbService = backendDatabaseService;
             this.parser = parser;
+            this.userProfileBusinessLogic = userProfileBusinessLogic;
         }
 
         public async Task<CuratedExperience> GetCuratedExperienceAsync(Guid id)
@@ -54,11 +56,41 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<CuratedExperienceComponentViewModel> GetNextComponentAsync(CuratedExperience curatedExperience, CuratedExperienceAnswersViewModel component)
         {
-            return MapComponentViewModel(curatedExperience,
-                await FindDestinationComponentAsync(curatedExperience, component.ButtonId, component.AnswersDocId), component.AnswersDocId);
+            return await getNextComponentAsync(curatedExperience, component.ButtonId, component.AnswersDocId);
         }
 
-        public async Task<Document> SaveAnswersAsync(CuratedExperienceAnswersViewModel viewModelAnswer, CuratedExperience curatedExperience)
+        public async Task<CuratedExperienceComponentViewModel> GetNextComponentAsync(CuratedExperience curatedExperience, CuratedExperienceAnswers answers)
+        {
+            return await getNextComponentAsync(curatedExperience, getLastAnswerButtonId(answers), answers.AnswersDocId);
+        }
+
+        private Guid getLastAnswerButtonId(CuratedExperienceAnswers answers)
+        {
+            return answers.ButtonComponents.Last()?.ButtonId ?? Guid.Empty;
+        }
+
+        private async Task<CuratedExperienceComponentViewModel> getNextComponentAsync(CuratedExperience curatedExperience,
+            Guid buttonId, Guid answersDocId)
+        {
+            return MapComponentViewModel(curatedExperience,
+                await FindDestinationComponentAsync(curatedExperience, buttonId, answersDocId),
+                answersDocId);
+        }
+
+        public async Task<CuratedExperienceAnswers> GetAnswerProgress(string userId)
+        {
+            var userProfile = await userProfileBusinessLogic.GetUserProfileDataAsync<UserProfile>(userId);
+            if (userProfile == null || userProfile.CuratedExperienceAnswersId == Guid.Empty)
+            {
+                return null;
+            }
+            var answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(userProfile.CuratedExperienceAnswersId.ToString(), 
+                dbSettings.GuidedAssistantAnswersCollectionId);
+
+            return answers;
+        }
+
+        public async Task<Document> SaveAnswersAsync(CuratedExperienceAnswersViewModel viewModelAnswer, CuratedExperience curatedExperience, string userId = null)
         {
             var dbAnswers = MapCuratedExperienceViewModel(viewModelAnswer, curatedExperience);
             var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(viewModelAnswer.AnswersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);
@@ -70,7 +102,25 @@ namespace Access2Justice.Api.BusinessLogic
             savedAnswersDoc.ButtonComponents.AddRange(dbAnswers.ButtonComponents);
             savedAnswersDoc.FieldComponents.AddRange(dbAnswers.FieldComponents);
 
-            return await dbService.UpdateItemAsync(viewModelAnswer.AnswersDocId.ToString(), savedAnswersDoc, dbSettings.GuidedAssistantAnswersCollectionId);
+            var document = await dbService.UpdateItemAsync(viewModelAnswer.AnswersDocId.ToString(), savedAnswersDoc, dbSettings.GuidedAssistantAnswersCollectionId);
+            if (!string.IsNullOrWhiteSpace(userId))
+            {
+                await saveAnswersToProfile(userId, viewModelAnswer.AnswersDocId);
+            }
+
+            return document;
+        }
+
+        private async Task saveAnswersToProfile(string userId, Guid answersDocId)
+        {
+            var userProfile = await userProfileBusinessLogic.GetUserProfileDataAsync<UserProfile>(userId);
+            if (userProfile == null || userProfile.CuratedExperienceAnswersId == answersDocId)
+            {
+                return;
+            }
+
+            userProfile.CuratedExperienceAnswersId = answersDocId;
+            await dbService.UpdateItemAsync(userProfile.Id, userProfile, dbSettings.ProfilesCollectionId);
         }
 
         public async Task<CuratedExperienceComponent> FindDestinationComponentAsync(CuratedExperience curatedExperience, Guid buttonId, Guid answersDocId)

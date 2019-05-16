@@ -8,7 +8,7 @@ namespace Access2Justice.Api.Interfaces
 {
     public interface IPersonalizedPlanBusinessLogic
     {
-        Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId);
+        Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId, string userId = null);
         Task<PersonalizedPlanViewModel> GetPersonalizedPlanAsync(Guid personalizedPlanId);
         Task<Document> UpsertPersonalizedPlanAsync(UserPlan userPlan);
     }

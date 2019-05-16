@@ -34,7 +34,7 @@ namespace Access2Justice.Api.BusinessLogic
             this.personalizedPlanViewModelMapper = personalizedPlanViewModelMapper;
         }
 
-        public async Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId)
+        public async Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId, string userId = null)
         {
             var a2jPersonalizedPlan = await dynamicQueries.FindItemWhereAsync<JObject>(cosmosDbSettings.A2JAuthorDocsCollectionId, Constants.Id,
                 curatedExperience.A2jPersonalizedPlanId.ToString());
@@ -47,7 +47,23 @@ namespace Access2Justice.Api.BusinessLogic
                 return null;
             }
 
-            return await personalizedPlanViewModelMapper.MapViewModel(personalizedPlanEngine.Build(a2jPersonalizedPlan, userAnswers));
+            var plan = await personalizedPlanViewModelMapper.MapViewModel(
+                personalizedPlanEngine.Build(a2jPersonalizedPlan, userAnswers));
+
+            if (plan == null || string.IsNullOrWhiteSpace(userId))
+            {
+                return plan;
+            }
+
+            var userProfile = await userProfileBusinessLogic.GetUserProfileDataAsync<UserProfile>(userId);
+            if (userProfile == null || userProfile.CuratedExperienceAnswersId == Guid.Empty)
+            {
+                return plan;
+            }
+            userProfile.CuratedExperienceAnswersId = Guid.Empty;
+            backendDatabaseService.UpdateItemAsync(userProfile.Id, userProfile, cosmosDbSettings.ProfilesCollectionId);
+
+            return plan;
         }
 
         public async Task<PersonalizedPlanViewModel> GetPersonalizedPlanAsync(Guid personalizedPlanId)

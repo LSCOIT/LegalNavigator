@@ -17,13 +17,15 @@ namespace Access2Justice.Api.Controllers
         private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic;
         private readonly ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic;
         private readonly ISessionManager sessionManager;
+        private readonly IUserRoleBusinessLogic userRoleBusinessLogic;
 
         public PersonalizedPlanController(IPersonalizedPlanBusinessLogic personalizedPlan, ICuratedExperienceBusinessLogic curatedExperience,
-            ISessionManager sessionManager)
+            ISessionManager sessionManager, IUserRoleBusinessLogic userRoleBusinessLogic)
         {
             this.personalizedPlanBusinessLogic = personalizedPlan;
             this.curatedExperienceBusinessLogic = curatedExperience;
             this.sessionManager = sessionManager;
+            this.userRoleBusinessLogic = userRoleBusinessLogic;
         }
 
         /// <summary>
@@ -41,8 +43,11 @@ namespace Access2Justice.Api.Controllers
         {
             if (curatedExperienceId != null && answersDocId != null)
             {
+                // Clear curated experience answer progress for authenticated user when plan generated
+                var userId = userRoleBusinessLogic.GetOId();
                 var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
-                       sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), answersDocId);
+                       sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), answersDocId, 
+                       userId);
 
                 if (personalizedPlan == null)
                 {

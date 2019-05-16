@@ -61,14 +61,16 @@ namespace Access2Justice.Api.BusinessLogic
             return false;
         }
 
-        private string GetOId()
+        public string GetOId()
         {
-            string oId = string.Empty;
-            if (httpContextAccessor.HttpContext.User.Claims.FirstOrDefault() != null)
+            var oId = httpContextAccessor.HttpContext.User.Claims
+                .FirstOrDefault(c => c.Type == azureOptions.UserClaimsUrl)?.Value ?? string.Empty;
+
+            if (!string.IsNullOrWhiteSpace(oId))
             {
-                oId = httpContextAccessor.HttpContext.User.Claims.FirstOrDefault(c => c.Type == azureOptions.UserClaimsUrl).Value;
                 oId = EncryptionUtilities.GenerateSHA512String(oId);
             }
+
             return oId;
         }
 

@@ -9,6 +9,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -19,13 +21,15 @@ namespace Access2Justice.Api.Controllers
         private readonly ICuratedExperienceConvertor a2jAuthorBuisnessLogic;
         private readonly ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic;
         private readonly ISessionManager sessionManager;
+        private readonly IUserRoleBusinessLogic userBusinessLogic;
 
         public CuratedExperienceController(ICuratedExperienceConvertor a2jAuthorBuisnessLogic, ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic,
-            ISessionManager sessionManager)
+            ISessionManager sessionManager, IUserRoleBusinessLogic userBusinessLogic)
         {
             this.a2jAuthorBuisnessLogic = a2jAuthorBuisnessLogic;
             this.curatedExperienceBusinessLogic = curatedExperienceBusinessLogic;
             this.sessionManager = sessionManager;
+            this.userBusinessLogic = userBusinessLogic;
         }
 
         /// <summary>
@@ -84,8 +88,8 @@ namespace Access2Justice.Api.Controllers
             if (component != null)
             {
                 var curatedExperience = sessionManager.RetrieveCachedCuratedExperience(component.CuratedExperienceId, HttpContext);
-                var document = await curatedExperienceBusinessLogic.SaveAnswersAsync(component, curatedExperience);
-                if (component == null)
+                var document = await curatedExperienceBusinessLogic.SaveAnswersAsync(component, curatedExperience, userBusinessLogic.GetOId());
+                if (document == null)
                 {
                     return StatusCode(StatusCodes.Status500InternalServerError);
                 }
@@ -93,6 +97,20 @@ namespace Access2Justice.Api.Controllers
                 return Ok(await curatedExperienceBusinessLogic.GetNextComponentAsync(curatedExperience, component));
             }
             return StatusCode(400);
+        }
+
+        [HttpGet("components/restore-progress")]
+        [Authorize]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Description = "There is no matching answers batch")]
+        public async Task<IActionResult> GetCurrentComponent()
+        {
+            var answers = await curatedExperienceBusinessLogic.GetAnswerProgress(userBusinessLogic.GetOId());
+            if (answers == null || answers.CuratedExperienceId == Guid.Empty)
+            {
+                return StatusCode(StatusCodes.Status404NotFound);
+            }
+            var curatedExperience = sessionManager.RetrieveCachedCuratedExperience(answers.CuratedExperienceId, HttpContext);
+            return Ok(await curatedExperienceBusinessLogic.GetNextComponentAsync(curatedExperience, answers));
         }
 
         /// <summary>

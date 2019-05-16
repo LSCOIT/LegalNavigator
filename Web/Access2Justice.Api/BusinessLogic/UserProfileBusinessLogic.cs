@@ -36,11 +36,17 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetUserProfileDataAsync(string oId, bool isProfileViewModel = false)
         {
-            var resultUserData = await dbClient.FindItemsWhereAsync(dbSettings.ProfilesCollectionId, Constants.OId, oId);
+            var resultUserData = await getUserProfileFromDatabase(oId);
             if (isProfileViewModel) {
                 return ConvertUserProfileViewModel(resultUserData);
             }
             return ConvertUserProfile(resultUserData);
+        }
+
+        public async Task<T> GetUserProfileDataAsync<T>(string oId)
+        {
+            var resultUserData = await getUserProfileFromDatabase(oId);
+            return ((List<T>) JsonUtilities.DeserializeDynamicObject<List<T>>(resultUserData)).FirstOrDefault();
         }
 
         public async Task<dynamic> GetUserResourceProfileDataAsync(string oId, string type)
@@ -439,6 +445,12 @@ namespace Access2Justice.Api.BusinessLogic
             }
 
             return userResourcesDBData;
+        }
+
+        private async Task<dynamic> getUserProfileFromDatabase(string oId)
+        {
+            var resultUserData = await dbClient.FindItemsWhereAsync(dbSettings.ProfilesCollectionId, Constants.OId, oId);
+            return resultUserData;
         }
     }
 }
