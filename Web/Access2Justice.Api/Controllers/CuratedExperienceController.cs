@@ -61,16 +61,25 @@ namespace Access2Justice.Api.Controllers
         /// <remarks>
         /// Helps to get first component for curated experience 
         /// </remarks>
-        /// <param name="curatedExperienceId"></param>
         /// <response code="200">Returns first component for curated experience </response>
         /// <response code="500">Failure</response>
         [HttpGet("start")]
-        public async Task<IActionResult> GetFirstComponent(Guid curatedExperienceId)
-        {            
-                var component = await curatedExperienceBusinessLogic.GetComponent(sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), Guid.Empty);
-                if (component == null) return NotFound();
+        public async Task<IActionResult> GetFirstComponent(Guid curatedExperienceId, bool ignoreProgress = false)
+        {
+            if (User.Identity.IsAuthenticated && !ignoreProgress)
+            {
+                var currentProgress = await getCurrentComponent(curatedExperienceId);
+                if (currentProgress != null)
+                {
+                    return currentProgress;
+                }
+            }
+            
+            var component = await curatedExperienceBusinessLogic.GetComponent(
+                sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), Guid.Empty);
+            if (component == null) return NotFound();
 
-                return Ok(component);            
+            return Ok(component);
         }
 
         /// <summary>
@@ -104,13 +113,12 @@ namespace Access2Justice.Api.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Description = "There is no matching answers batch")]
         public async Task<IActionResult> GetCurrentComponent()
         {
-            var answers = await curatedExperienceBusinessLogic.GetAnswerProgress(userBusinessLogic.GetOId());
-            if (answers == null || answers.CuratedExperienceId == Guid.Empty)
+            var result = await getCurrentComponent();
+            if (result != null)
             {
-                return StatusCode(StatusCodes.Status404NotFound);
+                return result;
             }
-            var curatedExperience = sessionManager.RetrieveCachedCuratedExperience(answers.CuratedExperienceId, HttpContext);
-            return Ok(await curatedExperienceBusinessLogic.GetNextComponentAsync(curatedExperience, answers));
+            return StatusCode(StatusCodes.Status404NotFound);
         }
 
         /// <summary>
@@ -130,6 +138,28 @@ namespace Access2Justice.Api.Controllers
                 if (component == null) return NotFound();
 
                 return Ok(component);
+        }
+
+        private async Task<IActionResult> getCurrentComponent(Guid curatedExperienceId = default(Guid))
+        {
+            var currentUserId = userBusinessLogic.GetOId();
+            if (string.IsNullOrWhiteSpace(currentUserId))
+            {
+                return null;
+            }
+            var answers = await curatedExperienceBusinessLogic.GetAnswerProgress(currentUserId);
+            if (answers == null || answers.CuratedExperienceId == Guid.Empty)
+            {
+                return null;
+            }
+
+            if (curatedExperienceId != answers.CuratedExperienceId)
+            {
+                return null;
+            }
+
+            var curatedExperience = sessionManager.RetrieveCachedCuratedExperience(answers.CuratedExperienceId, HttpContext);
+            return Ok(await curatedExperienceBusinessLogic.GetNextComponentAsync(curatedExperience, answers));
         }
     }
 }
