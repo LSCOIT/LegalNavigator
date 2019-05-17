@@ -126,8 +126,10 @@ namespace Access2Justice.Api.BusinessLogic
             foreach (var sharedResource in userResourcesDbData.SharedResource.Select(x=>(SharedResourceView)x))
             {
                 var incomingCollection =
-                    incomingResources.FirstOrDefault(x => x.Resources.Any(y => y.ResourceId == sharedResource.Id));
-                if (incomingCollection == null)
+                    incomingResources.Where(x => 
+                        x.Resources.Any(y => y.ResourceId == sharedResource.Id && y.SharedFromResourceId == userResourcesDbData.SharedResourceId))
+                        .ToList();
+                if (incomingCollection.Count == 0)
                 {
                     continue;
                 }
@@ -137,7 +139,10 @@ namespace Access2Justice.Api.BusinessLogic
                     sharedResource.SharedTo = new List<string>();
                 }
 
-                sharedResource.SharedTo.Add(users[incomingCollection.IncomingResourcesId]);
+                foreach (var userIncomingResource in incomingCollection)
+                {
+                    sharedResource.SharedTo.Add(users[userIncomingResource.IncomingResourcesId]);
+                }
             }
         }
 
