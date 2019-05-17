@@ -11,10 +11,10 @@ using Newtonsoft.Json;
 
 namespace Access2Justice.DataFixes.DataFixers
 {
-    public class Issue829Fixer : IDataFixer
+    public class Issue829Fixer : IssueFixerBase, IDataFixer
     {
-        private const string IssueId = "#829";
-        private readonly string LogEntryPrefix = $"\t{IssueId}: ";
+        protected override string IssueId => "#829";
+
         private static readonly Regex IconLocationAbsoluteStoragePathRegEx =
             new Regex(@"^https:\/\/[a-zA-Z0-9\-\.]+\.blob\.core\.windows\.net\/static-resource\/([\w- .\/?%&=])+$", RegexOptions.Compiled | RegexOptions.CultureInvariant);
 
@@ -109,11 +109,6 @@ namespace Access2Justice.DataFixes.DataFixers
             }
 
             return iconLocation;
-        }
-
-        private void LogEntry(string entry)
-        {
-            Console.WriteLine($"{LogEntryPrefix}{entry}");
         }
     }
 }
