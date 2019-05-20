@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Azure.Documents;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -17,6 +18,7 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly IDynamicQueries dbClient;
         private readonly ICosmosDbSettings dbSettings;
         private readonly IBackendDatabaseService dbService;
+
         public UserProfileBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
             IBackendDatabaseService backendDatabaseService)
         {
@@ -242,8 +244,48 @@ namespace Access2Justice.Api.BusinessLogic
                     return await DeleteSavedResourceAsync(resource);
                 case Constants.IncomingResources:
                     return await DeleteIncomingResourceAsync(resource);
+                case Constants.SharedResources:
+                    return await DeleteUserSharedResource(new ShareInput
+                    {
+                        ResourceId = Guid.Empty,
+                        Url = new Uri(resource.ResourceId, UriKind.Relative),
+                        UserId = resource.OId
+                    });
                 default: throw new NotSupportedException($"Resource type {resource.ResourcesType} is not supported");
             }
+        }
+
+        public async Task<Document> DeleteUserSharedResource(ShareInput shareInput)
+        {
+            dynamic userSharedResourcesDbData = null;
+            var userSharedResources = new List<SharedResources>();
+            if (shareInput.UserId == null || shareInput.ResourceId == Guid.Empty || shareInput.Url == null)
+            {
+                return null;
+            }
+            UserProfile userProfile = await GetUserProfileDataAsync(shareInput.UserId);
+            if (userProfile == null || userProfile.SharedResourceId == Guid.Empty)
+            {
+                return null;
+            }
+            if (userProfile.SharedResourceId != Guid.Empty)
+            {
+                userSharedResourcesDbData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.SharedResourceId, CultureInfo.InvariantCulture));
+            }
+            if (userSharedResourcesDbData != null)
+            {
+                userSharedResources = JsonUtilities.DeserializeDynamicObject<List<SharedResources>>(userSharedResourcesDbData);
+            }
+            var sharedResource = userSharedResources[0].SharedResource.FindAll(a => a.Url.OriginalString.
+                Contains(shareInput.Url.OriginalString));
+            if (sharedResource.Count == 0)
+            {
+                return null;
+            }
+            userSharedResources[0].SharedResource.RemoveAll(a => a.Url.OriginalString.
+                Contains(shareInput.Url.OriginalString));
+            return await dbService.UpdateItemAsync(userSharedResources[0].SharedResourceId.ToString(), userSharedResources[0],
+                dbSettings.UserResourcesCollectionId);
         }
 
         public async Task<dynamic> CreateUserIncomingResourcesAsync(ProfileIncomingResources userResources)

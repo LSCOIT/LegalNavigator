@@ -139,6 +139,15 @@ namespace Access2Justice.Api.Tests.BusinessLogic
                Arg.Any<string>(),
                Arg.Any<SharedResources>(),
                Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
+
+            userProfileBusinessLogic
+                .DeleteUserSharedResource(Arg.Is<ShareInput>(x => x.Url == null))
+                .Returns((Document)null);
+
+            userProfileBusinessLogic
+                .DeleteUserSharedResource(Arg.Is<ShareInput>(x => x.Url != null))
+                .Returns(updatedDocument);
+
             var dbResponse = dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourcesCollectionId, "SharedResourceId", "0568B88C-3866-4CCA-97C8-B8E3F3D1FF3C");
             dbResponse.ReturnsForAnyArgs(ShareTestData.sharedResourcesData);
 

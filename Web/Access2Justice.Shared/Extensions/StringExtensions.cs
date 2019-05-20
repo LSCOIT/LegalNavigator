@@ -102,5 +102,10 @@ namespace Access2Justice.Shared.Extensions
         }
 
         public static bool IsValidEmailAddress(this string address) => !string.IsNullOrEmpty(address) && new EmailAddressAttribute().IsValid(address);
+
+        public static bool IsNullOrWhitespace(this string s)
+        {
+            return string.IsNullOrWhiteSpace(s);
+        }
     }
 }

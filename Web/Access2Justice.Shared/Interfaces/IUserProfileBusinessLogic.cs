@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Azure.Documents;
 
 namespace Access2Justice.Shared.Interfaces
 {
@@ -19,5 +20,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<UserProfileViewModel> UpsertUserProfileAsync(UserProfile userProfile);
         Task<Guid> GetDefaultUserRole();
         Task<List<Role>> GetRoleDetailsAsync(List<string> roleInformationId);
+        Task<Document> DeleteUserSharedResource(ShareInput shareInput);
     }
 }

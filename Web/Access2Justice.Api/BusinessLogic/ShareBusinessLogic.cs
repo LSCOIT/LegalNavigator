@@ -322,52 +322,30 @@ namespace Access2Justice.Api.BusinessLogic
             }
         }
 
-        public async Task<object> UnshareResourceDataAsync(ShareInput unShareInput)
+        public async Task<object> UnshareResourceDataAsync(ShareInput unShareInput, bool unShare = false)
         {
-            dynamic userSharedResourcesDBData = null;
-            var userSharedResources = new List<SharedResources>();
-            if (unShareInput.UserId == null || unShareInput.ResourceId == null || unShareInput.Url == null)
+            var response = await dbUserProfile.DeleteUserSharedResource(unShareInput);
+
+            if (response == null)
             {
                 return null;
             }
-            UserProfile userProfile = await dbUserProfile.GetUserProfileDataAsync(unShareInput.UserId);
-            if (userProfile == null || userProfile?.SharedResourceId == null)
-            {
-                return null;
-            }
-            if (userProfile?.SharedResourceId != null && userProfile.SharedResourceId != Guid.Empty)
-            {
-                userSharedResourcesDBData = await dbClient.FindItemsWhereAsync(dbSettings.UserResourcesCollectionId, Constants.Id, Convert.ToString(userProfile.SharedResourceId, CultureInfo.InvariantCulture));
-            }
-            if (userSharedResourcesDBData != null)
-            {
-                userSharedResources = JsonUtilities.DeserializeDynamicObject<List<SharedResources>>(userSharedResourcesDBData);
-            }
-            var sharedResource = userSharedResources[0].SharedResource.FindAll(a => a.Url.OriginalString.
-            Contains(unShareInput.Url.OriginalString));
-            if (sharedResource.Count == 0)
-            {
-                return false;
-            }
-            userSharedResources[0].SharedResource.RemoveAll(a => a.Url.OriginalString.
-            Contains(unShareInput.Url.OriginalString));
-            var response = await dbService.UpdateItemAsync(userSharedResources[0].SharedResourceId.ToString(), userSharedResources[0],
-                dbSettings.UserResourcesCollectionId);
 
             if (unShareInput.Url.OriginalString.Contains("plan"))
             {
-                string planId = unShareInput.Url.OriginalString.Substring(6);
+                var planId = unShareInput.Url.OriginalString.Substring(6);
                 await UpdatePlanIsSharedStatus(planId, false);
             }
 
-            if (response != null)
+            if (unShare && response != null && Guid.TryParse(response.Id, out var sharedResourcesId))
             {
                 var resourceId =
-                    Guid.Parse(unShareInput.Url.OriginalString.Substring(unShareInput.Url.OriginalString.Length - Constants.StrigifiedGuidLength));
-                await UnshareAllIncomingResources(resourceId, userSharedResources[0].SharedResourceId);
+                    Guid.Parse(unShareInput.Url.OriginalString.TrimEnd('/')
+                        .Substring(unShareInput.Url.OriginalString.Length - Constants.StrigifiedGuidLength));
+                await UnshareAllIncomingResources(resourceId, sharedResourcesId);
             }
 
-            return response == null ? false : true;
+            return response != null;
         }
 
         public async Task<object> GetPermaLinkDataAsync(string permaLink)
