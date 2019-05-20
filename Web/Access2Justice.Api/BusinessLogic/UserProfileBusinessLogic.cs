@@ -259,7 +259,7 @@ namespace Access2Justice.Api.BusinessLogic
         {
             dynamic userSharedResourcesDbData = null;
             var userSharedResources = new List<SharedResources>();
-            if (shareInput.UserId == null || shareInput.ResourceId == Guid.Empty || shareInput.Url == null)
+            if (shareInput.UserId == null || shareInput.Url == null)
             {
                 return null;
             }
