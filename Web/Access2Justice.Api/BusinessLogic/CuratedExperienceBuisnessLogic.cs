@@ -157,13 +157,13 @@ namespace Access2Justice.Api.BusinessLogic
             }
             else
             {
-                var maxNumber = maxAnswerNumber(dbAnswers);
+                var maxNumber = maxAnswerNumber(savedAnswersDoc);
                 setAnswerNumber(dbAnswers, maxNumber + 1);
             }
             savedAnswersDoc.CurrentActualAnswer = dbAnswers.CurrentActualAnswer;
 
-            savedAnswersDoc.ButtonComponents.RemoveAll(x => x.AnswerNumber <= dbAnswers.CurrentActualAnswer);
-            savedAnswersDoc.FieldComponents.RemoveAll(x => x.AnswerNumber <= dbAnswers.CurrentActualAnswer);
+            savedAnswersDoc.ButtonComponents.RemoveAll(x => x.AnswerNumber >= dbAnswers.CurrentActualAnswer);
+            savedAnswersDoc.FieldComponents.RemoveAll(x => x.AnswerNumber >= dbAnswers.CurrentActualAnswer);
 
             savedAnswersDoc.ButtonComponents.AddRange(dbAnswers.ButtonComponents);
             savedAnswersDoc.FieldComponents.AddRange(dbAnswers.FieldComponents);
