@@ -24,6 +24,7 @@ export class SaveButtonComponent {
   resourceTags: Array<SavedResource> = [];
   @Input() id: string;
   @Input() type: string;
+  @Input() url: string;
   @Input() resourceDetails: any = {};
   plan: string;
   @Input() addLinkClass: boolean = false;
@@ -70,6 +71,7 @@ export class SaveButtonComponent {
       this.savedResources = {
         itemId: this.id,
         resourceType: this.type,
+        url: this.url,
         resourceDetails: this.resourceDetails
       };
       this.personalizedPlanService.saveBookmarkedResource(this.savedResources);
@@ -119,6 +121,7 @@ export class SaveButtonComponent {
     this.savedResources = {
       itemId: this.id,
       resourceType: this.type,
+      url: this.url,
       resourceDetails: this.resourceDetails
     };
     this.tempResourceStorage = [];

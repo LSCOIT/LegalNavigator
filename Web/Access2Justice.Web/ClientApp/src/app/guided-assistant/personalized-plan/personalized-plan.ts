@@ -3,8 +3,11 @@ import { MapLocation } from '../../common/map/map';
 
 export interface SavedResource {
   itemId: string;
+  url: string;
   resourceType: string;
   resourceDetails: any;
+  UserId?: string;
+  ResourceId?: string;
 }
 
 export interface ProfileResources {
@@ -19,6 +22,9 @@ export interface RemovedElem {
   ResourceType?: string;
   SharedBy?: string;
   Type?: string;
+  url?: string;
+  email?: string;
+  resourceDetails?: any;
 }
 
 export interface PersonalizedPlan {

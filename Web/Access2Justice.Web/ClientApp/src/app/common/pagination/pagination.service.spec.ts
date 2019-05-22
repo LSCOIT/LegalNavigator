@@ -25,7 +25,9 @@ describe("PaginationService", () => {
     IsResourceCountRequired: false,
     IsOrder: true,
     OrderByField: "name",
-    OrderBy: "ASC"
+    OrderBy: "ASC",
+    url: '',
+    sharedTo: []
   };
 
   beforeEach(() => {

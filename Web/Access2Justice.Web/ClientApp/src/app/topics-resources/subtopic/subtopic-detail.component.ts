@@ -55,7 +55,9 @@ export class SubtopicDetailComponent implements OnInit {
     IsResourceCountRequired: true,
     IsOrder: false,
     OrderByField: "",
-    OrderBy: ""
+    OrderBy: "",
+    url: '',
+    sharedTo: []
   };
   subscription: any;
   displayResources: number;

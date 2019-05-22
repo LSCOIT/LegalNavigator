@@ -23,7 +23,9 @@ export class ShowMoreService {
     IsResourceCountRequired: true,
     IsOrder: true,
     OrderByField: "",
-    OrderBy: ""
+    OrderBy: "",
+    url: '',
+    sharedTo: []
   };
   activeResource: any;
   locationDetails: LocationDetails;

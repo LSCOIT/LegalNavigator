@@ -57,7 +57,9 @@ describe("ProfileComponent", () => {
     ResourceIds: mockresourceids,
     IsOrder: false,
     OrderByField: "",
-    OrderBy: ""
+    OrderBy: "",
+    url: '',
+    sharedTo: []
   };
   let mockwebresources = ["test1", "test2"];
   let mockresources = "testResources";

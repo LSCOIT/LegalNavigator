@@ -39,7 +39,9 @@ describe("GuidedAssistantSidebarComponent", () => {
     IsResourceCountRequired: false,
     IsOrder: false,
     OrderByField: "",
-    OrderBy: ""
+    OrderBy: "",
+    url: '',
+    sharedTo: []
   };
   let mockRouter = {
     navigate: jasmine.createSpyObj("Router", ["navigateByUrl"])

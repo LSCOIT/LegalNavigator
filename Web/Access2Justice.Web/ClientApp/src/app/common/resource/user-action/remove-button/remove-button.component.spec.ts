@@ -17,7 +17,7 @@ import { EventUtilityService } from "../../../services/event-utility.service";
 import { NavigateDataService } from "../../../services/navigate-data.service";
 import { RemoveButtonComponent } from "./remove-button.component";
 
-describe("RemoveButtonComponent", () => {
+describe("UnshareButtonComponent", () => {
   let component: RemoveButtonComponent;
   let fixture: ComponentFixture<RemoveButtonComponent>;
   let mockToastr, mockRouter, msalService;
@@ -115,7 +115,8 @@ describe("RemoveButtonComponent", () => {
   let mockSavedResources = {
     itemId: "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
     resourceType: "Topics",
-    resourceDetails: {}
+    resourceDetails: {},
+    url: undefined
   };
 
   beforeEach(async(() => {
@@ -320,7 +321,8 @@ describe("RemoveButtonComponent", () => {
     let mockRemovedResources = {
       itemId: "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
       resourceType: "Topics",
-      resourceDetails: {}
+      resourceDetails: {},
+      url: undefined
     };
     component.removeUserSavedResource(mockResource);
     expect(component.removeResource).toEqual(mockRemovedResources);

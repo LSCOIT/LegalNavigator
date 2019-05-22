@@ -38,6 +38,8 @@ export class PersonalizedPlanService {
   isIntent = false;
   intentInput: IntentInput;
   locationDetails: LocationDetails;
+  url: string;
+  sharedTo: string[] = [];
 
   constructor(
     private http: HttpClient,
@@ -72,7 +74,14 @@ export class PersonalizedPlanService {
     return this.http.post<any>(api.getProfileUrl, null, {params: {oid: this.getUserId(), type: type}}).pipe(
       map(response => {
         if (Array.isArray(response)) {
-          return response[0] ? response[0].resources || [] : [];
+          if(response[0] && response[0].resources) {
+            return response[0].resources;
+          } else if(response[0] && response[0].sharedResources) {
+            return response[0].sharedResources;
+          } else {
+            return response[0] ? response[0].resources || [] : [];
+          }
+
         } else {
           return [];
         }
@@ -95,7 +104,9 @@ export class PersonalizedPlanService {
           IsResourceCountRequired: false,
           IsOrder: false,
           OrderByField: '',
-          OrderBy: ''
+          OrderBy: '',
+          url: '',
+          sharedTo: []
         };
 
         resources.forEach(resource => {
@@ -104,7 +115,14 @@ export class PersonalizedPlanService {
           } else if (resource.resourceType === 'WebResources') {
             webResources.push(resource);
           } else {
-            resourcesFilter.ResourceIds.push(resource.itemId);
+            if(resource.itemId) {
+              resourcesFilter.ResourceIds.push(resource.itemId);
+            } else {
+              if (resource.url) {
+                resourcesFilter.ResourceIds.push(resource.url.substring(resource.url.length - 36));
+                resourcesFilter.url = resource.url;
+              }
+            }
           }
         });
 
@@ -133,6 +151,14 @@ export class PersonalizedPlanService {
 
   removeSharedResources(resource: RemovedElem){
     return this.http.post(api.removeSharedResources, resource, httpOptions);
+  }
+
+  removeSharedToResources(resource: RemovedElem){
+    return this.http.post(api.removeSharedResources, resource, httpOptions);
+  }
+
+  unshareSharedToResources(resource: RemovedElem){
+    return this.http.post(api.unshareSharedToResources, resource, httpOptions);
   }
 
   userPlan(plan): Observable<any> {
@@ -181,7 +207,7 @@ export class PersonalizedPlanService {
 
   saveResourcesToUserProfile() {
     this.resourceStorage = [];
-    this.savedResources = {itemId: '', resourceType: '', resourceDetails: {}};
+    this.savedResources = {itemId: '', resourceType: '', url: '', resourceDetails: {}};
     if (sessionStorage.getItem(this.global.sessionKey)) {
       this.resourceStorage = sessionStorage.getItem(this.global.sessionKey);
       if (this.resourceStorage && this.resourceStorage.length > 0) {
@@ -220,6 +246,7 @@ export class PersonalizedPlanService {
         response.forEach(topic => {
           this.savedResources = {
             itemId: topic.id,
+            url: topic.url,
             resourceType: topic.resourceType,
             resourceDetails: {}
           };

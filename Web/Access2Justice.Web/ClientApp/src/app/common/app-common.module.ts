@@ -32,6 +32,7 @@ import { ResourceService } from './resource/resource.service';
 import { DownloadButtonComponent } from './resource/user-action/download-button/download-button.component';
 import { PrintButtonComponent } from './resource/user-action/print-button/print-button.component';
 import { RemoveButtonComponent } from './resource/user-action/remove-button/remove-button.component';
+import { UnshareButtonComponent } from './resource/user-action/unshare-button/unshare-button.component';
 import { SaveButtonComponent } from './resource/user-action/save-button/save-button.component';
 import { SaveButtonService } from './resource/user-action/save-button/save-button.service';
 import { SettingButtonComponent } from './resource/user-action/setting-button/setting-button.component';
@@ -70,6 +71,7 @@ import { SharedModule } from '../shared/shared.module';
     ResourceCardComponent,
     ResourceCardDetailComponent,
     RemoveButtonComponent,
+    UnshareButtonComponent,
     SearchComponent,
     SearchFilterComponent,
     SearchResultsComponent,
@@ -109,6 +111,7 @@ import { SharedModule } from '../shared/shared.module';
     ResourceCardComponent,
     ResourceCardDetailComponent,
     RemoveButtonComponent,
+    UnshareButtonComponent,
     SearchComponent,
     SearchFilterComponent,
     SearchResultsComponent,

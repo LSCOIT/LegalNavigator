@@ -42,7 +42,9 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     IsResourceCountRequired: false,
     IsOrder: true,
     OrderByField: 'name',
-    OrderBy: 'ASC'
+    OrderBy: 'ASC',
+    url: '',
+    sharedTo: []
   };
   luisInput: ILuisInput = {
     Sentence: '',
@@ -272,7 +274,9 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
       ResourceIds: [],
       IsOrder: true,
       OrderByField: this.sortType.sortParam,
-      OrderBy: this.orderBy
+      OrderBy: this.orderBy,
+      url: '',
+      sharedTo: []
     };
     this.paginationService
       .getPagedResources(this.resourceFilter)

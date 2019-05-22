@@ -120,12 +120,14 @@ describe('Service:PersonalizedPlan', () => {
     {
       itemId: 'd1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef',
       resourceType: 'Topics',
-      resourceDetails: {}
+      resourceDetails: {},
+      url: ''
     },
     {
       itemId: '14a7dd22-f33d-4ed0-a4c3-9bad146f4fa6',
       resourceType: 'Articles',
-      resourceDetails: {}
+      resourceDetails: {},
+      url: ''
     }
   ];
   let mockResourceInput = {
