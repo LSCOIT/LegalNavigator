@@ -70,6 +70,7 @@
         }
 
         public const string A2JTemplateFileExtension = ".zip";
+        public const string GuidedAssistanceAnswerIdCookies = "GuidedAssistanceAnswerId";
     }
 }
 

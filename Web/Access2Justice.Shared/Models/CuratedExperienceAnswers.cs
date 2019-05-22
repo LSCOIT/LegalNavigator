@@ -23,9 +23,15 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "fieldComponents")]
         public List<FieldComponent> FieldComponents { get; set; }
+
+        [JsonProperty(PropertyName = "currentActualAnswer")]
+        public uint CurrentActualAnswer { get; set; }
+
+        [JsonProperty("_ts")]
+        public uint LastModifiedTimeStamp { get; private set; }
     }
 
-    public class ButtonComponent
+    public class ButtonComponent : AnswerComponent
     {
         [JsonProperty(PropertyName = "buttonId")]
         public Guid ButtonId { get; set; }
@@ -35,15 +41,9 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "value")]
         public string Value { get; set; }
-
-        [JsonProperty(PropertyName = "codeBefore")]
-        public string CodeBefore { get; set; }
-
-        [JsonProperty(PropertyName = "codeAfter")]
-        public string CodeAfter { get; set; }
     }
 
-    public class FieldComponent
+    public class FieldComponent : AnswerComponent
     {
         public FieldComponent()
         {
@@ -52,12 +52,18 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "fields")]
         public List<AnswerField> Fields { get; set; }
+    }
 
+    public class AnswerComponent
+    {
         [JsonProperty(PropertyName = "codeBefore")]
         public string CodeBefore { get; set; }
 
         [JsonProperty(PropertyName = "codeAfter")]
         public string CodeAfter { get; set; }
+
+        [JsonProperty(PropertyName = "answerNumber")]
+        public uint AnswerNumber { get; set; }
     }
 
     public class AnswerField

@@ -1,6 +1,5 @@
 ﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
-using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Http;
@@ -9,7 +8,8 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+using Access2Justice.Shared;
+using Microsoft.ApplicationInsights.AspNetCore.Extensions;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace Access2Justice.Api.Controllers
@@ -64,17 +64,17 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Returns first component for curated experience </response>
         /// <response code="500">Failure</response>
         [HttpGet("start")]
-        public async Task<IActionResult> GetFirstComponent(Guid curatedExperienceId, bool ignoreProgress = false)
+        public async Task<IActionResult> GetFirstComponent(Guid curatedExperienceId, Guid? answerId = null, bool ignoreProgress = false)
         {
-            if (User.Identity.IsAuthenticated && !ignoreProgress)
+            if (!ignoreProgress)
             {
-                var currentProgress = await getCurrentComponent(curatedExperienceId);
+                var currentProgress = await getCurrentComponent(curatedExperienceId, answerId ?? default(Guid));
                 if (currentProgress != null)
                 {
                     return currentProgress;
                 }
             }
-            
+
             var component = await curatedExperienceBusinessLogic.GetComponent(
                 sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), Guid.Empty);
             if (component == null) return NotFound();
@@ -103,63 +103,103 @@ namespace Access2Justice.Api.Controllers
                     return StatusCode(StatusCodes.Status500InternalServerError);
                 }
 
-                return Ok(await curatedExperienceBusinessLogic.GetNextComponentAsync(curatedExperience, component));
+                Response.Cookies.Append(Constants.GuidedAssistanceAnswerIdCookies, document.Id, new CookieOptions
+                {
+                    HttpOnly = false,
+                    SameSite = SameSiteMode.None,
+                    Secure = false,
+                    Expires = DateTime.Now.AddYears(1),
+                    Domain = Request.GetUri().Host
+                });
+                return Ok(await curatedExperienceBusinessLogic.GetNextComponentAsync(curatedExperience, component,
+                    document));
             }
             return StatusCode(400);
         }
 
         [HttpGet("components/restore-progress")]
-        [Authorize]
         [SwaggerResponse(StatusCodes.Status404NotFound, Description = "There is no matching answers batch")]
-        public async Task<IActionResult> GetCurrentComponent()
+        public async Task<IActionResult> GetCurrentComponent(Guid? answerId = null)
         {
-            var result = await getCurrentComponent();
-            if (result != null)
-            {
-                return result;
-            }
-            return StatusCode(StatusCodes.Status404NotFound);
+            var result = await getCurrentComponent(answerId: answerId ?? default(Guid));
+            return result ?? StatusCode(StatusCodes.Status404NotFound);
         }
 
-        /// <summary>
-        /// Get specific component for curated experience
-        /// </summary>
-        /// <remarks>
-        /// Helps to get specific component for curated experience 
-        /// </remarks>
-        /// <param name="curatedExperienceId"></param>
-        /// <param name="componentId"></param>
-        /// <response code="200">Returns specific component for curated experience </response>
-        /// <response code="500">Failure</response>
-        [HttpGet("component")]
-        public async Task<IActionResult> GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
+        [HttpGet("components/back")]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Description = "There is no matching answers batch")]
+        public async Task<IActionResult> GetPreviousComponent(Guid? answerId = null)
         {
-                var component = await curatedExperienceBusinessLogic.GetComponent(sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), componentId);
-                if (component == null) return NotFound();
-
-                return Ok(component);
+            await curatedExperienceBusinessLogic.AnswersStepBack(await getCurrentUserAnswers(answerId: answerId ?? default(Guid)));
+            return await GetCurrentComponent(answerId);
         }
 
-        private async Task<IActionResult> getCurrentComponent(Guid curatedExperienceId = default(Guid))
+        [HttpGet("components/next")]
+        [SwaggerResponse(StatusCodes.Status404NotFound, Description = "There is no matching answers batch")]
+        public async Task<IActionResult> GetNextComponent(Guid? answerId = null)
         {
-            var currentUserId = userBusinessLogic.GetOId();
-            if (string.IsNullOrWhiteSpace(currentUserId))
+            await curatedExperienceBusinessLogic.AnswersStepNext(await getCurrentUserAnswers(answerId: answerId ?? default(Guid)));
+            return await GetCurrentComponent(answerId);
+        }
+
+        ///// <summary>
+        ///// Get specific component for curated experience
+        ///// </summary>
+        ///// <remarks>
+        ///// Helps to get specific component for curated experience 
+        ///// </remarks>
+        ///// <param name="curatedExperienceId"></param>
+        ///// <param name="componentId"></param>
+        ///// <response code="200">Returns specific component for curated experience </response>
+        ///// <response code="500">Failure</response>
+        //[HttpGet("component")]
+        //public async Task<IActionResult> GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
+        //{
+        //        var component = await curatedExperienceBusinessLogic.GetComponent(sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), componentId);
+        //        if (component == null) return NotFound();
+
+        //        return Ok(component);
+        //}
+
+        private async Task<IActionResult> getCurrentComponent(Guid curatedExperienceId = default(Guid), Guid answerId = default(Guid))
+        {
+            var answers = await getCurrentUserAnswers(curatedExperienceId, answerId);
+            if (answers == null)
             {
                 return null;
             }
-            var answers = await curatedExperienceBusinessLogic.GetAnswerProgress(currentUserId);
-            if (answers == null || answers.CuratedExperienceId == Guid.Empty)
+            if (answers.CuratedExperienceId == Guid.Empty)
             {
                 return null;
             }
 
-            if (curatedExperienceId != answers.CuratedExperienceId)
+            if (curatedExperienceId != Guid.Empty && curatedExperienceId != answers.CuratedExperienceId)
             {
                 return null;
             }
+
+            Response.Cookies.Append(Constants.GuidedAssistanceAnswerIdCookies, answers.AnswersDocId.ToString());
 
             var curatedExperience = sessionManager.RetrieveCachedCuratedExperience(answers.CuratedExperienceId, HttpContext);
             return Ok(await curatedExperienceBusinessLogic.GetNextComponentAsync(curatedExperience, answers));
+        }
+
+        private async Task<CuratedExperienceAnswers> getCurrentUserAnswers(Guid curatedExperienceId = default(Guid), Guid answerId = default(Guid))
+        {
+            var profileAnswers = Guid.Empty;
+            var cookieAnswers = Guid.Empty;
+            var currentUserId = userBusinessLogic.GetOId();
+            if (!string.IsNullOrWhiteSpace(currentUserId))
+            {
+                profileAnswers = await curatedExperienceBusinessLogic.GetUserAnswerId(currentUserId);
+            }
+
+            if (Request.Cookies.TryGetValue(Constants.GuidedAssistanceAnswerIdCookies, out var cookieValue))
+            {
+                Guid.TryParse(cookieValue, out cookieAnswers);
+                // return await curatedExperienceBusinessLogic.GetAnswerProgress(answerId);
+            }
+
+            return await curatedExperienceBusinessLogic.GetLastAnswerProgress(curatedExperienceId, answerId, cookieAnswers, profileAnswers);
         }
     }
 }

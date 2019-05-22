@@ -9,7 +9,9 @@ using Microsoft.Azure.Documents;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Access2Justice.CosmosDb;
 
 
 namespace Access2Justice.Api.BusinessLogic
@@ -51,43 +53,97 @@ namespace Access2Justice.Api.BusinessLogic
                 dbComponent = curatedExperience.Components.Where(x => x.ComponentId == componentId).FirstOrDefault();
             }
 
-            return MapComponentViewModel(curatedExperience, dbComponent, answers.AnswersDocId);
+            return MapComponentViewModel(curatedExperience, dbComponent, answers.AnswersDocId, answers);
         }
 
-        public async Task<CuratedExperienceComponentViewModel> GetNextComponentAsync(CuratedExperience curatedExperience, CuratedExperienceAnswersViewModel component)
+        public async Task<CuratedExperienceComponentViewModel> GetNextComponentAsync(CuratedExperience curatedExperience, CuratedExperienceAnswersViewModel component, Document answers)
         {
-            return await getNextComponentAsync(curatedExperience, component.ButtonId, component.AnswersDocId);
+            return await GetNextComponentAsync(curatedExperience, component, answers.Convert<CuratedExperienceAnswers>());
         }
 
-        public async Task<CuratedExperienceComponentViewModel> GetNextComponentAsync(CuratedExperience curatedExperience, CuratedExperienceAnswers answers)
+        public async Task<CuratedExperienceComponentViewModel> GetNextComponentAsync(CuratedExperience curatedExperience, CuratedExperienceAnswersViewModel component, CuratedExperienceAnswers answers)
         {
-            return await getNextComponentAsync(curatedExperience, getLastAnswerButtonId(answers), answers.AnswersDocId);
+            return await getNextComponentAsync(curatedExperience, component.ButtonId, answers);
+        }
+
+        public async Task<CuratedExperienceComponentViewModel> GetNextComponentAsync(CuratedExperience curatedExperience, CuratedExperienceAnswers answers, bool fillAnswer = false)
+        {
+            var nextComponent = await getNextComponentAsync(curatedExperience, getLastAnswerButtonId(answers), answers);
+            if (fillAnswer)
+            {
+                nextComponent.ButtonsSelected = answers.ButtonComponents.FindAll(x => x.AnswerNumber == answers.CurrentActualAnswer - 1);
+                nextComponent.FieldsSelected = answers.FieldComponents.FindAll(x => x.AnswerNumber == answers.CurrentActualAnswer - 1);
+            }
+
+            return nextComponent;
         }
 
         private Guid getLastAnswerButtonId(CuratedExperienceAnswers answers)
         {
-            return answers.ButtonComponents.Last()?.ButtonId ?? Guid.Empty;
+            return answers.ButtonComponents
+                       .Where(x => x.AnswerNumber <= answers.CurrentActualAnswer)
+                       .OrderBy(x => x.AnswerNumber)
+                       .LastOrDefault()?.ButtonId ?? Guid.Empty;
         }
 
         private async Task<CuratedExperienceComponentViewModel> getNextComponentAsync(CuratedExperience curatedExperience,
-            Guid buttonId, Guid answersDocId)
+            Guid buttonId, CuratedExperienceAnswers answers)
         {
             return MapComponentViewModel(curatedExperience,
-                await FindDestinationComponentAsync(curatedExperience, buttonId, answersDocId),
-                answersDocId);
+                await FindDestinationComponentAsync(curatedExperience, buttonId, answers.AnswersDocId),
+                answers.AnswersDocId, answers);
         }
 
-        public async Task<CuratedExperienceAnswers> GetAnswerProgress(string userId)
+        public async Task<Guid> GetUserAnswerId(string userId)
         {
             var userProfile = await userProfileBusinessLogic.GetUserProfileDataAsync<UserProfile>(userId);
-            if (userProfile == null || userProfile.CuratedExperienceAnswersId == Guid.Empty)
+            if (userProfile == null)
+            {
+                return Guid.Empty;
+            }
+
+            return userProfile.CuratedExperienceAnswersId;
+        }
+
+        public async Task<CuratedExperienceAnswers> GetLastAnswerProgress(Guid curatedExperienceId, params Guid[] answerIds)
+        {
+            if (answerIds == null || answerIds.Length == 0)
             {
                 return null;
             }
-            var answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(userProfile.CuratedExperienceAnswersId.ToString(), 
+
+            var notEmptyIds = answerIds.Where(x => x != Guid.Empty).ToList();
+            if (notEmptyIds.Count == 0)
+            {
+                return null;
+            }
+
+            Expression<Func<CuratedExperienceAnswers, bool>> whereCondition;
+            if (curatedExperienceId == Guid.Empty)
+            {
+                whereCondition = x => notEmptyIds.Contains(x.AnswersDocId);
+            }
+            else
+            {
+                whereCondition = x =>
+                    notEmptyIds.Contains(x.AnswersDocId) && x.CuratedExperienceId == curatedExperienceId;
+            }
+
+            var answers = await dbService.GetItemsAsync<CuratedExperienceAnswers>(
+                whereCondition,
                 dbSettings.GuidedAssistantAnswersCollectionId);
 
-            return answers;
+            return answers?.OrderBy(x => x.LastModifiedTimeStamp).LastOrDefault();
+        }
+
+        public async Task<bool> AnswersStepNext(CuratedExperienceAnswers answers)
+        {
+            return await changeActualAnswer(answers, +1);
+        }
+
+        public async Task<bool> AnswersStepBack(CuratedExperienceAnswers answers)
+        {
+            return await changeActualAnswer(answers, -1);
         }
 
         public async Task<Document> SaveAnswersAsync(CuratedExperienceAnswersViewModel viewModelAnswer, CuratedExperience curatedExperience, string userId = null)
@@ -96,8 +152,18 @@ namespace Access2Justice.Api.BusinessLogic
             var savedAnswersDoc = await dbService.GetItemAsync<CuratedExperienceAnswers>(viewModelAnswer.AnswersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);
             if (savedAnswersDoc == null || savedAnswersDoc.AnswersDocId == default(Guid))
             {
+                setAnswerNumber(dbAnswers, 1);
                 return await dbService.CreateItemAsync(dbAnswers, dbSettings.GuidedAssistantAnswersCollectionId);
             }
+            else
+            {
+                var maxNumber = maxAnswerNumber(dbAnswers);
+                setAnswerNumber(dbAnswers, maxNumber + 1);
+            }
+            savedAnswersDoc.CurrentActualAnswer = dbAnswers.CurrentActualAnswer;
+
+            savedAnswersDoc.ButtonComponents.RemoveAll(x => x.AnswerNumber <= dbAnswers.CurrentActualAnswer);
+            savedAnswersDoc.FieldComponents.RemoveAll(x => x.AnswerNumber <= dbAnswers.CurrentActualAnswer);
 
             savedAnswersDoc.ButtonComponents.AddRange(dbAnswers.ButtonComponents);
             savedAnswersDoc.FieldComponents.AddRange(dbAnswers.FieldComponents);
@@ -109,6 +175,13 @@ namespace Access2Justice.Api.BusinessLogic
             }
 
             return document;
+        }
+
+        private void setAnswerNumber(CuratedExperienceAnswers dbAnswers, uint currentActualAnswer)
+        {
+            dbAnswers.CurrentActualAnswer = currentActualAnswer;
+            dbAnswers.ButtonComponents.ForEach(x => x.AnswerNumber = currentActualAnswer);
+            dbAnswers.FieldComponents.ForEach(x => x.AnswerNumber = currentActualAnswer);
         }
 
         private async Task saveAnswersToProfile(string userId, Guid answersDocId)
@@ -125,20 +198,26 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<CuratedExperienceComponent> FindDestinationComponentAsync(CuratedExperience curatedExperience, Guid buttonId, Guid answersDocId)
         {
+            if (buttonId == Guid.Empty)
+            {
+                return await GetComponent(curatedExperience, Guid.Empty);
+            }
             var allButtonsInCuratedExperience = curatedExperience.Components.Select(x => x.Buttons).ToList();
             var currentButton = new Button();
             foreach (var button in allButtonsInCuratedExperience)
             {
-                if (button.Where(x => x.Id == buttonId).Any())
+                var desiredButton =  button.FirstOrDefault(x => x.Id == buttonId);
+                if (desiredButton == null)
                 {
-                    //currentComponent = button.Where(x => x.Id == buttonId)
-                    currentButton = button.Where(x => x.Id == buttonId).First();
+                    continue;
                 }
+                currentButton = desiredButton;
+                break;
             }
 
             var destinationComponent = new CuratedExperienceComponent();
-            CuratedExperienceAnswers answers = new CuratedExperienceAnswers();
-            var currentComponent = curatedExperience.Components.Where(x => x.Buttons.Contains(currentButton)).FirstOrDefault();
+            var answers = new CuratedExperienceAnswers();
+            var currentComponent = curatedExperience.Components.First(x => x.Buttons.Contains(currentButton));
             if (!string.IsNullOrWhiteSpace(currentComponent.Code.CodeAfter) && currentComponent.Code.CodeAfter.Contains(Tokens.GOTO))
             {
                 answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);
@@ -205,14 +284,15 @@ namespace Access2Justice.Api.BusinessLogic
             return possibleRoutes.OrderByDescending(x => x.Count).First().Count;
         }
 
-        private CuratedExperienceComponentViewModel MapComponentViewModel(CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent, Guid answersDocId)
+        private CuratedExperienceComponentViewModel MapComponentViewModel(
+            CuratedExperience curatedExperience, CuratedExperienceComponent dbComponent, Guid answersDocId, CuratedExperienceAnswers answers = null)
         {
             if (dbComponent == null || dbComponent.ComponentId == default(Guid))
             {
                 return null;
             }
             var remainingQuestions = CalculateRemainingQuestions(curatedExperience, dbComponent);
-            return new CuratedExperienceComponentViewModel
+            var component = new CuratedExperienceComponentViewModel
             {
                 CuratedExperienceId = curatedExperience.CuratedExperienceId,
                 AnswersDocId = answersDocId,
@@ -225,7 +305,24 @@ namespace Access2Justice.Api.BusinessLogic
                 Tags = dbComponent.Tags,
                 Buttons = dbComponent.Buttons,
                 Fields = dbComponent.Fields,
+                AnswersId = answers?.AnswersDocId ?? Guid.Empty
             };
+            if(answers != null)
+            {
+                var maxAnswer = maxAnswerNumber(answers);
+                component.HasNextAnswers = maxAnswer > answers.CurrentActualAnswer;
+                component.HasPreviousAnswers = answers.CurrentActualAnswer > 0;
+
+                if (component.HasNextAnswers)
+                {
+                    component.ButtonsSelected =
+                        answers.ButtonComponents.FindAll(x => x.AnswerNumber == answers.CurrentActualAnswer + 1);
+                    component.FieldsSelected =
+                        answers.FieldComponents.FindAll(x => x.AnswerNumber == answers.CurrentActualAnswer + 1);
+                }
+            }
+
+            return component;
         }
 
         public CuratedExperienceAnswers MapCuratedExperienceViewModel(CuratedExperienceAnswersViewModel viewModelAnswer, CuratedExperience curatedExperience)
@@ -233,28 +330,29 @@ namespace Access2Justice.Api.BusinessLogic
             var buttonComponent = new CuratedExperienceComponent();
             foreach (var component in curatedExperience.Components)
             {
-                if (component.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).Any())
+                if (component.Buttons.Any(x => x.Id == viewModelAnswer.ButtonId))
                 {
-                    var button = component.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault();
-                    buttonComponent = curatedExperience.Components.Where(x => x.Buttons.Contains(button)).FirstOrDefault();
+                    var button = component.Buttons.FirstOrDefault(x => x.Id == viewModelAnswer.ButtonId);
+                    buttonComponent = curatedExperience.Components.First(x => x.Buttons.Contains(button));
                 }
             }
 
-            var userSelectedButtons = new List<ButtonComponent>();
-            userSelectedButtons.Add(new ButtonComponent
+            var userSelectedButtons = new List<ButtonComponent>
             {
-                ButtonId = viewModelAnswer.ButtonId,
-                Name = buttonComponent.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault().Name,
-                Value = buttonComponent.Buttons.Where(x => x.Id == viewModelAnswer.ButtonId).FirstOrDefault().Value,
-
-                CodeBefore = buttonComponent.Code.CodeBefore,
-                CodeAfter = buttonComponent.Code.CodeAfter
-            });
+                new ButtonComponent
+                {
+                    ButtonId = viewModelAnswer.ButtonId,
+                    Name = buttonComponent.Buttons.First(x => x.Id == viewModelAnswer.ButtonId).Name,
+                    Value = buttonComponent.Buttons.First(x => x.Id == viewModelAnswer.ButtonId).Value,
+                    CodeBefore = buttonComponent.Code.CodeBefore,
+                    CodeAfter = buttonComponent.Code.CodeAfter
+                }
+            };
 
             var userSelectedFields = new List<FieldComponent>();
+            var fieldComponent = new CuratedExperienceComponent();
             foreach (var answerField in viewModelAnswer.Fields)
             {
-                var fieldComponent = new CuratedExperienceComponent();
                 foreach (var component in curatedExperience.Components)
                 {
                     if (answerField != null && component.Fields.Where(x => x.Id == Guid.Parse(answerField.FieldId)).Any())
@@ -341,6 +439,38 @@ namespace Access2Justice.Api.BusinessLogic
             }
 
             return destinationComponent.ComponentId == default(Guid) ? null : destinationComponent;
+        }
+
+        private async Task<bool> changeActualAnswer(CuratedExperienceAnswers answers, int delta)
+        {
+            if (answers == null)
+            {
+                return false;
+            }
+
+            var newActualAnswer = answers.CurrentActualAnswer + delta;
+            var maxPossibleAnswer = maxAnswerNumber(answers);
+
+            if (newActualAnswer < 0)
+            {
+                newActualAnswer = 0;
+            }
+
+            if (newActualAnswer > maxPossibleAnswer)
+            {
+                newActualAnswer = maxPossibleAnswer;
+            }
+
+            answers.CurrentActualAnswer = (uint)newActualAnswer;
+            return await dbService.UpdateItemAsync(answers.AnswersDocId.ToString(), answers, dbSettings.GuidedAssistantAnswersCollectionId) != null;
+        }
+
+        private static uint maxAnswerNumber(CuratedExperienceAnswers answers)
+        {
+            return Math.Max(
+                answers.ButtonComponents.Select(x => x.AnswerNumber).DefaultIfEmpty().Max(),
+                answers.FieldComponents.Select(x => x.AnswerNumber).DefaultIfEmpty().Max()
+            );
         }
     }
 }

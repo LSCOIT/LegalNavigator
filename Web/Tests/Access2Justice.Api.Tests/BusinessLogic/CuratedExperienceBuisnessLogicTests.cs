@@ -106,7 +106,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             dbResponse.ReturnsForAnyArgs<CuratedExperienceAnswers>(curatedExperienceAnswers);
 
             //act
-            var response = curatedExperience.GetNextComponentAsync(curatedExperiencedata, component);
+            var response = curatedExperience.GetNextComponentAsync(curatedExperiencedata, component, curatedExperienceAnswers);
             var actualResult = JsonConvert.SerializeObject(response.Result);
             var expectedResult = JsonConvert.SerializeObject(expectedData);
 

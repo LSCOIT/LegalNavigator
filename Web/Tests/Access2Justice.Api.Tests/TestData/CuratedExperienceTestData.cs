@@ -264,7 +264,8 @@ namespace Access2Justice.Api.Tests.TestData
                 Name = "2-Gender",
                 Tags = { },
                 Text = "",
-                AnswersDocId = Guid.Parse("00000000-0000-0000-0000-000000000000"),
+                AnswersDocId = Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b"),
+                AnswersId = Guid.Parse("288af4da-06bb-4655-aa91-41314e248d6b"),
                 CuratedExperienceId = Guid.Parse("9a6a6131-657d-467d-b09b-c570b7dad242"),
                 QuestionsRemaining = 1
             };
