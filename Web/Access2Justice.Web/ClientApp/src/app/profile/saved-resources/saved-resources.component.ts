@@ -44,6 +44,8 @@ export class SavedResourcesComponent implements OnInit, OnDestroy {
   personalizedResources: {
     resources: any[];
     topics: any[];
+    url: any[];
+    sharedTo: any[];
     webResources: any[];
   };
   countsByType: ResourceResult[];

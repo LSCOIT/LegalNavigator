@@ -92,7 +92,8 @@ describe("SaveButtonComponent", () => {
   let mockSavedResources = {
     itemId: "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
     resourceType: "Topics",
-    resourceDetails: {}
+    resourceDetails: {},
+    url: undefined
   };
 
   beforeEach(async(() => {

@@ -31,7 +31,9 @@ export class ServiceOrgSidebarComponent implements OnInit {
     IsResourceCountRequired: false,
     IsOrder: false,
     OrderByField: "",
-    OrderBy: ""
+    OrderBy: "",
+    url: '',
+    sharedTo: []
   };
   topicIds: string[] = [];
   total: number = 5;
@@ -69,7 +71,9 @@ export class ServiceOrgSidebarComponent implements OnInit {
       ResourceIds: [],
       IsOrder: false,
       OrderByField: "",
-      OrderBy: ""
+      OrderBy: "",
+      url: '',
+      sharedTo: []
     };
     this.paginationService
       .getPagedResources(this.resourceFilter)

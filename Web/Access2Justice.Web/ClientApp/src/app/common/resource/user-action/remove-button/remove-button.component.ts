@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { Global, UserStatus } from '../../../../global';
@@ -24,6 +24,7 @@ export class RemoveButtonComponent implements OnInit {
   @Input() personalizedResources;
   @Input() selectedPlanDetails;
   @Input() sharedResources;
+  @Input() sharedToResources;
   removeResource: SavedResource;
   profileResources: ProfileResources = {oId: '', resourceTags: [], type: ''};
   resourceDetails: any;
@@ -47,7 +48,9 @@ export class RemoveButtonComponent implements OnInit {
     }
     if(this.resourceId && this.sharedResources){
       this.removeSharedResources();
-    }else if (this.resourceId) {
+    } else if(this.resourceId && this.sharedToResources){
+      this.removeSharedToResources();
+    } else if (this.resourceId) {
       this.removedSavedResource();
     }
   }
@@ -93,7 +96,7 @@ export class RemoveButtonComponent implements OnInit {
   }
 
   removedSavedResource() {
-    this.removeResource = {itemId: '', resourceType: '', resourceDetails: {}};
+    this.removeResource = {itemId: '', resourceType: '', resourceDetails: {}, url: ''};
     this.profileResources.resourceTags = [];
     if (this.personalizedResources.resources) {
       this.removeUserSavedResourceFromProfile(
@@ -143,6 +146,7 @@ export class RemoveButtonComponent implements OnInit {
     this.removeResource = {
       itemId: resource.id,
       resourceType: resource.resourceType,
+      url: resource.url,
       resourceDetails: this.resourceDetails
     };
     this.profileResources.resourceTags.push(this.removeResource);
@@ -174,7 +178,7 @@ export class RemoveButtonComponent implements OnInit {
       Oid: this.global.userId,
       itemId: this.resourceId,
       resourceType: this.resourceType,
-      sharedBy: resource.shared.sharedBy,
+      sharedBy: (resource.shared && resource.shared.sharedBy) || 'katana_2w@ukr.net',
       type: 'incoming-resources'
     };
     this.personalizedPlanService.removeSharedResources(removedElem).subscribe(() =>{
@@ -185,6 +189,32 @@ export class RemoveButtonComponent implements OnInit {
     });
   }
 
+  removeSharedToResources(){
+    const resource = this.personalizedResources.find(o => {
+      return o.id === this.resourceId
+    });
+    const removedElem = {
+      Oid: this.global.userId,
+      itemId: this.resourceId,
+      resourceType: this.resourceType,
+      sharedBy: (resource.shared && resource.shared.sharedBy) || 'katana_2w@ukr.net',
+      type: 'shared-resources'
+    };
+    this.personalizedPlanService.removeSharedToResources(removedElem).subscribe(() =>{
+      this.personalizedPlanService.showSuccess(
+        'Shared resource removed from profile'
+      );
+      this.eventUtilityService.updateSharedResource('RESOURCE REMOVED');
+    });
+  }
+
   ngOnInit() {
+  }
+
+  ngAfterViewInit() {
+    var element = document.getElementById("removeButtonForSharedToTab");
+    if (element) {
+      element.textContent = "Remove block";
+    }
   }
 }

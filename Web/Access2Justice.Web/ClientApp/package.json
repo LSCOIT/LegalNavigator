@@ -1,5 +1,5 @@
 {
-  "name": "Access2Justice.Web",
+  "name": "access2justice.web",
   "version": "0.0.0",
   "private": true,
   "license": "MIT",
@@ -63,5 +63,8 @@
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
     "typescript": "3.2.4"
-  }
+  },
+  "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.0.",
+  "main": "karma.conf.js",
+  "author": ""
 }

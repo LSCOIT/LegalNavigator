@@ -1,0 +1,25 @@
+<!--todo filters place start write-->
+<!--<div class="row mainBlock">-->
+<!--<div class="col-12">-->
+<!--дрочильня с фильтрами-->
+<!--</div>-->
+<!--</div>-->
+<div class="row">
+  <div class="col-sm-12">
+    <div *ngFor="let resource of sharedResources">
+      <app-resource-card
+        [searchResource]="resource"
+        [sharedToResources]="true"
+        [sharedResources]="false"
+        [personalizedResources]="sharedResources"
+        [showRemoveOption]="true"
+        [showUnshareOption]="true"
+      >
+      </app-resource-card>
+    </div>
+    <!--<app-action-plans-->
+      <!--[planDetails]="planDetails"-->
+    <!--&gt;-->
+    <!--</app-action-plans>-->
+  </div>
+</div>

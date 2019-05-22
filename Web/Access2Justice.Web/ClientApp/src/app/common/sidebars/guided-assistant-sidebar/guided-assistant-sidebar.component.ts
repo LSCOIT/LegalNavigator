@@ -31,7 +31,9 @@ export class GuidedAssistantSidebarComponent implements OnInit, OnDestroy {
     IsResourceCountRequired: false,
     IsOrder: false,
     OrderByField: "",
-    OrderBy: ""
+    OrderBy: "",
+    url: '',
+    sharedTo: []
   };
   luisInput: ILuisInput = {
     Sentence: "",
@@ -69,7 +71,9 @@ export class GuidedAssistantSidebarComponent implements OnInit, OnDestroy {
         IsResourceCountRequired: false,
         IsOrder: false,
         OrderByField: "",
-        OrderBy: ""
+        OrderBy: "",
+        url: '',
+        sharedTo: []
       };
       this.paginationService
         .getPagedResources(this.resourceFilter)
@@ -102,7 +106,9 @@ export class GuidedAssistantSidebarComponent implements OnInit, OnDestroy {
       ResourceIds: [],
       IsOrder: false,
       OrderByField: "",
-      OrderBy: ""
+      OrderBy: "",
+      url: '',
+      sharedTo: []
     };
     this.paginationService
       .getPagedResources(this.resourceFilter)

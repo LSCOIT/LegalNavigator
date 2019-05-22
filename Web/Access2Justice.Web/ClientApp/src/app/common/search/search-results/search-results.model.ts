@@ -9,6 +9,8 @@ export interface IResourceFilter {
   IsOrder: boolean;
   OrderByField: string;
   OrderBy: string;
+  url: string;
+  sharedTo: any[];
 }
 
 export interface ILuisInput {

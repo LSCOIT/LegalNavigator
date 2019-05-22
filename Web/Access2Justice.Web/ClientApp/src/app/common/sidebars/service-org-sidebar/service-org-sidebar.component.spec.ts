@@ -40,7 +40,9 @@ describe("Component:ServiceOrgSidebar", () => {
     IsResourceCountRequired: true,
     IsOrder: true,
     OrderByField: "name",
-    OrderBy: "ASC"
+    OrderBy: "ASC",
+    url: '',
+    sharedTo: []
   };
   let mockOrganizations = {
     resources: [
@@ -282,7 +284,9 @@ describe("Component:ServiceOrgSidebar", () => {
       IsResourceCountRequired: false,
       IsOrder: true,
       OrderByField: "name",
-      OrderBy: "ASC"
+      OrderBy: "ASC",
+      url: '',
+      sharedTo: []
     };
     component.resourceFilter = resourceFilter;
     component.getOrganizations();
@@ -303,7 +307,9 @@ describe("Component:ServiceOrgSidebar", () => {
       IsResourceCountRequired: false,
       IsOrder: true,
       OrderByField: "name",
-      OrderBy: "ASC"
+      OrderBy: "ASC",
+      url: '',
+      sharedTo: []
     };
     component.resourceFilter = resourceFilter;
     component.getOrganizations();
