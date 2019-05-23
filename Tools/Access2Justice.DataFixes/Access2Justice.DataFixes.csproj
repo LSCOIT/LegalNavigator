@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -12,7 +12,11 @@
 
   <ItemGroup>
     <Compile Include="..\..\Web\Access2Justice.Shared\Models\Location.cs" Link="Models\Location.cs" />
+    <Compile Include="..\..\Web\Access2Justice.Shared\Models\Resource.cs" Link="Models\Resource.cs" />
+    <Compile Include="..\..\Web\Access2Justice.Shared\Models\Role.cs" Link="Models\Role.cs" />
     <Compile Include="..\..\Web\Access2Justice.Shared\Models\Topic.cs" Link="Models\Topic.cs" />
+    <Compile Include="..\..\Web\Access2Justice.Shared\Models\UserIncomingResources.cs" Link="Models\UserIncomingResources.cs" />
+    <Compile Include="..\..\Web\Access2Justice.Shared\Models\UserProfile.cs" Link="Models\UserProfile.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -22,6 +26,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="AppData\NSMIv2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

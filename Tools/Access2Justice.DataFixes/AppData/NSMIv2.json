@@ -1,0 +1,786 @@
+[
+  {
+    "code": "TO-05-00-00-00",
+    "name": "Being harassed by another person"
+  },
+  {
+    "code": "TO-01-00-00-00",
+    "name": "Being Physically Injured or Harmed"
+  },
+  {
+    "code": "TO-03-00-00-00",
+    "name": "Getting Care and Coverage for an injury"
+  },
+  {
+    "code": "TO-02-00-00-00",
+    "name": "Having personal data breached"
+  },
+  {
+    "code": "TO-04-00-00-00",
+    "name": "Suing someone, or being sued, for an injury"
+  },
+  {
+    "code": "NA-07-00-00-00",
+    "name": "Benefits for Native Americans"
+  },
+  {
+    "code": "BE-01-00-00-00",
+    "name": "Disability benefits"
+  },
+  {
+    "code": "BE-02-00-00-00",
+    "name": "Food and cash benefits"
+  },
+  {
+    "code": "BE-03-00-00-00",
+    "name": "Health coverage benefits"
+  },
+  {
+    "code": "BE-07-00-00-00",
+    "name": "Old age benfits"
+  },
+  {
+    "code": "BE-04-00-00-00",
+    "name": "Unemployment Compensation and Insurance"
+  },
+  {
+    "code": "BE-05-00-00-00",
+    "name": "Utilities, Energy, and Heating benefits at home"
+  },
+  {
+    "code": "BE-06-00-00-00",
+    "name": "Veterans Affairs (VA) benefits"
+  },
+  {
+    "code": "RI-03-00-00-00",
+    "name": "Disability Rights"
+  },
+  {
+    "code": "RI-01-00-00-00",
+    "name": "Discrimination and Equal Protection"
+  },
+  {
+    "code": "CR-09-00-00-00",
+    "name": "Due Process Rights"
+  },
+  {
+    "code": "RI-05-00-00-00",
+    "name": "First Amendment Protections"
+  },
+  {
+    "code": "RI-07-00-00-00",
+    "name": "Human Rights"
+  },
+  {
+    "code": "VE-06-00-00-00",
+    "name": "Legal protections for military"
+  },
+  {
+    "code": "RI-06-00-00-00",
+    "name": "LGBTQ Rights"
+  },
+  {
+    "code": "RI-09-00-00-00",
+    "name": "Mental Health Rights"
+  },
+  {
+    "code": "RI-10-00-00-00",
+    "name": "Prisoners' Rights"
+  },
+  {
+    "code": "RI-12-00-00-00",
+    "name": "Privacy Rights"
+  },
+  {
+    "code": "RI-02-00-00-00",
+    "name": "Right to lawyer"
+  },
+  {
+    "code": "RI-14-00-00-00",
+    "name": "Right to Travel"
+  },
+  {
+    "code": "RI-13-00-00-00",
+    "name": "Rights against Illegal Search and Seizure"
+  },
+  {
+    "code": "NA-08-00-00-00",
+    "name": "Rights and protections for Native Americans"
+  },
+  {
+    "code": "IM-06-00-00-00",
+    "name": "Rights of immigrants and citizens"
+  },
+  {
+    "code": "RI-16-00-00-00",
+    "name": "Rights of people who have been Trafficked"
+  },
+  {
+    "code": "RI-15-00-00-00",
+    "name": "Sex Workers' Rights"
+  },
+  {
+    "code": "RI-04-00-00-00",
+    "name": "Voting Rights"
+  },
+  {
+    "code": "RI-11-00-00-00",
+    "name": "Women's Rights"
+  },
+  {
+    "code": "RI-08-00-00-00",
+    "name": "Workers' Rights"
+  },
+  {
+    "code": "CO-04-00-00-00",
+    "name": "Administrative agency hearings"
+  },
+  {
+    "code": "CO-01-00-00-00",
+    "name": "Dealing with your lawyer: privilege, ethics, payments, etc."
+  },
+  {
+    "code": "CO-05-00-00-00",
+    "name": "Evidence"
+  },
+  {
+    "code": "CO-09-00-00-00",
+    "name": "Finding and hiring a lawyer to help you"
+  },
+  {
+    "code": "CO-07-00-00-00",
+    "name": "Going to court and dealing with procedure"
+  },
+  {
+    "code": "CO-02-00-00-00",
+    "name": "Information help resources to deal with legal issues"
+  },
+  {
+    "code": "CO-06-00-00-00",
+    "name": "Legal Research"
+  },
+  {
+    "code": "CO-03-00-00-00",
+    "name": "Representing oneself as Pro Se"
+  },
+  {
+    "code": "CO-08-00-00-00",
+    "name": "Rulemaking procedure"
+  },
+  {
+    "code": "CR-02-00-00-00",
+    "name": "After being found guilty of a crime"
+  },
+  {
+    "code": "CR-01-00-00-00",
+    "name": "Being a victim or witness to a crime"
+  },
+  {
+    "code": "CR-03-00-00-00",
+    "name": "Confessions and Custodial Statements"
+  },
+  {
+    "code": "CR-06-00-00-00",
+    "name": "Criminal Records"
+  },
+  {
+    "code": "CR-12-00-00-00",
+    "name": "Dealing with police and prosecutors during encounters, arrests, searches, or charges"
+  },
+  {
+    "code": "CR-07-00-00-00",
+    "name": "Death Penalty"
+  },
+  {
+    "code": "FA-07-00-00-00",
+    "name": "Domestic Violence and Abuse in the Family"
+  },
+  {
+    "code": "CR-09-00-00-00",
+    "name": "Due Process rights"
+  },
+  {
+    "code": "CR-04-00-00-00",
+    "name": "Getting and having a lawyer in a criminal case"
+  },
+  {
+    "code": "CR-08-00-00-00",
+    "name": "Going through criminal court case"
+  },
+  {
+    "code": "CR-11-00-00-00",
+    "name": "Habeas Corpus"
+  },
+  {
+    "code": "CR-10-00-00-00",
+    "name": "Juvenile Justice"
+  },
+  {
+    "code": "CR-05-00-00-00",
+    "name": "Line-ups and Identification"
+  },
+  {
+    "code": "CR-15-00-00-00",
+    "name": "Prisoners' rights, services, and conditions"
+  },
+  {
+    "code": "CR-14-00-00-00",
+    "name": "Reentry after prison"
+  },
+  {
+    "code": "CR-13-00-00-00",
+    "name": "Understanding Specific Types of Crimes"
+  },
+  {
+    "code": "BU-07-00-00-00",
+    "name": "Disaster Recovery for a small business"
+  },
+  {
+    "code": "DI-03-00-00-00",
+    "name": "Finding Missing Persons after a Disaster"
+  },
+  {
+    "code": "DI-01-00-00-00",
+    "name": "Help for farms and businesses after a disaster"
+  },
+  {
+    "code": "DI-02-00-00-00",
+    "name": "Help for individuals after a disaster"
+  },
+  {
+    "code": "DI-04-00-00-00",
+    "name": "Insurance Claims after a disaster"
+  },
+  {
+    "code": "DI-05-00-00-00",
+    "name": "Rebuilding after a disaster"
+  },
+  {
+    "code": "DI-06-00-00-00",
+    "name": "Replacing Lost Documents after a disaster"
+  },
+  {
+    "code": "DI-07-00-00-00",
+    "name": "Tax Relief after a disaster"
+  },
+  {
+    "code": "ED-01-00-00-00",
+    "name": "Adult continuing education"
+  },
+  {
+    "code": "ED-02-00-00-00",
+    "name": "Benefits support at school"
+  },
+  {
+    "code": "ED-04-00-00-00",
+    "name": "Discipline, expulsion, or suspension"
+  },
+  {
+    "code": "ED-05-00-00-00",
+    "name": "Discrimination and access to education"
+  },
+  {
+    "code": "NA-06-00-00-00",
+    "name": "Education issues for native Americans"
+  },
+  {
+    "code": "ED-03-00-00-00",
+    "name": "Paying for school"
+  },
+  {
+    "code": "ED-06-00-00-00",
+    "name": "Privacy at school"
+  },
+  {
+    "code": "ED-08-00-00-00",
+    "name": "School residency or enrollment"
+  },
+  {
+    "code": "ED-09-00-00-00",
+    "name": "Standards, testing, and requirements"
+  },
+  {
+    "code": "ED-07-00-00-00",
+    "name": "Students with disabilities"
+  },
+  {
+    "code": "EN-01-00-00-00",
+    "name": "Air Pollution"
+  },
+  {
+    "code": "EN-02-00-00-00",
+    "name": "Environmental Protection"
+  },
+  {
+    "code": "EN-03-00-00-00",
+    "name": "Hazardous Waste"
+  },
+  {
+    "code": "HE-06-00-00-00",
+    "name": "Health issues from living conditions"
+  },
+  {
+    "code": "EN-04-00-00-00",
+    "name": "Pesticides"
+  },
+  {
+    "code": "EN-05-00-00-00",
+    "name": "Sustainable Agriculture"
+  },
+  {
+    "code": "EN-06-00-00-00",
+    "name": "Water Pollution"
+  },
+  {
+    "code": "ES-02-00-00-00",
+    "name": "Dealing with an estate after a death"
+  },
+  {
+    "code": "ES-01-00-00-00",
+    "name": "Estate Planning and writing a will"
+  },
+  {
+    "code": "ES-07-00-00-00",
+    "name": "Estate Planning for Military"
+  },
+  {
+    "code": "ES-06-00-00-00",
+    "name": "Funeral and Burial Issues"
+  },
+  {
+    "code": "ES-03-00-00-00",
+    "name": "Guardianship and Conservatorship"
+  },
+  {
+    "code": "ES-05-00-00-00",
+    "name": "Power of Attorney, Advance Directives, and Living Wills"
+  },
+  {
+    "code": "ES-04-00-00-00",
+    "name": "Trusts"
+  },
+  {
+    "code": "FA-01-00-00-00",
+    "name": "Adoption"
+  },
+  {
+    "code": "FA-02-00-00-00",
+    "name": "Birth Certificates and Identity Documents"
+  },
+  {
+    "code": "FA-03-00-00-00",
+    "name": "Child Care"
+  },
+  {
+    "code": "FA-04-00-00-00",
+    "name": "Child Custody and Parenting Plans"
+  },
+  {
+    "code": "FA-05-00-00-00",
+    "name": "Child Support"
+  },
+  {
+    "code": "FA-06-00-00-00",
+    "name": "Divorce, Separation, and Annulment"
+  },
+  {
+    "code": "FA-07-00-00-00",
+    "name": "Domestic Violence and Abuse"
+  },
+  {
+    "code": "FA-15-00-00-00",
+    "name": "Elder Abuse"
+  },
+  {
+    "code": "FA-08-00-00-00",
+    "name": "Emancipation"
+  },
+  {
+    "code": "NA-03-00-00-00",
+    "name": "Family and child support for Native Americans"
+  },
+  {
+    "code": "FA-09-00-00-00",
+    "name": "Foster Care"
+  },
+  {
+    "code": "ES-03-00-00-00",
+    "name": "Guardianship and Conservatorship"
+  },
+  {
+    "code": "CR-10-00-00-00",
+    "name": "Juvenile Justice"
+  },
+  {
+    "code": "FA-10-00-00-00",
+    "name": "Marriages and civil unions"
+  },
+  {
+    "code": "FA-13-00-00-00",
+    "name": "Mediation and Alternative Dispute Resolution for family"
+  },
+  {
+    "code": "FA-11-00-00-00",
+    "name": "Name Change"
+  },
+  {
+    "code": "FA-14-00-00-00",
+    "name": "Parental Rights (and Termination)"
+  },
+  {
+    "code": "FA-12-00-00-00",
+    "name": "Paternity"
+  },
+  {
+    "code": "GO-02-00-00-00",
+    "name": "Getting information and records from the government"
+  },
+  {
+    "code": "GO-01-00-00-00",
+    "name": "Licenses for Guns, Fishing, Driving, and other"
+  },
+  {
+    "code": "GO-03-00-00-00",
+    "name": "Voting and Elections"
+  },
+  {
+    "code": "HE-01-00-00-00",
+    "name": "Care for a specific condition or disability"
+  },
+  {
+    "code": "RI-03-00-00-00",
+    "name": "Disability Rights"
+  },
+  {
+    "code": "NA-09-00-00-00",
+    "name": "Health Care for Native Americans"
+  },
+  {
+    "code": "HE-06-00-00-00",
+    "name": "Health issues from living conditions"
+  },
+  {
+    "code": "HE-05-00-00-00",
+    "name": "Medical Records and Privacy"
+  },
+  {
+    "code": "HE-04-00-00-00",
+    "name": "Nursing Home Care"
+  },
+  {
+    "code": "MO-02-00-00-00",
+    "name": "Paying for health care"
+  },
+  {
+    "code": "HE-03-00-00-00",
+    "name": "Problems with medical or nursing home care"
+  },
+  {
+    "code": "HE-02-00-00-00",
+    "name": "Rights to Access health care and Discrimination"
+  },
+  {
+    "code": "HE-07-00-00-00",
+    "name": "Workers with health or disability issues"
+  },
+  {
+    "code": "HO-01-00-00-00",
+    "name": "Discrimination around housing"
+  },
+  {
+    "code": "HO-02-00-00-00",
+    "name": "Eviction from a home"
+  },
+  {
+    "code": "HO-08-00-00-00",
+    "name": "Foreclosure on a home"
+  },
+  {
+    "code": "HO-03-00-00-00",
+    "name": "Housing Assistance and Subsidized Housing"
+  },
+  {
+    "code": "HO-04-00-00-00",
+    "name": "Owning or buying a home"
+  },
+  {
+    "code": "HO-05-00-00-00",
+    "name": "Problems witih living conditions"
+  },
+  {
+    "code": "HO-06-00-00-00",
+    "name": "Renting or leasing a home"
+  },
+  {
+    "code": "HO-07-00-00-00",
+    "name": "Utilities, Energy, and Heating at home"
+  },
+  {
+    "code": "IM-03-00-00-00",
+    "name": "Benefits for immigrants"
+  },
+  {
+    "code": "IM-08-00-00-00",
+    "name": "Border searches"
+  },
+  {
+    "code": "IM-01-00-00-00",
+    "name": "Deportation or Removal of immigrants"
+  },
+  {
+    "code": "IM-02-00-00-00",
+    "name": "Detention of immigrants"
+  },
+  {
+    "code": "IM-10-00-00-00",
+    "name": "Going to immigration interviews and hearings"
+  },
+  {
+    "code": "IM-04-00-00-00",
+    "name": "Options for immigration status, work permits, and travel papers"
+  },
+  {
+    "code": "IM-05-00-00-00",
+    "name": "Political asylum"
+  },
+  {
+    "code": "IM-09-00-00-00",
+    "name": "Refugees"
+  },
+  {
+    "code": "IM-06-00-00-00",
+    "name": "Rights of immigrants and citizens"
+  },
+  {
+    "code": "RI-16-00-00-00",
+    "name": "Rights of people who have been Trafficked"
+  },
+  {
+    "code": "IM-07-00-00-00",
+    "name": "Sponsoring an immigrant"
+  },
+  {
+    "code": "IM-11-00-00-00",
+    "name": "Undocumented immigrants"
+  },
+  {
+    "code": "MO-13-00-00-00",
+    "name": "Bankruptcy"
+  },
+  {
+    "code": "MO-01-00-00-00",
+    "name": "Car payment issues"
+  },
+  {
+    "code": "FA-05-00-00-00",
+    "name": "Child Support Payments"
+  },
+  {
+    "code": "MO-03-00-00-00",
+    "name": "Contracts, Warranties, and Deceptive Trade Practices"
+  },
+  {
+    "code": "MO-04-00-00-00",
+    "name": "Credit practices and Credit reports"
+  },
+  {
+    "code": "MO-12-00-00-00",
+    "name": "Debt and Lending Money issues"
+  },
+  {
+    "code": "MO-11-00-00-00",
+    "name": "Discrimination against a customer"
+  },
+  {
+    "code": "MO-14-00-00-00",
+    "name": "Door-to-door solicitation and Telemarketing"
+  },
+  {
+    "code": "MO-05-00-00-00",
+    "name": "Financial Literacy"
+  },
+  {
+    "code": "MO-06-00-00-00",
+    "name": "Identity Theft and Lost Credit Cards"
+  },
+  {
+    "code": "MO-07-00-00-00",
+    "name": "Insurance"
+  },
+  {
+    "code": "MO-08-00-00-00",
+    "name": "Loans"
+  },
+  {
+    "code": "ED-03-00-00-00",
+    "name": "Paying for education"
+  },
+  {
+    "code": "MO-02-00-00-00",
+    "name": "Paying for medical care"
+  },
+  {
+    "code": "MO-10-00-00-00",
+    "name": "Small Claims actions"
+  },
+  {
+    "code": "MO-09-00-00-00",
+    "name": "Taxes"
+  },
+  {
+    "code": "NA-07-00-00-00",
+    "name": "Benefits for Native Americans"
+  },
+  {
+    "code": "NA-06-00-00-00",
+    "name": "Education issues for native Americans"
+  },
+  {
+    "code": "NA-03-00-00-00",
+    "name": "Family and child support for Native Americans"
+  },
+  {
+    "code": "NA-01-00-00-00",
+    "name": "Government and lands of Native Americans"
+  },
+  {
+    "code": "NA-09-00-00-00",
+    "name": "Health Care for Native Americans"
+  },
+  {
+    "code": "NA-05-00-00-00",
+    "name": "Native American crime victims"
+  },
+  {
+    "code": "NA-02-00-00-00",
+    "name": "Native-based legal services"
+  },
+  {
+    "code": "NA-08-00-00-00",
+    "name": "Rights and protections for Native Americans"
+  },
+  {
+    "code": "NA-04-00-00-00",
+    "name": "Tribal enrollment"
+  },
+  {
+    "code": "BU-01-00-00-00",
+    "name": "Business and Occupational Licenses"
+  },
+  {
+    "code": "BU-07-00-00-00",
+    "name": "Disaster Recovery for a small business"
+  },
+  {
+    "code": "BU-02-00-00-00",
+    "name": "Economic Development"
+  },
+  {
+    "code": "BU-04-00-00-00",
+    "name": "Intellectual Property"
+  },
+  {
+    "code": "BU-05-00-00-00",
+    "name": "Owning or running a for-profit business"
+  },
+  {
+    "code": "BU-03-00-00-00",
+    "name": "Running a farm business"
+  },
+  {
+    "code": "BU-06-00-00-00",
+    "name": "Running a Nonprofit"
+  },
+  {
+    "code": "TR-05-00-00-00",
+    "name": "Car insurance"
+  },
+  {
+    "code": "TR-02-00-00-00",
+    "name": "Dealing with traffic and parking tickets"
+  },
+  {
+    "code": "TR-03-00-00-00",
+    "name": "Driver's licenses or permits"
+  },
+  {
+    "code": "TR-01-00-00-00",
+    "name": "Getting injured in or by a car"
+  },
+  {
+    "code": "TR-04-00-00-00",
+    "name": "Ownership issues of a car"
+  },
+  {
+    "code": "VE-01-00-00-00",
+    "name": "Active Duty Claims"
+  },
+  {
+    "code": "VE-08-00-00-00",
+    "name": "Deployment preparation and issues"
+  },
+  {
+    "code": "VE-02-00-00-00",
+    "name": "Discharge from military"
+  },
+  {
+    "code": "VE-03-00-00-00",
+    "name": "Draft into military"
+  },
+  {
+    "code": "ES-07-00-00-00",
+    "name": "Estate Planning for Military"
+  },
+  {
+    "code": "VE-07-00-00-00",
+    "name": "Legal problems for military"
+  },
+  {
+    "code": "VE-06-00-00-00",
+    "name": "Legal protections for military"
+  },
+  {
+    "code": "VE-04-00-00-00",
+    "name": "Medical Assistance for military and veterans"
+  },
+  {
+    "code": "VE-05-00-00-00",
+    "name": "Mental Health Issues for military and veterans"
+  },
+  {
+    "code": "BE-06-00-00-00",
+    "name": "Veterans Affairs (VA) benefits"
+  },
+  {
+    "code": "WO-01-00-00-00",
+    "name": "Applying and interviewing for a job"
+  },
+  {
+    "code": "WO-07-00-00-00",
+    "name": "Being injured on the job"
+  },
+  {
+    "code": "WO-02-00-00-00",
+    "name": "Current Job Issues"
+  },
+  {
+    "code": "WO-03-00-00-00",
+    "name": "Former Job issues"
+  },
+  {
+    "code": "WO-04-00-00-00",
+    "name": "Pensions and retirement"
+  },
+  {
+    "code": "BE-04-00-00-00",
+    "name": "Unemployment Compensation and Insurance"
+  },
+  {
+    "code": "WO-05-00-00-00",
+    "name": "Unions"
+  },
+  {
+    "code": "WO-06-00-00-00",
+    "name": "Volunteering or interning at a job"
+  }
+]

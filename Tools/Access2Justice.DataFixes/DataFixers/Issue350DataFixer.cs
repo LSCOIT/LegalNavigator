@@ -4,14 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Access2Justice.DataFixes.DataAccess;
 using Access2Justice.DataFixes.Helpers;
-using Access2Justice.DataFixes.Models;
+using Access2Justice.Shared.Models;
 
 namespace Access2Justice.DataFixes.DataFixers
 {
     public class Issue350DataFixer : IssueFixerBase, IDataFixer
     {
         protected override string IssueId => "#350";
-
+        
         public async Task ApplyFixAsync(
             CosmosDbSettings cosmosDbSettings,
             CosmosDbService cosmosDbService)

@@ -57,6 +57,9 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "modifiedTimeStamp")]
         public DateTime? ModifiedTimeStamp { get; set; } = DateTime.UtcNow;
 
+        [JsonProperty("nsmiCode", NullValueHandling = NullValueHandling.Ignore)]
+        public string NsmiCode { get; set; }
+
         public void Validate()
         {
             ValidationContext context = new ValidationContext(this, serviceProvider: null, items: null);

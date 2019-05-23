@@ -38,6 +38,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                         dynamic id = null; string name = string.Empty; string keywords = string.Empty; string organizationalUnit = string.Empty;
                         string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
                         string overview = string.Empty; string icon = string.Empty;
+                        string nsmiCode = string.Empty;
                         List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
                         List<Shared.Models.Location> locations = new List<Shared.Models.Location>();
                         string topicIdCell = string.Empty;
@@ -110,33 +111,33 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                     if (keyValue.Count() > 0)
                                     {
                                         string val = keyValue.First();
-                                        if (val.EndsWith("Topic_ID*", StringComparison.CurrentCultureIgnoreCase))
+                                        if (val.EndsWith("Topic_ID", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             id = cellActualValue.Trim();
                                         }
 
-                                        else if (val.EndsWith("Topic_Name*", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Topic_Name", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             name = cellActualValue.Trim();
                                         }
 
-                                        else if (val.EndsWith("Parent_Topic*", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Parent_Topic", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             string parentId = cellActualValue;
                                             parentTopicIds = GetParentId(parentId);
                                         }
 
-                                        else if (val.EndsWith("Keywords*", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Keywords", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             keywords = FormatData(cellActualValue);
                                         }
 
-                                        else if (val.EndsWith("Organizational_Unit*", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Organizational Unit", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             organizationalUnit = FormatData(cellActualValue);
                                         }
 
-                                        else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Location_State", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             state = FormatData(cellActualValue);
                                         }
@@ -157,7 +158,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             zipcode = FormatData(cellActualValue);
                                         }
 
-                                        else if (val.EndsWith("Overview*", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             overview = FormatData(cellActualValue);
                                         }
@@ -165,6 +166,11 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                         else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             icon = cellActualValue;
+                                        }
+
+                                        else if (val.EndsWith("NsmiV2Code", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            nsmiCode = cellActualValue;
                                         }
                                     }
                                 }
@@ -186,7 +192,8 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                 Location = locations,
                                 Icon = icon,
                                 CreatedBy = Constants.Admin,
-                                ModifiedBy = Constants.Admin
+                                ModifiedBy = Constants.Admin,
+                                NsmiCode = nsmiCode
                             };
                             topic.Validate();
                             topicsList.Add(topic);
@@ -304,8 +311,8 @@ namespace Access2Justice.DataImportTool.BusinessLogic
         {
             bool correctHeader = false;
             IStructuralEquatable actualHeader = header;
-            string[] expectedHeader = {"Topic_ID*", "Topic_Name*", "Parent_Topic*", "Keywords*", "Organizational_Unit*", "Location_State*", "Location_County",
-                "Location_City", "Location_Zip", "Overview*", "Icon" };
+            string[] expectedHeader = {"Topic_ID", "Topic_Name", "Parent_Topic", "Keywords", "Organizational Unit", "Location_State", "Location_County",
+                "Location_City", "Location_Zip", "Overview", "Quick_Links_URL_text", "Quick_Links_URL_link", "Icon", "NsmiV2Code" };
                
             correctHeader = InsertResources.HeaderValidation(header, expectedHeader, "Topics");          
             return correctHeader;

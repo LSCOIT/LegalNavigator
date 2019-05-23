@@ -17,7 +17,8 @@ namespace Access2Justice.DataFixes
             new Dictionary<string, Func<IDataFixer>>
             {
                 { "#829", () => new Issue829Fixer() },
-                { "#350", () => new Issue350DataFixer() }
+                { "#350", () => new Issue350DataFixer() },
+                { "#875", () => new Issue875Fixer() }
             };
 
 
