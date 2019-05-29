@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using Access2Justice.DataFixes.DataAccess;
 using Access2Justice.DataFixes.Helpers;
@@ -86,8 +84,7 @@ namespace Access2Justice.DataFixes.DataFixers
                 }
             }
 
-            List<Resource> resources = JsonHelper.Deserialize<List<Resource>>(
-                await cosmosDbService.FindAllItemsAsync(cosmosDbSettings.ResourcesCollectionId));
+            List<Resource> resources = await GetResources(cosmosDbSettings, cosmosDbService);
             foreach (var resource in resources)
             {
                 var topic = findTopic(topics, resource);
@@ -120,6 +117,46 @@ namespace Access2Justice.DataFixes.DataFixers
                     await cosmosDbService.UpdateItemAsync(resource.ResourceId.ToString(), resource, cosmosDbSettings.ResourcesCollectionId);
                 }
             }
+        }
+
+        private async Task<List<Resource>> GetResources(CosmosDbSettings cosmosDbSettings, CosmosDbService cosmosDbService)
+        {
+            var resources = new List<Resource>();
+            foreach (var resource in await cosmosDbService.FindAllItemsAsync(cosmosDbSettings.ResourcesCollectionId))
+            {
+                Resource deserializedResource;
+                switch ((string)resource.resourceType)
+                {
+                    case DataImportTool.Constants.FormResourceType:
+                        deserializedResource = JsonHelper.Deserialize<Form>(resource);
+                        break;
+                    case DataImportTool.Constants.ArticleResourceType:
+                        deserializedResource = JsonHelper.Deserialize<Article>(resource);
+                        break;
+                    case DataImportTool.Constants.AdditionalReadingResourceType:
+                        deserializedResource = JsonHelper.Deserialize<AdditionalReading>(resource);
+                        break;
+                    case DataImportTool.Constants.OrganizationResourceType:
+                        deserializedResource = JsonHelper.Deserialize<Organization>(resource);
+                        break;
+                    case DataImportTool.Constants.RelatedLinkResourceType:
+                        deserializedResource = JsonHelper.Deserialize<RelatedLink>(resource);
+                        break;
+                    case DataImportTool.Constants.VideoResourceType:
+                        deserializedResource = JsonHelper.Deserialize<Video>(resource);
+                        break;
+                    case DataImportTool.Constants.GuidedAssistantResourceType:
+                        deserializedResource = JsonHelper.Deserialize<GuidedAssistant>(resource);
+                        break;
+                    default:
+                        deserializedResource = JsonHelper.Deserialize<Resource>(resource);
+                        break;
+                }
+
+                resources.Add(deserializedResource);
+            }
+
+            return resources;
         }
 
         private Topic findTopic(IReadOnlyDictionary<string, Topic> topics, Resource resource)

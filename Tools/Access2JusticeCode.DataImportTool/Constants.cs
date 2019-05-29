@@ -19,5 +19,6 @@
         public const string ArticleSectionSheetName = "Article Sections";
         public const string RelatedLinkSheetName = "Related Links";
         public const string Admin = "Admin Import tool";
+        public const string GuidedAssistantResourceType = "Guided Assistant";
     }
 }

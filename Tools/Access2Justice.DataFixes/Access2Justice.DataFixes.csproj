@@ -17,6 +17,7 @@
     <Compile Include="..\..\Web\Access2Justice.Shared\Models\Topic.cs" Link="Models\Topic.cs" />
     <Compile Include="..\..\Web\Access2Justice.Shared\Models\UserIncomingResources.cs" Link="Models\UserIncomingResources.cs" />
     <Compile Include="..\..\Web\Access2Justice.Shared\Models\UserProfile.cs" Link="Models\UserProfile.cs" />
+    <Compile Include="..\Access2JusticeCode.DataImportTool\Constants.cs" Link="Models\Constants.cs" />
   </ItemGroup>
 
   <ItemGroup>
