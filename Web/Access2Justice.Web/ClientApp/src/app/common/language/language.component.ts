@@ -58,8 +58,10 @@ export class LanguageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   addAttributes() {
     let languageOptions = document.querySelectorAll("select.goog-te-combo")[0];
-    languageOptions["classList"].add("form-control");
-    languageOptions["size"] = 15;
+    if(languageOptions) {
+      languageOptions["classList"].add("form-control");
+      languageOptions["size"] = 15;
+    }
   }
 
   filterLanguagueNavigationContent(navigation): void {

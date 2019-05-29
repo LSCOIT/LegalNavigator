@@ -147,6 +147,7 @@
         <p class="validation-error" *ngIf="validationError && gaForm.submitted">
           Please enter a valid search text.
         </p>
+        <button *ngIf="question.hasPreviousAnswers" type="button" class="btn" (click)="backQuestion()">Back</button>
         <button type="submit" class="btn btn-primary">Continue</button>
       </div>
       <div class="row">

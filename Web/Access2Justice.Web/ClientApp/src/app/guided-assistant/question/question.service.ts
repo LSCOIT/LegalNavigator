@@ -25,6 +25,10 @@ export class QuestionService {
     return this.http.post<Question>(api.saveAndGetNextUrl, params, httpOptions);
   }
 
+  getBackQuestion(params): Observable<Question> {
+    return this.http.get<Question>(api.questionBackUrl + "?" + params);
+  }
+
   getpersonalizedPlan(params): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({

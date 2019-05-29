@@ -9,6 +9,9 @@ import { SearchService } from "../common/search/search.service";
 import { NavigateDataService } from "../common/services/navigate-data.service";
 import { StaticResourceService } from "../common/services/static-resource.service";
 import { GuidedAssistant } from "./guided-assistant";
+import {HttpParams} from "@angular/common/http";
+import {QuestionService} from "./question/question.service";
+// import { QuestionComponent } from "./question/question.component";
 
 @Component({
   selector: "app-guided-assistant",
@@ -36,6 +39,8 @@ export class GuidedAssistantComponent implements OnInit, OnDestroy {
   description = "";
 
   constructor(
+    private questionService: QuestionService,
+    // private questionComponent: QuestionComponent,
     private searchService: SearchService,
     private router: Router,
     private navigateDataService: NavigateDataService,
@@ -98,6 +103,28 @@ export class GuidedAssistantComponent implements OnInit, OnDestroy {
       if (sessionStorage.getItem("searchText")) {
         this.previousSearchText = sessionStorage.getItem("searchText");
       }
+    }
+    if(localStorage && localStorage.getItem('answersDocId') ) {
+      let params = new HttpParams().set(
+        "answersId",
+        localStorage.getItem('answersDocId')
+      );
+
+      this.questionService.getQuestion(params).subscribe(response => {
+        if(confirm("You have unfinished guided assistant. Whould you like to continue with it?")) {
+          localStorage.setItem('runSavedQuestion', 'true');
+          localStorage.setItem('responseFields', JSON.stringify(response.fields));
+          localStorage.setItem('responseButtonsParam', response.buttons[0].id);
+          // localStorage.setItem('responseButtonsParam', JSON.stringify(response.buttons));
+          localStorage.getItem('curatedExperienceId') && this.router.navigateByUrl("/guidedassistant/" + localStorage.getItem('curatedExperienceId'));
+        } else {
+          localStorage.setItem('runSavedQuestion', '');
+          localStorage.setItem('responseFields', '');
+          localStorage.setItem('responseButtonsParam', '');
+          localStorage.setItem('curatedExperienceId', '');
+          localStorage.setItem('answersDocId', '');
+        }
+      });
     }
     this.getGuidedAssistantContent();
     this.staticContentSubcription = this.global.notifyStaticData.subscribe(

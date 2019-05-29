@@ -9,6 +9,7 @@ export interface Question {
   help: string;
   tags: Array<string>;
   buttons: Array<Buttons>;
+  buttonsSelected?: Array<Buttons>;
   fields: Array<string>;
 }
 
@@ -16,4 +17,5 @@ export interface Buttons {
   id: string;
   label: string;
   destination: string;
+  buttonId?: string;
 }
