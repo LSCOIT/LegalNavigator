@@ -117,7 +117,7 @@ namespace Access2Justice.DataFixes.DataFixers
             {
                 if (updateEntries.Contains(resource.ResourceId.ToString()))
                 {
-                    await cosmosDbService.UpdateItemAsync(resource.ResourceId.ToString(), resource, cosmosDbSettings.TopicsCollectionId);
+                    await cosmosDbService.UpdateItemAsync(resource.ResourceId.ToString(), resource, cosmosDbSettings.ResourcesCollectionId);
                 }
             }
         }
