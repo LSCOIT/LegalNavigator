@@ -157,7 +157,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
             else
             {
-                var maxNumber = maxAnswerNumber(savedAnswersDoc);
+                var maxNumber = savedAnswersDoc.CurrentActualAnswer;
                 setAnswerNumber(dbAnswers, maxNumber + 1);
             }
             savedAnswersDoc.CurrentActualAnswer = dbAnswers.CurrentActualAnswer;
