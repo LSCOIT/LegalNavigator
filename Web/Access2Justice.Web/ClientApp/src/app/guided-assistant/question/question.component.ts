@@ -116,7 +116,7 @@ export class QuestionComponent implements OnInit, DoCheck {
   backQuestion(): void {
     window.scrollTo(0, 0);
     let params = new HttpParams().set(
-      "answersId",
+      "answerId",
       this.answersDocId
     );
     // if (this.buttonParam.length > 0 || this.fieldParam.length > 0) {

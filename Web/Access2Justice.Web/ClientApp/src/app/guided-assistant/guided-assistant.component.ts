@@ -106,7 +106,7 @@ export class GuidedAssistantComponent implements OnInit, OnDestroy {
     }
     if(localStorage && localStorage.getItem('answersDocId') ) {
       let params = new HttpParams().set(
-        "answersId",
+        "answerId",
         localStorage.getItem('answersDocId')
       );
 
