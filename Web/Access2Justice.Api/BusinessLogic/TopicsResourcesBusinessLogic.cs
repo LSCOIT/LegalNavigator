@@ -143,17 +143,52 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetDocumentAsync(TopicInput topicInput)
         {
+            dynamic topics;
             if (topicInput.IsShared)
             {
-                return GetOutboundTopicsCollection(
-                    await dbClient.FindItemsWhereAsync(
-                        dbSettings.TopicsCollectionId, Constants.Id, topicInput.Id));
+
+                topics = await dbClient.FindItemsWhereAsync(
+                    dbSettings.TopicsCollectionId, Constants.Id, topicInput.Id);
             }
             else
             {
-                return GetOutboundTopicsCollection(
-                    await dbClient.FindItemsWhereWithLocationAsync(
-                        dbSettings.TopicsCollectionId, Constants.Id, topicInput.Id, topicInput.Location));
+                topics = await dbClient.FindItemsWhereWithLocationAsync(
+                    dbSettings.TopicsCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
+            }
+
+            var topicsCollection = GetOutboundTopicsCollection(topics) as ICollection<dynamic>;
+            topics = (topicsCollection ?? throw new InvalidOperationException())
+                .Select(x => 
+                    (dynamic)new TopicView(JsonUtilities.DeserializeDynamicObject<Topic>(x))
+                ).ToList();
+
+            if (topics.Count != 0)
+            {
+                await findGuidedAssistantId(topics, topicInput.Location);
+            }
+
+            return topics;
+        }
+
+        private async Task findGuidedAssistantId(IReadOnlyCollection<dynamic> topics, Location location = null)
+        {
+            var filter = new ResourceFilter
+            {
+                TopicIds = topics.Select(x => (string)x.Id).ToList(),
+                PageNumber = 0,
+                ResourceType = Constants.GuidedAssistant,
+                Location = location
+            };
+
+            List<dynamic> result = await FindAllResources(filter);
+            if (result != null && result.Count != 0)
+            {
+                GuidedAssistant guidedAssistant =
+                    JsonUtilities.DeserializeDynamicObject<GuidedAssistant>(result.FirstOrDefault());
+                foreach (var topic in topics)
+                {
+                    topic.CuratedExperienceId = Guid.Parse(guidedAssistant.CuratedExperienceId);
+                }
             }
         }
 
@@ -209,6 +244,13 @@ namespace Access2Justice.Api.BusinessLogic
             pagedResourceViewModel.TopicIds = JsonUtilities.DeserializeDynamicObject<dynamic>(pagedResources?.TopicIds);
             pagedResourceViewModel.SearchFilter = searchFilter;
             return JObject.FromObject(pagedResourceViewModel).ToString();
+        }
+
+        public async Task<dynamic> FindAllResources(ResourceFilter resourceFilter)
+        {
+            var query = dbClient.BuildQueryWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
+            var items = await dbService.QueryItemsAsync(dbSettings.ResourcesCollectionId, query);
+            return items;
         }
 
         public async Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter)

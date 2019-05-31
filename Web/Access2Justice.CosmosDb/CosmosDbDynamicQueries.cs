@@ -156,10 +156,10 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query);
         }
 
-        public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, bool isResourceCountCall = false)
+        public string BuildQueryWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, bool isResourceCountCall = false)
         {
             EnsureParametersAreNotNullOrEmpty(arrayName, propertyName, andPropertyName, resourceFilter.ResourceType);
-            string arrayContainsWithAndClause = ArrayContainsWithOrClause(arrayName, propertyName, resourceFilter.TopicIds);
+            var arrayContainsWithAndClause = ArrayContainsWithOrClause(arrayName, propertyName, resourceFilter.TopicIds);
             if (!string.IsNullOrEmpty(arrayContainsWithAndClause))
             {
                 arrayContainsWithAndClause = "(" + arrayContainsWithAndClause + ")";
@@ -182,24 +182,39 @@ namespace Access2Justice.CosmosDb
                                           : arrayContainsWithAndClause + " AND " + locationFilter;
             }
 
-            PagedResources pagedResources = new PagedResources();
             if (isResourceCountCall)
             {
                 var query = $"SELECT c.resourceType FROM c WHERE {arrayContainsWithAndClause}";
-                pagedResources = await backendDatabaseService.QueryResourcesCountAsync(query);
+                return query;
             }
             else
             {
                 var query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause}";
                 if (resourceFilter.IsOrder)
                 {
-                    if (resourceFilter?.OrderByField == "date")
+                    if (resourceFilter.OrderByField == "date")
                     {
                         resourceFilter.OrderByField = "modifiedTimeStamp";
                     }
-                    var orderByField = (resourceFilter.OrderByField != null) ? resourceFilter.OrderByField : "name";
+                    var orderByField = resourceFilter.OrderByField ?? "name";
                     query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause} order by c.{orderByField} {resourceFilter.OrderBy}";
                 }
+
+                return query;
+            }
+        }
+
+        public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, bool isResourceCountCall = false)
+        {
+            var query = BuildQueryWhereArrayContainsWithAndClauseAsync(arrayName, propertyName, andPropertyName,
+                resourceFilter, isResourceCountCall);
+            PagedResources pagedResources;
+            if (isResourceCountCall)
+            {
+                pagedResources = await backendDatabaseService.QueryResourcesCountAsync(query);
+            }
+            else
+            {
                 if (resourceFilter.PageNumber == 0)
                 {
                     pagedResources = await backendDatabaseService.QueryPagedResourcesAsync(query, "");

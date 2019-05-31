@@ -11,6 +11,7 @@ using NSubstitute;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using Xunit;
 
 namespace Access2Justice.Api.Tests.BusinessLogic
@@ -36,7 +37,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         private readonly JArray emptyData = JArray.Parse(@"[{}]");
         private readonly JArray emptyUpsertData = JArray.Parse(@"[]");
         private readonly JArray topicsData = TopicResourceTestData.topicsData;
-        private readonly JArray resourcesData = TopicResourceTestData.resourcesData;
+        private readonly List<dynamic> resourcesData = TopicResourceTestData.resourcesData;
         private readonly JArray resourceCountData = TopicResourceTestData.resourceCountData;
         private readonly ResourceFilter resourceFilter = TopicResourceTestData.resourceFilter;
         private readonly ResourceFilter resourceFilterTrue = TopicResourceTestData.resourceFilterTrue;
@@ -1201,14 +1202,14 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void GetDocumentAsyncTestsShouldReturnProperData()
+        public async Task GetDocumentAsyncTestsShouldReturnProperData()
         {
             //arrange
             var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicsCollectionId, Constants.Id, "Id");
             dbResponse.ReturnsForAnyArgs<dynamic>(resourcesData);
 
             //act
-            var response = topicsResourcesBusinessLogic.GetDocumentAsync(TopicResourceTestData.TopicInputIsSharedTrue);
+            var response = await topicsResourcesBusinessLogic.GetDocumentAsync(TopicResourceTestData.TopicInputIsSharedTrue);
             string result = JsonConvert.SerializeObject(response);
 
             //assert
