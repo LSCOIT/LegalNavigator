@@ -1,5 +1,5 @@
 import { HttpParams } from "@angular/common/http";
-import { Component, DoCheck, EventEmitter, OnInit, Output } from "@angular/core";
+import { Component, EventEmitter, OnInit, Output } from "@angular/core";
 import { NgForm } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
 import { NavigateDataService } from "../../common/services/navigate-data.service";
@@ -13,12 +13,13 @@ import { QuestionService } from "./question.service";
   templateUrl: "./question.component.html",
   styleUrls: ["./question.component.css"]
 })
-export class QuestionComponent implements OnInit, DoCheck {
+export class QuestionComponent implements OnInit {
   answer: Answer;
   question: Question;
   curatedExperienceId: string;
   fieldParam: Array<Object>;
   buttonParam: string;
+  fieldCheckedParam: string;
   buttonParamDefault: string;
   @Output() sendQuestionsRemainingEvent = new EventEmitter<number>();
   @Output() sendTotalQuestionsEvent = new EventEmitter<number>();
@@ -106,14 +107,7 @@ export class QuestionComponent implements OnInit, DoCheck {
     }
   }
 
-  ngDoCheck() {
-    if (document.getElementById(this.buttonParam)) {
-      (document.getElementById(this.buttonParam) as HTMLInputElement)["checked"] = true;
-      // document.getElementById(this.buttonParam).checked = true;
-    }
-  }
-
-  backQuestion(): void {
+  backQuestion(gaForm): void {
     window.scrollTo(0, 0);
     let params = new HttpParams().set(
       "answerId",
@@ -122,11 +116,18 @@ export class QuestionComponent implements OnInit, DoCheck {
     // if (this.buttonParam.length > 0 || this.fieldParam.length > 0) {
       this.validationError = false;
       this.questionService.getBackQuestion(params).subscribe(response => {
-        this.question = { ...response };
-        response && localStorage.setItem('answersDocId', response.answersDocId);
-        response && localStorage.setItem('curatedExperienceId', response.curatedExperienceId);
-        this.buttonParam = response.buttonsSelected[0].buttonId;
-        this.sendQuestionsRemaining(this.question.questionsRemaining);
+        if(response) {
+          this.question = { ...response };
+          response && localStorage.setItem('answersDocId', response.answersDocId);
+          response && localStorage.setItem('curatedExperienceId', response.curatedExperienceId);
+          if(response.buttonsSelected && response.buttonsSelected[0] && response.buttonsSelected[0].buttonId) {
+            this.buttonParam = response.buttonsSelected[0].buttonId;
+          }
+          if(response.fieldsSelected && response.fieldsSelected[0] && response.fieldsSelected[0].fields && response.fieldsSelected[0].fields[0] && response.fieldsSelected[0].fields[0].fieldId) {
+            this.fieldCheckedParam = response.fieldsSelected[0].fields[0].fieldId;
+          }
+          this.sendQuestionsRemaining(this.question.questionsRemaining);
+        }
       });
   }
 

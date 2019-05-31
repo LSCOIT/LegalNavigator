@@ -21,7 +21,7 @@
                 [id]="field.id"
                 [value]="field.id"
                 name="radioOptions"
-                ngModel
+                [ngModel]="fieldCheckedParam"
               />
               <input
                 *ngIf="field.type === 'list'"
@@ -130,7 +130,7 @@
                 [id]="button.id"
                 [value]="button.id"
                 name="buttonOptions"
-                ngModel
+                [ngModel]="buttonParam"
               />
               <label
                 tabindex="0"
@@ -147,7 +147,7 @@
         <p class="validation-error" *ngIf="validationError && gaForm.submitted">
           Please enter a valid search text.
         </p>
-        <button *ngIf="question.hasPreviousAnswers" type="button" class="btn" (click)="backQuestion()">Back</button>
+        <button *ngIf="question.hasPreviousAnswers" type="button" class="btn" (click)="backQuestion(gaForm)">Back</button>
         <button type="submit" class="btn btn-primary">Continue</button>
       </div>
       <div class="row">
