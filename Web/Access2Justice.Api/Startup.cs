@@ -141,27 +141,26 @@ namespace Access2Justice.Api
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var apiEndpoint = new Uri(Configuration.GetSection("Api:Endpoint").Value);
+            var url = $"{apiEndpoint.Scheme}://{apiEndpoint.Host}:{apiEndpoint.Port}";
+            app.UseCors(builder => builder // .WithOrigins(url)
+                .AllowAnyOrigin()
+                .AllowAnyMethod()
+                .AllowAnyHeader());
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                // https://github.com/aspnet/AspNetCore/issues/2378
+                app.UseForcedCorsHeaders();
             }
 
-            var apiEnpoint = new Uri(Configuration.GetSection("Api:Endpoint").Value);
-            var url = $"{apiEnpoint.Scheme}://{apiEnpoint.Host}:{apiEnpoint.Port}";
-            app.UseCors(builder => builder // .WithOrigins(url)
-                        .AllowAnyOrigin()
-                        .AllowAnyMethod()
-                        .AllowAnyHeader());
-            //Enabling Framework Security Settings.
-            app.Use(async (context, next) =>
-            {
-                context.Response.Headers.Add("X-Xss-Protection", "1; mode=block");
-                context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
-                await next();
-            });
             app.UseSession();
-
             app.UseAuthentication();
+            
+            //Enabling Framework Security Settings.
+            app.UseFrameworkSecurity();
+
             app.UseMvc();
 
             ConfigureSwagger(app);
