@@ -30,6 +30,7 @@ export class BreadcrumbComponent implements OnInit {
   }
 
   getBreadcrumbDetails() {
+    var me = this;
     if (this.activeRoute.snapshot.params["topic"] != null) {
       this.activeTopic = this.activeRoute.snapshot.params["topic"];
     } else if (this.resourceTopic) {
@@ -39,7 +40,6 @@ export class BreadcrumbComponent implements OnInit {
     if (this.activeRoute.snapshot.params["id"] != null) {
       this.isResource = true;
     }
-
     this.breadcrumbService.getBreadcrumbs(this.activeTopic).subscribe(items => {
       this.breadcrumbs = items.response.map(item => {
         if (typeof item.id !== "string") {
@@ -54,9 +54,9 @@ export class BreadcrumbComponent implements OnInit {
       this.breadcrumbs.reverse();
       this.breadcrumbs.unshift({ id: "", name: "All Topics" });
       this.breadcrumbs.forEach(item => {
-        if (item.id[0] === this.activeTopic) {
-          this.activeTopicName = item.name;
-          this.activeTopicId = item.id;
+        if (item.id === this.activeTopic) {
+          me.activeTopicName = item.name;
+          me.activeTopicId = item.id;
         }
       });
       if (this.isResource) {

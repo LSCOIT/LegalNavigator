@@ -111,19 +111,17 @@ export class GuidedAssistantComponent implements OnInit, OnDestroy {
       );
 
       this.questionService.getQuestion(params).subscribe(response => {
-        if(confirm("You have unfinished guided assistant. Whould you like to continue with it?")) {
           localStorage.setItem('runSavedQuestion', 'true');
           localStorage.setItem('responseFields', JSON.stringify(response.fields));
           localStorage.setItem('responseButtonsParam', response.buttons[0].id);
           // localStorage.setItem('responseButtonsParam', JSON.stringify(response.buttons));
           localStorage.getItem('curatedExperienceId') && this.router.navigateByUrl("/guidedassistant/" + localStorage.getItem('curatedExperienceId'));
-        } else {
           localStorage.setItem('runSavedQuestion', '');
           localStorage.setItem('responseFields', '');
           localStorage.setItem('responseButtonsParam', '');
           localStorage.setItem('curatedExperienceId', '');
           localStorage.setItem('answersDocId', '');
-        }
+
       });
     }
     this.getGuidedAssistantContent();
