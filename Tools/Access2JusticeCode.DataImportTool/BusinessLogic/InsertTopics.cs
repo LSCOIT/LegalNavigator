@@ -38,7 +38,6 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                         dynamic id = null; string name = string.Empty; string keywords = string.Empty; string organizationalUnit = string.Empty;
                         string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
                         string overview = string.Empty; string icon = string.Empty;
-                        string nsmiCode = string.Empty;
                         List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
                         List<Shared.Models.Location> locations = new List<Shared.Models.Location>();
                         string topicIdCell = string.Empty;
@@ -68,7 +67,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                 string cellActualValue = string.Empty;
                                 if (cell.DataType == Spreadsheet.CellValues.SharedString)
                                 {
-                                    cellActualValue = sharedStringTable.ElementAt(Int32.Parse(cellValue,CultureInfo.InvariantCulture)).InnerText;
+                                    cellActualValue = sharedStringTable.ElementAt(Int32.Parse(cellValue, CultureInfo.InvariantCulture)).InnerText;
                                 }
                                 else
                                 {
@@ -93,7 +92,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             isValidated = true;
                                         }
                                     }
-                                    
+
                                     IEnumerable<string> keyValue = null;
                                     if (cell.CellReference.Value.Length == 2)
                                     {
@@ -111,33 +110,33 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                     if (keyValue.Count() > 0)
                                     {
                                         string val = keyValue.First();
-                                        if (val.EndsWith("Topic_ID", StringComparison.CurrentCultureIgnoreCase))
+                                        if (val.EndsWith("Topic_ID*", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             id = cellActualValue.Trim();
                                         }
 
-                                        else if (val.EndsWith("Topic_Name", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Topic_Name*", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             name = cellActualValue.Trim();
                                         }
 
-                                        else if (val.EndsWith("Parent_Topic", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Parent_Topic*", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             string parentId = cellActualValue;
                                             parentTopicIds = GetParentId(parentId);
                                         }
 
-                                        else if (val.EndsWith("Keywords", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Keywords*", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             keywords = FormatData(cellActualValue);
                                         }
 
-                                        else if (val.EndsWith("Organizational Unit", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Organizational_Unit*", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             organizationalUnit = FormatData(cellActualValue);
                                         }
 
-                                        else if (val.EndsWith("Location_State", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Location_State*", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             state = FormatData(cellActualValue);
                                         }
@@ -158,19 +157,14 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             zipcode = FormatData(cellActualValue);
                                         }
 
-                                        else if (val.EndsWith("Overview", StringComparison.CurrentCultureIgnoreCase))
+                                        else if (val.EndsWith("Overview*", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             overview = FormatData(cellActualValue);
                                         }
-                                        
+
                                         else if (val.EndsWith("Icon", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             icon = cellActualValue;
-                                        }
-
-                                        else if (val.EndsWith("NsmiV2Code", StringComparison.CurrentCultureIgnoreCase))
-                                        {
-                                            nsmiCode = cellActualValue;
                                         }
                                     }
                                 }
@@ -182,7 +176,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                             locations = GetLocations(state, county, city, zipcode);
                             topic = new Shared.Models.Topic()
                             {
-                                Id = (string.IsNullOrEmpty(id)|| string.IsNullOrWhiteSpace(id)) ? Guid.NewGuid() : id,
+                                Id = (string.IsNullOrEmpty(id) || string.IsNullOrWhiteSpace(id)) ? Guid.NewGuid() : id,
                                 Name = name,
                                 Overview = overview,
                                 ParentTopicId = parentTopicIds.Count > 0 ? parentTopicIds : null,
@@ -192,8 +186,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                 Location = locations,
                                 Icon = icon,
                                 CreatedBy = Constants.Admin,
-                                ModifiedBy = Constants.Admin,
-                                NsmiCode = nsmiCode
+                                ModifiedBy = Constants.Admin
                             };
                             topic.Validate();
                             topicsList.Add(topic);
@@ -231,7 +224,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             }
             return parentTopicIds;
         }
-                
+
         public dynamic GetLocations(string state, string county, string city, string zipcode)
         {
             List<Shared.Models.Location> location = new List<Shared.Models.Location>();
@@ -303,7 +296,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                 {
                     location.Add(item);
                 }
-            }            
+            }
             return location;
         }
 
@@ -311,16 +304,16 @@ namespace Access2Justice.DataImportTool.BusinessLogic
         {
             bool correctHeader = false;
             IStructuralEquatable actualHeader = header;
-            string[] expectedHeader = {"Topic_ID", "Topic_Name", "Parent_Topic", "Keywords", "Organizational Unit", "Location_State", "Location_County",
-                "Location_City", "Location_Zip", "Overview", "Quick_Links_URL_text", "Quick_Links_URL_link", "Icon", "NsmiV2Code" };
-               
-            correctHeader = InsertResources.HeaderValidation(header, expectedHeader, "Topics");          
+            string[] expectedHeader = {"Topic_ID*", "Topic_Name*", "Parent_Topic*", "Keywords*", "Organizational_Unit*", "Location_State*", "Location_County",
+                "Location_City", "Location_Zip", "Overview*", "Icon" };
+
+            correctHeader = InsertResources.HeaderValidation(header, expectedHeader, "Topics");
             return correctHeader;
         }
 
         public static void ErrorLogging(Exception ex, int recordNumber)
         {
-            string strPath = Path.Combine(Environment.CurrentDirectory +"\\"+ "Error.txt");
+            string strPath = Path.Combine(Environment.CurrentDirectory + "\\" + "Error.txt");
             if (File.Exists(strPath))
             {
                 System.GC.Collect();
@@ -331,7 +324,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             {
                 File.Create(strPath).Dispose();
             }
- 
+
             using (StreamWriter sw = File.AppendText(strPath))
             {
                 sw.WriteLine("=============Error Logging ===========");

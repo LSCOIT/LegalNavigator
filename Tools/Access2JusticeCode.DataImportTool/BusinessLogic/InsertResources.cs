@@ -17,7 +17,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
         #region Variables
 
         dynamic id = null;
-        string name, resourceCategory, description, url, resourceType, state, county, city, zipcode, nsmiCode = string.Empty;
+        string name, resourceCategory, description, url, resourceType, state, county, city, zipcode = string.Empty;
         string overview, address, telephone, eligibilityInformation, specialties, qualifications, businessHours = string.Empty;
         string organizationName, reviewerFullName, reviewerTitle, reviewText, reviewerImage = string.Empty;
         string articleName, headline, content, organizationalUnit = string.Empty;
@@ -145,7 +145,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                     }
                                 }
 
-                                if (counter > 0 && !string.IsNullOrWhiteSpace(name))
+                                if (counter > 0)
                                 {
                                     InsertTopics topic = new InsertTopics();
                                     locations = topic.GetLocations(state, county, city, zipcode);
@@ -162,9 +162,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             OrganizationalUnit = organizationalUnit,
                                             Location = locations,
                                             CreatedBy = Constants.Admin,
-                                            ModifiedBy = Constants.Admin,
-                                            Overview = overview,
-                                            NsmiCode = nsmiCode
+                                            ModifiedBy = Constants.Admin
                                         };
                                         form.Validate();
                                         ResourcesList.Add(form);
@@ -191,8 +189,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             Qualifications = qualifications,
                                             BusinessHours = businessHours,
                                             CreatedBy = Constants.Admin,
-                                            ModifiedBy = Constants.Admin,
-                                            NsmiCode = nsmiCode
+                                            ModifiedBy = Constants.Admin
                                         };
                                         organization.Validate();
                                         organizationsList.Add(organization);
@@ -220,8 +217,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             Location = locations,
                                             Overview = overview,
                                             CreatedBy = Constants.Admin,
-                                            ModifiedBy = Constants.Admin,
-                                            NsmiCode = nsmiCode
+                                            ModifiedBy = Constants.Admin
                                         };
                                         article.Validate();
                                         articlesList.Add(article);
@@ -249,8 +245,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             Location = locations,
                                             Overview = overview,
                                             CreatedBy = Constants.Admin,
-                                            ModifiedBy = Constants.Admin,
-                                            NsmiCode = nsmiCode
+                                            ModifiedBy = Constants.Admin
                                         };
                                         video.Validate();
                                         ResourcesList.Add(video);
@@ -268,8 +263,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             OrganizationalUnit = organizationalUnit,
                                             Location = locations,
                                             CreatedBy = Constants.Admin,
-                                            ModifiedBy = Constants.Admin,
-                                            NsmiCode = nsmiCode
+                                            ModifiedBy = Constants.Admin
                                         };
                                         additionalReading.Validate();
                                         ResourcesList.Add(additionalReading);
@@ -288,8 +282,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             OrganizationalUnit = organizationalUnit,
                                             Location = locations,
                                             CreatedBy = Constants.Admin,
-                                            ModifiedBy = Constants.Admin,
-                                            NsmiCode = nsmiCode
+                                            ModifiedBy = Constants.Admin
                                         };
                                         relatedLink.Validate();
                                         ResourcesList.Add(relatedLink);
@@ -409,7 +402,6 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             organizationalUnit = string.Empty;
             organizationName = string.Empty;
             reviewText = string.Empty;
-            nsmiCode = string.Empty;
         }
         private static Spreadsheet.SharedStringItem GetSharedStringItemById(WorkbookPart workbookPart, int id)
         {
@@ -478,7 +470,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                 topicTagIds = GetTopicTags(topicTag);
             }
 
-            else if (val.EndsWith("Organizational Unit", StringComparison.CurrentCultureIgnoreCase))
+            else if (val.EndsWith("Organizational_Unit*", StringComparison.CurrentCultureIgnoreCase))
             {
                 organizationalUnit = cellActualValue;
             }
@@ -503,14 +495,9 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                 zipcode = cellActualValue;
             }
 
-            else if (val.Equals("Resource Category", StringComparison.CurrentCultureIgnoreCase))
+            else if (val.Equals("Resource_Category", StringComparison.CurrentCultureIgnoreCase))
             {
                 resourceCategory = cellActualValue;
-            }
-
-            else if (val.Equals("NsmiV2Code", StringComparison.CurrentCultureIgnoreCase))
-            {
-                nsmiCode = cellActualValue;
             }
 
             #endregion Common field mapping
@@ -525,7 +512,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
             if (resourceType == Constants.OrganizationResourceType)
             {
-                if (val.EndsWith("Org Address*", StringComparison.CurrentCultureIgnoreCase))
+                if (val.EndsWith("Org_Address*", StringComparison.CurrentCultureIgnoreCase))
                 {
                     address = InsertTopics.FormatData(cellActualValue);
                 }
@@ -628,27 +615,27 @@ namespace Access2Justice.DataImportTool.BusinessLogic
         {
             bool correctHeader = false;
             IStructuralEquatable actualHeader = header;
-            string[] expectedFormHeader = {"Id", "Name*", "Description*", "Resource_Type*", "URL*", "Topic*", "Organizational Unit", "Location_State*", "Location_County", "Location_City",
-                    "Location_Zip", "Icon", "Overview", "Resource Category", "NsmiV2Code" };
+            string[] expectedFormHeader = {"Id", "Name*", "Description*", "Resource_Type*", "URL*", "Topic*", "Organizational_Unit*", "Location_State*", "Location_County", "Location_City",
+                    "Location_Zip" };
 
-            string[] expectedOrganizationHeader = {"Id", "Name*", "Description*", "Resource_Type*", "URL*", "Topic*", "Organizational Unit", "Location_State*", "Location_County", "Location_City",
-                    "Location_Zip", "Icon", "Org Address*", "Phone*", "Overview", "Specialties", "Eligibility Information", "Qualifications", "Business_Hours", "Resource Category", "NsmiV2Code" };
+            string[] expectedOrganizationHeader = {"Id", "Name*", "Description*", "Resource_Type*", "URL*", "Topic*", "Organizational_Unit*", "Location_State*", "Location_County", "Location_City",
+                    "Location_Zip", "Org_Address*", "Phone*", "Overview", "Specialties", "Eligibility_Information", "Qualifications", "Business_Hours", "Resource_Category" };
 
-            string[] expectedArticleHeader = {"Id", "Name*", "Description*", "Resource_Type*", "Topic*", "Organizational Unit", "Location_State*", "Location_County", "Location_City",
-                    "Location_Zip", "Overview", "NsmiV2Code" };
+            string[] expectedArticleHeader = {"Id", "Name*", "Description*", "Resource_Type*", "Topic*", "Organizational_Unit*", "Location_State*", "Location_County", "Location_City",
+                    "Location_Zip", "Overview" };
 
-            string[] expectedVideoHeader = {"Id", "Name*", "Description*", "Resource_Type*", "URL*", "Topic*", "Organizational Unit", "Location_State*", "Location_County", "Location_City",
-                    "Location_Zip", "Resource Category", "Icon", "Overview", "NsmiV2Code" };
+            string[] expectedVideoHeader = {"Id", "Name*", "Description*", "Resource_Type*", "URL*", "Topic*", "Organizational_Unit*", "Location_State*", "Location_County", "Location_City",
+                    "Location_Zip", "Resource_Category", "Overview" };
 
-            string[] expectedAdditionalReadingHeader = {"Id", "Name*", "Resource_Type*", "URL*", "Topic*", "Organizational Unit", "Location_State*", "Location_County", "Location_City",
-                    "Location_Zip", "NsmiV2Code" };
+            string[] expectedAdditionalReadingHeader = {"Id", "Name*", "Resource_Type*", "URL*", "Topic*", "Organizational_Unit*", "Location_State*", "Location_County", "Location_City",
+                    "Location_Zip"};
 
-            string[] expectedOrganizationReviewHeader = { "Organization*", "Reviewer_Full_Name*", "Reviewer_Title", "Review_Text*", "Reviewer_Image_URL", "NsmiV2Code" };
+            string[] expectedOrganizationReviewHeader = { "Organization*", "Reviewer_Full_Name*", "Reviewer_Title", "Review_Text*", "Reviewer_Image_URL" };
 
-            string[] expectedArticleContentsHeader = { "Article*", "Section_Headline", "Section_Content", "NsmiV2Code" };
+            string[] expectedArticleContentsHeader = { "Article*", "Section_Headline", "Section_Content" };
 
-            string[] expectedRelatedLinkHeader = {"Id", "Name*", "Description*", "Resource_Type*", "URL*", "Topic*", "Organizational Unit", "Location_State*", "Location_County", "Location_City",
-                    "Location_Zip", "Icon", "Resource Category", "NsmiV2Code" };
+            string[] expectedRelatedLinkHeader = {"Id", "Name*", "Description*", "Resource_Type*", "URL*", "Topic*", "Organizational_Unit*", "Location_State*", "Location_County", "Location_City",
+                    "Location_Zip" };
             try
             {
                 if (resourceType == Constants.FormResourceType)
@@ -722,7 +709,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                 foreach (var item in expectedHeader)
                 {
                     logHeader = logHeader + item;
-                    if (count < expectedHeader.Count() - 1) 
+                    if (count < expectedHeader.Count() - 1)
                     {
                         logHeader = logHeader + ", ";
                         count++;
