@@ -1,4 +1,5 @@
-﻿using Access2Justice.Shared;
+﻿using System;
+using Access2Justice.Shared;
 using Newtonsoft.Json;
 using System.Diagnostics.CodeAnalysis;
 
@@ -21,6 +22,9 @@ namespace Access2Justice.Api.ViewModels
 
         [JsonProperty(PropertyName = "searchFilter")]
         public dynamic SearchFilter { get; set; }
+
+        [JsonProperty("curatedExperienceId", DefaultValueHandling = DefaultValueHandling.Ignore)]
+        public Guid CuratedExperienceId { get; set; }
 
         public PagedResourceViewModel()
         {

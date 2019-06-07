@@ -157,24 +157,39 @@ namespace Access2Justice.Api.BusinessLogic
             }
 
             var topicsCollection = GetOutboundTopicsCollection(topics) as ICollection<dynamic>;
-            topics = (topicsCollection ?? throw new InvalidOperationException())
-                .Select(x => 
-                    (dynamic)new TopicView(JsonUtilities.DeserializeDynamicObject<Topic>(x))
-                ).ToList();
-
-            if (topics.Count != 0)
+            var processedTopics = await fillCuratedExperienceId(topicInput.Location, topicsCollection);
+            if(processedTopics != null && processedTopics.Count != 0)
             {
-                await findGuidedAssistantId(topics, topicInput.Location);
+                topics = processedTopics;
             }
 
             return topics;
         }
 
-        private async Task findGuidedAssistantId(IReadOnlyCollection<dynamic> topics, Location location = null)
+        private async Task<List<dynamic>> fillCuratedExperienceId(Location location, IEnumerable<dynamic> topicsCollection)
+        {
+            var realTopics = (topicsCollection ?? throw new InvalidOperationException()).Where(x => x is Topic).ToList();
+            realTopics = realTopics
+                .Select(x =>
+                    (dynamic) new TopicView(JsonUtilities.DeserializeDynamicObject<Topic>(x))
+                ).ToList();
+
+            if (realTopics.Count != 0)
+            {
+                var curatedExperienceId = await findGuidedAssistantId(realTopics.Select(x => (string)x.Id).ToList(), location);
+                foreach (var topic in realTopics)
+                {
+                    topic.CuratedExperienceId = curatedExperienceId;
+                }
+            }
+            return realTopics;
+        }
+
+        private async Task<Guid> findGuidedAssistantId(IEnumerable<string> topics, Location location = null)
         {
             var filter = new ResourceFilter
             {
-                TopicIds = topics.Select(x => (string)x.Id).ToList(),
+                TopicIds = topics,
                 PageNumber = 0,
                 ResourceType = Constants.GuidedAssistant,
                 Location = location
@@ -185,11 +200,9 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 GuidedAssistant guidedAssistant =
                     JsonUtilities.DeserializeDynamicObject<GuidedAssistant>(result.FirstOrDefault());
-                foreach (var topic in topics)
-                {
-                    topic.CuratedExperienceId = Guid.Parse(guidedAssistant.CuratedExperienceId);
-                }
+                return Guid.Parse(guidedAssistant.CuratedExperienceId);
             }
+            return Guid.Empty;
         }
 
         public async Task<dynamic> GetBreadcrumbDataAsync(string id)
@@ -243,6 +256,9 @@ namespace Access2Justice.Api.BusinessLogic
             pagedResourceViewModel.ContinuationToken = JsonConvert.DeserializeObject(serializedToken);
             pagedResourceViewModel.TopicIds = JsonUtilities.DeserializeDynamicObject<dynamic>(pagedResources?.TopicIds);
             pagedResourceViewModel.SearchFilter = searchFilter;
+            pagedResourceViewModel.CuratedExperienceId = await findGuidedAssistantId(
+                JsonUtilities.DeserializeDynamicObject<List<string>>(pagedResourceViewModel.TopicIds), resourceFilter.Location);
+
             return JObject.FromObject(pagedResourceViewModel).ToString();
         }
 
