@@ -76,7 +76,7 @@ namespace Access2Justice.DataFixes.DataFixers
                 }
                 else
                 {
-                    LogEntry($"Could not find code for topic {{ name: {topic.Name}, id: {topic.Id} }}");
+                    LogEntry($"Could not find nsmi code for topic {{ name: {topic.Name}, id: {topic.Id} }}");
 
                     // has to add empty field
                     topic.NsmiCode = string.Empty;
@@ -90,7 +90,7 @@ namespace Access2Justice.DataFixes.DataFixers
                 var topic = findTopic(topics, resource);
                 if (topic == null)
                 {
-                    LogEntry($"Could not find topic with code for resource {{ name: {resource.Name}, id: {resource.ResourceId} }}");
+                    LogEntry($"Could not find topic with nsmi code for resource {{ name: {resource.Name}, id: {resource.ResourceId} }}");
 
                     // has to add empty field
                     resource.NsmiCode = string.Empty;

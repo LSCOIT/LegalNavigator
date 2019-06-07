@@ -69,7 +69,8 @@
   },
   {
     "code": "RI-07-00-00-00",
-    "name": "Human Rights"
+    "name": "Civil and Human Rights",
+    "originalName": "Human Rights"
   },
   {
     "code": "VE-06-00-00-00",
@@ -77,7 +78,13 @@
   },
   {
     "code": "RI-06-00-00-00",
-    "name": "LGBTQ Rights"
+    "name": "LGBT Rights",
+    "originalName": "LGBTQ Rights"
+  },
+  {
+    "code": "RI-06-00-00-00",
+    "name": "LGBTQ+ Rights",
+    "originalName": "LGBTQ Rights"
   },
   {
     "code": "RI-09-00-00-00",
@@ -153,7 +160,8 @@
   },
   {
     "code": "CO-02-00-00-00",
-    "name": "Information help resources to deal with legal issues"
+    "name": "Help Resources to Deal with Legal Issues",
+    "originalName": "Information help resources to deal with legal issues"
   },
   {
     "code": "CO-06-00-00-00",
@@ -185,7 +193,8 @@
   },
   {
     "code": "CR-12-00-00-00",
-    "name": "Dealing with police and prosecutors during encounters, arrests, searches, or charges"
+    "name": "Dealing with Police during Encounters, Arrests, Searches or Charges",
+    "originalName": "Dealing with police and prosecutors during encounters, arrests, searches, or charges"
   },
   {
     "code": "CR-07-00-00-00",
@@ -221,7 +230,8 @@
   },
   {
     "code": "CR-15-00-00-00",
-    "name": "Prisoners' rights, services, and conditions"
+    "name": "Prison services and Conditions",
+    "originalName": "Prisoners' rights, services, and conditions"
   },
   {
     "code": "CR-14-00-00-00",
@@ -229,7 +239,8 @@
   },
   {
     "code": "CR-13-00-00-00",
-    "name": "Understanding Specific Types of Crimes"
+    "name": "Types of Crimes",
+    "originalName": "Understanding Specific Types of Crimes"
   },
   {
     "code": "BU-07-00-00-00",
@@ -261,7 +272,8 @@
   },
   {
     "code": "DI-07-00-00-00",
-    "name": "Tax Relief after a disaster"
+    "name": "Disaster Relief",
+    "originalName": "Tax Relief after a disaster"
   },
   {
     "code": "ED-01-00-00-00",
@@ -349,7 +361,8 @@
   },
   {
     "code": "ES-03-00-00-00",
-    "name": "Guardianship and Conservatorship"
+    "name": "Guardianship and Conservatorship (incapacitated adult or minor)",
+    "originalName": "Guardianship and Conservatorship"
   },
   {
     "code": "ES-05-00-00-00",
@@ -365,7 +378,8 @@
   },
   {
     "code": "FA-02-00-00-00",
-    "name": "Birth Certificates and Identity Documents"
+    "name": "Birth Certificates",
+    "originalName": "Birth Certificates and Identity Documents"
   },
   {
     "code": "FA-03-00-00-00",
@@ -405,7 +419,8 @@
   },
   {
     "code": "ES-03-00-00-00",
-    "name": "Guardianship and Conservatorship"
+    "name": "Guardianship and Conservatorship (incapacitated adult or minor)",
+    "originalName": "Guardianship and Conservatorship"
   },
   {
     "code": "CR-10-00-00-00",
@@ -413,11 +428,13 @@
   },
   {
     "code": "FA-10-00-00-00",
-    "name": "Marriages and civil unions"
+    "name": "Marriage",
+    "originalName": "Marriages and civil unions"
   },
   {
     "code": "FA-13-00-00-00",
-    "name": "Mediation and Alternative Dispute Resolution for family"
+    "name": "Mediation / Alternative Dispute Resolution",
+    "originalName": "Mediation and Alternative Dispute Resolution for family"
   },
   {
     "code": "FA-11-00-00-00",
@@ -525,11 +542,13 @@
   },
   {
     "code": "IM-01-00-00-00",
-    "name": "Deportation or Removal of immigrants"
+    "name": "Deportation or Removal",
+    "originalName": "Deportation or Removal of immigrants"
   },
   {
     "code": "IM-02-00-00-00",
-    "name": "Detention of immigrants"
+    "name": "Detention",
+    "originalName": "Detention of immigrants"
   },
   {
     "code": "IM-10-00-00-00",
@@ -537,7 +556,8 @@
   },
   {
     "code": "IM-04-00-00-00",
-    "name": "Options for immigration status, work permits, and travel papers"
+    "name": "Immigration Status, Work Permits, and Travel Papers",
+    "originalName": "Options for immigration status, work permits, and travel papers"
   },
   {
     "code": "IM-05-00-00-00",
