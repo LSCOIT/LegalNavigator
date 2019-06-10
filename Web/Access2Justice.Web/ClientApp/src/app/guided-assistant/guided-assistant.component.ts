@@ -11,7 +11,6 @@ import { StaticResourceService } from "../common/services/static-resource.servic
 import { GuidedAssistant } from "./guided-assistant";
 import {HttpParams} from "@angular/common/http";
 import {QuestionService} from "./question/question.service";
-// import { QuestionComponent } from "./question/question.component";
 
 @Component({
   selector: "app-guided-assistant",
@@ -23,7 +22,12 @@ export class GuidedAssistantComponent implements OnInit, OnDestroy {
   topicLength = 12;
   luisInput: ILuisInput = {
     Sentence: "",
-    Location: "",
+    Location: {
+      state: "",
+      county: "",
+      city: "",
+      zipCode: ""
+    },
     TranslateFrom: "",
     TranslateTo: "",
     LuisTopScoringIntent: ""
@@ -40,7 +44,6 @@ export class GuidedAssistantComponent implements OnInit, OnDestroy {
 
   constructor(
     private questionService: QuestionService,
-    // private questionComponent: QuestionComponent,
     private searchService: SearchService,
     private router: Router,
     private navigateDataService: NavigateDataService,
@@ -49,12 +52,23 @@ export class GuidedAssistantComponent implements OnInit, OnDestroy {
   ) {}
 
   onSubmit(guidedAssistantForm) {
+    var address;
     this.locationDetails = JSON.parse(
       sessionStorage.getItem("globalMapLocation")
     );
+    if (sessionStorage.getItem("mapAddress")) {
+      address = JSON.parse(
+        sessionStorage.getItem("mapAddress")
+      );
+    }
     if (guidedAssistantForm.value.searchText) {
       this.luisInput["Sentence"] = guidedAssistantForm.value.searchText;
-      this.luisInput["Location"] = this.locationDetails.location;
+      this.luisInput["Location"] = {
+        state: address.state,
+        county: address.county,
+        city: address.city,
+        zipCode: address.zipCode
+      };
       this.searchService.search(this.luisInput).subscribe(response => {
         this.guidedAssistantResults = response;
         this.navigateDataService.setData(this.guidedAssistantResults);
@@ -75,7 +89,7 @@ export class GuidedAssistantComponent implements OnInit, OnDestroy {
 
   getGuidedAssistantContent(): void {
     if (
-      this.staticResourceService.GuidedAssistantPageContent &&
+      this.staticResourceService && this.staticResourceService.GuidedAssistantPageContent &&
       this.staticResourceService.GuidedAssistantPageContent.location[0].state ==
         this.staticResourceService.getLocation()
     ) {

@@ -40,7 +40,8 @@ describe("SubtopicsComponent", () => {
           zipCode: "96742"
         }
       ],
-      icon: "../../../assets/images/categories/topic.svg"
+      icon: "../../../assets/images/categories/topic.svg",
+      guidedAssistantId: "9a6a6131-657d-467d-b09b-c570b7dad242"
     }
   ];
   let mockSubTopics = [
@@ -63,7 +64,8 @@ describe("SubtopicsComponent", () => {
           zipCode: "96761"
         }
       ],
-      icon: ""
+      icon: "",
+      guidedAssistantId: ""
     }
   ];
   let mockTopicService;
@@ -137,7 +139,7 @@ describe("SubtopicsComponent", () => {
         { provide: ShowMoreService, useValue: mockShowMoreService }
       ],
       schemas: [
-        NO_ERRORS_SCHEMA, 
+        NO_ERRORS_SCHEMA,
         CUSTOM_ELEMENTS_SCHEMA
       ]
     }).compileComponents();
@@ -163,7 +165,8 @@ describe("SubtopicsComponent", () => {
   it("should return document data when getdoucmentdata method of topic service called", () => {
     let mockGuidedInput = {
       activeId: mockTopic,
-      name: mockDocumentData[0].name
+      name: mockDocumentData[0].name,
+      guidedAssistantId: undefined
     };
     component.getSubtopics();
     expect(component.activeTopic).toEqual(mockTopic);
@@ -177,7 +180,9 @@ describe("SubtopicsComponent", () => {
   it("should return document data when getdoucmentdata method of topic service called", () => {
     let mockGuidedInput = {
       activeId: mockTopic,
-      name: mockDocumentData[0].name
+      name: mockDocumentData[0].name,
+      guidedAssistantId: undefined
+      // guidedAssistantId: mockDocumentData[0].guidedAssistantId
     };
     component.getSubtopics();
     expect(component.activeTopic).toEqual(mockTopic);

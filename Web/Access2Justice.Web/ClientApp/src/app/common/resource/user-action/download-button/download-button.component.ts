@@ -15,7 +15,7 @@ import * as jsPDF from "jspdf";
     <div class="popover-content">
       <p class="popover-message">
         Are you using a public computer? Consider using the print option
-        instead."
+        instead.
       </p>
     </div>
   `

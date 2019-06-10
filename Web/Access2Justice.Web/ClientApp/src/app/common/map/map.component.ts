@@ -277,7 +277,9 @@ export class MapComponent implements OnInit, OnDestroy {
 
   hideSearchPrediction() {
     const searchPredictionContainer = document.getElementById('as_container');
-    searchPredictionContainer.style.visibility = 'hidden';
+    if(searchPredictionContainer && searchPredictionContainer.style) {
+      searchPredictionContainer.style.visibility = 'hidden';
+    }
   }
 
   hideLocationError() {

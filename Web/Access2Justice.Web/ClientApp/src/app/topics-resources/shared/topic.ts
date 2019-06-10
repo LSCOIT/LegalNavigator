@@ -18,4 +18,5 @@ export interface ITopicInput {
 export interface ISubtopicGuidedInput {
   activeId: string;
   name: string;
+  guidedAssistantId?: string
 }

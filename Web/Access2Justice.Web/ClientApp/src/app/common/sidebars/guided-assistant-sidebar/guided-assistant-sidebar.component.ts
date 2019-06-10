@@ -58,6 +58,7 @@ export class GuidedAssistantSidebarComponent implements OnInit, OnDestroy {
   ) {}
 
   getGuidedAssistantResults() {
+    var me = this;
     this.topicIds = [];
     if (this.activeTopic) {
       this.topicIds.push(this.activeTopic);
@@ -79,10 +80,7 @@ export class GuidedAssistantSidebarComponent implements OnInit, OnDestroy {
         .getPagedResources(this.resourceFilter)
         .subscribe(response => {
           if (response != undefined) {
-            this.resources = response["resources"];
-            if (this.resources.length > 0) {
-              this.guidedAssistantId = this.resources[0].curatedExperienceId;
-            }
+            this.guidedAssistantId = response['curatedExperienceId'];
           } else {
             this.guidedAssistantId = this.emptyResult;
           }
@@ -94,6 +92,8 @@ export class GuidedAssistantSidebarComponent implements OnInit, OnDestroy {
   getGuidedAssistantLinkResult() {
     if (this.router.url.startsWith("/search")) {
       this.navigateDataService.setData(this.searchResultsData);
+      this.router.navigateByUrl("/guidedassistant/" + this.guidedAssistantId);
+    } else if(this.guidedAssistantId) {
       this.router.navigateByUrl("/guidedassistant/" + this.guidedAssistantId);
     }
     this.resourceFilter = {

@@ -17,10 +17,12 @@ export class SubtopicsComponent implements OnInit {
   activeTopic: any;
   activeTopicId: string;
   subtopicName: string;
+  curatedExperienceId: string;
   topic: any;
   icon: any;
   topicIntent: string;
-  guidedInput: ISubtopicGuidedInput = { activeId: "", name: "" };
+  guidedAssistantId: string;
+  guidedInput: ISubtopicGuidedInput = { activeId: "", name: "", guidedAssistantId: "" };
   subscription: any;
   constructor(
     private topicService: TopicService,
@@ -33,6 +35,7 @@ export class SubtopicsComponent implements OnInit {
   ) {}
 
   getSubtopics(): void {
+    var me = this;
     this.activeTopic = this.activeRoute.snapshot.params["topic"];
     this.topicService.getDocumentData(this.activeTopic).subscribe(topic => {
       this.topic = topic[0];
@@ -40,7 +43,12 @@ export class SubtopicsComponent implements OnInit {
         topic[0].icon == ""
           ? "../../../assets/images/categories/topic.svg"
           : topic[0].icon;
-      this.guidedInput = { activeId: this.activeTopic, name: this.topic.name };
+      this.guidedInput = { activeId: this.activeTopic, name: this.topic.name, guidedAssistantId: this.topic.curatedExperienceId  };
+      this.guidedAssistantId = this.topic.curatedExperienceId;
+      localStorage.setItem('answersDocId',this.activeTopic);
+
+      sessionStorage.setItem("previousSearchText", this.topic.name);
+      sessionStorage.setItem("searchText", this.topic.name);
     });
     this.topicService.getSubtopics(this.activeTopic).subscribe(subtopics => {
       this.sortAlphabetically(subtopics);

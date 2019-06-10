@@ -21,22 +21,22 @@
       <div class="subtopics">
         <ul *ngFor="let subtopic of subtopics">
           <li>
-            <a 
-            class="link" 
+            <a
+            class="link"
             [routerLink]="['/topics', subtopic.id]">
               {{ subtopic.name }}
             </a>
           </li>
         </ul>
       </div>
-      <a 
-      [routerLink]="['/topics']" 
+      <a
+      [routerLink]="['/topics']"
       class="btn btn-primary">
         Back to main topics
       </a>
     </div>
-    <div class="col-md-4 col-sm-12 pull-right">
-      <app-guided-assistant-sidebar [activeSubTopic]="guidedInput">
+    <div class="col-md-4 col-sm-12 pull-right" *ngIf='guidedAssistantId || true'>
+      <app-guided-assistant-sidebar [activeSubTopic]="guidedInput" [showSidebar]="true" [guidedAssistantId] = "guidedAssistantId">
       </app-guided-assistant-sidebar>
       <app-service-org-sidebar
         (showMoreOrganizations)="clickSeeMoreOrganizationsFromSubtopic($event)">

@@ -122,7 +122,14 @@ describe("GuidedAssistantComponent", () => {
       }
     };
     mockMapLocationParsed = {
-      state: "Alaska"
+      state: undefined,
+      county: undefined,
+      city: undefined,
+      zipCode: undefined
+      // state: 'Hawaii',
+      // county: 'Kalawao County',
+      // city: 'Kalawao',
+      // zipCode: '96742'
     };
     mockStaticResourceService = jasmine.createSpyObj([
       "getLocation",
