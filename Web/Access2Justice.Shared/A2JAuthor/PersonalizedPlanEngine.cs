@@ -5,9 +5,7 @@ using Access2Justice.Shared.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Threading;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
@@ -23,7 +21,7 @@ namespace Access2Justice.Shared.A2JAuthor
         public UnprocessedPersonalizedPlan Build(JObject personalizedPlan, CuratedExperienceAnswers userAnswers)
         {
             var stepsInScope = new List<JToken>();
-            var evaluatedUserAnswers = parser.Parse(userAnswers);
+            var evaluatedUserAnswers = parser.Parse(userAnswers, out var order);
             var a2jAnswers = MapStringsToA2JAuthorValues(evaluatedUserAnswers);
 
             var root = personalizedPlan
@@ -31,14 +29,17 @@ namespace Access2Justice.Shared.A2JAuthor
                 .GetArrayValue("rootNode")
                 .FirstOrDefault();
 
-            foreach (var child in root.GetValueAsArray<JArray>("children"))
+            var children = root.GetValueAsArray<JArray>("children");
+
+            foreach (var (answerKey, _) in order.OrderBy(x => x.Value))
             {
-                var states = child.GetArrayValue("state");
-                foreach (var state in states)
+                var answer = a2jAnswers[answerKey];
+                foreach (var child in children)
                 {
-                    foreach (var answer in a2jAnswers)
+                    var states = child.GetArrayValue("state");
+                    foreach (var state in states)
                     {
-                        if (answer.Key == state.GetValue("leftOperand") && answer.Value == state.GetValue("operator"))
+                        if (answerKey == state.GetValue("leftOperand") && answer == state.GetValue("operator"))
                         {
                             stepsInScope.Add(child);
                         }
@@ -46,11 +47,15 @@ namespace Access2Justice.Shared.A2JAuthor
                 }
             }
 
-            var unprocessedPlan = new UnprocessedPersonalizedPlan();
-            unprocessedPlan.Id = Guid.NewGuid();
+            var unprocessedPlan = new UnprocessedPersonalizedPlan
+            {
+                Id = Guid.NewGuid()
+            };
 
-            var unprocessedTopic = new UnprocessedTopic();
-            unprocessedTopic.Name = personalizedPlan.Properties().GetValue("title");
+            var unprocessedTopic = new UnprocessedTopic
+            {
+                Name = personalizedPlan.Properties().GetValue("title")
+            };
 
             foreach (var step in stepsInScope)
             {
@@ -68,13 +73,11 @@ namespace Access2Justice.Shared.A2JAuthor
                             unprocessedStep.Title = state.GetValue("title");
                             continue;
                         }
-                        else
+
+                        if (!string.IsNullOrWhiteSpace(state.GetValue("userContent")))
                         {
-                            if (!string.IsNullOrWhiteSpace(state.GetValue("userContent")))
-                            {
-                                unprocessedStep.Description = state.GetValue("userContent").ExtractIdsRemoveCustomA2JTags().SanitizedHtml;
-                                unprocessedStep.ResourceIds = state.GetValue("userContent").ExtractIdsRemoveCustomA2JTags().ResourceIds;
-                            }
+                            unprocessedStep.Description = state.GetValue("userContent").ExtractIdsRemoveCustomA2JTags().SanitizedHtml;
+                            unprocessedStep.ResourceIds = state.GetValue("userContent").ExtractIdsRemoveCustomA2JTags().ResourceIds;
                         }
                         unprocessedTopic.UnprocessedSteps.Add(unprocessedStep);
                     }

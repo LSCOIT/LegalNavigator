@@ -2,6 +2,7 @@
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Access2Justice.Shared.A2JAuthor
 {
@@ -14,12 +15,14 @@ namespace Access2Justice.Shared.A2JAuthor
             this.interpreter = interpreter;
         }
 
-        public Dictionary<string, string> Parse(CuratedExperienceAnswers curatedExperienceAnswers)
+        public Dictionary<string, string> Parse(CuratedExperienceAnswers curatedExperienceAnswers, out Dictionary<string, int> order)
         {
             var userAnswersKeyValuePairs = ExtractAnswersVarValues(curatedExperienceAnswers);
             var logicStatements = ExtractAnswersLogicalStatements(curatedExperienceAnswers);
 
             var evaluatedAnswers = new Dictionary<string, string>();
+            order = new Dictionary<string, int>();
+
             foreach (string logicalStatement in logicStatements)
             {
                 foreach (var ifStatement in logicalStatement.SplitOnIFstatements())
@@ -40,16 +43,17 @@ namespace Access2Justice.Shared.A2JAuthor
 
                     if (!string.IsNullOrWhiteSpace(leftLogic) && !string.IsNullOrWhiteSpace(rightLogic))
                     {
+                        var newValues = new HashSet<string>();
                         var ANDvars = leftLogic.GetVariablesWithValues(Tokens.AND);
                         if (interpreter.Interpret(userAnswersKeyValuePairs, ANDvars, (x, y) => x && y))
                         {
-                            evaluatedAnswers.AddDistinctRange(rightLogic.AddValue());
+                            newValues.UnionWith(evaluatedAnswers.AddDistinctRange(rightLogic.AddValue()).Keys);
                         }
 
                         var ORvars = leftLogic.GetVariablesWithValues(Tokens.OR);
                         if (interpreter.Interpret(userAnswersKeyValuePairs, ORvars, (x, y) => x || y))
                         {
-                            evaluatedAnswers.AddDistinctRange(rightLogic.AddValue());
+                            newValues.UnionWith(evaluatedAnswers.AddDistinctRange(rightLogic.AddValue()).Keys);
                         }
 
                         if (ANDvars.Count == 0 && ORvars.Count == 0)
@@ -57,14 +61,49 @@ namespace Access2Justice.Shared.A2JAuthor
                             var oneVar = leftLogic.GetVariablesWithValues();
                             if (interpreter.Interpret(userAnswersKeyValuePairs, oneVar, (x, y) => x))
                             {
-                                evaluatedAnswers.AddDistinctRange(rightLogic.AddValue());
+                                newValues.UnionWith(evaluatedAnswers.AddDistinctRange(rightLogic.AddValue()).Keys);
                             }
                         }
+
+                        order.AddDistinctRange(newValues.ToDictionary(x => x, x => (int)findAnswerNumberByCode(
+                            curatedExperienceAnswers,logicalStatement)));
                     }
                 }
             }
 
-            return evaluatedAnswers.AddDistinctRange(userAnswersKeyValuePairs);
+            var restVariables = evaluatedAnswers.AddDistinctRange(userAnswersKeyValuePairs);
+            order.AddDistinctRange(restVariables.Keys.ToDictionary(x => x, x => (int) findAnswerNumberByName(
+                curatedExperienceAnswers, x)));
+            return evaluatedAnswers;
+        }
+
+        private uint findAnswerNumberByCode(CuratedExperienceAnswers curatedExperienceAnswers, string code)
+        {
+            return curatedExperienceAnswers.ButtonComponents.Cast<AnswerComponent>()
+                       .Union(curatedExperienceAnswers.FieldComponents)
+                       .FirstOrDefault(x => x.CodeAfter == code || x.CodeBefore == code)
+                       ?.AnswerNumber ?? 0;
+        }
+
+        private uint findAnswerNumberByName(CuratedExperienceAnswers curatedExperienceAnswers, string name)
+        {
+            var button = curatedExperienceAnswers.ButtonComponents.FirstOrDefault(x => x.Name == name);
+            if (button != null)
+            {
+                return button.AnswerNumber;
+            }
+
+            var field = curatedExperienceAnswers.FieldComponents.FirstOrDefault(x => x.Fields.Any(y => y.Name == name));
+            if(field != null)
+            {
+                return field.AnswerNumber;
+            }
+            return 0;
+        }
+
+        public Dictionary<string, string> Parse(CuratedExperienceAnswers curatedExperienceAnswers)
+        {
+            return Parse(curatedExperienceAnswers, out _);
         }
 
         private Dictionary<string, string> ExtractAnswersVarValues(CuratedExperienceAnswers curatedExperienceAnswers)
@@ -112,29 +151,19 @@ namespace Access2Justice.Shared.A2JAuthor
             // in logical statements we have codeBefore and codeAfter, I consolidated them here but maybe
             // we should create a class with two properties of List<string> for each of these. We will check the need for this as
             // the implementation matures.
-            List<string> statements = new List<string>();
+            var statements = new List<string>();
 
-            foreach (ButtonComponent button in curatedExperienceAnswers.ButtonComponents)
+            foreach (var answer in curatedExperienceAnswers.ButtonComponents.Cast<AnswerComponent>()
+                .Union(curatedExperienceAnswers.FieldComponents)
+                .OrderBy(x => x.AnswerNumber))
             {
-                if (!string.IsNullOrWhiteSpace(button.CodeBefore))
+                if (!string.IsNullOrWhiteSpace(answer.CodeBefore))
                 {
-                    statements.Add(button.CodeBefore);
+                    statements.Add(answer.CodeBefore);
                 }
-                if (!string.IsNullOrWhiteSpace(button.CodeAfter))
+                if (!string.IsNullOrWhiteSpace(answer.CodeAfter))
                 {
-                    statements.Add(button.CodeAfter);
-                }
-            }
-
-            foreach (FieldComponent fieldComponent in curatedExperienceAnswers.FieldComponents)
-            {
-                if (!string.IsNullOrWhiteSpace(fieldComponent.CodeBefore))
-                {
-                    statements.Add(fieldComponent.CodeBefore);
-                }
-                if (!string.IsNullOrWhiteSpace(fieldComponent.CodeAfter))
-                {
-                    statements.Add(fieldComponent.CodeAfter);
+                    statements.Add(answer.CodeAfter);
                 }
             }
 

@@ -6,6 +6,7 @@ namespace Access2Justice.Shared.Interfaces.A2JAuthor
 {
     public interface IA2JAuthorLogicParser
     {
+        Dictionary<string, string> Parse(CuratedExperienceAnswers curatedExperienceAnswers, out Dictionary<string, int> order);
         Dictionary<string, string> Parse(CuratedExperienceAnswers curatedExperienceAnswers);
     }
 }
