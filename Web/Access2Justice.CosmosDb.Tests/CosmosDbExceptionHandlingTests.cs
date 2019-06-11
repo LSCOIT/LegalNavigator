@@ -1,6 +1,7 @@
 ﻿using Access2Justice.Shared.Interfaces;
 using NSubstitute;
 using System;
+using System.Collections.Generic;
 using Xunit;
 
 namespace Access2Justice.CosmosDb.Tests
@@ -28,13 +29,13 @@ namespace Access2Justice.CosmosDb.Tests
         public void FindItemsWhereContainsShouldAlwaysSendUpperCasePropertyValuesToCosmos()
         {
             // Arrange
-            string query = @"SELECT * FROM c WHERE CONTAINS(c.Name, 'EVICTION')";
+            string query = @"SELECT * FROM c WHERE CONTAINS(c.Name, @param0)";
 
             // Act
             var result = dynamicQueries.FindItemsWhereContainsAsync("TopicsCollections", "Name", "EvicTION").Result;
 
             // Assert
-            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
+            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query, Arg.Any<Dictionary<string, object>>());
         }
     }
 }

@@ -34,7 +34,7 @@ namespace Access2Justice.CosmosDb
             var query = new SqlQuerySpec
             {
                 QueryText = "SELECT * FROM c WHERE c.id = @id",
-                Parameters = new SqlParameterCollection() { new SqlParameter("@id", id) }
+                Parameters = new SqlParameterCollection { new SqlParameter("@id", id) }
             };
             var options = new FeedOptions
             {
@@ -50,7 +50,7 @@ namespace Access2Justice.CosmosDb
             {
                 results.AddRange(await docQuery.ExecuteNextAsync());
             }
-            if (results == null || !results.Any())
+            if (!results.Any())
             {
                 return default(T);
             }
@@ -90,8 +90,8 @@ namespace Access2Justice.CosmosDb
             await documentClient.DeleteDocumentAsync(
                 UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, collectionId, id));
         }
-
-        public async Task<dynamic> QueryItemsAsync(string collectionId, string query, Dictionary<string, object> sqlParams = null)
+        
+        public async Task<dynamic> QueryItemsAsync(string collectionId, string query, Dictionary<string, object> sqlParams)
         {
             var uri = UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId);
             var options = new FeedOptions { EnableCrossPartitionQuery = true };
@@ -140,12 +140,18 @@ namespace Access2Justice.CosmosDb
             return results;
         }
 
-        public async Task<dynamic> QueryItemsPaginationAsync(string collectionId, string query, FeedOptions feedOptions)
+        public async Task<dynamic> QueryItemsPaginationAsync(string collectionId, string query, Dictionary<string, object> parameters, FeedOptions feedOptions)
         {
-
+            var sqlParameters = new SqlParameterCollection();
+            if (parameters != null && parameters.Count > 0)
+            {
+                sqlParameters = new SqlParameterCollection(parameters.Select(x=> new SqlParameter($"@{x.Key}", x.Value)));
+            }
             var docQuery = documentClient.CreateDocumentQuery<dynamic>(
-                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), query, feedOptions).AsDocumentQuery();
-
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), 
+                new SqlQuerySpec(query, sqlParameters),
+                feedOptions)
+                .AsDocumentQuery();
             var results = new PagedResources();
             List<dynamic> resources = new List<dynamic>();
             var queryResult = await docQuery.ExecuteNextAsync();
@@ -160,23 +166,23 @@ namespace Access2Justice.CosmosDb
             return results;
         }
 
-        public async Task<dynamic> QueryPagedResourcesAsync(string query, string continuationToken)
+        public async Task<dynamic> QueryPagedResourcesAsync(string query, Dictionary<string, object> parameters, string continuationToken)
         {
             dynamic result = null;
             if (string.IsNullOrEmpty(continuationToken))
             {
-                result = await GetFirstPageResourceAsync(query);
+                result = await GetFirstPageResourceAsync(query, parameters);
             }
             else
             {
-                result = await GetNextPageResourcesAsync(query, continuationToken);
+                result = await GetNextPageResourcesAsync(query, parameters, continuationToken);
             }
             return result;
         }
 
-        public async Task<dynamic> QueryResourcesCountAsync(string query)
+        public async Task<dynamic> QueryResourcesCountAsync(string query, Dictionary<string, object> parameters)
         {
-            return await GetFirstPageResourceAsync(query, true);
+            return await GetFirstPageResourceAsync(query, parameters, true);
         }
 
         public async Task<ICollection<UserIncomingResources>> FindIncomingSharedResource(IncomingSharedResourceRetrieveParam incomingSharedResourceRetrieveParam)
@@ -203,7 +209,7 @@ namespace Access2Justice.CosmosDb
             return await QueryItemsAsync(cosmosDbSettings.UserResourcesCollectionId, whereCondition.ToArray());
         }
 
-        public async Task<dynamic> GetFirstPageResourceAsync(string query, bool isInitialPage = false)
+        public async Task<dynamic> GetFirstPageResourceAsync(string query, Dictionary<string, object> parameters, bool isInitialPage = false)
         {
             var feedOptions = new FeedOptions { EnableCrossPartitionQuery = true };
 
@@ -212,10 +218,10 @@ namespace Access2Justice.CosmosDb
                 feedOptions.MaxItemCount = cosmosDbSettings.PageResultsCount;
             }
 
-            return await QueryItemsPaginationAsync(cosmosDbSettings.ResourcesCollectionId, query, feedOptions); ;
+            return await QueryItemsPaginationAsync(cosmosDbSettings.ResourcesCollectionId, query, parameters, feedOptions);
         }
 
-        public async Task<dynamic> GetNextPageResourcesAsync(string query, string continuationToken)
+        public async Task<dynamic> GetNextPageResourcesAsync(string query, Dictionary<string, object> parameters, string continuationToken)
         {
             FeedOptions feedOptions = new FeedOptions()
             {
@@ -224,7 +230,7 @@ namespace Access2Justice.CosmosDb
                 EnableCrossPartitionQuery = true
             };
 
-            return await QueryItemsPaginationAsync(cosmosDbSettings.ResourcesCollectionId, query, feedOptions); ;
+            return await QueryItemsPaginationAsync(cosmosDbSettings.ResourcesCollectionId, query, parameters, feedOptions);
         }
 
         public async Task<dynamic> ExecuteStoredProcedureAsync(

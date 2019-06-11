@@ -7,12 +7,12 @@ using Xunit;
 
 namespace Access2Justice.CosmosDb.Tests
 {
-    public class CosmosDbDynmaicQueriesTests
+    public class CosmosDbDynamicQueriesTests
     {
         private readonly IBackendDatabaseService cosmosDbService;
         private readonly IDynamicQueries dynamicQueries;
 
-        public CosmosDbDynmaicQueriesTests()
+        public CosmosDbDynamicQueriesTests()
         {
             cosmosDbService = Substitute.For<IBackendDatabaseService>();
             dynamicQueries = new CosmosDbDynamicQueries(cosmosDbService);
@@ -22,13 +22,13 @@ namespace Access2Justice.CosmosDb.Tests
         public void FindItemsWhereContainsShouldConstructValidSqlQuery()
         {
             // Arrange
-            string query = @"SELECT * FROM c WHERE CONTAINS(c.Name, 'EVICTION')";
+            string query = @"SELECT * FROM c WHERE CONTAINS(c.Name, @param0)";
 
             // Act
             var result = dynamicQueries.FindItemsWhereContainsAsync("TopicsCollections", "Name", "EVICTION").Result;
 
             // Assert
-            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
+            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query, Arg.Any<Dictionary<string, object>>());
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace Access2Justice.CosmosDb.Tests
         public void FindItemsWhereWithMultipleArgumentsShouldConstructValidSqlQuery()
         {
             // Arrange
-            string query = @"SELECT * FROM c WHERE c.name='Tenant Action Plan for Eviction' AND c.resourceType='Action Plans'";
+            string query = @"SELECT * FROM c WHERE c.name=@param0 AND c.resourceType=@param1";
             List<string> propertyNames = new List<string>() { "name", "resourceType" };
             List<string> values = new List<string>() { "Tenant Action Plan for Eviction", "Action Plans" };
 
@@ -56,7 +56,7 @@ namespace Access2Justice.CosmosDb.Tests
             var result = dynamicQueries.FindItemsWhereAsync("resourcesCollections", propertyNames, values).Result;
 
             // Assert
-            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
+            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query, Arg.Any<Dictionary<string, object>>());
         }
 
         [Fact]
@@ -64,39 +64,39 @@ namespace Access2Justice.CosmosDb.Tests
         {
             // Arrange
             var ids = new List<string>() { "guid1", "guid2", "guid3" };
-            string query = @"SELECT * FROM c WHERE  ARRAY_CONTAINS(c.TopicTags, { 'Id' : 'guid1'})OR ARRAY_CONTAINS(c.TopicTags, { 'Id' : 'guid2'})OR ARRAY_CONTAINS(c.TopicTags, { 'Id' : 'guid3'})";
+            string query = @"SELECT * FROM c WHERE  ARRAY_CONTAINS(c.TopicTags, { 'Id' : @param0 })OR ARRAY_CONTAINS(c.TopicTags, { 'Id' : @param1 })OR ARRAY_CONTAINS(c.TopicTags, { 'Id' : @param2 })";
 
             // Acts
             dynamicQueries.FindItemsWhereArrayContainsAsync("TopicsCollections", "TopicTags", "Id", ids);
 
             // Assert
-            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
+            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query, Arg.Any<Dictionary<string, object>>());
         }
 
         [Fact]
         public void FindItemsWhereContainsWithLocationAsyncShouldConstructValidSqlQueryWithoutLocation()
         {
             // Arrange            
-            string query = "SELECT * FROM c WHERE CONTAINS(c.keywords, \"EVICTION\")";
+            string query = "SELECT * FROM c WHERE CONTAINS(c.keywords, @param0)";
 
             //Act
             dynamicQueries.FindItemsWhereContainsWithLocationAsync("TopicsCollections", "keywords", "EVICTION", new Location());
 
             // Assert
-            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
+            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query, Arg.Any<Dictionary<string, object>>());
         }
 
         [Fact]
         public void FindItemsWhereContainsWithLocationAsyncShouldConstructValidSqlQueryWithLocationCondition()
         {
             // Arrange
-            string query = "SELECT * FROM c WHERE CONTAINS(c.keywords, \"EVICTION\") AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
+            string query = "SELECT * FROM c WHERE CONTAINS(c.keywords, @param0) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
 
             //Act
             dynamicQueries.FindItemsWhereContainsWithLocationAsync("TopicsCollections", "keywords", "EVICTION", new Location() { State = "Hawaii" });
 
             // Assert
-            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
+            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query, Arg.Any<Dictionary<string, object>>());
         }
 
         [Fact]
@@ -114,13 +114,13 @@ namespace Access2Justice.CosmosDb.Tests
         {
             // Arrange
             Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
-            string query = "SELECT * FROM c WHERE c.name='HomePage' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
+            string query = "SELECT * FROM c WHERE c.name=@param0 AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
 
             //Act
             dynamicQueries.FindItemsWhereWithLocationAsync("StaticCollections", "name", "HomePage", location);
 
             // Assert
-            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
+            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query, Arg.Any<Dictionary<string, object>>());
         }
         [Fact]
         public void FindItemsWhereWithLocationAsyncShouldConstructValidSqlQueryWithLocationConditionAndTopicsCollection()
@@ -133,7 +133,7 @@ namespace Access2Justice.CosmosDb.Tests
             dynamicQueries.FindItemsWhereWithLocationAsync("TopicsCollection", "name", "", location);
 
             // Assert
-            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
+            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query, Arg.Any<Dictionary<string, object>>());
         }
         [Fact]
         public void FindItemsWhereWithLocationAsyncShouldThrowException()
@@ -151,62 +151,62 @@ namespace Access2Justice.CosmosDb.Tests
             // Arrange
             var ids = new List<string>() { "guid1" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "All" };
-            string query = @"SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND  (c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = true))";
+            string query = @"SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : @param0 })) AND  (c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = true))";
 
             //Act
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
 
             // Assert
-            cosmosDbService.Received().QueryPagedResourcesAsync(query, "");
+            cosmosDbService.Received().QueryPagedResourcesAsync(query, Arg.Any<Dictionary<string, object>>(), "");
         }
 
         [Fact]
-        public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldVaildSqlQueryWithLocation()
+        public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldValidSqlQueryWithLocation()
         {
             // Arrange
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "All",Location = location };
-            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND  (c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = true)) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
+            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : @param0 })) AND  (c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = true)) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
 
 
             //Act
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
 
             // Assert
-            cosmosDbService.Received().QueryPagedResourcesAsync(query, "");
+            cosmosDbService.Received().QueryPagedResourcesAsync(query, Arg.Any<Dictionary<string, object>>(), "");
         }
 
         [Fact]
-        public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldVaildSqlQueryWithContinuationToken()
+        public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldValidSqlQueryWithContinuationToken()
         {
             // Arrange
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 2, ResourceType = "All", Location = location, ContinuationToken = "222" };
-            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND  (c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = true)) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
+            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : @param0 })) AND  (c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = true)) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
 
 
             //Act
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
 
             // Assert
-            cosmosDbService.Received().QueryPagedResourcesAsync(query, resourceFilter.ContinuationToken);
+            cosmosDbService.Received().QueryPagedResourcesAsync(query, Arg.Any<Dictionary<string, object>>(), resourceFilter.ContinuationToken);
         }
 
         [Fact]
-        public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldVaildSqlQueryWithLocationAndResourceType()
+        public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldValidSqlQueryWithLocationAndResourceType()
         {
             // Arrange
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "Forms", Location = location };
-            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND c.resourceType = 'Forms' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
+            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : @param0 })) AND c.resourceType = 'Forms' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
             //Act
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
 
             // Assert
-            cosmosDbService.Received().QueryPagedResourcesAsync(query, "");
+            cosmosDbService.Received().QueryPagedResourcesAsync(query, Arg.Any<Dictionary<string, object>>(), "");
         }
 
         [Fact]
@@ -216,13 +216,13 @@ namespace Access2Justice.CosmosDb.Tests
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "Forms", Location = location };
-            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND c.resourceType = 'Forms' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
+            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : @param0 })) AND c.resourceType = 'Forms' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
 
             //Act
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
 
             // Assert
-            cosmosDbService.Received().QueryPagedResourcesAsync(query, "");
+            cosmosDbService.Received().QueryPagedResourcesAsync(query, Arg.Any<Dictionary<string, object>>(), "");
         }
 
         [Fact]
@@ -237,23 +237,23 @@ namespace Access2Justice.CosmosDb.Tests
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
 
             // Assert
-            cosmosDbService.Received().QueryPagedResourcesAsync(query, "");
+            cosmosDbService.Received().QueryPagedResourcesAsync(query, Arg.Any<Dictionary<string, object>>(), "");
         }
 
         [Fact]
-        public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldVaildSqlQueryWithResourceTypePageNumberAndLocationDetails()
+        public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldValidSqlQueryWithResourceTypePageNumberAndLocationDetails()
         {
             // Arrange
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 1, ResourceType = "Forms", Location = location, ContinuationToken = "continutationToken" };
-            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND c.resourceType = 'Forms' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
+            string query = "SELECT * FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : @param0 })) AND c.resourceType = 'Forms' AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
 
             //Act
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
 
             // Assert
-            cosmosDbService.Received().QueryPagedResourcesAsync(query, resourceFilter.ContinuationToken);
+            cosmosDbService.Received().QueryPagedResourcesAsync(query, Arg.Any<Dictionary<string, object>>(), resourceFilter.ContinuationToken);
         }
 
         [Fact]
@@ -268,7 +268,7 @@ namespace Access2Justice.CosmosDb.Tests
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
 
             // Assert
-            cosmosDbService.Received().QueryPagedResourcesAsync(query, "");
+            cosmosDbService.Received().QueryPagedResourcesAsync(query, Arg.Any<Dictionary<string, object>>(), "");
         }
 
         [Fact]
@@ -283,7 +283,7 @@ namespace Access2Justice.CosmosDb.Tests
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
 
             // Assert
-            cosmosDbService.Received().QueryPagedResourcesAsync(query, "");
+            cosmosDbService.Received().QueryPagedResourcesAsync(query, Arg.Any<Dictionary<string, object>>(), "");
         }
 
         [Fact]
@@ -298,7 +298,7 @@ namespace Access2Justice.CosmosDb.Tests
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
 
             // Assert
-            cosmosDbService.Received().QueryPagedResourcesAsync(query, "");
+            cosmosDbService.Received().QueryPagedResourcesAsync(query, Arg.Any<Dictionary<string, object>>(), "");
         }
 
         [Fact]
@@ -308,13 +308,13 @@ namespace Access2Justice.CosmosDb.Tests
             var ids = new List<string>() { "guid1" };
             Location location = new Location { State = "Hawaii" };
             ResourceFilter resourceFilter = new ResourceFilter { TopicIds = ids, PageNumber = 0, ResourceType = "ALL", Location = location };
-            string query = "SELECT c.resourceType FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : 'guid1'})) AND  (c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = true)) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
+            string query = "SELECT c.resourceType FROM c WHERE ( ARRAY_CONTAINS(c.topicTags, { 'id' : @param0 })) AND  (c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = true)) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
 
             //Act
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
 
             // Assert
-            cosmosDbService.Received().QueryResourcesCountAsync(query);
+            cosmosDbService.Received().QueryResourcesCountAsync(query, Arg.Any<Dictionary<string, object>>());
         }
 
         [Fact]
@@ -329,21 +329,21 @@ namespace Access2Justice.CosmosDb.Tests
             dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
 
             // Assert
-            cosmosDbService.Received().QueryResourcesCountAsync(query);
+            cosmosDbService.Received().QueryResourcesCountAsync(query, Arg.Any<Dictionary<string, object>>());
         }
 
         [Fact]
         public void FindItemsWhereInClauseAsyncShouldValidSqlQueryForPersonalizedPlan()
         {
             //Arrange
-            var ids = new List<string>() { "guid1" };
-            string query = "SELECT * FROM c WHERE c.id IN ('guid1')";
+            var ids = new List<string>() { "guid1", "guid2" };
+            string query = "SELECT * FROM c WHERE c.id IN (@param0,@param1)";
 
             //Act
             dynamicQueries.FindItemsWhereInClauseAsync("TopicsCollections", "id", ids);
 
             // Assert
-            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query);
+            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query, Arg.Any<Dictionary<string, object>>());
         }
 
         [Fact]
@@ -352,13 +352,13 @@ namespace Access2Justice.CosmosDb.Tests
             // Arrange
             Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
             var ids = new List<string>() { "guid1", "guid2", "guid3" };
-            string query = "SELECT * FROM c WHERE  ARRAY_CONTAINS(c.topicTags, { 'id' : 'System.Collections.Generic.List`1[System.String]'}) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
+            string query = "SELECT * FROM c WHERE  ARRAY_CONTAINS(c.topicTags, { 'id' : @param0 }) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";
           
             // Act
             dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation("TopicsCollections", "topicTags", "id", ids.ToString(), location);
 
             // Assert
-            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(),query);
+            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(),query, Arg.Any<Dictionary<string, object>>());
         }
 
         [Fact]
@@ -372,7 +372,7 @@ namespace Access2Justice.CosmosDb.Tests
             dynamicQueries.FindItemsWhereWithLocationAsync("TopicsCollections", "topicTags", location);
 
             // Assert
-            cosmosDbService.Received().QueryItemsAsync("TopicsCollections", query);
+            cosmosDbService.Received().QueryItemsAsync("TopicsCollections", query, Arg.Any<Dictionary<string, object>>());
         }
 
         [Fact]
@@ -386,7 +386,7 @@ namespace Access2Justice.CosmosDb.Tests
             dynamicQueries.FindItemsWhereWithLocationAsync("TopicsCollections", "topicTags", location);
 
             // Assert
-            cosmosDbService.Received().QueryItemsAsync("TopicsCollections", query);
+            cosmosDbService.Received().QueryItemsAsync("TopicsCollections", query, Arg.Any<Dictionary<string, object>>());
         }
     }
 }

@@ -13,6 +13,11 @@ namespace Access2Justice.CosmosDb
 {
     public class CosmosDbDynamicQueries : IDynamicQueries
     {
+        private const string _parameterPrefix = "param";
+        private static readonly Func<int, string> _parameterName = x => $"{_parameterPrefix}{x}";
+        private static string _singleParameterName => _parameterName(0);
+        private static readonly Func<object, Dictionary<string, object>> _wrapSingleParam = x => new Dictionary<string, object>{{ $"{_singleParameterName}", x } };
+
         private readonly IBackendDatabaseService backendDatabaseService;
 
         public CosmosDbDynamicQueries(IBackendDatabaseService backendDatabaseService)
@@ -53,25 +58,32 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> FindItemsWhereAsync(string collectionId, List<string> propertyNames, List<string> values)
         {
+            var parameterDictionary = new Dictionary<string, object>();
             var query = "SELECT * FROM c WHERE ";
-            for (int iterator = 0; iterator < propertyNames.Count(); iterator++)
+            for (var iterator = 0; iterator < propertyNames.Count; iterator++)
             {
                 EnsureParametersAreNotNullOrEmpty(collectionId, propertyNames[iterator]);
-                query += $"c.{propertyNames[iterator]}='{values[iterator]}'";
-                if (iterator != propertyNames.Count() - 1)
+
+                var paramName = _parameterName(iterator);
+                parameterDictionary[paramName] = values[iterator];
+
+                query += $"c.{propertyNames[iterator]}=@{paramName}";
+                if (iterator != propertyNames.Count - 1)
                 {
                     query += " AND ";
                 }
             }
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, parameterDictionary);
         }
 
         public async Task<dynamic> FindItemsWhereContainsAsync(string collectionId, string propertyName, string value)
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
+            
+            var query = $"SELECT * FROM c WHERE CONTAINS(c.{propertyName}, @{_singleParameterName})";
 
-            var query = $"SELECT * FROM c WHERE CONTAINS(c.{propertyName}, '{value.ToUpperInvariant()}')";
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, _wrapSingleParam(value.ToUpperInvariant()));
         }
 
         public async Task<dynamic> FindItemsWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, string value)
@@ -88,7 +100,7 @@ namespace Access2Justice.CosmosDb
 
             if (isPartialQuery)
             {
-                return await backendDatabaseService.QueryItemsAsync(collectionId, $"SELECT * FROM c WHERE ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : '" + value + "'}, true)");
+                return await backendDatabaseService.QueryItemsAsync(collectionId, $"SELECT * FROM c WHERE ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : @{_singleParameterName} }}, true)", _wrapSingleParam(value));
             }
 
             return await FindItemsWhereArrayContainsAsync(collectionId, arrayName, propertyName, value);
@@ -98,9 +110,10 @@ namespace Access2Justice.CosmosDb
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, arrayName, propertyName);
 
-            string arrayContainsClause = ArrayContainsWithOrClause(arrayName, propertyName, values);
+            var parameters = new Dictionary<string, object>();
+            string arrayContainsClause = ArrayContainsWithOrClause(arrayName, propertyName, values as IList<string> ?? values.ToList(), parameters);
             var query = $"SELECT * FROM c WHERE {arrayContainsClause}";
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, parameters);
         }
 
         public async Task<dynamic> FindItemsWhereContainsWithLocationAsync(string collectionId, string propertyName, string value, Location location, bool ignoreCase = false)
@@ -113,12 +126,12 @@ namespace Access2Justice.CosmosDb
             {
                 searchProperty = $"LOWER({searchProperty})";
             }
-            var query = $"SELECT * FROM c WHERE CONTAINS({searchProperty}, \"{value}\")";
+            var query = $"SELECT * FROM c WHERE CONTAINS({searchProperty}, @{_singleParameterName})";
             if (!string.IsNullOrEmpty(locationFilter))
             {
                 query = query + " AND " + locationFilter;
             }
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, _wrapSingleParam(value));
         }
 
         public async Task<dynamic> FindItemsWhereWithLocationAsync(string collectionId, string propertyName, string value, Location location)
@@ -128,18 +141,18 @@ namespace Access2Justice.CosmosDb
             var query = string.Empty;
             if (string.IsNullOrEmpty(value) && (location != null))
             {
-                query = $"SELECT * FROM c WHERE (c.{propertyName}=[{value}] OR c.{propertyName}=null)";
+                query = $"SELECT * FROM c WHERE (c.{propertyName}=[] OR c.{propertyName}=null)";
             }
             else
             {
-                query = $"SELECT * FROM c WHERE c.{propertyName}='{value}'";
+                query = $"SELECT * FROM c WHERE c.{propertyName}=@{_singleParameterName}";
             }
 
             if (!string.IsNullOrEmpty(locationFilter))
             {
                 query = query + " AND " + locationFilter;
             }
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, _wrapSingleParam(value));
         }
 
         public async Task<dynamic> FindItemsWhereWithLocationAsync(string collectionId, string propertyName, Location location)
@@ -153,13 +166,18 @@ namespace Access2Justice.CosmosDb
             {
                 query += " WHERE " + locationFilter;
             }
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, null);
         }
 
-        public string BuildQueryWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, bool isResourceCountCall = false)
+        public string BuildQueryWhereArrayContainsWithAndClauseAsync(string arrayName, 
+            string propertyName, 
+            string andPropertyName, 
+            ResourceFilter resourceFilter, Dictionary<string, object> parameters, bool isResourceCountCall = false)
         {
             EnsureParametersAreNotNullOrEmpty(arrayName, propertyName, andPropertyName, resourceFilter.ResourceType);
-            var arrayContainsWithAndClause = ArrayContainsWithOrClause(arrayName, propertyName, resourceFilter.TopicIds);
+
+            var arrayContainsWithAndClause = ArrayContainsWithOrClause(arrayName, propertyName, 
+                resourceFilter.TopicIds as IList<string> ?? resourceFilter.TopicIds.ToList(), parameters);
             if (!string.IsNullOrEmpty(arrayContainsWithAndClause))
             {
                 arrayContainsWithAndClause = "(" + arrayContainsWithAndClause + ")";
@@ -206,23 +224,24 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, bool isResourceCountCall = false)
         {
+            var parameters = new Dictionary<string, object>();
             var query = BuildQueryWhereArrayContainsWithAndClauseAsync(arrayName, propertyName, andPropertyName,
-                resourceFilter, isResourceCountCall);
+                resourceFilter, parameters, isResourceCountCall);
             PagedResources pagedResources;
             if (isResourceCountCall)
             {
-                pagedResources = await backendDatabaseService.QueryResourcesCountAsync(query);
+                pagedResources = await backendDatabaseService.QueryResourcesCountAsync(query, parameters);
             }
             else
             {
                 if (resourceFilter.PageNumber == 0)
                 {
-                    pagedResources = await backendDatabaseService.QueryPagedResourcesAsync(query, "");
+                    pagedResources = await backendDatabaseService.QueryPagedResourcesAsync(query, parameters, "");
                     pagedResources.TopicIds = resourceFilter.TopicIds;
                 }
                 else
                 {
-                    pagedResources = await backendDatabaseService.QueryPagedResourcesAsync(query, resourceFilter.ContinuationToken);
+                    pagedResources = await backendDatabaseService.QueryPagedResourcesAsync(query, parameters, resourceFilter.ContinuationToken);
                     pagedResources.TopicIds = resourceFilter.TopicIds;
                 }
             }
@@ -231,26 +250,30 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> FindItemsWhereInClauseAsync(string collectionId, string propertyName, IEnumerable<string> values)
         {
-            if (values == null || !values.Any())
+            var valuesCollection = values?.ToList();
+            if (values == null || valuesCollection.Count == 0)
             {
                 return Constants.EmptyArray;
             }
 
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
-            var inClause = InClause(propertyName, values);
+            var parameters = new Dictionary<string, object>();
+            var inClause = InClause(valuesCollection, parameters);
             var query = $"SELECT * FROM c WHERE c.{propertyName} IN ({inClause})";
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, parameters);
         }
 
         public async Task<dynamic> FindItemsWhereInClauseAsync(string collectionId, string propertyName, IEnumerable<string> values, Location location)
         {
-            if (values == null || !values.Any())
+            var valuesCollection = values?.ToList();
+            if (values == null || valuesCollection.Count == 0)
             {
                 return Constants.EmptyArray;
             }
 
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
-            var inClause = InClause(propertyName, values);
+            var parameters = new Dictionary<string, object>();
+            var inClause = InClause(valuesCollection, parameters);
             string locationFilter = FindLocationWhereArrayContains(location);
             var query = $"SELECT * FROM c WHERE c.{propertyName} IN ({inClause})";
 
@@ -258,36 +281,42 @@ namespace Access2Justice.CosmosDb
             {
                 query = query + " AND " + locationFilter;
             }
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, parameters);
         }
 
-        private string InClause(string propertyName, IEnumerable<string> values)
+        private string InClause(IEnumerable<string> values, Dictionary<string, object> parametersCollection)
         {
-            return string.Join(',', values.Select(v => $"'{v}'"));
+            var counter = 0;
+            foreach (var value in values)
+            {
+                parametersCollection[_parameterName(counter)] = value;
+                counter++;
+            }
+            return string.Join(',', parametersCollection.Keys.Select(v => $"@{v}"));
         }
 
         public async Task<dynamic> FindFieldWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, string value, string dateProperty)
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
 
-            var query = $"SELECT c.id, f.url FROM c JOIN f in c.{arrayName} WHERE CONTAINS(f.{propertyName}, '{value}') AND f.{dateProperty} > '{DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture)}'";
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+            var query = $"SELECT c.id, f.url FROM c JOIN f in c.{arrayName} WHERE CONTAINS(f.{propertyName}, @{_singleParameterName}) AND f.{dateProperty} > '{DateTime.UtcNow.ToString("o", CultureInfo.InvariantCulture)}'";
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, _wrapSingleParam(value));
         }
 
         public async Task<dynamic> FindFieldWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, string value)
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
 
-            var query = $"SELECT f.name, f.code FROM c JOIN f in c.{arrayName} WHERE CONTAINS(f.{propertyName}, '{value}')";
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+            var query = $"SELECT f.name, f.code FROM c JOIN f in c.{arrayName} WHERE CONTAINS(f.{propertyName}, @{_singleParameterName})";
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, _wrapSingleParam(value));
         }
 
         public async Task<dynamic> FindFieldWhereArrayContainsAsync(string collectionId, string propertyName, string value)
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
 
-            var query = $"SELECT c.name, c.firstName, c.lastName, c.oId FROM c WHERE c.{propertyName} = '{value}'";
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+            var query = $"SELECT c.name, c.firstName, c.lastName, c.oId FROM c WHERE c.{propertyName} = @{_singleParameterName}";
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, _wrapSingleParam(value));
         }
 
         private string FindItemsWhereResourceIsActive(string resourceType)
@@ -304,6 +333,12 @@ namespace Access2Justice.CosmosDb
             return resourceIsActiveFilter;
         }
 
+        /// <summary>
+        /// For now, forms with Json.SerializeObject + string.Format
+        /// TODO: change to sqlParameters
+        /// </summary>
+        /// <param name="location"></param>
+        /// <returns></returns>
         private dynamic FindLocationWhereArrayContains(Location location)
         {
             if (location == null || (string.IsNullOrEmpty(location.State) && string.IsNullOrEmpty(location.County)
@@ -311,7 +346,7 @@ namespace Access2Justice.CosmosDb
             {
                 return "";
             }
-            return ArrayContainsWithMulitpleProperties("location", location, exactForDefaults: true);
+            return ArrayContainsWithMultipleProperties("location", location, exactForDefaults: true);
         }
 
         private void EnsureParametersAreNotNullOrEmpty(params string[] parameters)
@@ -325,7 +360,7 @@ namespace Access2Justice.CosmosDb
             }
         }
 
-        private string ArrayContainsWithMulitpleProperties(
+        private string ArrayContainsWithMultipleProperties(
             string propertyName,
             dynamic input,
             bool exactForDefaults = false)
@@ -346,13 +381,17 @@ namespace Access2Justice.CosmosDb
             return arrayContainsClause;
         }
 
-        private string ArrayContainsWithOrClause(string arrayName, string propertyName, IEnumerable<string> values)
+        private string ArrayContainsWithOrClause(string arrayName, string propertyName, ICollection<string> values, Dictionary<string, object> parameters)
         {
-            string arrayContainsWithOrClause = string.Empty;
-            var lastItem = values?.Count() > 0 ? values.Last() : "";
+            var arrayContainsWithOrClause = string.Empty;
+            var lastItem = values.Count > 0 ? values.Last() : "";
+            var index = 0;
             foreach (var value in values)
             {
-                arrayContainsWithOrClause += $" ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : '" + value + "'})";
+                var parameterName = _parameterName(index);
+                index++;
+                parameters[parameterName] = value;
+                arrayContainsWithOrClause += $" ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : @{parameterName} }})";
                 if (value != lastItem)
                 {
                     arrayContainsWithOrClause += "OR";
@@ -376,7 +415,6 @@ namespace Access2Justice.CosmosDb
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, arrayName, propertyName);
             string locationFilter = FindLocationWhereArrayContains(location);
-            var query = string.Empty;
             var ids = new List<string> { value };
 
             if (location == null || (string.IsNullOrEmpty(location.State) && string.IsNullOrEmpty(location.County)
@@ -384,22 +422,21 @@ namespace Access2Justice.CosmosDb
             {
                 return "";
             }
-            else
+
+            var parameters = new Dictionary<string, object>();
+            string arrayContainsClause = ArrayContainsWithOrClause(arrayName, propertyName, ids, parameters);
+            var query = $"SELECT * FROM c WHERE {arrayContainsClause}";
+            if (!string.IsNullOrEmpty(locationFilter))
             {
-                string arrayContainsClause = ArrayContainsWithOrClause(arrayName, propertyName, ids);
-                query = $"SELECT * FROM c WHERE {arrayContainsClause}";
-                if (!string.IsNullOrEmpty(locationFilter))
-                {
-                    query = query + " AND " + locationFilter;
-                }
+                query = query + " AND " + locationFilter;
             }
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, parameters);
         }
 
         public async Task<dynamic> FindItemsAllAsync(string collectionId)
         {
-            var query = $"SELECT * FROM c";
-            return await backendDatabaseService.QueryItemsAsync(collectionId, query);
+            var query = "SELECT * FROM c";
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, null);
         }
     }
 }

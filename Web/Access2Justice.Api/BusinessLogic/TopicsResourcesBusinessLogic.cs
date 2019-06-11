@@ -264,8 +264,9 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> FindAllResources(ResourceFilter resourceFilter)
         {
-            var query = dbClient.BuildQueryWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
-            var items = await dbService.QueryItemsAsync(dbSettings.ResourcesCollectionId, query);
+            var parameters = new Dictionary<string, object>();
+            var query = dbClient.BuildQueryWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, parameters);
+            var items = await dbService.QueryItemsAsync(dbSettings.ResourcesCollectionId, query, parameters);
             return items;
         }
 

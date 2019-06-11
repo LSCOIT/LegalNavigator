@@ -4,6 +4,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <CodeAnalysisRuleSet>DotNetStandard.ruleset</CodeAnalysisRuleSet>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
