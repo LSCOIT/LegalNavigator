@@ -6,11 +6,13 @@
       <div class="row">
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Page Description</label>
-          <textarea
-            class="form-control col-md-10 col-sm-9"
-            name="pageDescription"
-            [(ngModel)]="privacyContent.description"
-          ></textarea>
+          <app-ngx-editor name="pageDescription" height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true" [(ngModel)]="privacyContent.description"></app-ngx-editor>
+          <!--<quill-editor name="pageDescription" [(ngModel)]="privacyContent.description"></quill-editor>-->
+          <!--<textarea-->
+            <!--class="form-control col-md-10 col-sm-9"-->
+            <!--name="pageDescription"-->
+            <!--[(ngModel)]="privacyContent.description"-->
+          <!--&gt;</textarea>-->
         </div>
       </div>
     </div>
@@ -30,11 +32,12 @@
         </div>
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Section Description</label>
-          <textarea
-            class="form-control col-md-10 col-sm-9"
-            [(ngModel)]="content.description"
-            [name]="'description' + i"
-          ></textarea>
+          <app-ngx-editor name="'description' + i" height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true" [(ngModel)]="content.description"></app-ngx-editor>
+          <!--<textarea-->
+            <!--class="form-control col-md-10 col-sm-9"-->
+            <!--[(ngModel)]="content.description"-->
+            <!--[name]="'description' + i"-->
+          <!--&gt;</textarea>-->
         </div>
       </div>
     </div>

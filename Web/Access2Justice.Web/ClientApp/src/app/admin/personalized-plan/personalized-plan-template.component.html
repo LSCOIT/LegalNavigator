@@ -9,12 +9,17 @@
       <div class="row">
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Our Mission</label>
-          <textarea
-            class="form-control col-md-10 col-sm-9"
-            name="personalizedPlanDescription"
-            [value]="personalizedPlanContent.description"
-            [(ngModel)]="personalizedPlanContent.description"
-          ></textarea>
+          <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+                          name="personalizedPlanDescription"
+                          value="personalizedPlanContent.description"
+                          [(ngModel)]="personalizedPlanContent.description"></app-ngx-editor>
+
+          <!--<textarea-->
+            <!--class="form-control col-md-10 col-sm-9"-->
+            <!--name="personalizedPlanDescription"-->
+            <!--[value]="personalizedPlanContent.description"-->
+            <!--[(ngModel)]="personalizedPlanContent.description"-->
+          <!--&gt;</textarea>-->
         </div>
       </div>
     </div>

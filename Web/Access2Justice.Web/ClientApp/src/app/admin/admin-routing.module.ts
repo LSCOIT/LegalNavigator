@@ -9,7 +9,7 @@ import { HelpFaqsTemplateComponent } from "./help-faqs/help-faqs-template.compon
 import { HomeTemplateComponent } from "./home/home-template.component";
 import { PersonalizedPlanTemplateComponent } from "./personalized-plan/personalized-plan-template.component";
 import { PrivacyPromiseTemplateComponent } from "./privacy-promise/privacy-promise-template.component";
-
+import { NgxEditorModule } from 'ngx-editor';
 const adminRoutes: Routes = [
   {
     path: "admin",
@@ -57,7 +57,7 @@ const adminRoutes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(adminRoutes)],
+  imports: [RouterModule.forChild(adminRoutes), NgxEditorModule],
   exports: [RouterModule]
 })
 export class AdminRoutingModule {}

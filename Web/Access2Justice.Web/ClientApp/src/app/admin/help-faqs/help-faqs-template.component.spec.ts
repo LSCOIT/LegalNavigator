@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
 import { of } from "rxjs";
-
+import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
 import { Global } from "../../global";
 import { NavigateDataService } from "../../common/services/navigate-data.service";
 import { StaticResourceService } from "../../common/services/static-resource.service";
@@ -128,7 +128,8 @@ describe("HelpFaqsTemplateComponent", () => {
           provide: ToastrService,
           useValue: mockToastr
         }
-      ]
+      ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
     }).compileComponents();
   }));
 
