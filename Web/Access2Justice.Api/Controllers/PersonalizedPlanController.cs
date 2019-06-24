@@ -1,12 +1,14 @@
 ﻿using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
-using Access2Justice.Shared.A2JAuthor;
-using Access2Justice.Shared.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Access2Justice.Api.BusinessLogic;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -15,17 +17,17 @@ namespace Access2Justice.Api.Controllers
     public class PersonalizedPlanController : Controller
     {
         private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic;
-        private readonly ICuratedExperienceBusinessLogic curatedExperienceBusinessLogic;
         private readonly ISessionManager sessionManager;
         private readonly IUserRoleBusinessLogic userRoleBusinessLogic;
+        private readonly IPdfService pdfService;
 
         public PersonalizedPlanController(IPersonalizedPlanBusinessLogic personalizedPlan, ICuratedExperienceBusinessLogic curatedExperience,
-            ISessionManager sessionManager, IUserRoleBusinessLogic userRoleBusinessLogic)
+            ISessionManager sessionManager, IUserRoleBusinessLogic userRoleBusinessLogic, IPdfService pdfService)
         {
             this.personalizedPlanBusinessLogic = personalizedPlan;
-            this.curatedExperienceBusinessLogic = curatedExperience;
             this.sessionManager = sessionManager;
             this.userRoleBusinessLogic = userRoleBusinessLogic;
+            this.pdfService = pdfService;
         }
 
         /// <summary>
@@ -84,6 +86,20 @@ namespace Access2Justice.Api.Controllers
             }
 
             return Ok(personalizedPlan);
+        }
+
+        [HttpGet("print")]
+        public async Task<IActionResult> PrintPersonalActionPlan([FromQuery] Guid personalizedPlanId)
+        {
+            var personalizedPlan = await personalizedPlanBusinessLogic.GetPersonalizedPlanAsync(personalizedPlanId);
+
+            if (personalizedPlan == null || personalizedPlan.PersonalizedPlanId == default(Guid))
+            {
+                return StatusCode(StatusCodes.Status404NotFound, $"Could not find a plan with this Id {personalizedPlanId}");
+            }
+
+            var output = await pdfService.PrintPlan(personalizedPlan);
+            return File(output, "application/pdf", "personalizedActionPlan.pdf");
         }
 
         /// <summary>

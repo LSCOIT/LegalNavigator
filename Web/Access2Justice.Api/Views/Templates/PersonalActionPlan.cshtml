@@ -1,0 +1,112 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Access2Justice.Api.ViewModels.PersonalizedPlanViewModel
+
+    <div style="font-size: 1.2em;">
+        @foreach (var topic in Model.Topics)
+        {
+            <div class="col-sm-12 box-shadow">
+                <div class="col-xs-12 plan-spacing plan-heading">
+                    <div class="col-xs-11">
+                        <div class="col-sm-11 col-xs-10">
+                            <h3 class="inline">@topic.TopicName</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="col-md-9 col-sm-12 pull-right plan-steps">
+                        @*<accordion>
+                            <accordion-group *ngFor="let step of topic.steps">*@
+                                @foreach (var step in topic.Steps)
+                                {
+                                    <div accordion-heading>
+                                        <div class="col-sm-9 col-xs-12">
+                                            <div class="media">
+                                                <div class="media-body">
+                                                    <h3>
+                                                        Step @step.Order. @step.Title
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 step-content">
+                                        @if (step.IsComplete)
+                                        {
+                                            <h4>Completed</h4>
+                                        }
+                                        else
+                                        {
+                                            <h4>
+                                                Not Completed
+                                            </h4>
+                                        }
+
+                                        <div class="col-sm-3 col-xs-12 btn-selected"
+                                             id="complete-btn">
+                                        </div>
+                                        <div>
+                                            <p>@Html.Raw(step.Description)</p>
+                                        </div>
+                                        
+                                            @if (step.Resources != null && step.Resources.Count != 0)
+                                            {
+                                                <h4>Additional Resources</h4>
+                                                @foreach (var resource in step.Resources)
+                                                 {
+                                                     <div id="additional-resource"
+                                                          class="row">
+                                                         <div class="media-body">
+                                                             @if (resource.ResourceType == "Videos")
+                                                             {
+                                                                 <span>@resource.Name</span>
+                                                             }
+                                                             else if (resource.ResourceType == "Forms")
+                                                             {
+                                                                 <a href="@resource.Url" class="link">
+                                                                     @resource.Name
+                                                                     <img class="nav-icon"
+                                                                          src="@Url.Content("../../../assets/images/small-icons/external_link.svg")"/>
+                                                                 </a>
+                                                             }
+                                                             else
+                                                             {
+                                                                 <a href="@Href("/resource/" + "@resource.ResourceId.ToString()")"
+                                                                    class="link">@resource.Name</a>
+                                                             }
+
+                                                             
+                                                            
+                                                         </div>
+                                                     </div>
+                                                 }
+                                            }
+                                        
+                                    </div>
+                                }
+                    </div>
+                    <div class="col-md-3 col-sm-12 quick-links">
+                        <p>Additional Readings</p>
+                        <ul>
+                            @foreach (var reading in topic.AdditionalReadings)
+                            {
+                                <li>
+                                    <a href="@reading.Url" class="link">
+                                        @reading.Text
+                                    </a>
+                                    <div>@reading.Url</div>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+                @if (Model.IsShared)
+                {
+                    <div class="shared-by">Shared by: </div>
+                }
+            </div>
+        }
+    </div>

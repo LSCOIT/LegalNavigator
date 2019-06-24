@@ -26,13 +26,17 @@ using System;
 using System.Reflection;
 using System.IO;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.InteropServices;
+using System.Runtime.Loader;
 using Access2Justice.Shared.QnAMaker;
 using Access2Justice.Shared.Storage;
+using DinkToPdf;
+using DinkToPdf.Contracts;
 
 namespace Access2Justice.Api
 {
     [ExcludeFromCodeCoverage]
-    public partial class Startup
+    public class Startup
     {
         public Startup(IConfiguration configuration)
         {
@@ -43,6 +47,9 @@ namespace Access2Justice.Api
 
         public void ConfigureServices(IServiceCollection services)
         {
+            var context = new LoadContext();
+            context.LoadUnmanagedLibrary(/*Path.Combine(Directory.GetCurrentDirectory(), */"libwkhtmltox"/*)*/);
+
             ConfigureSession(services);
 
             services.AddMvc();
@@ -110,6 +117,12 @@ namespace Access2Justice.Api
             services.AddSingleton<IStateProvinceBusinessLogic, StateProvinceBusinessLogic>();
             services.AddSingleton<IOnboardingInfoBusinessLogic, OnboardingInfoBusinessLogic>();
             services.AddSingleton<IQnABotBusinessLogic, QnABotBusinessLogic>();
+
+            services.AddScoped<ITemplateService, TemplateService>();
+            services.AddSingleton<ITools, PdfTools>();
+            services.AddSingleton<IConverter, SynchronizedConverter>();
+            services.AddScoped<IPdfService, PdfService>();
+            // services.AddSingleton<IConverter>(new SynchronizedConverter(new PdfTools()));
 
             services.AddAuthentication(sharedOptions =>
             {
@@ -212,6 +225,45 @@ namespace Access2Justice.Api
                 c.SwaggerEndpoint(Configuration.GetValue<string>("Api:VirtualPath") + "/swagger/v1/swagger.json", "Access2Justice API");
             });
 
+        }
+
+        class LoadContext : AssemblyLoadContext
+        {
+            protected override Assembly Load(AssemblyName assemblyName)
+            {
+                return null;
+            }
+
+            public IntPtr LoadUnmanagedLibrary(string absolutePath)
+            {
+                return LoadUnmanagedDll(absolutePath);
+            }
+
+            protected override IntPtr LoadUnmanagedDll(string unmanagedDllName)
+            {
+                var arch = Environment.Is64BitProcess ? "x64" : "x86";
+                var path = Path.Combine(
+                    Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location),
+                    "wkhtmltox",
+                    arch
+                );
+                string ext;
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    ext = "dylib";
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    ext = "so";
+
+                }
+                else // RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+                {
+                    ext = "dll";
+                }
+
+                return LoadUnmanagedDllFromPath(Path.Combine(path, $"{unmanagedDllName}.{ext}"));
+            }
         }
     }
 }
