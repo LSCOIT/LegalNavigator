@@ -4,15 +4,18 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { ToastrService } from "ngx-toastr";
 import { of } from "rxjs";
-
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Global } from "../../global";
 import { NavigateDataService } from "../../common/services/navigate-data.service";
 import { StaticResourceService } from "../../common/services/static-resource.service";
 import { AdminService } from "../admin.service";
 import { PrivacyPromiseTemplateComponent } from "./privacy-promise-template.component";
 
+import { NgxEditorModule } from 'ngx-editor';
+
 describe("PrivacyPromiseTemplateComponent", () => {
   let component: PrivacyPromiseTemplateComponent;
+  let NgxEditorModule: NgxEditorModule;
   let fixture: ComponentFixture<PrivacyPromiseTemplateComponent>;
   let mockStaticResourceService;
   let mockGlobal;
@@ -136,6 +139,7 @@ describe("PrivacyPromiseTemplateComponent", () => {
     TestBed.configureTestingModule({
       declarations: [PrivacyPromiseTemplateComponent],
       imports: [FormsModule],
+      schemas: [ NO_ERRORS_SCHEMA ],
       providers: [
         {
           provide: StaticResourceService,

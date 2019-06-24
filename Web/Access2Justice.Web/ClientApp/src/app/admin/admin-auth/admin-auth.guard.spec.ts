@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 import { Global } from "../../global";
 import { LoginService } from "../../common/login/login.service";
 import { AdminAuthGuard } from "./admin-auth.guard";
-
+import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
 describe("AdminAuthGuard", () => {
   let adminAuthGuard: AdminAuthGuard;
   let mockLoginService;
@@ -26,6 +26,7 @@ describe("AdminAuthGuard", () => {
     };
 
     TestBed.configureTestingModule({
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
       providers: [
         AdminAuthGuard,
         {

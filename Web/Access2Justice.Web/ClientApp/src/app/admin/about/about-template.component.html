@@ -6,12 +6,17 @@
       <div class="row">
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Our Mission</label>
-          <textarea
-            class="form-control col-md-10 col-sm-9"
-            name="aboutMission"
-            [value]="aboutContent.mission.description"
-            [(ngModel)]="aboutContent.mission.description"
-          ></textarea>
+          <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+                          name="aboutMission"
+                          value="aboutContent.mission.description"
+                          [(ngModel)]="aboutContent.mission.description"
+          ></app-ngx-editor>
+          <!--<textarea-->
+            <!--class="form-control col-md-10 col-sm-9"-->
+            <!--name="aboutMission"-->
+            <!--[value]="aboutContent.mission.description"-->
+            <!--[(ngModel)]="aboutContent.mission.description"-->
+          <!--&gt;</textarea>-->
         </div>
       </div>
     </div>
@@ -69,11 +74,15 @@
         <h3>Our Service</h3>
         <div>
           <label class="col-md-2 col-sm-3">Description</label>
-          <textarea
-            class="form-control col-md-10 col-sm-9"
-            [(ngModel)]="aboutContent.service.description"
-            name="serviceDescription"
-          ></textarea>
+          <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+                          [(ngModel)]="aboutContent.service.description"
+                          name="serviceDescription"
+          ></app-ngx-editor>
+          <!--<textarea-->
+            <!--class="form-control col-md-10 col-sm-9"-->
+            <!--[(ngModel)]="aboutContent.service.description"-->
+            <!--name="serviceDescription"-->
+          <!--&gt;</textarea>-->
         </div>
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Current Image</label>
@@ -124,11 +133,15 @@
         <h3>Our Privacy Promise</h3>
         <div>
           <label class="col-md-2 col-sm-3">Description</label>
-          <textarea
-            class="form-control col-md-10 col-sm-9"
-            [(ngModel)]="aboutContent.privacyPromise.description"
-            name="privacyPromiseDescription"
-          ></textarea>
+          <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+                          [(ngModel)]="aboutContent.privacyPromise.description"
+                          name="privacyPromiseDescription"
+          ></app-ngx-editor>
+          <!--<textarea-->
+            <!--class="form-control col-md-10 col-sm-9"-->
+            <!--[(ngModel)]="aboutContent.privacyPromise.description"-->
+            <!--name="privacyPromiseDescription"-->
+          <!--&gt;</textarea>-->
         </div>
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Current Image</label>
@@ -182,11 +195,15 @@
       <div class="row sections">
         <div class="row subsections">
           <label class="col-md-2 col-sm-3">Description</label>
-          <textarea
-            class="form-control col-md-10 col-sm-9"
-            [(ngModel)]="aboutContent.inTheNews.description"
-            name="inTheNewsDescription"
-          ></textarea>
+          <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+                          [(ngModel)]="aboutContent.inTheNews.description"
+                          name="inTheNewsDescription"
+          ></app-ngx-editor>
+          <!--<textarea-->
+            <!--class="form-control col-md-10 col-sm-9"-->
+            <!--[(ngModel)]="aboutContent.inTheNews.description"-->
+            <!--name="inTheNewsDescription"-->
+          <!--&gt;</textarea>-->
         </div>
         <div *ngIf="aboutContent.inTheNews.news">
           <div
@@ -204,11 +221,15 @@
             </div>
             <div class="description col-sm-12">
               <label class="col-md-2 col-sm-3">News Description {{ i }}</label>
-              <textarea
-                class="form-control col-md-10 col-sm-9"
-                [(ngModel)]="news.description"
-                [name]="'newsDescription' + i"
-              ></textarea>
+              <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+                              [(ngModel)]="news.description"
+                              name="'newsDescription' + i"
+              ></app-ngx-editor>
+              <!--<textarea-->
+                <!--class="form-control col-md-10 col-sm-9"-->
+                <!--[(ngModel)]="news.description"-->
+                <!--[name]="'newsDescription' + i"-->
+              <!--&gt;</textarea>-->
             </div>
             <div class="description col-sm-12">
               <label class="col-md-2 col-sm-3">Current Image {{ i }}</label>
@@ -269,11 +290,15 @@
         <h3>Contact Us</h3>
         <div>
           <label class="col-md-2 col-sm-3">Description</label>
-          <textarea
-            class="form-control col-md-10 col-sm-9"
-            [(ngModel)]="aboutContent.contactUs.description"
-            name="contactUsDescription"
-          ></textarea>
+          <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+                          [(ngModel)]="aboutContent.contactUs.description"
+                          name="contactUsDescription"
+          ></app-ngx-editor>
+          <!--<textarea-->
+            <!--class="form-control col-md-10 col-sm-9"-->
+            <!--[(ngModel)]="aboutContent.contactUs.description"-->
+            <!--name="contactUsDescription"-->
+          <!--&gt;</textarea>-->
         </div>
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Email</label>
@@ -289,11 +314,16 @@
         <h3>Media Inquiries</h3>
         <div>
           <label class="col-md-2 col-sm-3">Description</label>
-          <textarea
-            class="form-control col-md-10 col-sm-9"
-            [(ngModel)]="aboutContent.mediaInquiries.description"
-            name="mediaInquiriesDescription"
-          ></textarea>
+          <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+                          [(ngModel)]="aboutContent.mediaInquiries.description"
+                          name="mediaInquiriesDescription"
+          ></app-ngx-editor>
+          <!--<textarea-->
+          <!--<textarea-->
+            <!--class="form-control col-md-10 col-sm-9"-->
+            <!--[(ngModel)]="aboutContent.mediaInquiries.description"-->
+            <!--name="mediaInquiriesDescription"-->
+          <!--&gt;</textarea>-->
         </div>
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Email</label>

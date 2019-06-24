@@ -263,11 +263,15 @@
         >
           <div class="description col-sm-12">
             <label class="col-md-2 col-sm-3">Slide Quote {{ i }}</label>
-            <textarea
-              class="form-control col-md-10 col-sm-9"
-              [(ngModel)]="slide.quote"
-              [name]="'slideQuote' + i"
-            ></textarea>
+            <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+                            [(ngModel)]="slide.quote"
+                            name="'slideQuote' + i"
+            ></app-ngx-editor>
+            <!--<textarea-->
+              <!--class="form-control col-md-10 col-sm-9"-->
+              <!--[(ngModel)]="slide.quote"-->
+              <!--[name]="'slideQuote' + i"-->
+            <!--&gt;</textarea>-->
           </div>
           <div class="description col-sm-12">
             <label class="col-md-2 col-sm-3">Slide Author {{ i }}</label>
@@ -343,11 +347,15 @@
         </div>
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Description</label>
-          <textarea
-            class="form-control col-md-10 col-sm-9"
-            [(ngModel)]="homeContent.sponsorOverview.description"
-            name="sponsorOverviewDescription"
-          ></textarea>
+          <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+                          [(ngModel)]="homeContent.sponsorOverview.description"
+                          name="sponsorOverviewDescription"
+          ></app-ngx-editor>
+          <!--<textarea-->
+            <!--class="form-control col-md-10 col-sm-9"-->
+            <!--[(ngModel)]="homeContent.sponsorOverview.description"-->
+            <!--name="sponsorOverviewDescription"-->
+          <!--&gt;</textarea>-->
         </div>
         <div
           class="row sections"

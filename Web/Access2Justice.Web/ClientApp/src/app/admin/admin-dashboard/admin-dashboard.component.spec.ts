@@ -6,7 +6,6 @@ import { Global } from "../../global";
 import { NavigateDataService } from "../../common/services/navigate-data.service";
 import { StaticResourceService } from "../../common/services/static-resource.service";
 import { AdminDashboardComponent } from "./admin-dashboard.component";
-
 describe("AdminDashboardComponent", () => {
   let component: AdminDashboardComponent;
   let fixture: ComponentFixture<AdminDashboardComponent>;

@@ -4,7 +4,7 @@ import { FormsModule, NgForm } from "@angular/forms";
 import { Router } from "@angular/router";
 import { NgxSpinnerService } from "ngx-spinner";
 import { CuratedExperienceTemplateComponent } from "./curated-experience-template.component";
-
+import {CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA} from '@angular/core';
 describe("CuratedExperienceTemplateComponent", () => {
   let component: CuratedExperienceTemplateComponent;
   let fixture: ComponentFixture<CuratedExperienceTemplateComponent>;
@@ -17,6 +17,7 @@ describe("CuratedExperienceTemplateComponent", () => {
     TestBed.configureTestingModule({
       declarations: [CuratedExperienceTemplateComponent],
       imports: [FormsModule, HttpClientModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA],
       providers: [
         {
           provide: NgxSpinnerService,
