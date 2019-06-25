@@ -39,7 +39,7 @@ namespace Access2Justice.Api.BusinessLogic
 
             using (var outputWriter = new StringWriter())
             {
-                var viewResult = viewEngine.FindView(actionContext, filename, false);
+                var viewResult = viewEngine.GetView(null, filename, false);// viewEngine.FindView(actionContext, filename, false);
                 var viewDictionary = new ViewDataDictionary<TViewModel>(new EmptyModelMetadataProvider(), new ModelStateDictionary())
                 {
                     Model = viewModel

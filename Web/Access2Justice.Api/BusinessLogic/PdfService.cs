@@ -12,7 +12,7 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly IConverter pdfConverter;
         private readonly ITemplateService templateService;
 
-        private const string _planTemplate = "Templates/PersonalActionPlan";
+        private const string _planTemplate = "/Views/Templates/PersonalActionPlan.cshtml";
 
         public PdfService(ITemplateService templateService, IConverter pdfConverter)
         {
