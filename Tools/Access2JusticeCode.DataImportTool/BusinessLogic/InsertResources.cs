@@ -45,6 +45,9 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             List<dynamic> Resources = new List<dynamic>();
             List<string> sheetNames = new List<string>() { Constants.ArticleSheetName, Constants.ArticleSectionSheetName, Constants.VideoSheetName, Constants.AdditionalReadingSheetName, Constants.FormSheetName, Constants.OrganizationSheetName, Constants.OrganizationReviewSheetName, Constants.RelatedLinkSheetName };
 
+            var currentPage = string.Empty;
+            var currentPageRecord = 1;
+
             try
             {
                 using (SpreadsheetDocument spreadsheetDocument =
@@ -54,6 +57,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                     Spreadsheet.Sheets sheets = workbookPart.Workbook.GetFirstChild<Spreadsheet.Sheets>();
                     foreach (Spreadsheet.Sheet sheet in sheets)
                     {
+                        currentPageRecord = 1;
                         if (sheet.Name.HasValue && sheetNames.Find(a => a == sheet.Name.Value) != null)
                         {
                             Spreadsheet.Worksheet worksheet = ((WorksheetPart)workbookPart.GetPartById(sheet.Id)).Worksheet;
@@ -69,6 +73,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                             locations = new List<Shared.Models.Location>();
                             string resourceIdCell = string.Empty;
                             string resourceType = GetResourceType(sheet.Name.Value);
+                            currentPage = sheet.Name.Value;
                             foreach (Spreadsheet.Row row in sheetData.Elements<Spreadsheet.Row>())
                             {
                                 if (counter == 1)
@@ -291,6 +296,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                 }
                                 counter++;
                                 recordNumber++;
+                                currentPageRecord++;
                             }
                         }
                     }
@@ -348,7 +354,8 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             }
             catch (Exception ex)
             {
-                InsertTopics.ErrorLogging(ex, recordNumber);
+                InsertTopics.ErrorLogging(ex,
+                    $"Please correct error at record number: {recordNumber} (sheet {currentPage}, row {currentPageRecord})");
                 Resources = null;
             }
             Resources = ResourcesList;

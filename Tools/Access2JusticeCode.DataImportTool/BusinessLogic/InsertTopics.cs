@@ -311,23 +311,32 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             return correctHeader;
         }
 
+        private static bool _isCurrentSessionFileLog;
+
         public static void ErrorLogging(Exception ex, int recordNumber)
         {
+            ErrorLogging(ex, $"Please correct error at record number: {recordNumber}");
+        }
+
+        public static void ErrorLogging(Exception ex, string errorMessage)
+        {
             string strPath = Path.Combine(Environment.CurrentDirectory + "\\" + "Error.txt");
-            if (File.Exists(strPath))
+            if (File.Exists(strPath) && !_isCurrentSessionFileLog)
             {
                 System.GC.Collect();
                 System.GC.WaitForPendingFinalizers();
                 File.Delete(strPath);
             }
-            else
-            {
-                File.Create(strPath).Dispose();
-            }
 
             using (StreamWriter sw = File.AppendText(strPath))
             {
-                sw.WriteLine("=============Error Logging ===========");
+                if (!_isCurrentSessionFileLog)
+                {
+                    sw.WriteLine("=============Error Logging ===========");
+
+                }
+                _isCurrentSessionFileLog = true;
+
                 sw.WriteLine("===========Start============= " + DateTime.Now);
                 if (ex.Message == "Could not find document")
                 {
@@ -339,7 +348,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                 }
                 else
                 {
-                    sw.WriteLine("Error Message: " + ex.Message + "\n" + "Please correct error at record number: " + recordNumber);
+                    sw.WriteLine("Error Message: " + ex.Message + "\n" + errorMessage);
                     sw.WriteLine("Stack Trace: " + ex.StackTrace);
                 }
                 sw.WriteLine("===========End============= " + DateTime.Now);
