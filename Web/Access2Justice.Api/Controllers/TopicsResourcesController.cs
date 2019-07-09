@@ -1,4 +1,5 @@
-﻿using Access2Justice.Api.Authorization;
+﻿using System;
+using Access2Justice.Api.Authorization;
 using Access2Justice.Api.Interfaces;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
@@ -9,6 +10,8 @@ using System.Threading.Tasks;
 using static Access2Justice.Api.Authorization.Permissions;
 using Pomelo.AntiXSS;
 using System.Diagnostics.CodeAnalysis;
+using Access2Justice.Shared;
+using Access2Justice.Shared.Utilities;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -20,12 +23,15 @@ namespace Access2Justice.Api.Controllers
         private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
         private readonly ILuisBusinessLogic luisBusinessLogic;
         private readonly IUserRoleBusinessLogic userRoleBusinessLogic;
+        private readonly IPdfService pdfService;
+
         public TopicsResourcesController(ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic, ILuisBusinessLogic luisBusinessLogic,
-            IUserRoleBusinessLogic userRoleBusinessLogic)
+            IUserRoleBusinessLogic userRoleBusinessLogic, IPdfService pdfService)
         {
             this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
             this.luisBusinessLogic = luisBusinessLogic;
             this.userRoleBusinessLogic = userRoleBusinessLogic;
+            this.pdfService = pdfService;
         }
 
         /// <summary>
@@ -120,6 +126,19 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
+        /// Print the resource details by the resource Id
+        /// </summary>
+        [HttpGet]
+        [Route("resources/print")]
+        public async Task<IActionResult> PrintResourceDetails(Guid resourceId)
+        {
+            var topicInput = new TopicInput { Id = resourceId.ToString(), IsShared = true };
+            var topics = await topicsResourcesBusinessLogic.GetResourceByIdAsync(topicInput);
+            var output = await pdfService.PrintResource(topics[0]);
+            return File(output, "application/pdf", $"{topics[0].name}.pdf");
+        }
+
+        /// <summary>
         /// Get the document details by a document Id
         /// </summary>
         /// <remarks>
@@ -140,6 +159,31 @@ namespace Access2Justice.Api.Controllers
             }
 
             return Ok(topics);
+        }
+
+        /// <summary>
+        /// Get the topic details by the document parent Id
+        /// </summary>
+        /// <remarks>
+        /// Helps to get all resource details by given topic
+        /// </remarks>
+        /// <response code="200">Get all resource details for given topic</response>
+        /// <response code="500">Failure</response>
+        [HttpGet]
+        [Route("topics/print")]
+        public async Task<IActionResult> PrintTopicsDetails(Guid topicId, string state = "", string county = "", string city = "", string zipCode = "")
+        {
+            var topicInput = new TopicInput { Id = topicId.ToString(), IsShared = true };
+            var topics = await topicsResourcesBusinessLogic.GetDocumentAsync(topicInput);
+            var resources = await topicsResourcesBusinessLogic.FindAllResources(new ResourceFilter
+            {
+                TopicIds = new List<string> { topics[0].Id },
+                PageNumber = 0,
+                ResourceType = Constants.All,
+                Location = new Location { State = state, County = county, City = city, ZipCode = zipCode }
+            });
+            var output = await pdfService.PrintTopic(topics[0], resources);
+            return File(output, "application/pdf", $"{topics[0].Name}.pdf");
         }
 
         /// <summary>

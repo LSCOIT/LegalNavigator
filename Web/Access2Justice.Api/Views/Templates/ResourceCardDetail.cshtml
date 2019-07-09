@@ -1,0 +1,253 @@
+﻿@using Access2Justice.Shared.Models
+@model Access2Justice.Shared.Models.Resource
+
+@if (Model != null)
+{
+    <div class="container">
+        @if (Model.ResourceType == "Articles")
+        {
+            <div class="row">
+                <div class="col-md-10 col-sm-12">
+                    <h2>@Model.Name</h2>
+                    @if (!string.IsNullOrWhiteSpace(Model.ResourceCategory))
+                    {
+                        <p>@Model.ResourceCategory</p>
+                    }
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-sm-12">
+                    @if (!string.IsNullOrWhiteSpace(((Article)Model).Overview))
+                    {
+                        <div class="resource-sections">
+                            <p>@(((Article)Model).Overview)</p>
+                        </div>
+                    }
+                    @if (((Article) Model).Contents != null)
+                    {
+                        @foreach (var content in ((Article) Model).Contents)
+                         {
+                             <div class="resource-sections">
+                                 <h4>@content.Headline</h4>
+                                 <div class="newlines">
+                                     <p>@Html.Raw(content.Content)</p>
+                                 </div>
+                             </div>
+                         }
+                    }
+                </div>
+            </div>
+        }
+        @if (Model.ResourceType == "Organizations" || Model.ResourceType == "Service Providers")
+        {
+            <div class="row">
+                <div class="col-md-10 col-sm-12">
+                    <h2>@Model.Name</h2>
+                    <p>@Model.ResourceCategory</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8 col-sm-12">
+                    <div class="box-no-shadow">
+                        <div class="resource-body">
+                            <div>@(((Organization)Model).Address)</div>
+                            <div>@(((Organization)Model).Telephone)</div>
+                            @if (!string.IsNullOrWhiteSpace(Model.Url))
+                            {
+                                <div>
+                                    <a class="link" href="@Model.Url">@(new Uri(Model.Url).GetLeftPart(UriPartial.Authority))</a>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(((Organization)Model).Overview) || string.IsNullOrWhiteSpace(((Organization)Model).Specialties))
+                    {
+                        <div class="box-no-shadow">
+                            <div class="resource-body">
+                                @if (!string.IsNullOrWhiteSpace(((Organization)Model).Overview))
+                                {
+                                    <div class="resource-sections">
+                                        <h4>Overview</h4>
+                                        <p>@(((Organization)Model).Overview)</p>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(((Organization)Model).Specialties))
+                                {
+                                    <div class="resource-sections" *ngIf="resource.specialties">
+                                        <h5>Specialties</h5>
+                                        <ul>
+                                            <li>@(((Organization)Model).Specialties)</li>
+                                        </ul>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    @if (!string.IsNullOrWhiteSpace(((Organization)Model).EligibilityInformation) || string.IsNullOrWhiteSpace(((Organization)Model).Qualifications))
+                    {
+                        <div class="box-no-shadow">
+                            <div class="resource-body">
+                                @if (!string.IsNullOrWhiteSpace(((Organization)Model).EligibilityInformation))
+                                {
+                                    <div class="resource-sections">
+                                        <h4>Eligibility Information</h4>
+                                        <p>{{ resource.eligibilityInformation }}</p>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(((Organization)Model).Qualifications))
+                                {
+                                    <div class="resource-sections">
+                                        <h5>Qualifications</h5>
+                                        <ul>
+                                            <li>{{ resource.qualifications }}</li>
+                                        </ul>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                    @if (((Organization)Model).IsFormAvailable)
+                    {
+                        <div class="box-no-shadow">
+                            <div class="resource-body">
+                                <div class="resource-sections">
+                                    <h5>Intake Form</h5>
+                                    <p>
+                                        This organization has an electronic intake form. You can fill out an
+                                        intake form to be review by the organization in order to start using
+                                        their services.
+                                    </p>
+                                    <button (click)="openModal(intakeTemplate)"
+                                            type="button"
+                                            class="btn btn-primary">
+                                        Go to form
+                                    </button>
+
+                                    <!--------------------- TODO ---------------------------------->
+                                    <ng-template #intakeTemplate>
+                                        <div class="modal-body container-fluid">
+                                            <img type="button"
+                                                 class="nav-icon pull-right close"
+                                                 src="./assets/images/small-icons/close.svg"
+                                                 aria-label="Close"
+                                                 (click)="modalRef.hide()" />
+                                            <div class="row text-center">
+                                                <p class="pl text-center">
+                                                    Please add the following details to share with your provider.
+                                                </p>
+                                                <p class="text-center">
+                                                    The service provider needs your contact information to contact you.
+                                                </p>
+                                            </div>
+                                            <form (ngSubmit)="onSubmit()" [formGroup]="form">
+                                                <div *ngFor="let intakeQuestion of intakeQuestions" class="form-row">
+                                                    <div class="question col-sm-12">
+                                                        <label class="col-md-2 col-sm-3" [attr.for]="intakeQuestion.name">
+                                                            {{
+                                                            intakeQuestion.name
+                                                            }}
+                                                        </label>
+                                                        <div>
+                                                            <input class="form-control col-md-10 col-sm-9"
+                                                                   autocomplete="off"
+                                                                   [formControlName]="intakeQuestion.name"
+                                                                   [id]="intakeQuestion.name"
+                                                                   type="text" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <p class="pxs">
+                                                    Sending your information to a legal service provider does not mean they
+                                                    will take your case. If you do not qualify for their help, they may
+                                                    refer you to other resources.
+                                                </p>
+                                                <div class="form-row">
+                                                    <button class="btn btn-primary" type="submit" [disabled]="!form.valid">
+                                                        Submit
+                                                    </button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </ng-template>
+
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (((Organization)Model).Reviewer != null && ((Organization)Model).Reviewer.Count != 0)
+                    {
+                        <div class="box-no-shadow org-review">
+                            <div class="resource-body">
+                                <h4>Reviewed by a member of your community</h4>
+                                @foreach (var reviewer in ((Organization)Model).Reviewer)
+                                {
+                                    <div>
+                                        <p>"@reviewer.ReviewText"</p>
+                                        @if (!string.IsNullOrWhiteSpace(reviewer.ReviewerImage))
+                                        {
+                                            <div class="media-left">
+                                                <img class="media-object"
+                                                     src="@reviewer.ReviewerImage"
+                                                     alt="@reviewer.ReviewerFullName" />
+                                            </div>
+                                            <div class="media-body">
+                                                <p>@reviewer.ReviewerFullName, @reviewer.ReviewerTitle</p>
+                                            </div>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-4 col-sm-12 pull-right">
+                    @if (!string.IsNullOrWhiteSpace(((Organization)Model).BusinessHours))
+                    {
+                        <div class="box-no-shadow">
+                            <div class="resource-body">
+                                <h5>Business Hours</h5>
+                                <ul class="hours">
+                                    <li>
+                                        <span>@(((Organization)Model).BusinessHours)</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        @if (Model.ResourceType == "Videos")
+        {
+            <div>
+                <div class="row">
+                    <div class="col-md-10 col-sm-12">
+                        <h2>@Model.Name</h2>
+                        <p>@Model.ResourceCategory</p>
+                    </div>
+                </div>
+                @if (!string.IsNullOrWhiteSpace(((Video)Model).Overview))
+                {
+                    <div *ngIf="resource.overview" class="row">
+                        <p>@(((Video)Model).Overview)</p>
+                    </div>
+                }
+                @*<div class="row">
+                    <div class="col-md-8 col-sm-12">
+                        <iframe [src]="this.safeUrl" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                    <div class="col-md-4 col-sm-12 pull-right">
+                        <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+                        <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromVideos($event)"></app-service-org-sidebar>
+                    </div>
+                </div>*@
+            </div>
+        }
+        @if (Model.ResourceType == "Action Plans")
+        {
+            <!-- 'planDetails' has to be transmitted as input parameter -->
+            <!-- without that component would not be displayed -->
+            @*<app-action-plans></app-action-plans>*@
+        }
+    </div>
+}

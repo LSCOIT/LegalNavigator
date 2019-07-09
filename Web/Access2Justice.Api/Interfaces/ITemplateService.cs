@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Interfaces
 {
@@ -11,6 +12,6 @@ namespace Access2Justice.Api.Interfaces
         /// <param name="filename">Filename of the template to render</param>
         /// <param name="viewModel">View model to use for rendering the template</param>
         /// <returns>Returns the rendered template content</returns>
-        Task<string> RenderTemplateAsync<TViewModel>(string filename, TViewModel viewModel);
+        Task<string> RenderTemplateAsync<TViewModel>(string filename, TViewModel viewModel, Action<dynamic> viewBagInitialize = null);
     }
 }

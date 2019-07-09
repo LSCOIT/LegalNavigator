@@ -28,7 +28,7 @@ namespace Access2Justice.Api.BusinessLogic
             this.tempDataProvider = tempDataProvider;
         }
 
-        public async Task<string> RenderTemplateAsync<TViewModel>(string filename, TViewModel viewModel)
+        public async Task<string> RenderTemplateAsync<TViewModel>(string filename, TViewModel viewModel, Action<dynamic> viewBagInitialize = null)
         {
             var httpContext = new DefaultHttpContext
             {
@@ -36,7 +36,7 @@ namespace Access2Justice.Api.BusinessLogic
             };
 
             var actionContext = new ActionContext(httpContext, new RouteData(), new ActionDescriptor());
-
+            
             using (var outputWriter = new StringWriter())
             {
                 var viewResult = viewEngine.GetView(null, filename, false);// viewEngine.FindView(actionContext, filename, false);
@@ -56,6 +56,8 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     var viewContext = new ViewContext(actionContext, viewResult.View, viewDictionary,
                         tempDataDictionary, outputWriter, new HtmlHelperOptions());
+
+                    viewBagInitialize?.Invoke(viewContext.ViewBag);
 
                     await viewResult.View.RenderAsync(viewContext);
                 }

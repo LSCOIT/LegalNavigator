@@ -1,0 +1,210 @@
+﻿@using Access2Justice.Shared.Models
+
+@model Resource
+
+@{
+    var resourceTypes = new List<string>
+    {
+        "Articles",
+        "Forms",
+        "Guided Assistant",
+        "Organizations",
+        "Topics",
+        "Videos",
+        "WebResources",
+        "Service Providers"
+    };
+}
+
+    <div class="box-no-shadow">
+        @if (Model != null)
+        {
+            var once = true;
+            for (var i = 0; i < ViewContext.ViewBag.Shared.Count || once; ++i)
+            {
+                once = false;
+        <div class="resource-body">
+
+            @if (resourceTypes.Contains(Model.ResourceType))
+            {
+
+                if (Model.ResourceType == "Forms")
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h4 class="print-only">@Model.Name</h4>
+                            <div class="print-only">@Model.Url</div>
+                            <div class="print-only">@Model.Description</div>
+                        </div>
+                    </div>
+                }
+                if (Model.ResourceType == "Topics")
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h4 class="print-only">@Model.Name</h4>
+                            <div class="print-only">
+                                @Url.Content($"~/subtopics/{Model.ResourceId}")
+                            </div>
+                            <p>{{ @(((Topic)Model).Overview) }}</p>
+                        </div>
+                    </div>
+                }
+                if (Model.ResourceType == "Guided Assistant")
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h4 class="print-only">@Model.Name</h4>
+                            <div class="print-only">
+                                @Url.Content($"~/guidedassistant/{((GuidedAssistant)Model).CuratedExperienceId}")
+                            </div>
+                            <div class="media-body">
+                                <div class="print-only">@Model.Description</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                if (Model.ResourceType == "Articles" || Model.ResourceType == "Videos")
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h4 class="print-only">@Model.Name</h4>
+                            <div class="print-only">
+                                @Url.Content($"~/resource/{Model.ResourceId}")
+                            </div>
+                            <div class="print-only">@Model.Description</div>
+                        </div>
+                    </div>
+                }
+                if (Model.ResourceType == "Organizations" || Model.ResourceType == "Service Providers")
+                {
+                    <div class="media">
+                        <div class="media-body">
+                            <h4 class="print-only">@Model.Name</h4>
+                            <div class="print-only">
+                                // @Url.Content($"~/resource/{Model.ResourceId}")
+                                @string.Join("/", Context.Request.Host, "/resource/{Model.ResourceId}")
+                            </div>
+                            @if (((Organization)Model).IsFormAvailable)
+                            {
+                                <div class="onboarding-label">
+                                    e-form available
+                                </div>
+                            }
+                            <div class="print-only">@Model.Description</div>
+                            <div class="org-content span-text">
+                                @if (!string.IsNullOrWhiteSpace(((Organization)Model).Address))
+                                {
+                                    <div class="col-sm-4 col-xs-12">
+                                        <div class="col-sm-9 col-xs-9">
+                                            @if (((Organization)Model).Address != "NA")
+                                            {
+                                                <a href="@Url.Content($"~/resource/{Model.ResourceId}")"
+                                                   class="link pxs">@((Organization)Model).Address</a>
+                                            }
+                                            else
+                                            {
+                                                <span>NA</span>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                                @if (!string.IsNullOrWhiteSpace(((Organization)Model).Telephone))
+                                {
+                                    <div class="col-sm-4 col-xs-12 org-phone-detail">
+                                        <div class="col-sm-9 col-xs-9">
+                                            @if (((Organization)Model).Telephone != "NA")
+                                            {
+                                                <a class="link pxs" href="'tel:' + '@(((Organization) Model).Telephone)'">
+
+                                                    @((Organization)Model).Telephone
+
+                                                </a>
+                                            }
+                                            else
+                                            {
+                                                <span>NA</span>
+                                            }
+                                        </div>
+                                    </div>
+                                }
+                                <div class="col-sm-4 col-xs-12" *ngIf="resource.url.length > 0">
+                                    <div class="col-sm-9 col-xs-9">
+                                        @if (!string.IsNullOrWhiteSpace(Model.Url) && Model.Url != "NA")
+                                        {
+                                            @*<a class="link pxs" href="@Html.Sanitize(Model.Url)">@Model.Url</a>*@
+                                            <a class="link pxs" href="@Model.Url">@Model.Url</a>
+                                        }
+                                        else
+                                        {
+                                            <span *ngIf="resource.url === 'NA'">NA</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (Model.ResourceType == "WebResources")
+                 {
+                     @*<div class="media">
+                         <p class="ps">@((WebRes)){{ resource.resourceDetails.dateLastCrawled }}</p>
+                         <a href="{{ resource.resourceDetails.url }}">
+                             <p class="pl">@Model.Name</p>
+                         </a>
+                         <div class="print-only">{{ resource.resourceDetails.url }}</div>
+                         <p>{{ resource.resourceDetails.snippet }}</p>
+                         <div class="web-resource" *ngIf="resource.resourceDetails.deepLinks">
+                             <div *ngFor="let deepLink of resource.resourceDetails.deepLinks">
+                                 <p class="ps">{{ resource.resourceDetails.dateLastCrawled }}</p>
+                                 <div class="print-only">{{ deepLink.url }}</div>
+                                 <a href="{{ deepLink.url }}"><span class="link">{{ deepLink.url }}</span></a>
+                                 <p>{{ deepLink.snippet }}</p>
+                             </div>
+                         </div>
+                     </div>*@
+                 }
+
+            }
+            else
+            {
+                <div class="media">
+                    <div class="media-body">
+                        <h4 class="print-only">@Model.Name</h4>
+                        <div class="print-only">@Model.Url</div>
+                        <div class="print-only">@Model.Description</div>
+                    </div>
+                </div>
+            }
+            @if (i < ViewContext.ViewBag.Shared.Count)
+            {
+                <div class="shared-by">Shared by: @ViewContext.ViewBag.SharedBy </div>
+                <div class="shared-by">Shared to: @ViewContext.ViewBag.Shared[i]</div>
+            }
+        </div>
+            }
+        }
+        @*else
+        {
+
+            
+                <div class="container">
+                    <div class="row text-center">
+                        <h3>Switch Location</h3>
+                        <p>
+                            The resource you are trying to access is for a different location. In
+                            order to view this resource, your current location will be changed. Do
+                            you want to continue?
+                        </p>
+                    </div>
+                    <div class="row text-center">
+                        <button type="button" (click)="continue()" class="btn btn-primary">
+                            Yes
+                        </button>
+                        <button type="button" (click)="close()" class="btn btn-primary">
+                            No
+                        </button>
+                    </div>
+                </div>
+        }*@
+    </div>

@@ -47,5 +47,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetTopicDetailsAsync(IntentInput intentInput);
         string GetAbsoluteStaticResourceStoragePath(string path);
         string GetRelativeStaticResourceStoragePath(string path);
+        Task<dynamic> FindAllResources(ResourceFilter resourceFilter);
     }
 }
