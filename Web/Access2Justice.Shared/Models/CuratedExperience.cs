@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Access2Justice.Shared.Models
 {
@@ -22,6 +23,9 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "components")]
         public List<CuratedExperienceComponent> Components { get; set; }
+
+        [JsonProperty("nsmiCode")]
+        public string NsmiCode { get; set; }
     }
 
     public class CuratedExperienceComponent

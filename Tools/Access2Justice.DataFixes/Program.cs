@@ -18,7 +18,9 @@ namespace Access2Justice.DataFixes
             {
                 { "#829", () => new Issue829Fixer() },
                 { "#350", () => new Issue350DataFixer() },
-                { "#875", () => new Issue875Fixer() }
+                { "#875", () => new Issue875Fixer() },
+                { "#__duplicates", () => new DuplicatesRemover() },
+                { "#953", () => new Issue953Fixer() }
             };
 
 

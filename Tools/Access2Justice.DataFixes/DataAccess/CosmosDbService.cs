@@ -31,6 +31,12 @@ namespace Access2Justice.DataFixes.DataAccess
                 UriFactory.CreateDocumentUri(_cosmosDbSettings.DatabaseId, collectionId, id), item);
         }
 
+        public async Task<Document> DeleteItemAsync(string id, object partition, string collectionId)
+        {
+            return await _documentClient.DeleteDocumentAsync(
+                UriFactory.CreateDocumentUri(_cosmosDbSettings.DatabaseId, collectionId, id), new RequestOptions{PartitionKey = new PartitionKey(partition) });
+        }
+
         public async Task<dynamic> QueryItemsAsync(string collectionId, string query)
         {
             var uri = UriFactory.CreateDocumentCollectionUri(

@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="..\..\Web\Access2Justice.Shared\Models\CuratedExperience.cs" Link="Models\CuratedExperience.cs" />
     <Compile Include="..\..\Web\Access2Justice.Shared\Models\Location.cs" Link="Models\Location.cs" />
     <Compile Include="..\..\Web\Access2Justice.Shared\Models\Resource.cs" Link="Models\Resource.cs" />
     <Compile Include="..\..\Web\Access2Justice.Shared\Models\Role.cs" Link="Models\Role.cs" />

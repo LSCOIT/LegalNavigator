@@ -31,7 +31,9 @@ namespace Access2Justice.Api.BusinessLogic
 
             curatedExperience.CuratedExperienceId = Guid.NewGuid();
             curatedExperience.A2jPersonalizedPlanId = a2jPersonalizedPlanId;
-            curatedExperience.Title = a2jProperties.GetValue("title");            
+            curatedExperience.Title = a2jProperties.GetValue("title");
+            // TODO check when nsmi code will be retrieved
+            curatedExperience.NsmiCode = a2jProperties.GetValue("nsmiCode");
 
             if (!isFromAdminImport)
             { 
