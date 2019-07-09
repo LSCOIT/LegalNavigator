@@ -11,7 +11,6 @@ using static Access2Justice.Api.Authorization.Permissions;
 using Pomelo.AntiXSS;
 using System.Diagnostics.CodeAnalysis;
 using Access2Justice.Shared;
-using Access2Justice.Shared.Utilities;
 
 namespace Access2Justice.Api.Controllers
 {

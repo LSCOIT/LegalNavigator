@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
-using Access2Justice.Shared;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
 using DinkToPdf;
 using DinkToPdf.Contracts;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace Access2Justice.Api.BusinessLogic
 {
