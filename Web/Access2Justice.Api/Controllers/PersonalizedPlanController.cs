@@ -88,6 +88,21 @@ namespace Access2Justice.Api.Controllers
             return Ok(personalizedPlan);
         }
 
+        [HttpGet("generate-print")]
+        public async Task<IActionResult> PrintPersonalActionPlan(Guid curatedExperienceId, Guid answersDocId)
+        {
+            var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
+                sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), answersDocId);
+
+            if (personalizedPlan == null || personalizedPlan.PersonalizedPlanId == default(Guid))
+            {
+                return StatusCode(StatusCodes.Status404NotFound, "Could not generate plan");
+            }
+
+            var output = await pdfService.PrintPlan(personalizedPlan);
+            return File(output, "application/pdf", "personalizedActionPlan.pdf");
+        }
+
         [HttpGet("print")]
         public async Task<IActionResult> PrintPersonalActionPlan([FromQuery] Guid personalizedPlanId)
         {
