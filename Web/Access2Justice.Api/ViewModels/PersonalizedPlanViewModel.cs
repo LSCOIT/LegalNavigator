@@ -18,6 +18,12 @@ namespace Access2Justice.Api.ViewModels
         [JsonProperty(PropertyName = "isShared")]
         public bool IsShared { get; set; }
 
+        [JsonProperty(PropertyName = "curatedExperienceId")]
+        public string CuratedExperienceId { get; set; }
+
+        [JsonProperty(PropertyName = "answersDocId")]
+        public string AnswersBatchId { get; set; }
+
         public PersonalizedPlanViewModel()
         {
             Topics = new List<PlanTopic>();

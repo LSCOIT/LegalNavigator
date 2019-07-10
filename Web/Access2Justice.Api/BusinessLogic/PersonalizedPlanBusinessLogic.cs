@@ -50,7 +50,15 @@ namespace Access2Justice.Api.BusinessLogic
             var plan = await personalizedPlanViewModelMapper.MapViewModel(
                 personalizedPlanEngine.Build(a2jPersonalizedPlan, userAnswers));
 
-            if (plan == null || string.IsNullOrWhiteSpace(userId))
+            if (plan == null)
+            {
+                return null;
+            }
+
+            plan.AnswersBatchId = answersDocId.ToString();
+            plan.CuratedExperienceId = curatedExperience.CuratedExperienceId.ToString();
+
+            if (string.IsNullOrWhiteSpace(userId))
             {
                 return plan;
             }
