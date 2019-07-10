@@ -29,8 +29,12 @@ namespace Access2Justice.DataFixes.DataFixers
                 if (resource != null)
                 {
                     curatedExperience.nsmiCode = resource.NsmiCode;
-                    itemsToUpdate.Add(curatedExperience);
                 }
+                else
+                {
+                    curatedExperience.nsmiCode = string.Empty;
+                }
+                itemsToUpdate.Add(curatedExperience);
             }
 
             foreach (var item in itemsToUpdate)
