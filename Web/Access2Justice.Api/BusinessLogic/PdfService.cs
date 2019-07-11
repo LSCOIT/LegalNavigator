@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
+using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
 using DinkToPdf;
@@ -14,16 +16,21 @@ namespace Access2Justice.Api.BusinessLogic
     public class PdfService : IPdfService
     {
         private readonly IConverter pdfConverter;
+        private readonly IStaticResourceBusinessLogic staticResources;
+        private readonly ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic;
         private readonly ITemplateService templateService;
 
         private const string _planTemplate = "/Views/Templates/PersonalActionPlan.cshtml";
         private const string _topicTemplate = "/Views/Templates/SubtopicDetail.cshtml";
         private const string _resourceTemplate = "/Views/Templates/ResourceCardDetail.cshtml";
 
-        public PdfService(ITemplateService templateService, IConverter pdfConverter)
+        public PdfService(ITemplateService templateService, IConverter pdfConverter, IStaticResourceBusinessLogic staticResources, 
+            ITopicsResourcesBusinessLogic topicsResourcesBusinessLogic)
         {
             this.templateService = templateService;
             this.pdfConverter = pdfConverter;
+            this.staticResources = staticResources;
+            this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
         }
 
         public async Task<byte[]> PrintPlan(PersonalizedPlanViewModel personalizedPlan)
@@ -38,7 +45,28 @@ namespace Access2Justice.Api.BusinessLogic
                 }
             }
 
-            return await getFile(personalizedPlan, _planTemplate);
+            Action<dynamic> fillViewBag = null;
+
+            var topicIds = personalizedPlan.Topics.Select(x => x.TopicId.ToString());
+            var topics = await topicsResourcesBusinessLogic.GetTopics(topicIds);
+            var logos = await staticResources.RetrieveLogo(topics.Select(x => x.OrganizationalUnit));
+
+            if (logos != null && logos.Count != 0)
+            {
+                var topicLogos = topics.ToDictionary(x => (string)x.Id.ToString(), x =>
+                {
+                    logos.TryGetValue(x.OrganizationalUnit, out var logo);
+                    return logo;
+                }).Where(x => x.Value != null).ToDictionary(x => x.Key, x => x.Value);
+                fillViewBag = x =>
+                {
+                    x.Logos = topicLogos;
+                    x.SingleImage = logos.Count == 1;
+                };
+
+            }
+
+            return await getFile(personalizedPlan, _planTemplate, fillViewBag);
         }
 
         public async Task<byte[]> PrintTopic(TopicView topic, IEnumerable<dynamic> resources)

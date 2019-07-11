@@ -140,6 +140,31 @@ namespace Access2Justice.Api.BusinessLogic
             return result;
         }
 
+        public async Task<Dictionary<string, Image>> RetrieveLogo(
+            IEnumerable<string> organizationalUnits)
+        {
+            Dictionary<string, Image> result = null;
+            foreach (var location in organizationalUnits.Distinct().Select(x => new Location
+            {
+                City = string.Empty,
+                County = string.Empty,
+                State = x,
+                ZipCode = string.Empty
+            }))
+            {
+                HomeContent homeResources = JsonUtilities.DeserializeDynamicObject<List<HomeContent>>(
+                    await dbClient.FindItemsWhereWithLocationAsync(dbSettings.StaticResourcesCollectionId,
+                        Constants.Name, Constants.StaticResourceTypes.HomePage, location))[0];
+                (result ?? (result = new Dictionary<string, Image>()))[location.State] = homeResources
+                    ?.Carousel
+                    ?.Overviewdetails
+                    ?.Select(x => x.Image)
+                    .FirstOrDefault(x => !string.IsNullOrWhiteSpace(x.Source));
+            }
+
+            return result;
+        }
+
         public async Task<dynamic> UpsertStaticPrivacyPromisePageDataAsync(PrivacyPromiseContent privacyPromisePageContent)
         {
             dynamic result = null;

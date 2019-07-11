@@ -1015,6 +1015,11 @@ namespace Access2Justice.Api.BusinessLogic
                 await dbClient.FindItemsAllAsync(dbSettings.TopicsCollectionId));
         }
 
+        public async Task<List<Topic>> GetTopics(IEnumerable<string> topicIds)
+        {
+            return JsonUtilities.DeserializeDynamicObject<List<Topic>>(await dbClient.FindItemsWhereInClauseAsync(dbSettings.TopicsCollectionId, Constants.Id, topicIds));
+        }
+
         public async Task<dynamic> GetTopicDetailsAsync(IntentInput intentInput)
         {
             return GetOutboundTopicsCollection(

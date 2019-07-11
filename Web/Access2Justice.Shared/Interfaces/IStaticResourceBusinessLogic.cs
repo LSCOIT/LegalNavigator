@@ -1,4 +1,5 @@
-﻿using Access2Justice.Shared.Models;
+﻿using System.Collections.Generic;
+using Access2Justice.Shared.Models;
 
 using System.Threading.Tasks;
 
@@ -15,7 +16,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> UpsertStaticNavigationDataAsync(Navigation navigationContent);
         Task<dynamic> UpsertStaticAboutPageDataAsync(AboutContent aboutContent);
         Task<dynamic> UpsertStaticPersnalizedPlanPageDataAsync(PersonalizedPlanContent personalizedPlanContent);
-        Task<dynamic> UpsertStaticGuidedAssistantPageDataAsync(GuidedAssistantPageContent guidedAssistantPageContent); 
-
+        Task<dynamic> UpsertStaticGuidedAssistantPageDataAsync(GuidedAssistantPageContent guidedAssistantPageContent);
+		Task<Dictionary<string, Image>> RetrieveLogo(IEnumerable<string> organizationalUnit);
     }
 }
