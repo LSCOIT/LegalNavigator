@@ -13,6 +13,8 @@ describe("SaveButtonService", () => {
   let mockProfileComponent;
   let mockPlanDetails = {
     id: "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
+    curatedExperienceId: "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
+    answersDocId: "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
     isShared: false,
     topics: [
       {

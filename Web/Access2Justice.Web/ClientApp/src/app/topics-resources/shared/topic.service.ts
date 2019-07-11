@@ -89,4 +89,12 @@ export class TopicService {
       this.topicInput.IsShared = true;
     }
   }
+
+  printTopic(params): Observable<any> {
+    return this.http.get<any>(api.printTopicUrl + "?" + params, {responseType: 'arraybuffer' as 'json'});
+  }
+
+  printResourceTopic(params): Observable<any> {
+    return this.http.get<any>(api.printSubtopicUrl + "?" + params, {responseType: 'arraybuffer' as 'json'});
+  }
 }

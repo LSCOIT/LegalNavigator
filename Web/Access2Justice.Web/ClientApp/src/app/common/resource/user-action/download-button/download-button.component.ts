@@ -1,5 +1,11 @@
-import { Component, OnInit } from "@angular/core";
 import * as jsPDF from "jspdf";
+import { Component, Input, OnInit } from "@angular/core";
+import { HttpParams } from "@angular/common/http";
+import { Global, UserStatus } from '../../../../global';
+
+import { PersonalizedPlanComponent } from '../../../../guided-assistant/personalized-plan/personalized-plan.component';
+import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
+import { TopicService } from "../../../../topics-resources/shared/topic.service";
 
 @Component({
   selector: "app-download-button",
@@ -18,7 +24,10 @@ import * as jsPDF from "jspdf";
         instead.
       </p>
     </div>
-  `
+  `,
+  providers: [
+    PersonalizedPlanComponent
+  ]
 })
 export class DownloadButtonComponent implements OnInit {
   template: string = "";
@@ -28,15 +37,62 @@ export class DownloadButtonComponent implements OnInit {
   mainHTML: any;
   activeTab: string = "";
 
-  constructor() {}
+  constructor(
+    private personalizedPlanService: PersonalizedPlanService,
+    private personalizedPlanComponent: PersonalizedPlanComponent,
+    private topicService: TopicService,
+    private global: Global,
+  ) {
+    global.showRemove = !(global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0);
+  }
 
-  downloadPDF(): void {
+  downloadPDF() {
     if (location.pathname.indexOf("/topics") >= 0) {
-      this.template = "app-subtopic-detail";
+      let address;
+      // this.template = "app-subtopic-detail";
+      if (sessionStorage.getItem("mapAddress")) {
+        address = JSON.parse(
+          sessionStorage.getItem("mapAddress")
+        );
+      }
+      let params = new HttpParams()
+      .set("topicId", this.global.activeSubtopicParam)
+      .set("state", address.state || '')
+      .set("county", address.country || '')
+      .set("city", address.city || '')
+      .set("zipCode", address.zipCode || '');
+      
+      this.topicService.printTopic(params).subscribe(response => {
+        if(response) {
+          var file = new Blob([response], {type: 'application/pdf'});
+          var fileURL = URL.createObjectURL(file);
+          window.open(fileURL, '_blank', '');
+        }
+      });
     } else if (location.pathname.indexOf("/plan") >= 0) {
-      this.template = "app-personalized-plan";
+      //this.template = "app-personalized-plan";
+      let params = new HttpParams()
+      .set("curatedExperienceId", this.personalizedPlanService.planDetails.curatedExperienceId)
+      .set("answersDocId", this.personalizedPlanService.planDetails.answersDocId);
+      this.personalizedPlanService.printUserPlan(params).subscribe(response => {
+        if(response) {
+          var file = new Blob([response], {type: 'application/pdf'});
+          var fileURL = URL.createObjectURL(file);
+          window.open(fileURL, '_blank', '');
+        }
+      });
     } else if (location.pathname.indexOf("/resource") >= 0) {
-      this.template = "app-resource-card-detail";
+      // this.template = "app-resource-card-detail";
+      let params = new HttpParams()
+      .set("resourceId", this.global.activeSubtopicParam);
+      
+      this.topicService.printResourceTopic(params).subscribe(response => {
+        if(response) {
+          var file = new Blob([response], {type: 'application/pdf'});
+          var fileURL = URL.createObjectURL(file);
+          window.open(fileURL, '_blank', '');
+        }
+      });
     } else if (location.pathname.indexOf("/profile") >= 0) {
       this.activeTab = document.getElementsByClassName(
         "nav-link active"
@@ -45,12 +101,35 @@ export class DownloadButtonComponent implements OnInit {
         this.template = "app-action-plans";
       } else if (this.activeTab === "My Saved Resources") {
         this.template = "app-search-results";
-      }
+      }      
+      this.buildContent(this.template);
     } else {
       this.template = "body";
+      this.buildContent(this.template);
     }
-    this.buildContent(this.template);
   }
+
+  // downloadPDF(): void {
+  //   if (location.pathname.indexOf("/topics") >= 0) {
+  //     this.template = "app-subtopic-detail";
+  //   } else if (location.pathname.indexOf("/plan") >= 0) {
+  //     this.template = "app-personalized-plan";
+  //   } else if (location.pathname.indexOf("/resource") >= 0) {
+  //     this.template = "app-resource-card-detail";
+  //   } else if (location.pathname.indexOf("/profile") >= 0) {
+  //     this.activeTab = document.getElementsByClassName(
+  //       "nav-link active"
+  //     )[0].firstElementChild.textContent;
+  //     if (this.activeTab === "My Plan") {
+  //       this.template = "app-action-plans";
+  //     } else if (this.activeTab === "My Saved Resources") {
+  //       this.template = "app-search-results";
+  //     }
+  //   } else {
+  //     this.template = "body";
+  //   }
+  //   this.buildContent(this.template);
+  // }
 
   buildContent(template) {
     let printContents = document.getElementsByTagName(template)[0].innerHTML;

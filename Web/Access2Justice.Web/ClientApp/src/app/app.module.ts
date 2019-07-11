@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { ProgressbarConfig } from 'ngx-bootstrap';
 
+import { HttpClientModule } from '@angular/common/http'; 
 import { AboutComponent } from './about/about.component';
 import { AdminModule } from './admin/admin.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -56,6 +57,7 @@ import { SharedResourcesComponent } from './profile/shared-resources/shared-reso
     AppCommonModule,
     AdminModule,
     AppRoutingModule,
+    HttpClientModule
   ],
   providers: [
     ProgressbarConfig,

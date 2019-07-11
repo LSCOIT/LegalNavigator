@@ -29,6 +29,8 @@ export class ActionPlansComponent implements OnChanges {
   personalizedPlan: PersonalizedPlan = {
     id: "",
     topics: this.planTopics,
+    answersDocId: "",
+    curatedExperienceId: "",
     isShared: false
   };
   selectedPlanDetails: any;
@@ -150,6 +152,8 @@ export class ActionPlansComponent implements OnChanges {
     this.personalizedPlan = {
       id: this.planDetails.id,
       topics: this.planTopics,
+      answersDocId: this.planDetails.answersDocId,
+      curatedExperienceId: this.planDetails.curatedExperienceId,
       isShared: this.planDetails.isShared
     };
     this.selectedPlanDetails = {

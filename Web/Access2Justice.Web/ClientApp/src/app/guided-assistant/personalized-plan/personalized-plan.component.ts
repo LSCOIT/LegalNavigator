@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 
-import {ENV} from 'environment';
+// import {ENV} from 'environment';
 import { Global } from "../../global";
 import { NavigateDataService } from "../../common/services/navigate-data.service";
 import { StaticResourceService } from "../../common/services/static-resource.service";
@@ -27,7 +27,7 @@ export class PersonalizedPlanComponent implements OnInit {
   personalizedPlanContent: PersonalizedPlanDescription;
   staticContent: any;
   staticContentSubcription: any;
-  blobUrl: string = ENV.blobUrl;
+  // blobUrl: string = ENV.blobUrl;
   description: string = "";
 
   constructor(

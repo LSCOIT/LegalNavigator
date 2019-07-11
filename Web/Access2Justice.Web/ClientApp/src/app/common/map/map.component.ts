@@ -34,7 +34,7 @@ export class MapComponent implements OnInit, OnDestroy {
   config: Object;
   locationInputRequired: boolean;
   isError = false;
-  showLocality = true;
+  showLocality = false;
   subscription: any;
   state: string;
   blobUrl: any = ENV.blobUrl;
@@ -288,7 +288,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getLocationNavigationContent();
-    this.showLocality = true;
+    this.showLocality = false;
     this.locationError = undefined;
 
     this.errorSubscription = this.mapService.notifyLocationError.subscribe(
@@ -334,7 +334,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
     this.setLocalMapLocation();
     this.subscription = this.global.notifyLocationUpate.subscribe(value => {
-      ENV.map_type = true;
+      ENV.map_type = false;
       this.updateLocation();
     });
   }

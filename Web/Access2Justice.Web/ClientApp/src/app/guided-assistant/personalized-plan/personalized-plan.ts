@@ -30,6 +30,8 @@ export interface RemovedElem {
 export interface PersonalizedPlan {
   id: string;
   topics: PlanTopic[];
+  answersDocId: string;
+  curatedExperienceId: string;
   isShared: boolean;
 }
 
