@@ -3,12 +3,17 @@
 *@
 @{
 }
+@using Access2Justice.Shared
 @using Access2Justice.Shared.Models
 @model Access2Justice.Api.ViewModels.PersonalizedPlanViewModel
 @if (ViewBag.Logos != null && ViewBag.SingleImage)
 {
     var logo = ((Dictionary<string, Image>) ViewBag.Logos).FirstOrDefault().Value;
-    <img src="data:image/gif;base64,@(logo.Source)" alt="@(logo.AltText)"  width="100" height="100" >
+    if (logo != null)
+    {
+        <img src="data:image/gif;base64,@(logo.Source)" alt="@(logo.AltText)"
+             width="@Constants.PrintableLogoSize" height="@Constants.PrintableLogoSize">
+    }
 }
 <div style="font-size: 1.2em;">
         @foreach (var topic in Model.Topics)
@@ -17,7 +22,8 @@
              {
                  if (((Dictionary<string, Image>) ViewBag.Logos).TryGetValue(topic.TopicId.ToString(), out var logo))
                  {
-                     <img src="data:image/gif;base64,@logo.Source" alt="@logo.AltText" width="50" height="50" />
+                     <img src="data:image/gif;base64,@logo.Source" alt="@logo.AltText" 
+                          width="@Constants.PrintableLogoSize" height="@Constants.PrintableLogoSize" />
                  }
              }
             <div class="col-sm-12 box-shadow">

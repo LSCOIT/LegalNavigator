@@ -52,6 +52,10 @@
         public const string Code = "code";
         public const string DefaultOgranizationalUnit = "Default";
         public static readonly int StrigifiedGuidLength = System.Guid.Empty.ToString().Length;
+		/// <summary>
+		/// Size (width and height) of logo on printed pdf file
+		/// </summary>
+        public const int PrintableLogoSize = 100;
 
         public static class ReasourceTypes
         {

@@ -1,110 +1,121 @@
-﻿@model Access2Justice.Shared.Models.PrintableTopicView
+﻿@using Access2Justice.Shared
+@using Access2Justice.Shared.Models
+@model Access2Justice.Shared.Models.PrintableTopicView
 
-<div class="container">
-    <div class="row">
-        <div class="col-md-10 col-sm-12">
-            <h1 class="subtopic-heading">
-                @Model.Topic.Name
-            </h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-8 col-sm-12">
-            @if (!string.IsNullOrWhiteSpace(Model.Topic.Overview))
+    <div class="container">
+        @if (ViewBag.Image != null)
+        {
+            var logo = (Image)ViewBag.Image;
+            if (logo != null)
             {
-                <div class="box-no-shadow">
-                    <div class="subtopic-body">
-                        <div *ngIf="subtopics.overview">
-                            <h2>Overview</h2>
-                            <p>@Model.Topic.Overview</p>
+                <img src="data:image/gif;base64,@(logo.Source)" alt="@(logo.AltText)"
+                     width="@Constants.PrintableLogoSize" height="@Constants.PrintableLogoSize">
+            }
+        }
+        <div class="row">
+            <div class="col-md-10 col-sm-12">
+                <h1 class="subtopic-heading">
+                    @Model.Topic.Name
+                </h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-8 col-sm-12">
+                @if (!string.IsNullOrWhiteSpace(Model.Topic.Overview))
+                {
+                    <div class="box-no-shadow">
+                        <div class="subtopic-body">
+                            <div *ngIf="subtopics.overview">
+                                <h2>Overview</h2>
+                                <p>@Model.Topic.Overview</p>
+                            </div>
                         </div>
                     </div>
-                </div>
-            }
-            @if (Model.ActionPlans != null)
-            {
-                <div class="row">
-                    <h3>Action Plans</h3>
-                    <p>
-                        Our action plans are based on common resolution steps for people
-                        dealing with eviction. Please ask a professional if you have
-                        questions.
-                    </p>
-                    @foreach (var resource in Model.ActionPlans)
-                    {
-                        @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
-                    }
-                </div>
-            }
-            @if (Model.Articles != null)
-            {
-                <div class="row">
-                    <h3>Articles</h3>
-                    @foreach (var resource in Model.Articles)
-                    {
-                        @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
-                    }
-                </div>
-            }
-            @if (Model.Articles != null)
-            {
-                <div class="row">
-                    <h3>Articles</h3>
-                    @foreach (var resource in Model.Articles)
-                    {
-                        @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
-                    }
-                </div>
-            }
-            @if (Model.Organizations != null)
-            {
-                <div class="row">
-                    <h3>Organizations That May Be Able To Help</h3>
-                    @foreach (var resource in Model.Organizations)
-                    {
-                        @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
-                    }
-                </div>
-            }
-            @if (Model.Videos != null)
-            {
-                <div class="row">
-                    <h3>Videos</h3>
-                    @foreach (var resource in Model.Videos)
-                    {
-                        @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
-                    }
-                </div>
-            }
-            @if (Model.Forms != null)
-            {
-                <div class="row">
-                    <h3>Forms</h3>
-                    @foreach (var resource in Model.Forms)
-                    {
-                        @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
-                    }
-                </div>
-            }
-            @if (Model.RelatedLinks != null)
-            {
-                <div class="row">
-                    <h3>Additional Readings</h3>
-                    @foreach (var resource in Model.RelatedLinks)
-                    {
-                        @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
-                    }
-                </div>
-            }
-        </div>
-        @*<div class="col-md-4 col-sm-12 sidebars">
-            <div class="mapWrap">
-                <app-map-results [searchResource]="organizationData" [addressArr]="true"></app-map-results>
+                }
+                @if (Model.ActionPlans != null)
+                {
+                    <div class="row">
+                        <h3>Action Plans</h3>
+                        <p>
+                            Our action plans are based on common resolution steps for people
+                            dealing with eviction. Please ask a professional if you have
+                            questions.
+                        </p>
+                        @foreach (var resource in Model.ActionPlans)
+                        {
+                            @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
+                        }
+                    </div>
+                }
+                @if (Model.Articles != null)
+                {
+                    <div class="row">
+                        <h3>Articles</h3>
+                        @foreach (var resource in Model.Articles)
+                        {
+                            @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
+                        }
+                    </div>
+                }
+                @if (Model.AdditionalReadings != null)
+                {
+                    <div class="row">
+                        <h3>Additional readings</h3>
+                        @foreach (var resource in Model.AdditionalReadings)
+                        {
+                            @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
+                        }
+                    </div>
+                }
+                @if (Model.Organizations != null)
+                {
+                    <div class="row">
+                        <h3>Organizations That May Be Able To Help</h3>
+                        @foreach (var resource in Model.Organizations)
+                        {
+                            @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
+                        }
+                    </div>
+                }
+                @if (Model.Videos != null)
+                {
+                    <div class="row">
+                        <h3>Videos</h3>
+                        @foreach (var resource in Model.Videos)
+                        {
+                            @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
+                        }
+                    </div>
+                }
+                @if (Model.Forms != null)
+                {
+                    <div class="row">
+                        <h3>Forms</h3>
+                        @foreach (var resource in Model.Forms)
+                        {
+                            @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
+                        }
+                    </div>
+                }
+                @if (Model.RelatedLinks != null)
+                {
+                    <div class="row">
+                        <h3>Additional Readings</h3>
+                        @foreach (var resource in Model.RelatedLinks)
+                        {
+                            @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
+                        }
+                    </div>
+                }
             </div>
-            <app-guided-assistant-sidebar [activeSubTopic]="guidedSutopicDetailsInput">
-            </app-guided-assistant-sidebar>
-            <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromSubtopicDetails($event)">
-            </app-service-org-sidebar>
-        </div>*@
+            @*<div class="col-md-4 col-sm-12 sidebars">
+                <div class="mapWrap">
+                    <app-map-results [searchResource]="organizationData" [addressArr]="true"></app-map-results>
+                </div>
+                <app-guided-assistant-sidebar [activeSubTopic]="guidedSutopicDetailsInput">
+                </app-guided-assistant-sidebar>
+                <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromSubtopicDetails($event)">
+                </app-service-org-sidebar>
+            </div>*@
+        </div>
     </div>
-</div>

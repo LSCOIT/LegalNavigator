@@ -112,7 +112,10 @@ namespace Access2Justice.Api.BusinessLogic
                 }
             }
 
-            return await getFile(printableTopic, _topicTemplate, x => x.Shared = new List<object>());
+
+            var action = await getViewBagInitialization(topic.OrganizationalUnit);
+
+			return await getFile(printableTopic, _topicTemplate, action);
         }
 
         public async Task<byte[]> PrintResource(dynamic resource)
@@ -150,10 +153,26 @@ namespace Access2Justice.Api.BusinessLogic
                 default:
                     deserializedResource = JsonUtilities.DeserializeDynamicObject<Resource>(resource);
                     break;
-            }
+			}
 
-            return await getFile(deserializedResource, _resourceTemplate, x => x.Shared = new List<object>());
+			var action = await getViewBagInitialization(deserializedResource.OrganizationalUnit);
+
+			return await getFile(deserializedResource, _resourceTemplate, action);
         }
+
+        private async Task<Action<dynamic>> getViewBagInitialization(string organizationalUnit)
+        {
+	        var viewBagInitialize = new List<Action<dynamic>> { x => x.Shared = new List<object>() };
+
+	        var image = (await staticResources.RetrieveLogo(new[] { organizationalUnit }))
+		        ?.FirstOrDefault();
+	        if (image != null)
+	        {
+		        viewBagInitialize.Add(x => x.Image = image.Value.Value);
+	        }
+
+	        return x => viewBagInitialize.ForEach(y => y.Invoke(x));
+		}
 
         private async Task<byte[]> getFile<T>(T personalizedPlan, string templateFile, Action<dynamic> initializeViewBag = null)
         {

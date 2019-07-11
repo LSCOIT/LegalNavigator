@@ -1,9 +1,19 @@
 ﻿@using Access2Justice.Shared.Models
+@using Access2Justice.Shared
 @model Access2Justice.Shared.Models.Resource
 
 @if (Model != null)
 {
     <div class="container">
+        @if (ViewBag.Image != null)
+        {
+            var logo = (Image)ViewBag.Image;
+            if (logo != null)
+            {
+                <img src="data:image/gif;base64,@(logo.Source)" alt="@(logo.AltText)"
+                     width="@Constants.PrintableLogoSize" height="@Constants.PrintableLogoSize">
+            }
+        }
         @if (Model.ResourceType == "Articles")
         {
             <div class="row">
@@ -23,17 +33,17 @@
                             <p>@(((Article)Model).Overview)</p>
                         </div>
                     }
-                    @if (((Article) Model).Contents != null)
+                    @if (((Article)Model).Contents != null)
                     {
-                        @foreach (var content in ((Article) Model).Contents)
-                         {
-                             <div class="resource-sections">
-                                 <h4>@content.Headline</h4>
-                                 <div class="newlines">
-                                     <p>@Html.Raw(content.Content)</p>
-                                 </div>
-                             </div>
-                         }
+                        @foreach (var content in ((Article)Model).Contents)
+                        {
+                            <div class="resource-sections">
+                                <h4>@content.Headline</h4>
+                                <div class="newlines">
+                                    <p>@Html.Raw(content.Content)</p>
+                                </div>
+                            </div>
+                        }
                     }
                 </div>
             </div>
@@ -233,14 +243,14 @@
                     </div>
                 }
                 @*<div class="row">
-                    <div class="col-md-8 col-sm-12">
-                        <iframe [src]="this.safeUrl" frameborder="0" allowfullscreen></iframe>
-                    </div>
-                    <div class="col-md-4 col-sm-12 pull-right">
-                        <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
-                        <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromVideos($event)"></app-service-org-sidebar>
-                    </div>
-                </div>*@
+                        <div class="col-md-8 col-sm-12">
+                            <iframe [src]="this.safeUrl" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                        <div class="col-md-4 col-sm-12 pull-right">
+                            <app-guided-assistant-sidebar></app-guided-assistant-sidebar>
+                            <app-service-org-sidebar (showMoreOrganizations)="clickSeeMoreOrganizationsFromVideos($event)"></app-service-org-sidebar>
+                        </div>
+                    </div>*@
             </div>
         }
         @if (Model.ResourceType == "Action Plans")
