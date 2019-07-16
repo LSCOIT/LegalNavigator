@@ -15,11 +15,13 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { SanitizePipe } from './pipes/sanitize.pipe';
 import { SearchFilterPipe } from './pipes/search-filter.pipe';
+import {SanitizeHtmlPipe} from "./pipes/sanitizeHtml.pipe";
 
 @NgModule({
   imports: [],
   declarations: [
     SanitizePipe,
+    SanitizeHtmlPipe,
     SearchFilterPipe
   ],
   exports: [
@@ -38,6 +40,7 @@ import { SearchFilterPipe } from './pipes/search-filter.pipe';
     NgxSpinnerModule,
 
     SanitizePipe,
+    SanitizeHtmlPipe,
     SearchFilterPipe
   ]
 })

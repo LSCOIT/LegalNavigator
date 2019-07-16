@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 using System.Web;
+using HtmlAgilityPack;
 using Vereyon.Web;
 
 namespace Access2Justice.Shared.Extensions
@@ -55,28 +56,21 @@ namespace Access2Justice.Shared.Extensions
 
         public static PersonalizedPlanCustomTags ExtractIdsRemoveCustomA2JTags(this string text)
         {
-            var indexStart = 0;
-            var indexEnd = 0;
             var curatedExperienceContent = new PersonalizedPlanCustomTags();
-            var exit = false;
-            while (!exit)
-            {
-                indexStart = text.IndexOf(Tokens.CustomHtmlTag);
-                indexEnd = text.IndexOf(Tokens.CustomHtmlClosingTag);
-                if (indexStart != -1 && indexEnd != -1)
-                {
-                    curatedExperienceContent.ResourceIds.Add(new Guid(
-                        text.Substring(indexStart + Tokens.CustomHtmlTag.Length,
-                        indexEnd - indexStart - Tokens.CustomHtmlTag.Length)));
+            var htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(text);
+            var nodeList = htmlDocument.DocumentNode.SelectNodes(Tokens.CustomHtmlTag);
 
-                    var truncateText = text.Substring(indexStart, indexEnd - indexStart + Tokens.CustomHtmlClosingTag.Length);
-                    text = text.Replace(truncateText, "");
-                }
-                else
+            if (nodeList != null)
+            {
+                foreach (var node in nodeList)
                 {
-                    exit = true;
-                }
+                    curatedExperienceContent.ResourceIds.Add(new Guid(node.InnerText));
+                    // if a component has attribute need to display inline component, we will replace a tag with a resource GUID. 
+                    text = text.Replace(node.OuterHtml, node.Attributes.Count > 0 ? node.InnerText : string.Empty);
+                }    
             }
+            
             curatedExperienceContent.SanitizedHtml = text;
             return curatedExperienceContent;
         }

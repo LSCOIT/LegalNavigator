@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, TemplateRef } from "@angular/core";
+import {AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, Output, TemplateRef, ViewChild} from "@angular/core";
 import { OnChanges } from "@angular/core/src/metadata/lifecycle_hooks";
 import { DomSanitizer } from "@angular/platform-browser";
 import { BsModalService } from "ngx-bootstrap/modal";
@@ -8,6 +8,8 @@ import { Global, UserStatus } from "../../../../global";
 import { PersonalizedPlan, PersonalizedPlanTopic, PlanTopic } from "../../../../guided-assistant/personalized-plan/personalized-plan";
 import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
 import { NavigateDataService } from "../../../services/navigate-data.service";
+import {Router} from "@angular/router";
+import {template} from "@angular/core/src/render3";
 
 @Component({
   selector: "app-action-plans",
@@ -17,14 +19,14 @@ import { NavigateDataService } from "../../../services/navigate-data.service";
 export class ActionPlansComponent implements OnChanges {
   @Input() planDetails;
   @Input() topicsList;
-  displaySteps: boolean = false;
+  displaySteps = false;
   updatedPlan: any;
   modalRef: BsModalRef;
   url: any;
   safeUrl: any;
-  isCompleted: boolean = false;
-  isUser: boolean = false;
-  isChecked: boolean = false;
+  isCompleted = false;
+  isUser = false;
+  isChecked = false;
   planTopics: Array<PlanTopic>;
   personalizedPlan: PersonalizedPlan = {
     id: "",
@@ -46,6 +48,17 @@ export class ActionPlansComponent implements OnChanges {
     "Videos",
     "Articles"
   ];
+  videoTemplateContext: any;
+  @HostListener("window:resource", ['$event'])
+  onCallResource(param) {
+    if (param.detail.type === "Videos") {
+      this.videoTemplateContext = {resource: {name: param.detail.name, url: param.detail.url}};
+      this.modalRef = this.modalService.show(this.videoTemplateForInnerHtml);
+    } else {
+      this.router.navigate(['/resource', param.detail.id]);
+    }
+  }
+  @ViewChild('videoTemplateForInnerHtml') videoTemplateForInnerHtml: ElementRef;
 
   constructor(
     private modalService: BsModalService,
@@ -53,7 +66,8 @@ export class ActionPlansComponent implements OnChanges {
     public sanitizer: DomSanitizer,
     private toastr: ToastrService,
     private global: Global,
-    private navigateDataService: NavigateDataService
+    private navigateDataService: NavigateDataService,
+    private router: Router
   ) {
     this.sanitizer = sanitizer;
     if (
@@ -83,10 +97,29 @@ export class ActionPlansComponent implements OnChanges {
       topic.steps.forEach(step => {
         // Match all URLs outside <a> tags. Next these urls will be wrapped with <a> tag.
         step.description = step.description.replace(/(([--:\w?@%&+~#=]*\.[a-z]{2,4}\/{0,2})((?:[?&](?:\w+)=(?:\w+))+|[\w?@%&+~#=;\/\-]+)?)(?![^<>]*>|[^"]*?<\/a)/g, '<a href=\"$1\">$1</a>');
+        step.resources.forEach(resource => {
+          // If resource GUID present in description, need replace guid with <a> tag.
+          step.description = step.description.replace(resource.id, this.generateLink(resource));
+        });
       });
       topic.steps = this.orderBy(topic.steps, this.sortOrder);
     });
   }
+
+
+  generateLink(resource) {
+    let tag = '<a class="link" ';
+
+    if (resource.resourceType === 'Forms') {
+      tag += `href="${resource.url}">${resource.name}</a>`;
+    } else {
+      tag += `href='javascript:void(0)' onclick="window.dispatchEvent(new CustomEvent(\'resource\', {detail:{id:\'${resource.id}\',` +
+        `type:\'${resource.resourceType}\', name:\'${resource.name}\', url:\'${resource.url}\'}}));">${resource.name}</a>`;
+    }
+
+    return tag;
+  }
+
 
   checkCompleted(event, topicId, stepId) {
     this.isChecked = event.target.checked;
@@ -190,4 +223,5 @@ export class ActionPlansComponent implements OnChanges {
       }
     });
   }
+
 }

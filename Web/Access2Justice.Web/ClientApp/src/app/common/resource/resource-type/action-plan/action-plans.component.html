@@ -108,7 +108,7 @@
                     Completed
                   </label>
                 </div>
-                <div><p [innerHTML]="step.description"></p></div>
+                <div><p [innerHTML]="step.description | sanitizeHtml"></p></div>
                 <div *ngIf="step.resources.length">
                   <h4>Additional Resources</h4>
                   <div
@@ -211,6 +211,29 @@
                     </ng-template>
                   </div>
                 </div>
+                <ng-template #videoTemplateForInnerHtml>
+                  <ng-container *ngTemplateOutlet="videoTemplateInner; context: videoTemplateContext"></ng-container>
+                </ng-template>
+                <ng-template #videoTemplateInner let-resource="resource">
+                  <button
+                    type="button"
+                    class="close pull-right"
+                    aria-label="Close"
+                    (click)="modalRef.hide()"
+                  >
+                    <img
+                      src="../../../assets/images/small-icons/close.svg"
+                      class="nav-icon"
+                      alt="Close modal"
+                    />
+                  </button>
+                  <iframe
+                    title="{{ resource.name }}"
+                    [src]="resourceUrl(resource.url)"
+                    frameborder="0"
+                    allowfullscreen
+                  ></iframe>
+                </ng-template>
               </div>
             </accordion-group>
           </accordion>

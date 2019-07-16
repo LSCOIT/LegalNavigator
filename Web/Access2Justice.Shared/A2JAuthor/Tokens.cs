@@ -14,9 +14,8 @@
         public const string VarNameLeftSign = "[";
         public const string VarNameRightSign = "]";
         public const string MacroSign = "%%";
-        public const string CustomHtmlTag = "<legal-nav-resource-id>";
-        public const string CustomHtmlClosingTag = "</legal-nav-resource-id>";
-
+        public const string CustomHtmlTag = "//legal-nav-resource-id";
+     
         public class TrueTokens
         {
             public const string True = "TRUE";
