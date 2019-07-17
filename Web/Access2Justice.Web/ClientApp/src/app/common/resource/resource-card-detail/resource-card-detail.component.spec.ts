@@ -21,6 +21,7 @@ import { VideosComponent } from "../resource-type/videos/videos.component";
 import { ResourceService } from "../resource.service";
 import { RemoveButtonComponent } from "../user-action/remove-button/remove-button.component";
 import { ResourceCardDetailComponent } from "./resource-card-detail.component";
+import {SharedModule} from "../../../shared/shared.module";
 
 describe("ResourceCardDetailComponent", () => {
   let component: ResourceCardDetailComponent;
@@ -110,7 +111,7 @@ describe("ResourceCardDetailComponent", () => {
           }
         }
       ],
-      imports: [HttpClientModule]
+      imports: [HttpClientModule, SharedModule]
     }).compileComponents();
   }));
 

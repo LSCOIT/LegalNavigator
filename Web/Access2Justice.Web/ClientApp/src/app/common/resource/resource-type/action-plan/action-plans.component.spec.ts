@@ -12,6 +12,8 @@ import { PersonalizedPlanService } from "../../../../guided-assistant/personaliz
 import { ArrayUtilityService } from "../../../services/array-utility.service";
 import { NavigateDataService } from "../../../services/navigate-data.service";
 import { ActionPlansComponent } from "./action-plans.component";
+import {SharedModule} from "../../../../shared/shared.module";
+import {Router} from "@angular/router";
 
 describe("ActionPlansComponent", () => {
   let component: ActionPlansComponent;
@@ -19,6 +21,7 @@ describe("ActionPlansComponent", () => {
   let personalizedPlanService;
   let navigateDataService;
   let template: TemplateRef<any>;
+  let mockRouter;
   let mockPlanDetails = {
     id: "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
     isShared: false,
@@ -215,6 +218,7 @@ describe("ActionPlansComponent", () => {
 
     TestBed.configureTestingModule({
       imports: [
+        SharedModule,
         HttpClientModule,
         ToastrModule.forRoot(),
         ModalModule.forRoot()
@@ -240,7 +244,11 @@ describe("ActionPlansComponent", () => {
             global,
             userId: "User Id"
           }
-        }
+        },
+        {
+          provide: Router,
+          useValue: mockRouter
+        },
       ]
     }).compileComponents();
   }));
