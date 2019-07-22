@@ -276,14 +276,17 @@ namespace Access2Justice.Api.BusinessLogic
         {
             string webRootPath = hostingEnvironment.WebRootPath;
             uploadPath = string.Empty;
+            
+            var guidForTmpPath = Guid.NewGuid().ToString("N");
+            
             if (webRootPath != null)
             {
-                uploadPath = Path.Combine(webRootPath, adminSettings.UploadFolderName);
+                uploadPath = Path.Combine(webRootPath, adminSettings.UploadFolderName, guidForTmpPath);
             }
             else
             {
                 uploadPath = Path.Combine(Path.Combine(Directory.GetCurrentDirectory(), adminSettings.WebRootFolderName),
-                    adminSettings.UploadFolderName);
+                    adminSettings.UploadFolderName, guidForTmpPath);
             }
             if (!Directory.Exists(uploadPath))
             {
@@ -313,7 +316,7 @@ namespace Access2Justice.Api.BusinessLogic
                 foreach (var entry in archive.Entries)
                 {
                     string destinationPath;
-                    if (entry.FullName.Equals(adminSettings.BaseTemplateFileFullName))
+                    if (entry.FullName.EndsWith(adminSettings.BaseTemplateFileFullName))
                     {
                         destinationPath = Path.GetFullPath(Path.Combine(uploadPath, entry.FullName));
 
@@ -349,7 +352,7 @@ namespace Access2Justice.Api.BusinessLogic
                         continue;
                     }
 
-                    destinationPath = Path.GetFullPath(Path.Combine(uploadPath, entry.FullName));
+                    destinationPath = Path.GetFullPath(Path.Combine(uploadPath, Path.GetFileName(entry.FullName)));
 
                     if (destinationPath.StartsWith(uploadPath, StringComparison.Ordinal))
                     {
@@ -375,6 +378,17 @@ namespace Access2Justice.Api.BusinessLogic
 
             //Delete uploaded zip file
             DeleteFile(fullPath);
+            
+            //Delete temp directory
+            DeleteDirectory(uploadPath);
+        }
+
+        private void DeleteDirectory(string uploadPath)
+        {
+            if (Directory.Exists(uploadPath))
+            {
+                Directory.Delete(uploadPath);
+            }
         }
 
         private void DeleteFile(string filePath)
