@@ -155,5 +155,10 @@ namespace Access2Justice.Shared.A2JAuthor
 
             return matchedString;
         }
+
+        public static string RemoveHtmlTags(this string inputText)
+        {
+            return inputText.Replace("<BR/>", new string(' ', 1));
+        }
     }
 }

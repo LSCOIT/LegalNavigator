@@ -12,6 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Access2Justice.CosmosDb;
+using NuGet.Frameworks;
 
 
 namespace Access2Justice.Api.BusinessLogic
@@ -407,8 +408,8 @@ namespace Access2Justice.Api.BusinessLogic
                 button.ButtonId = Guid.NewGuid();
                 button.Name = string.Empty;
                 button.Value = string.Empty;
-                button.CodeBefore = component.Code.CodeBefore;
-                button.CodeAfter = component.Code.CodeAfter;
+                button.CodeBefore = component.Code.CodeBefore.RemoveHtmlTags();
+                button.CodeAfter = component.Code.CodeAfter.RemoveHtmlTags();
                 answers.ButtonComponents.Add(button);
             }
 

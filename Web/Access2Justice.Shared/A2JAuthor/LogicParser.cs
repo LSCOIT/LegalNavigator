@@ -25,7 +25,7 @@ namespace Access2Justice.Shared.A2JAuthor
 
             foreach (string logicalStatement in logicStatements)
             {
-                foreach (var ifStatement in logicalStatement.SplitOnIFstatements())
+                foreach (var ifStatement in logicalStatement.RemoveHtmlTags().SplitOnIFstatements())
                 {
                     var leftVarValues = new Dictionary<string, string>();
                     var leftLogic = string.Empty;

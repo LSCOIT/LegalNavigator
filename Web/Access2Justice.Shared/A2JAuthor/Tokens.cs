@@ -2,13 +2,13 @@
 {
     public static class Tokens
     {
-        public const string SET = "SET";
-        public const string TO = "TO";
-        public const string AND = "AND";
-        public const string OR = "OR";
+        public const string SET = " SET ";
+        public const string TO = " TO ";
+        public const string AND = " AND ";
+        public const string OR = " OR ";
         public const string IF = "IF";
         public const string ENDIF = "END IF";
-        public const string GOTO = "GOTO";
+        public const string GOTO = " GOTO ";
         public const string EqualSign = "=";
         public const string EmptySpace = " ";
         public const string VarNameLeftSign = "[";
@@ -30,8 +30,8 @@
 
         public class ParserConfig
         {
-            public const string SetVariables = "SET";
-            public const string GoToQuestions = "GOTO";
+            public const string SetVariables = " SET ";
+            public const string GoToQuestions = " GOTO ";
         }
     }
 }
