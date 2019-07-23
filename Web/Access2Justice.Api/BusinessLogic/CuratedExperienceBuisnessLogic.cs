@@ -219,7 +219,7 @@ namespace Access2Justice.Api.BusinessLogic
             var destinationComponent = new CuratedExperienceComponent();
             var answers = new CuratedExperienceAnswers();
             var currentComponent = curatedExperience.Components.First(x => x.Buttons.Contains(currentButton));
-            if (!string.IsNullOrWhiteSpace(currentComponent.Code.CodeAfter) && currentComponent.Code.CodeAfter.Contains(Tokens.GOTO))
+            if (!string.IsNullOrWhiteSpace(currentComponent.Code.CodeAfter) && currentComponent.Code.CodeAfter.RemoveHtmlTags().Contains(Tokens.GOTO))
             {
                 answers = await dbService.GetItemAsync<CuratedExperienceAnswers>(answersDocId.ToString(), dbSettings.GuidedAssistantAnswersCollectionId);
                 // get the answers so far - done
@@ -230,18 +230,18 @@ namespace Access2Justice.Api.BusinessLogic
                     var parsedCode = parser.Parse(currentComponentLogic);
                     if (parsedCode.Any())
                     {
-                        destinationComponent = curatedExperience.Components.Where(x => x.Name.Contains(parsedCode.Values.FirstOrDefault())).FirstOrDefault();
+                        destinationComponent = curatedExperience.Components.FirstOrDefault(x => x.Name.RemoveHtmlTags().Contains(parsedCode.Values.FirstOrDefault()));
                     }
                 }
             }
             else if (!string.IsNullOrWhiteSpace(currentButton.Destination))
             {
-                if (curatedExperience.Components.Where(x => x.Name == currentButton.Destination).Any())
+                if (curatedExperience.Components.Any(x => string.Equals(x.Name, currentButton.Destination, StringComparison.Ordinal)))
                 {
-                    destinationComponent = curatedExperience.Components.Where(x => x.Name == currentButton.Destination).FirstOrDefault();
+                    destinationComponent = curatedExperience.Components.FirstOrDefault(x => x.Name == currentButton.Destination);
                 }
             }
-            if (!string.IsNullOrWhiteSpace(destinationComponent.Code.CodeBefore) && destinationComponent.Code.CodeBefore.Contains(Tokens.GOTO))
+            if (!string.IsNullOrWhiteSpace(destinationComponent.Code.CodeBefore) && destinationComponent.Code.CodeBefore.RemoveHtmlTags().Contains(Tokens.GOTO))
             {
                 if (answers.AnswersDocId == default(Guid))
                 {
