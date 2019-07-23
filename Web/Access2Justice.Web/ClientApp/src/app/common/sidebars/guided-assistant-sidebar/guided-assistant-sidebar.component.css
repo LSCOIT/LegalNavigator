@@ -35,7 +35,7 @@ a.btn-primary:hover {
 
 @media only screen and (min-width: 992px) {
   .sidebar-block {
-    margin: 0 0 40px 0;
+    margin: 0 0 20px 0;
     border: 1px solid #ddd;
     padding: 20px;
   }

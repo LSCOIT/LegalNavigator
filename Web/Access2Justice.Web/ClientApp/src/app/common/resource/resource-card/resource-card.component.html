@@ -239,7 +239,7 @@
               <div class="org-content span-text">
                 <div
                   class="col-sm-4 col-xs-12"
-                  *ngIf="resource.address.length > 0"
+                  *ngIf="resource.address && resource.address.length > 0"
                 >
                   <div class="col-sm-2 col-xs-2 no-print">
                     <img
@@ -259,7 +259,7 @@
                 </div>
                 <div
                   class="col-sm-4 col-xs-12 org-phone-detail"
-                  *ngIf="resource.telephone.length > 0"
+                  *ngIf="resource.telephone && resource.telephone.length > 0"
                 >
                   <div class="col-sm-2 col-xs-2 no-print">
                     <img
@@ -275,7 +275,7 @@
                     <span *ngIf="resource.telephone === 'NA'">NA</span>
                   </div>
                 </div>
-                <div class="col-sm-4 col-xs-12" *ngIf="resource.url.length > 0">
+                <div class="col-sm-4 col-xs-12" *ngIf="resource.url && resource.url.length > 0">
                   <div class="col-sm-2 col-xs-2 no-print">
                     <img
                       src="./assets/images/small-icons/url.svg"
@@ -310,7 +310,7 @@
             </div>
             <div class="print-only">{{ resource.resourceDetails.url }}</div>
             <p>{{ resource.resourceDetails.snippet }}</p>
-            <div class="web-resource" *ngIf="resource.resourceDetails.deepLinks">
+            <div class="web-resource" *ngIf="resource.resourceDetails && resource.resourceDetails.deepLinks">
               <div *ngFor="let deepLink of resource.resourceDetails.deepLinks">
                 <p class="ps">{{ resource.resourceDetails.dateLastCrawled }}</p>
                 <div class="no-print">
@@ -602,7 +602,7 @@
               <div class="org-content span-text">
                 <div
                   class="col-sm-4 col-xs-12"
-                  *ngIf="resource.address.length > 0"
+                  *ngIf="resource.address && resource.address.length > 0"
                 >
                   <div class="col-sm-2 col-xs-2 no-print">
                     <img
@@ -622,7 +622,7 @@
                 </div>
                 <div
                   class="col-sm-4 col-xs-12 org-phone-detail"
-                  *ngIf="resource.telephone.length > 0"
+                  *ngIf="resource.telephone && resource.telephone.length > 0"
                 >
                   <div class="col-sm-2 col-xs-2 no-print">
                     <img
@@ -638,7 +638,7 @@
                     <span *ngIf="resource.telephone === 'NA'">NA</span>
                   </div>
                 </div>
-                <div class="col-sm-4 col-xs-12" *ngIf="resource.url.length > 0">
+                <div class="col-sm-4 col-xs-12" *ngIf="resource.url && resource.url.length > 0">
                   <div class="col-sm-2 col-xs-2 no-print">
                     <img
                       src="./assets/images/small-icons/url.svg"

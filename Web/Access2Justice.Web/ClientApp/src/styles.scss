@@ -6,6 +6,10 @@ body {
   word-wrap: break-word;
 }
 
+#toast-container > div {
+  opacity:1;
+}
+
 li {
   list-style: none;
 }
