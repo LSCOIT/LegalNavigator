@@ -394,7 +394,7 @@ namespace Access2Justice.CosmosDb
                 arrayContainsWithOrClause += $" ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : @{parameterName} }})";
                 if (value != lastItem)
                 {
-                    arrayContainsWithOrClause += "OR";
+                    arrayContainsWithOrClause += " OR ";
                 }
             }
             return arrayContainsWithOrClause;
