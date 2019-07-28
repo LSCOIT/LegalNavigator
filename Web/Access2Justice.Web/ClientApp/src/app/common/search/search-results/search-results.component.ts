@@ -119,7 +119,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
       }
       this.global.searchResultDetails.sortParam = this.searchResults.searchFilter.OrderByField;
       this.global.searchResultDetails.order = this.searchResults.searchFilter.OrderBy;
-      this.global.searchResultDetails.filterParam = this.searchResults.resourceType;
+      this.global.searchResultDetails.filterParam = !this.searchResults.resourceType ? ENV.All : this.searchResults.resourceType;
     } else {
       this.sortType = {
         filterParam: undefined,
@@ -218,7 +218,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
 
   updateCacheStorage(filterName: string) {
     if (sessionStorage.getItem('cacheSearchResults')) {
-      let sessionData = JSON.parse(
+      const sessionData = JSON.parse(
         sessionStorage.getItem('cacheSearchResults')
       );
       sessionData.resources = this.searchResults.resources;
@@ -312,7 +312,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     this.cacheSearchResultsData();
     this.isInternalResource = true;
     this.mapInternalResource();
-    let event = {filterParam: ENV.All};
+    const event = {filterParam: ENV.All};
     this.filterSearchResults(event);
   }
 
