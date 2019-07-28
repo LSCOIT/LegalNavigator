@@ -182,7 +182,10 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> QueryResourcesCountAsync(string query, Dictionary<string, object> parameters)
         {
-            return await GetFirstPageResourceAsync(query, parameters, true);
+            var resources = await QueryItemsAsync(cosmosDbSettings.ResourcesCollectionId,query, parameters);
+            var results = new PagedResources(){ Results = resources };
+
+            return results;
         }
 
         public async Task<ICollection<UserIncomingResources>> FindIncomingSharedResource(IncomingSharedResourceRetrieveParam incomingSharedResourceRetrieveParam)
