@@ -1,4 +1,10 @@
 <div class="search-result" [ngClass]="{ 'no-container': fullPage, container: !fullPage }">
+  <div *ngIf="searchText">
+    <h2>Results for {{ searchText }}</h2>
+  </div>
+  <div *ngIf="topIntent">
+    <h2>Results for {{ topIntent }}</h2>
+  </div>
   <div *ngIf="isInternalResource || displayMessage">
     <div class="panel-heading box-shadow">
       <span class="label-display">Showing Information for </span>
@@ -9,7 +15,7 @@
     <h2>We found the following web resources related to your search</h2>
   </div>
   <div *ngIf="showDefaultMessage">
-    <h2>No search criteria provided.Try searching again.</h2>
+    <h2>No search criteria provided. Try searching again.</h2>
   </div>
   <div *ngIf="showNoResultsMessage">
     <h2>We couldn't find any results. Try search with another text.</h2>
