@@ -19,6 +19,7 @@ import {template} from "@angular/core/src/render3";
 export class ActionPlansComponent implements OnChanges {
   @Input() planDetails;
   @Input() topicsList;
+  @Input() showUnshareOption: boolean;
   displaySteps = false;
   updatedPlan: any;
   modalRef: BsModalRef;

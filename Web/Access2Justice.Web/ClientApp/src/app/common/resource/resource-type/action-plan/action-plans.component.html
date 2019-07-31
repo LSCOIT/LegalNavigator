@@ -250,7 +250,9 @@
           </ul>
         </div>
       </div>
-      <div class="shared-by" *ngIf="topic.shared">Shared by: {{topic.shared.sharedBy}}</div>
+      <!--<div class="shared-by" *ngIf="topic.shared">Shared by: {{topic.shared.sharedBy}}</div>-->
+      <div class="shared-by" *ngIf="topic.shared && !showUnshareOption">Shared by: {{topic.shared.sharedBy}}</div>
+      <div class="shared-by" *ngIf="showUnshareOption && topic.shared && topic.shared.sharedTo">Shared to: {{topic.shared.sharedTo[0]}}</div>
     </div>
   </div>
 </div>
