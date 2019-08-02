@@ -101,16 +101,18 @@ namespace Access2Justice.Api
             ResourceFilter resourceFilter = null;
             PagedResources resources = null;
             dynamic groupedResourceType = null;
-            dynamic guidedAssistantResult = null;
+            IEnumerable<dynamic> guidedAssistantsResult = null;
 
             foreach (var searchLocation in LocationUtilities.GetSearchLocations(location))
             {
+                const bool isNeedAllGuidAssistance = true;
                 resourceFilter = new ResourceFilter
                 {
                     TopicIds = topicIds,
                     PageNumber = 0,
                     ResourceType = Constants.All,
-                    Location = searchLocation
+                    Location = searchLocation,
+                    IsNeedAllGuideAssistance = isNeedAllGuidAssistance
                 };
 
                 var GetResourcesTask = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
@@ -118,6 +120,7 @@ namespace Access2Justice.Api
                 sortResourceFilter.IsOrder = true;
                 sortResourceFilter.OrderByField = luisInput.OrderByField;
                 sortResourceFilter.OrderBy = luisInput.OrderBy;
+               
                 var ApplyPaginationTask = topicsResourcesBusinessLogic.ApplyPaginationAsync(sortResourceFilter);
                 //To get guided assistant id
                 resourceFilter.ResourceType = Constants.GuidedAssistant;
@@ -127,7 +130,18 @@ namespace Access2Justice.Api
                 groupedResourceType = GetResourcesTask.Result;
                 resources = ApplyPaginationTask.Result;
                 PagedResources guidedAssistantResponse = GetGuidedAssistantId.Result;
-                guidedAssistantResult = guidedAssistantResponse != null ? JsonUtilities.DeserializeDynamicObject<GuidedAssistant>(guidedAssistantResponse.Results.FirstOrDefault()) : null;
+                    
+                 guidedAssistantsResult = guidedAssistantResponse?
+                                          .Results.Select(s=>
+                                          {
+                                              var ga = JsonUtilities.DeserializeDynamicObject<GuidedAssistant>(s);
+
+                                              var child2Topics = topicsResourcesBusinessLogic.GetChild2TopicsAsync(ga.TopicTags[0].TopicTags.ToString());
+                                              return  (id:ga.CuratedExperienceId, tags: child2Topics);
+
+                                          })
+                                          .OfType<dynamic>().ToArray();
+                 guidedAssistantsResult = CleanGuidedAssistantsResult(guidedAssistantsResult);
 
                 if (resources != null &&
                     resources.Results != null &&
@@ -140,18 +154,37 @@ namespace Access2Justice.Api
             dynamic searchFilter = new JObject();
             searchFilter.OrderByField = resourceFilter.OrderByField;
             searchFilter.OrderBy = resourceFilter.OrderBy;
-            return new LuisViewModel
+            var result = new LuisViewModel
             {
                 TopIntent = keyword,
-                RelevantIntents = relevantIntents != null ? JsonUtilities.DeserializeDynamicObject<dynamic>(relevantIntents) : JsonConvert.DeserializeObject(Constants.EmptyArray),
-                Topics = topics != null ? JsonUtilities.DeserializeDynamicObject<dynamic>(topics) : JsonConvert.DeserializeObject(Constants.EmptyArray),
-                Resources = resources != null ? JsonUtilities.DeserializeDynamicObject<dynamic>(resources.Results) : JsonConvert.DeserializeObject(Constants.EmptyArray),
-                ContinuationToken = resources != null && resources.ContinuationToken != null ? JsonConvert.DeserializeObject(resources.ContinuationToken) : JsonConvert.DeserializeObject(Constants.EmptyArray),
-                TopicIds = topicIds != null ? JsonUtilities.DeserializeDynamicObject<dynamic>(topicIds) : JsonConvert.DeserializeObject(Constants.EmptyArray),
-                ResourceTypeFilter = groupedResourceType != null ? JsonUtilities.DeserializeDynamicObject<dynamic>(groupedResourceType) : JsonConvert.DeserializeObject(Constants.EmptyArray),
-                GuidedAssistantId = guidedAssistantResult != null ? guidedAssistantResult.CuratedExperienceId : string.Empty,
+                RelevantIntents = relevantIntents != null
+                    ? JsonUtilities.DeserializeDynamicObject<dynamic>(relevantIntents)
+                    : JsonConvert.DeserializeObject(Constants.EmptyArray),
+                Topics = JsonUtilities.DeserializeDynamicObject<dynamic>(topics),
+                Resources = resources != null
+                    ? JsonUtilities.DeserializeDynamicObject<dynamic>(resources.Results)
+                    : JsonConvert.DeserializeObject(Constants.EmptyArray),
+                ContinuationToken = resources != null && resources.ContinuationToken != null
+                    ? JsonConvert.DeserializeObject(resources.ContinuationToken)
+                    : JsonConvert.DeserializeObject(Constants.EmptyArray),
+                TopicIds = JsonUtilities.DeserializeDynamicObject<dynamic>(topicIds),
+                ResourceTypeFilter = groupedResourceType != null
+                    ? JsonUtilities.DeserializeDynamicObject<dynamic>(groupedResourceType)
+                    : JsonConvert.DeserializeObject(Constants.EmptyArray),
+                GuidedAssistants = guidedAssistantsResult,
                 SearchFilter = searchFilter
             };
+
+
+            return result;
+
+        }
+
+        private IEnumerable<dynamic> CleanGuidedAssistantsResult(IEnumerable<object> guidedAssistantsResult)
+        {
+            var result = guidedAssistantsResult.Cast<dynamic>().Where(ga => ga.Item1 != null).ToList();
+
+            return result.Count == 0 ? null : result;
         }
 
         public async Task<dynamic> GetWebResourcesAsync(string searchTerm)

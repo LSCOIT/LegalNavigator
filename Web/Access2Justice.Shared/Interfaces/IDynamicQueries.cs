@@ -26,5 +26,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> FindFieldWhereArrayContainsAsync(string collectionId, string arrayName, string propertyName, string value);
         Task<dynamic> FindFieldWhereArrayContainsAsync(string collectionId, string propertyName, string value);
         Task<dynamic> FindItemsAllAsync(string collectionId);
+        Task<dynamic> FindAllChildTopicsAsync(string value);
     }
 }

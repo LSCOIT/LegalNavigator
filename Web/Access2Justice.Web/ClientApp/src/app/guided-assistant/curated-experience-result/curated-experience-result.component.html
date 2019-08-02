@@ -1,7 +1,7 @@
 <div class="container" *ngIf="guidedAssistantResults">
   <div *ngIf="guidedAssistantResults.topIntent; else elseblock">
     <div
-      *ngIf="guidedAssistantResults.guidedAssistantId; else elseIfBlock"
+      *ngIf="guidedAssistantResults.guidedAssistants && guidedAssistantResults.guidedAssistants.length === 1; else multiga"
       class="col-sm-8 col-sm-offset-2 text-center top-intent"
     >
       <h3>It looks like you are looking for information on:</h3>
@@ -16,6 +16,21 @@
         <a class="link col-md-12 text-center" (click)="backToSearch()">Back</a>
       </div>
     </div>
+    <ng-template #multiga >
+      <div *ngIf="guidedAssistantResults.guidedAssistants && guidedAssistantResults.guidedAssistants.length > 1; else elseIfBlock"
+           class="col-sm-8 col-sm-offset-2 text-center top-intent">
+            <h3>It looks like you are looking for information on:</h3>
+            <p class="text-capitalize">{{ guidedAssistantResults.topIntent }}</p>
+            <ng-container *ngFor="let ga of guidedAssistantResults.guidedAssistants">
+              <ng-container *ngFor="let tag of ga.Item2">
+                <a class="link col-md-12 text-center"  routerLink="/guidedassistant/{{ ga?.Item1 }}" >{{tag}}</a>
+              </ng-container>
+            </ng-container>
+      </div>
+      <div>
+        <a class="link col-md-12 text-center" (click)="backToSearch()">Back</a>
+      </div>
+    </ng-template>
     <ng-template #elseIfBlock>
       <div
         class="col-sm-8 col-sm-offset-2 text-center top-intent"

@@ -310,6 +310,12 @@ namespace Access2Justice.CosmosDb
             var query = $"SELECT f.name, f.code FROM c JOIN f in c.{arrayName} WHERE CONTAINS(f.{propertyName}, @{_singleParameterName})";
             return await backendDatabaseService.QueryItemsAsync(collectionId, query, _wrapSingleParam(value));
         }
+        
+        public async Task<dynamic> FindAllChildTopicsAsync(string value)
+        {
+            var query = "SELECT * FROM c WHERE ARRAY_CONTAINS(c.parentTopicId, {\"id\":\"#GUID#\"}, true)".Replace("#GUID#", value);
+            return await backendDatabaseService.QueryItemsAsync("Topics", query, _wrapSingleParam(value));
+        }
 
         public async Task<dynamic> FindFieldWhereArrayContainsAsync(string collectionId, string propertyName, string value)
         {

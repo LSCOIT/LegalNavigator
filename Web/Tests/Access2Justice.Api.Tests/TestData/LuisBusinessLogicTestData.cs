@@ -157,8 +157,8 @@ namespace Access2Justice.Api.Tests.TestData
         public static string expectedLuisTopIntent = "Eviction";
         public static string expectedTopicId = "addf41e9-1a27-4aeb-bcbb-7959f95094ba";
         public static string expectedInternalResponse = "topics";
-        public static string expectedGuidedResponse = "\"guidedAssistantId\": \"77d301e7-6df2-612e-4704-c04edf271806\"";
-        public static string expectedEmptyGuidedResponse = "\"guidedAssistantId\": null";
+        public static string expectedGuidedResponse = "\"Item1\": \"77d301e7-6df2-612e-4704-c04edf271806\"";
+        public static string expectedEmptyGuidedResponse = "\"guidedAssistants\": null";
         public static string expectedWebResponse = "webResources";
         public static string expectedEmptyInternalResponse = "{\r\n  \"topics\": [],\r\n  \"resources\": [],\r\n  \"continuationToken\": [],\r\n  " +
                    "\"topicIds\": [],\r\n  \"resourceTypeFilter\": [],\r\n  \"topIntent\": \"Eviction\"\r\n}";

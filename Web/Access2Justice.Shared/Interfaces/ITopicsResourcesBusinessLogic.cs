@@ -19,6 +19,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetTopicDetailsAsync(string topicName);
         Task<dynamic> GetResourceDetailAsync(string resourceName, string resourceType);
         Task<List<Topic>> GetTopics(IEnumerable<string> topicIds);
+        List<string> GetChild2TopicsAsync(string parentGuid);
         dynamic GetReferences(dynamic resource);
         dynamic GetTopicTags(dynamic tagValues);
         dynamic GetLocations(dynamic locationValues);

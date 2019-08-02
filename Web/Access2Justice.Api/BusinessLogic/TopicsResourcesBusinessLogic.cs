@@ -1019,6 +1019,13 @@ namespace Access2Justice.Api.BusinessLogic
         {
             return JsonUtilities.DeserializeDynamicObject<List<Topic>>(await dbClient.FindItemsWhereInClauseAsync(dbSettings.TopicsCollectionId, Constants.Id, topicIds));
         }
+        
+        public List<string> GetChild2TopicsAsync(string parentGuid)
+        {
+            var result = dbClient.FindAllChildTopicsAsync(parentGuid).Result;
+            var resources = JsonUtilities.DeserializeDynamicObject<List<Resource>>(result) as List<Resource>;
+            return resources?.Select(s=>s.Name).ToList();
+        }
 
         public async Task<dynamic> GetTopicDetailsAsync(IntentInput intentInput)
         {

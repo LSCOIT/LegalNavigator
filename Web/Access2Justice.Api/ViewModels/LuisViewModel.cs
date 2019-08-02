@@ -1,4 +1,5 @@
-﻿using Access2Justice.Shared;
+﻿using System.Collections.Generic;
+using Access2Justice.Shared;
 using Newtonsoft.Json;
 using System.ComponentModel;
 using System.Diagnostics.CodeAnalysis;
@@ -30,8 +31,8 @@ namespace Access2Justice.Api.ViewModels
         public dynamic ResourceTypeFilter { get; set; }
 
         [DefaultValue("")]
-        [JsonProperty(PropertyName = "guidedAssistantId")]
-        public string GuidedAssistantId { get; set; }
+        [JsonProperty(PropertyName = "guidedAssistants")]
+        public IEnumerable<dynamic> GuidedAssistants { get; set; }
 
         [JsonProperty(PropertyName = "searchFilter")]
         public dynamic SearchFilter { get; set; }

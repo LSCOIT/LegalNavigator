@@ -17,6 +17,7 @@ namespace Access2Justice.Shared.Models
         public Location Location { get; set; }
         public bool IsResourceCountRequired { get; set; }
         public bool IsOrder { get; set; }
+        public bool IsNeedAllGuideAssistance { get; set; }
         public string OrderByField { get; set; }
         public string OrderBy { get; set; }
     }
