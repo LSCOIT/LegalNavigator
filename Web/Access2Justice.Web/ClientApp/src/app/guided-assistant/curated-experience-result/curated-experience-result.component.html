@@ -1,7 +1,7 @@
 <div class="container" *ngIf="guidedAssistantResults">
   <div *ngIf="guidedAssistantResults.topIntent; else elseblock">
     <div
-      *ngIf="guidedAssistantResults.guidedAssistants && guidedAssistantResults.guidedAssistants.length === 1; else multiga"
+      *ngIf="guidedAssistantResults.guidedAssistants && guidedAssistantResults.guidedAssistants[0].Item2.length == 0; else multiga"
       class="col-sm-8 col-sm-offset-2 text-center top-intent"
     >
       <h3>It looks like you are looking for information on:</h3>
@@ -17,7 +17,7 @@
       </div>
     </div>
     <ng-template #multiga >
-      <div *ngIf="guidedAssistantResults.guidedAssistants && guidedAssistantResults.guidedAssistants.length > 1; else elseIfBlock"
+      <div *ngIf="guidedAssistantResults.guidedAssistants && guidedAssistantResults.guidedAssistants[0].Item2.length > 0; else elseIfBlock"
            class="col-sm-8 col-sm-offset-2 text-center top-intent">
             <h3>It looks like you are looking for information on:</h3>
             <p class="text-capitalize">{{ guidedAssistantResults.topIntent }}</p>
