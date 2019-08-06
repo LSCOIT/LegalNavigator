@@ -21,11 +21,11 @@
            class="col-sm-8 col-sm-offset-2 text-center top-intent">
             <h3>It looks like you are looking for information on:</h3>
             <p class="text-capitalize">{{ guidedAssistantResults.topIntent }}</p>
-            <ng-container *ngFor="let ga of guidedAssistantResults.guidedAssistants">
+            <div *ngFor="let ga of guidedAssistantResults.guidedAssistants" class="text-left">
               <ng-container *ngFor="let tag of ga.Item2">
-                <a class="link col-md-12 text-center"  routerLink="/guidedassistant/{{ ga?.Item1 }}" >{{tag}}</a>
+                <a class="link col-md-12"  routerLink="/guidedassistant/{{ ga?.Item1 }}" >{{tag}}</a>
               </ng-container>
-            </ng-container>
+            </div>
       </div>
       <div>
         <a class="link col-md-12 text-center" (click)="backToSearch()">Back</a>
