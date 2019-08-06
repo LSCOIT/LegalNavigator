@@ -8,7 +8,7 @@
       <p class="text-capitalize">{{ guidedAssistantResults.topIntent }}</p>
       <button
         class="btn btn-primary"
-        routerLink="/guidedassistant/{{ guidedAssistantResults?.guidedAssistantId }}"
+        routerLink="/guidedassistant/{{ guidedAssistantResults?.guidedAssistants[0].Item1 }}"
       >
         Start the Guided Assistant
       </button>
