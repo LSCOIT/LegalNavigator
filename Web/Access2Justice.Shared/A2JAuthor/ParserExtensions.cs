@@ -115,33 +115,47 @@ namespace Access2Justice.Shared.A2JAuthor
         public static Dictionary<string, string> AddValue(this string inputText)
         {
             var varsValues = new Dictionary<string, string>();
-            var variableName = string.Empty;
-            if (inputText.Contains(Tokens.TO))
-            {
-                variableName = inputText.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign);
-                var valueString = inputText.GetStringRightSide(Tokens.TO);
+            // if has multiple SET tokens, then input text might be like [set var expression 1] SET [set var expression 2] SET ...
+			if (inputText.Contains(Tokens.SET))
+			{
+				foreach (var keyValue in inputText.GetStringLeftSide(Tokens.SET).AddValue())
+				{
+					varsValues[keyValue.Key] = keyValue.Value;
+				}
+				foreach (var keyValue in inputText.GetStringRightSide(Tokens.SET).AddValue())
+				{
+					varsValues[keyValue.Key] = keyValue.Value;
+				}
 
-                if (valueString.ToUpperInvariant().Contains(Tokens.TrueTokens.True))
-                {
-                    varsValues.Add(variableName, Tokens.TrueTokens.True.ToLower());
-                }
-                else if (valueString.ToUpperInvariant().Contains(Tokens.FalseTokens.False))
-                {
-                    varsValues.Add(variableName, Tokens.FalseTokens.False.ToLower());
-                }
-                else
-                {
-                    varsValues.Add(variableName, valueString);
-                }
-            }
-            else
-            {
-                // you could take this an extra step by double checking the var you extracted 
-                // matches some curated experience step name.
-                varsValues.Add(Tokens.GOTO + "-" + Guid.NewGuid(), inputText.RemoveQuotes());
-            }
+				return varsValues;
+			}
 
-            return varsValues;
+			if (inputText.Contains(Tokens.TO))
+			{
+				var variableName = inputText.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign);
+				var valueString = inputText.GetStringRightSide(Tokens.TO);
+
+				if (valueString.ToUpperInvariant().Contains(Tokens.TrueTokens.True))
+				{
+					varsValues.Add(variableName, Tokens.TrueTokens.True.ToLower());
+				}
+				else if (valueString.ToUpperInvariant().Contains(Tokens.FalseTokens.False))
+				{
+					varsValues.Add(variableName, Tokens.FalseTokens.False.ToLower());
+				}
+				else
+				{
+					varsValues.Add(variableName, valueString);
+				}
+			}
+			else
+			{
+				// you could take this an extra step by double checking the var you extracted 
+				// matches some curated experience step name.
+				varsValues.Add(Tokens.GOTO + "-" + Guid.NewGuid(), inputText.RemoveQuotes());
+			}
+
+			return varsValues;
         }
 
         public static string RemoveQuotes(this string inputText)
