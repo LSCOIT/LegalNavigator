@@ -4,11 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Access2Justice.Api.BusinessLogic;
-using DinkToPdf;
-using DinkToPdf.Contracts;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -17,6 +13,7 @@ namespace Access2Justice.Api.Controllers
     public class PersonalizedPlanController : Controller
     {
         private readonly IPersonalizedPlanBusinessLogic personalizedPlanBusinessLogic;
+        private readonly ICuratedExperienceBusinessLogic curatedExperience;
         private readonly ISessionManager sessionManager;
         private readonly IUserRoleBusinessLogic userRoleBusinessLogic;
         private readonly IPdfService pdfService;
@@ -25,6 +22,7 @@ namespace Access2Justice.Api.Controllers
             ISessionManager sessionManager, IUserRoleBusinessLogic userRoleBusinessLogic, IPdfService pdfService)
         {
             this.personalizedPlanBusinessLogic = personalizedPlan;
+            this.curatedExperience = curatedExperience;
             this.sessionManager = sessionManager;
             this.userRoleBusinessLogic = userRoleBusinessLogic;
             this.pdfService = pdfService;
@@ -43,22 +41,22 @@ namespace Access2Justice.Api.Controllers
         [HttpGet("generate")]
         public async Task<IActionResult> GeneratePersonalizedPlanAsync([FromQuery] Guid curatedExperienceId, [FromQuery] Guid answersDocId)
         {
-            if (curatedExperienceId != null && answersDocId != null)
+            // Clear curated experience answer progress for authenticated user when plan generated
+            var userId = userRoleBusinessLogic.GetOId();
+            if (answersDocId == Guid.Empty && !string.IsNullOrWhiteSpace(userId))
             {
-                // Clear curated experience answer progress for authenticated user when plan generated
-                var userId = userRoleBusinessLogic.GetOId();
-                var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
-                       sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), answersDocId, 
-                       userId);
-
-                if (personalizedPlan == null)
-                {
-                    return StatusCode(StatusCodes.Status500InternalServerError);
-                }
-
-                return Ok(personalizedPlan); 
+                answersDocId = await curatedExperience.GetUserAnswerId(userId);
             }
-            return StatusCode(400);
+            var personalizedPlan = await personalizedPlanBusinessLogic.GeneratePersonalizedPlanAsync(
+                   sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), answersDocId, 
+                   userId);
+
+            if (personalizedPlan == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return Ok(personalizedPlan);
         }
 
         /// <summary>
