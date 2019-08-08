@@ -40,14 +40,38 @@ export class UnshareButtonComponent implements OnInit {
   }
 
   unshareSharedResources() {
-    if(this.resourceId && this.sharedToResources){
+    if (this.resourceId && this.sharedToResources) {
       this.unshareSharedToResources();
+    } else if (this.selectedPlanDetails) {
+      this.unshareSharedToPlan();
     }
   }
 
-   unshareSharedToResources(){
+   unshareSharedToPlan() {
+     const resource = this.selectedPlanDetails.planDetails.topics.find(o => {
+       return o.topicId === this.selectedPlanDetails.planDetails.id &&
+              o.shared.sharedTo && o.shared.sharedTo.length > 0;
+     });
+
+     const resourceId = resource.shared.url.split("/")[2];
+     const unsharedElem = {
+       oId: this.global.userId,
+       email: resource.shared.sharedTo[0],
+       itemId: resourceId,
+       resourceType: this.resourceType,
+       resourceDetails: null
+     };
+     this.personalizedPlanService.unshareSharedToResources(unsharedElem).subscribe(() => {
+       this.personalizedPlanService.showSuccess(
+         'Shared resource unshared from profile'
+       );
+       this.eventUtilityService.updateSharedResource('RESOURCE UNSHARED');
+     });
+   }
+
+   unshareSharedToResources() {
     const resource = this.personalizedResources.find(o => {
-      return o.id === this.resourceId
+      return o.id === this.resourceId;
     });
     const unsharedElem = {
        oId: this.global.userId,
@@ -56,7 +80,7 @@ export class UnshareButtonComponent implements OnInit {
        resourceType: this.resourceType,
        resourceDetails: null
     };
-    this.personalizedPlanService.unshareSharedToResources(unsharedElem).subscribe(() =>{
+    this.personalizedPlanService.unshareSharedToResources(unsharedElem).subscribe(() => {
       this.personalizedPlanService.showSuccess(
         'Shared resource unshared from profile'
       );

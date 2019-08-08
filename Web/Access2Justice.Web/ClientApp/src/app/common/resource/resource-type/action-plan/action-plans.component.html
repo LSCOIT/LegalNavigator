@@ -28,7 +28,7 @@
               src="./assets/images/small-icons/more_menu.svg"
               alt="plan menu"
               (keyup.enter)="$event.target.click()"
-              (click)="planTagOptions(topic.name)"
+              (click)="planTagOptions(topic.topicId)"
               tabindex="0"
             />
             <ul
@@ -38,12 +38,18 @@
               role="menu"
               aria-labelledby="button-basic"
             >
-              <li role="menuitem">
-                <a class="dropdown-item">
+              <li role="menuitem" *ngIf="showRemoveOption">
                   <app-remove-button
+                    class="dropdown-item"
                     [selectedPlanDetails]="selectedPlanDetails"
                   ></app-remove-button>
-                </a>
+              </li>
+              <li role="menuitem" *ngIf="showUnshareOption && topic.shared.sharedTo && topic.shared.sharedTo.length>0">
+                  <app-unshare-button
+                      class="dropdown-item" [showIcon]="false"
+                      [selectedPlanDetails]="selectedPlanDetails"
+                      [resourceType]="'Plan'"
+                  ></app-unshare-button>
               </li>
             </ul>
           </div>

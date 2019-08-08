@@ -23,16 +23,16 @@ export class SharedResourcesComponent implements OnInit, OnDestroy {
   ) { }
 
   private getSharedResources(): void {
-    this.personalizedPlanService.getUserSavedResources('shared-resources').subscribe(incResIds => { this.sharedResourcesIds = incResIds });
+    this.personalizedPlanService.getUserSavedResources('shared-resources').subscribe(incResIds => { this.sharedResourcesIds = incResIds; });
     this.personalizedPlanService.getPersonalizedResources('shared-resources').subscribe(sharedResources => {
       this.sharedResources = [];
-      var planDetailTags = {
+      const planDetailTags = {
         topics: []
       };
-      for (let key in sharedResources) {
+      for (const key in sharedResources) {
         sharedResources[key].forEach(i => {
-          var isSharedPlan = i.topics;
-          var resource = isSharedPlan ? i.topics[0] : i;
+          const isSharedPlan = i.topics;
+          const resource = isSharedPlan ? i.topics[0] : i;
           // resource.shared = this.sharedResourcesIds.find(o => {
           //   if(o.itemId) {
           //     return o.itemId === i.id;

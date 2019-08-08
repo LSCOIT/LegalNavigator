@@ -6,7 +6,7 @@
 <!--</div>-->
 <div class="row">
   <div class="col-sm-12">
-    <div *ngFor="let resource of sharedResources">
+    <ng-container *ngFor="let resource of sharedResources">
       <app-resource-card
         [searchResource]="resource"
         [sharedToResources]="true"
@@ -16,10 +16,11 @@
         [showUnshareOption]="true"
       >
       </app-resource-card>
-    </div>
+    </ng-container>
     <app-action-plans
       [planDetails]="planDetails"
       [showUnshareOption]="true"
+      [showRemoveOption]="true"
     >
     </app-action-plans>
   </div>

@@ -20,6 +20,9 @@ export class ActionPlansComponent implements OnChanges {
   @Input() planDetails;
   @Input() topicsList;
   @Input() showUnshareOption: boolean;
+  @Input() showRemoveOption: boolean;
+  @Input() showRemoveResourceOption: boolean;
+
   displaySteps = false;
   updatedPlan: any;
   modalRef: BsModalRef;
@@ -50,6 +53,7 @@ export class ActionPlansComponent implements OnChanges {
     "Articles"
   ];
   videoTemplateContext: any;
+  @ViewChild('videoTemplateForInnerHtml') videoTemplateForInnerHtml: ElementRef;
   @HostListener("window:resource", ['$event'])
   onCallResource(param) {
     if (param.detail.type === "Videos") {
@@ -59,7 +63,7 @@ export class ActionPlansComponent implements OnChanges {
       this.router.navigate(['/resource', param.detail.id]);
     }
   }
-  @ViewChild('videoTemplateForInnerHtml') videoTemplateForInnerHtml: ElementRef;
+
 
   constructor(
     private modalService: BsModalService,
@@ -97,7 +101,9 @@ export class ActionPlansComponent implements OnChanges {
     planDetails.topics.forEach(topic => {
       topic.steps.forEach(step => {
         // Match all URLs outside <a> tags. Next these urls will be wrapped with <a> tag.
-        step.description = step.description.replace(/(([--:\w?@%&+~#=]*\.[a-z]{2,4}\/{0,2})((?:[?&](?:\w+)=(?:\w+))+|[\w?@%&+~#=;\/\-]+)?)(?![^<>]*>|[^"]*?<\/a)/g, '<a href=\"$1\">$1</a>');
+        step.description = step.description.replace(
+          /(([--:\w?@%&+~#=]*\.[a-z]{2,4}\/{0,2})((?:[?&](?:\w+)=(?:\w+))+|[\w?@%&+~#=;\/\-]+)?)(?![^<>]*>|[^"]*?<\/a)/g,
+          '<a href=\"$1\">$1</a>');
         step.resources.forEach(resource => {
           // If resource GUID present in description, need replace guid with <a> tag.
           step.description = step.description.replace(resource.id, this.generateLink(resource));
@@ -171,20 +177,21 @@ export class ActionPlansComponent implements OnChanges {
     return this.safeUrl;
   }
 
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalService.show(template);
+  openModal(modalTemplate: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(modalTemplate);
   }
 
   planTagOptions(topicId) {
+    this.fillTopics();
     this.getRemovePlanDetails();
     this.planTopics = [];
     if (this.removePlanDetails.length > 0) {
       this.removePlanDetails.forEach(planTopic => {
-        this.planTopics.push(planTopic.topic);
+        this.planTopics.push(!planTopic.topic ? planTopic : planTopic.topic);
       });
     }
     this.personalizedPlan = {
-      id: this.planDetails.id,
+      id: topicId,
       topics: this.planTopics,
       answersDocId: this.planDetails.answersDocId,
       curatedExperienceId: this.planDetails.curatedExperienceId,
@@ -204,8 +211,12 @@ export class ActionPlansComponent implements OnChanges {
   }
 
   ngOnChanges() {
+    this.fillTopics();
+  }
+
+  fillTopics() {
     this.getPersonalizedPlan(this.planDetails);
-    this.tempFilteredtopicsList = this.topicsList;
+    this.tempFilteredtopicsList = !this.topicsList ? this.planDetails.topics : this.topicsList;
   }
 
   orderBy(items, field) {
