@@ -115,12 +115,13 @@ namespace Access2Justice.Api.BusinessLogic
 
         private async Task fillSentTo(SharedResources userResourcesDbData)
         {
-            var incomingResources = await dbService.FindIncomingSharedResource(new IncomingSharedResourceRetrieveParam
-            {
-                SharedFromResourcesId = userResourcesDbData.SharedResourceId,
-                ResourceIds = userResourcesDbData.SharedResource
-                    .Select(x => Guid.Parse(((SharedResourceView)x).Id))
-            });
+	        var incomingResources = await dbService.FindIncomingSharedResource(new IncomingSharedResourceRetrieveParam
+	        {
+		        SharedFromResourcesId = userResourcesDbData.SharedResourceId,
+		        ResourceIds = userResourcesDbData.SharedResource
+			        .Select(x => Guid.TryParse(((SharedResourceView) x).Id, out var g) ? g : Guid.Empty)
+			        .Where(x => x != Guid.Empty)
+	        });
             var incomingCollections = incomingResources.Select(x => x.IncomingResourcesId);
             var users = (await dbService.QueryItemsAsync<UserProfile>(dbSettings.ProfilesCollectionId,
                     x => incomingCollections.Contains(x.IncomingResourcesId)))
