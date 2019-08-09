@@ -225,29 +225,9 @@ export class RemoveButtonComponent implements AfterViewInit {
   private removeSharedPlan() {
     const safe = this;
     const unsharePromise = new Promise(function(resolve, reject) {
-      safe.selectedPlanDetails.planDetails.topics.forEach(topic => {
-        if (topic.shared.sharedTo && topic.shared.sharedTo.length > 0) {
-          topic.shared.sharedTo.forEach(email => {
-            const id = safe.guidUtilityService.getGuidFromResourceUrl  (topic.shared.url);
-            const unsharedElem = {
-              oId: safe.global.userId,
-              email: email,
-              itemId: id,
-              resourceType: "Plan",
-              resourceDetails: null
-            };
-            safe.personalizedPlanService.unshareSharedToResources(unsharedElem).subscribe(() => {
-            });
-          });
-        }
-      });
-      resolve();
-    });
-
-    unsharePromise.then(() => {
       // Remove resource
       const sharedResource = safe.selectedPlanDetails.planDetails.topics.find(o => {
-        return o.topicId === safe.selectedPlanDetails.planDetails.id;
+        return o.topicId === safe.selectedPlanDetails.topic;
       });
       const resourceId = safe.guidUtilityService.getGuidFromResourceUrl(sharedResource.shared.url);
       const removedElem = {
@@ -262,6 +242,27 @@ export class RemoveButtonComponent implements AfterViewInit {
         );
         safe.eventUtilityService.updateSharedResource('RESOURCE REMOVED');
       });
+
+      resolve();
     });
-  }
+
+    unsharePromise.then(() => {
+      safe.selectedPlanDetails.planDetails.topics.forEach(topic => {
+        if (topic.shared.sharedTo && topic.shared.sharedTo.length > 0) {
+          topic.shared.sharedTo.forEach(email => {
+            const id = safe.guidUtilityService.getGuidFromResourceUrl(topic.shared.url);
+            const unsharedElem = {
+              oId: safe.global.userId,
+              email: email,
+              itemId: id,
+              resourceType: "Plan",
+              resourceDetails: null
+            };
+            safe.personalizedPlanService.unshareSharedToResources(unsharedElem).subscribe(() => {
+            });
+          });
+        }
+      })
+    });
+  };
 }

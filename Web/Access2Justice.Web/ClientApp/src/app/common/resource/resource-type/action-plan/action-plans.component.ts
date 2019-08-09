@@ -193,7 +193,7 @@ export class ActionPlansComponent implements OnChanges {
       });
     }
     this.personalizedPlan = {
-      id: topicId,
+      id: this.planDetails.id,
       topics: this.planTopics,
       answersDocId: this.planDetails.answersDocId,
       curatedExperienceId: this.planDetails.curatedExperienceId,
