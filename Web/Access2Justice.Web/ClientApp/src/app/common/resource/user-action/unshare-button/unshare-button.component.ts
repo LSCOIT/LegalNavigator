@@ -6,6 +6,7 @@ import { PersonalizedPlanComponent } from '../../../../guided-assistant/personal
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
 import { ProfileComponent } from '../../../../profile/profile.component';
 import { EventUtilityService } from '../../../services/event-utility.service';
+import {GuidUtilityService} from "../../../services/guid-utility.service";
 
 @Component({
   selector: 'app-unshare-button',
@@ -34,7 +35,8 @@ export class UnshareButtonComponent implements OnInit {
     private personalizedPlanComponent: PersonalizedPlanComponent,
     private router: Router,
     private eventUtilityService: EventUtilityService,
-    private global: Global
+    private global: Global,
+    private guidUtilityService: GuidUtilityService
   ) {
     global.showRemove = !(global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0);
   }
@@ -43,17 +45,17 @@ export class UnshareButtonComponent implements OnInit {
     if (this.resourceId && this.sharedToResources) {
       this.unshareSharedToResources();
     } else if (this.selectedPlanDetails) {
-      this.unshareSharedToPlan();
+      this.unawareSharedToPlan();
     }
   }
 
-   unshareSharedToPlan() {
+   unawareSharedToPlan() {
      const resource = this.selectedPlanDetails.planDetails.topics.find(o => {
        return o.topicId === this.selectedPlanDetails.planDetails.id &&
               o.shared.sharedTo && o.shared.sharedTo.length > 0;
      });
 
-     const resourceId = resource.shared.url.split("/")[2];
+     const resourceId = this.guidUtilityService.getGuidFromResourceUrl  (resource.shared.url);
      const unsharedElem = {
        oId: this.global.userId,
        email: resource.shared.sharedTo[0],

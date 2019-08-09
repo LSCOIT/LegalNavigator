@@ -8,6 +8,7 @@ import { PersonalizedPlanService } from '../../../../guided-assistant/personaliz
 import { ProfileComponent } from '../../../../profile/profile.component';
 import { EventUtilityService } from '../../../services/event-utility.service';
 import { NavigateDataService } from '../../../services/navigate-data.service';
+import {GuidUtilityService} from "../../../services/guid-utility.service";
 
 @Component({
   selector: 'app-remove-button',
@@ -18,13 +19,15 @@ import { NavigateDataService } from '../../../services/navigate-data.service';
     '[class.app-resource-button]': 'true',
   }
 })
-export class RemoveButtonComponent implements OnInit {
+export class RemoveButtonComponent implements AfterViewInit {
   @Input() resourceId;
   @Input() resourceType;
   @Input() personalizedResources;
   @Input() selectedPlanDetails;
   @Input() sharedResources;
   @Input() sharedToResources;
+  @Input() isNeedToRemoveSharedPlan;
+
   removeResource: SavedResource;
   profileResources: ProfileResources = {oId: '', resourceTags: [], type: ''};
   resourceDetails: any;
@@ -37,18 +40,22 @@ export class RemoveButtonComponent implements OnInit {
     private router: Router,
     private eventUtilityService: EventUtilityService,
     private global: Global,
-    private navigateDataService: NavigateDataService
+    private navigateDataService: NavigateDataService,
+    private guidUtilityService: GuidUtilityService,
   ) {
     global.showRemove = !(global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0);
   }
 
   removeSavedResources() {
-    if (this.selectedPlanDetails) {
+    if (this.selectedPlanDetails && !this.isNeedToRemoveSharedPlan) {
       this.removeSavedPlan();
+    } else if (this.selectedPlanDetails && this.isNeedToRemoveSharedPlan) {
+      this.removeSharedPlan();
     }
-    if(this.resourceId && this.sharedResources){
+
+    if (this.resourceId && this.sharedResources) {
       this.removeSharedResources();
-    } else if(this.resourceId && this.sharedToResources){
+    } else if (this.resourceId && this.sharedToResources) {
       this.removeSharedToResources();
     } else if (this.resourceId) {
       this.removedSavedResource();
@@ -65,7 +72,7 @@ export class RemoveButtonComponent implements OnInit {
   createRemovePlanTag() {
     this.topicIndex = 0;
     this.selectedPlanDetails.planDetails.topics.forEach(topic => {
-      if (topic.name === this.selectedPlanDetails.topic) {
+      if (topic.topicId === this.selectedPlanDetails.topic) {
         this.selectedPlanDetails.planDetails.topics.splice(this.topicIndex, 1);
       }
       this.topicIndex++;
@@ -161,7 +168,7 @@ export class RemoveButtonComponent implements OnInit {
     this.personalizedPlanService
       .saveResources(this.profileResources)
       .subscribe(response => {
-        if (response != undefined) {
+        if (response !== undefined) {
           this.personalizedPlanService.showSuccess(
             'Resource removed from profile'
           );
@@ -170,9 +177,9 @@ export class RemoveButtonComponent implements OnInit {
       });
   }
 
-  removeSharedResources(){
+  removeSharedResources() {
     const resource = this.personalizedResources.find(o => {
-      return o.id === this.resourceId
+      return o.id === this.resourceId;
     });
     const removedElem = {
       Oid: this.global.userId,
@@ -181,7 +188,7 @@ export class RemoveButtonComponent implements OnInit {
       sharedBy: (resource.shared && resource.shared.sharedBy) || 'katana_2w@ukr.net',
       type: 'incoming-resources'
     };
-    this.personalizedPlanService.removeSharedResources(removedElem).subscribe(() =>{
+    this.personalizedPlanService.removeSharedResources(removedElem).subscribe(() => {
       this.personalizedPlanService.showSuccess(
         'Shared resource removed from profile'
       );
@@ -189,9 +196,9 @@ export class RemoveButtonComponent implements OnInit {
     });
   }
 
-  removeSharedToResources(){
+  removeSharedToResources() {
     const resource = this.personalizedResources.find(o => {
-      return o.id === this.resourceId
+      return o.id === this.resourceId;
     });
     const removedElem = {
       Oid: this.global.userId,
@@ -200,7 +207,7 @@ export class RemoveButtonComponent implements OnInit {
       sharedBy: (resource.shared && resource.shared.sharedBy) || 'katana_2w@ukr.net',
       type: 'shared-resources'
     };
-    this.personalizedPlanService.removeSharedToResources(removedElem).subscribe(() =>{
+    this.personalizedPlanService.removeSharedToResources(removedElem).subscribe(() => {
       this.personalizedPlanService.showSuccess(
         'Shared resource removed from profile'
       );
@@ -208,13 +215,53 @@ export class RemoveButtonComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
-  }
-
-  ngAfterViewInit() {
-    var element = document.getElementById("removeButtonForSharedToTab");
+   ngAfterViewInit() {
+    const element = document.getElementById("removeButtonForSharedToTab");
     if (element) {
       element.textContent = "Remove block";
     }
+  }
+
+  private removeSharedPlan() {
+    const safe = this;
+    const unsharePromise = new Promise(function(resolve, reject) {
+      safe.selectedPlanDetails.planDetails.topics.forEach(topic => {
+        if (topic.shared.sharedTo && topic.shared.sharedTo.length > 0) {
+          topic.shared.sharedTo.forEach(email => {
+            const id = safe.guidUtilityService.getGuidFromResourceUrl  (topic.shared.url);
+            const unsharedElem = {
+              oId: safe.global.userId,
+              email: email,
+              itemId: id,
+              resourceType: "Plan",
+              resourceDetails: null
+            };
+            safe.personalizedPlanService.unshareSharedToResources(unsharedElem).subscribe(() => {
+            });
+          });
+        }
+      });
+      resolve();
+    });
+
+    unsharePromise.then(() => {
+      // Remove resource
+      const sharedResource = safe.selectedPlanDetails.planDetails.topics.find(o => {
+        return o.topicId === safe.selectedPlanDetails.planDetails.id;
+      });
+      const resourceId = safe.guidUtilityService.getGuidFromResourceUrl(sharedResource.shared.url);
+      const removedElem = {
+        Oid: safe.global.userId,
+        itemId: resourceId,
+        resourceType: "Plan",
+        type: 'shared-resources'
+      };
+      safe.personalizedPlanService.removeSharedResources(removedElem).subscribe(() => {
+        safe.personalizedPlanService.showSuccess(
+          'Shared resource removed from profile'
+        );
+        safe.eventUtilityService.updateSharedResource('RESOURCE REMOVED');
+      });
+    });
   }
 }

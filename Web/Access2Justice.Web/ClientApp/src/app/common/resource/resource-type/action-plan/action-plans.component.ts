@@ -22,6 +22,8 @@ export class ActionPlansComponent implements OnChanges {
   @Input() showUnshareOption: boolean;
   @Input() showRemoveOption: boolean;
   @Input() showRemoveResourceOption: boolean;
+  @Input() isSharedActionPlan: boolean;
+  @Input() showDropDown: boolean;
 
   displaySteps = false;
   updatedPlan: any;

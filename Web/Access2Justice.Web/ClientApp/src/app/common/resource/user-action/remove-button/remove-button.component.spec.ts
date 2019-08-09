@@ -27,7 +27,7 @@ describe("UnshareButtonComponent", () => {
   let mockPersonalizedPlanService;
   let mockProfileComponent;
   let mockEventUtilityService;
-  let mockPlanDetails = {
+  const mockPlanDetails = {
     id: "29250697-8d22-4f9d-bbf8-96c1b5b72e54",
     isShared: false,
     topics: [
@@ -87,11 +87,11 @@ describe("UnshareButtonComponent", () => {
       }
     ]
   };
-  let mockSelectedPlanDetails = {
+  const  mockSelectedPlanDetails = {
     planDetails: mockPlanDetails,
-    topic: "Protective Order"
+    topic: "69be8e7c-975b-43c8-9af3-f61887a33ad3"
   };
-  let mockPlanDetailsAfterRemove = {
+  const mockPlanDetailsAfterRemove = {
     topicId: "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
     name: "Divorce",
     icon: null,
@@ -112,7 +112,7 @@ describe("UnshareButtonComponent", () => {
       }
     ]
   };
-  let mockSavedResources = {
+  const mockSavedResources = {
     itemId: "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef",
     resourceType: "Topics",
     resourceDetails: {},

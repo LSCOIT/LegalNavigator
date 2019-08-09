@@ -18,7 +18,7 @@
           <div
             class="btn-group pull-right more-menu"
             dropdown
-            *ngIf="global.showDropDown"
+            *ngIf="showDropDown"
           >
             <img
               id="button-basic"
@@ -42,6 +42,7 @@
                   <app-remove-button
                     class="dropdown-item"
                     [selectedPlanDetails]="selectedPlanDetails"
+                    [isNeedToRemoveSharedPlan]="isSharedActionPlan"
                   ></app-remove-button>
               </li>
               <li role="menuitem" *ngIf="showUnshareOption && topic.shared.sharedTo && topic.shared.sharedTo.length>0">

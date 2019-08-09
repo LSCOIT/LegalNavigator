@@ -55,6 +55,7 @@ import { ServiceOrgSidebarComponent } from './sidebars/service-org-sidebar/servi
 import { ShowMoreService } from './sidebars/show-more/show-more.service';
 import { UserActionSidebarComponent } from './sidebars/user-action-sidebar/user-action-sidebar.component';
 import { SharedModule } from '../shared/shared.module';
+import {GuidUtilityService} from "./services/guid-utility.service";
 
 @NgModule({
   imports: [RouterModule, SharedModule],
@@ -136,6 +137,7 @@ import { SharedModule } from '../shared/shared.module';
     PaginationService,
     ShowMoreService,
     ArrayUtilityService,
+    GuidUtilityService,
     EventUtilityService,
     ResourceService,
     ShareService,

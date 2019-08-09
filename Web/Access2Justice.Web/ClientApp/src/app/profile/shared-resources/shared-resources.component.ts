@@ -4,6 +4,7 @@ import { TabDirective } from "ngx-bootstrap";
 import { PersonalizedPlanService } from '../../guided-assistant/personalized-plan/personalized-plan.service';
 import { Subscription } from "rxjs";
 import { EventUtilityService } from "../../common/services/event-utility.service";
+import {GuidUtilityService} from "../../common/services/guid-utility.service";
 
 @Component({
   selector: 'app-shared-resources',
@@ -18,6 +19,7 @@ export class SharedResourcesComponent implements OnInit, OnDestroy {
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
+    private guidUtilityService: GuidUtilityService,
     @Optional() private tab: TabDirective,
     private eventUtilityService: EventUtilityService
   ) { }
@@ -25,6 +27,7 @@ export class SharedResourcesComponent implements OnInit, OnDestroy {
   private getSharedResources(): void {
     this.personalizedPlanService.getUserSavedResources('shared-resources').subscribe(incResIds => { this.sharedResourcesIds = incResIds; });
     this.personalizedPlanService.getPersonalizedResources('shared-resources').subscribe(sharedResources => {
+
       this.sharedResources = [];
       const planDetailTags = {
         topics: []
@@ -42,7 +45,7 @@ export class SharedResourcesComponent implements OnInit, OnDestroy {
           //     return o.url.substring(o.url.length - 36) === i.id;
           //   }
           // });
-          resource.shared = this.sharedResourcesIds.find(o => o.url.substring(o.url.length - 36) === i.id);
+          resource.shared = this.sharedResourcesIds.find(o => this.guidUtilityService.getGuidFromResourceUrl(o.url) === i.id);
 
           if (isSharedPlan) {
             planDetailTags.topics.push(resource);
