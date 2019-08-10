@@ -51,7 +51,7 @@ export class UnshareButtonComponent implements OnInit {
 
    unawareSharedToPlan() {
      const resource = this.selectedPlanDetails.planDetails.topics.find(o => {
-       return o.topicId === this.selectedPlanDetails.planDetails.id &&
+       return o.topicId === this.selectedPlanDetails.topic &&
               o.shared.sharedTo && o.shared.sharedTo.length > 0;
      });
 

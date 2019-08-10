@@ -74,9 +74,9 @@ export class PersonalizedPlanService {
     return this.http.post<any>(api.getProfileUrl, null, {params: {oid: this.getUserId(), type: type}}).pipe(
       map(response => {
         if (Array.isArray(response)) {
-          if(response[0] && response[0].resources) {
+          if (response[0] && response[0].resources) {
             return response[0].resources;
-          } else if(response[0] && response[0].sharedResources) {
+          } else if (response[0] && response[0].sharedResources) {
             return response[0].sharedResources;
           } else {
             return response[0] ? response[0].resources || [] : [];
@@ -115,7 +115,7 @@ export class PersonalizedPlanService {
           } else if (resource.resourceType === 'WebResources') {
             webResources.push(resource);
           } else {
-            if(resource.itemId) {
+            if (resource.itemId) {
               resourcesFilter.ResourceIds.push(resource.itemId);
             } else {
               if (resource.url) {
@@ -149,15 +149,15 @@ export class PersonalizedPlanService {
     return this.http.post(api.userPlanUrl, resource, httpOptions);
   }
 
-  removeSharedResources(resource: RemovedElem){
+  removeSharedResources(resource: RemovedElem) {
     return this.http.post(api.removeSharedResources, resource, httpOptions);
   }
 
-  removeSharedToResources(resource: RemovedElem){
+  removeSharedToResources(resource: RemovedElem) {
     return this.http.post(api.removeSharedResources, resource, httpOptions);
   }
 
-  unshareSharedToResources(resource: RemovedElem){
+  unshareSharedToResources(resource: RemovedElem) {
     return this.http.post(api.unshareSharedToResources, resource, httpOptions);
   }
 
