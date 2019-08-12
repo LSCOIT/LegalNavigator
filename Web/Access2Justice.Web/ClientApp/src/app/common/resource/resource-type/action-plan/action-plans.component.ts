@@ -24,6 +24,7 @@ export class ActionPlansComponent implements OnChanges {
   @Input() showRemoveResourceOption: boolean;
   @Input() isSharedActionPlan: boolean;
   @Input() showDropDown: boolean;
+  @Input() isIncomingResource: boolean;
 
   displaySteps = false;
   updatedPlan: any;
@@ -91,10 +92,6 @@ export class ActionPlansComponent implements OnChanges {
 
   public isNeedToShowShareTo = (topic) => {
     return this.isSharedActionPlan && this.showUnshareOption && topic.shared && topic.shared.sharedTo;
-  }
-
-  public isNeedToShowSharedBy = (topic) => {
-    return topic.shared && !this.showUnshareOption;
   }
 
   getPersonalizedPlan(planDetails): void {

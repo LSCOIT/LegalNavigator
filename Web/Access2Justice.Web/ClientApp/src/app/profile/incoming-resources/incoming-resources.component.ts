@@ -27,14 +27,14 @@ export class IncomingResourcesComponent implements OnInit, OnDestroy {
     this.personalizedPlanService.getUserSavedResources('incoming-resources').subscribe(incResIds => { this.incomingResourcesIds = incResIds });
     this.personalizedPlanService.getPersonalizedResources('incoming-resources').subscribe(incomingResources => {
       this.incomingResources = [];
-      var planDetailTags = {
+      const planDetailTags = {
         topics: []
       };
 
-      for (let key in incomingResources) {
+      for (const key in incomingResources) {
         incomingResources[key].forEach(i => {
-          var isSharedPlan = i.topics;
-          var resource = isSharedPlan ? i.topics[0] : i;
+          const isSharedPlan = i.topics;
+          const resource = isSharedPlan ? i.topics[0] : i;
           resource.shared = this.incomingResourcesIds.find(o => o.itemId === i.id);
 
           if (isSharedPlan) {

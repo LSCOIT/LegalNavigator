@@ -30,7 +30,7 @@ export class ShareButtonComponent implements OnInit {
   @Input() webResourceUrl: string;
   @ViewChild('template') public modalTemplate: TemplateRef<any>;
   userId: string;
-  sessionKey: string = 'showModal';
+  sessionKey = 'showModal';
   shareInput: Share = {
     ResourceId: '',
     UserId: '',
@@ -42,7 +42,7 @@ export class ShareButtonComponent implements OnInit {
   showGenerateLink = true;
   resourceUrl: string =
     window.location.protocol + '//' + window.location.host + '/share/';
-  emptyId: string = '{00000000-0000-0000-0000-000000000000}';
+  emptyId = '{00000000-0000-0000-0000-000000000000}';
   @Input() addLinkClass = false;
 
   constructor(
@@ -100,7 +100,6 @@ export class ShareButtonComponent implements OnInit {
   }
 
   savePersonalizationPlan() {
-    debugger;
     if (this.router.url.indexOf('/plan') !== -1) {
       const params = {
         personalizedPlan: this.navigateDataService.getData(),
@@ -153,9 +152,10 @@ export class ShareButtonComponent implements OnInit {
   }
 
   getPermaLink() {
-    if (this.shareView.permaLink)
+    if (this.shareView.permaLink) {
       return this.resourceUrl + this.shareView.permaLink;
-    else return this.blank;
+    }
+    else { return this.blank; }
   }
 
   externalLogin() {
