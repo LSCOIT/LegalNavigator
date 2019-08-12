@@ -27,6 +27,8 @@ export class UnshareButtonComponent implements OnInit {
   @Input() selectedPlanDetails;
   @Input() sharedResources;
   @Input() sharedToResources;
+  @Input() email;
+
   resourceDetails: any;
 
   constructor(
@@ -50,25 +52,45 @@ export class UnshareButtonComponent implements OnInit {
   }
 
    unawareSharedToPlan() {
-     const resource = this.selectedPlanDetails.planDetails.topics.find(o => {
-       return o.topicId === this.selectedPlanDetails.topic &&
-              o.shared.sharedTo && o.shared.sharedTo.length > 0;
-     });
+      const resource = this.selectedPlanDetails.planDetails.topics.find(o => {
+        return o.topicId === this.selectedPlanDetails.topic &&
+          o.shared.sharedTo && o.shared.sharedTo.length > 0;
+      });
+        const resourceId = this.guidUtilityService.getGuidFromResourceUrl(resource.shared.url);
+        const unsharedElem = {
+          oId: this.global.userId,
+          email: this.email,
+          itemId: resourceId,
+          resourceType: this.resourceType,
+          resourceDetails: null
+        };
+        this.personalizedPlanService.unshareSharedToResources(unsharedElem).subscribe(() => {
+          this.personalizedPlanService.showSuccess(
+            'Shared resource unshared from profile'
+          );
+          this.eventUtilityService.updateSharedResource('RESOURCE UNSHARED');
+        });
 
-     const resourceId = this.guidUtilityService.getGuidFromResourceUrl  (resource.shared.url);
-     const unsharedElem = {
-       oId: this.global.userId,
-       email: resource.shared.sharedTo[0],
-       itemId: resourceId,
-       resourceType: this.resourceType,
-       resourceDetails: null
-     };
-     this.personalizedPlanService.unshareSharedToResources(unsharedElem).subscribe(() => {
-       this.personalizedPlanService.showSuccess(
-         'Shared resource unshared from profile'
-       );
-       this.eventUtilityService.updateSharedResource('RESOURCE UNSHARED');
-     });
+     // const needRemoveAfterUnshared = resource.shared.sharedTo.length === 1;
+     // if ( needRemoveAfterUnshared ) {
+     //    // Remove resource
+     //    const sharedResource = this.selectedPlanDetails.planDetails.topics.find(o => {
+     //      return o.topicId === this.selectedPlanDetails.topic;
+     //    });
+     //
+     //    const removedElem = {
+     //      Oid: this.global.userId,
+     //      itemId: resourceId,
+     //      resourceType: "Plan",
+     //      type: 'shared-resources'
+     //    };
+     //    this.personalizedPlanService.removeSharedResources(removedElem).subscribe(() => {
+     //      this.personalizedPlanService.showSuccess(
+     //        'Shared resource removed from profile'
+     //      );
+     //      this.eventUtilityService.updateSharedResource('RESOURCE REMOVED');
+     //    });
+     //  }
    }
 
    unshareSharedToResources() {

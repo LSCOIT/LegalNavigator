@@ -89,6 +89,14 @@ export class ActionPlansComponent implements OnChanges {
     }
   }
 
+  public isNeedToShowShareTo = (topic) => {
+    return this.isSharedActionPlan && this.showUnshareOption && topic.shared && topic.shared.sharedTo;
+  }
+
+  public isNeedToShowSharedBy = (topic) => {
+    return topic.shared && !this.showUnshareOption;
+  }
+
   getPersonalizedPlan(planDetails): void {
     this.planDetails = planDetails;
     if (!planDetails || planDetails.length === 0) {
@@ -237,5 +245,4 @@ export class ActionPlansComponent implements OnChanges {
       }
     });
   }
-
 }

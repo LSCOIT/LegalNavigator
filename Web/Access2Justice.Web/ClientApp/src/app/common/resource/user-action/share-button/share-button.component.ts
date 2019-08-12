@@ -37,13 +37,13 @@ export class ShareButtonComponent implements OnInit {
     Url: ''
   };
   shareView: any;
-  blank: string = '';
-  permaLink: string = '';
-  showGenerateLink: boolean = true;
+  blank = '';
+  permaLink = '';
+  showGenerateLink = true;
   resourceUrl: string =
     window.location.protocol + '//' + window.location.host + '/share/';
   emptyId: string = '{00000000-0000-0000-0000-000000000000}';
-  @Input() addLinkClass: boolean = false;
+  @Input() addLinkClass = false;
 
   constructor(
     private modalService: BsModalService,
@@ -100,6 +100,7 @@ export class ShareButtonComponent implements OnInit {
   }
 
   savePersonalizationPlan() {
+    debugger;
     if (this.router.url.indexOf('/plan') !== -1) {
       const params = {
         personalizedPlan: this.navigateDataService.getData(),

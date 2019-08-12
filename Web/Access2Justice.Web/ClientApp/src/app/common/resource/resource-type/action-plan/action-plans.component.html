@@ -1,5 +1,11 @@
 <div *ngIf="displaySteps">
   <div *ngFor="let topic of planDetails.topics">
+    <ng-container *ngIf="isNeedToShowShareTo(topic); else mainTemplate">
+      <ng-container *ngFor="let sharedTo of topic.shared.sharedTo">
+          <ng-container *ngTemplateOutlet="mainTemplate context: {sharedtolabel: sharedTo}"  ></ng-container>
+      </ng-container>
+    </ng-container>
+    <ng-template #mainTemplate let-sharedto="sharedtolabel">
     <div class="col-sm-12 box-shadow">
       <div class="col-xs-12 plan-spacing plan-heading">
         <div class="col-xs-11">
@@ -45,11 +51,12 @@
                     [isNeedToRemoveSharedPlan]="isSharedActionPlan"
                   ></app-remove-button>
               </li>
-              <li role="menuitem" *ngIf="showUnshareOption && topic.shared.sharedTo && topic.shared.sharedTo.length>0">
+              <li role="menuitem" *ngIf="isNeedToShowShareTo(topic)">
                   <app-unshare-button
                       class="dropdown-item" [showIcon]="false"
                       [selectedPlanDetails]="selectedPlanDetails"
                       [resourceType]="'Plan'"
+                      [email]="sharedto"
                   ></app-unshare-button>
               </li>
             </ul>
@@ -258,8 +265,9 @@
         </div>
       </div>
       <!--<div class="shared-by" *ngIf="topic.shared">Shared by: {{topic.shared.sharedBy}}</div>-->
-      <div class="shared-by" *ngIf="topic.shared && !showUnshareOption">Shared by: {{topic.shared.sharedBy}}</div>
-      <div class="shared-by" *ngIf="showUnshareOption && topic.shared && topic.shared.sharedTo">Shared to: {{topic.shared.sharedTo[0]}}</div>
+      <div class="shared-by" *ngIf="isNeedToShowSharedBy(topic)">Shared by: {{topic.shared.sharedBy}}</div>
+      <div class="shared-by" *ngIf="isNeedToShowShareTo(topic)">Shared to: {{sharedto}}</div>
     </div>
+    </ng-template>
   </div>
 </div>

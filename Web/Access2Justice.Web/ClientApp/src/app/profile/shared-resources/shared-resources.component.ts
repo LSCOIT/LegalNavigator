@@ -35,16 +35,15 @@ export class SharedResourcesComponent implements OnInit, OnDestroy {
         sharedResources[key].forEach(i => {
           const isSharedPlan = i.topics;
           const resource = isSharedPlan ? i.topics[0] : i;
-          // resource.shared = this.sharedResourcesIds.find(o => {
-          //   if(o.itemId) {
-          //     return o.itemId === i.id;
-          //   } else if(o.id) {
-          //     return o.id === i.id;
-          //   } else if (o.url) {
-          //     return o.url.substring(o.url.length - 36) === i.id;
-          //   }
-          // });
-          resource.shared = this.sharedResourcesIds.find(o => this.guidUtilityService.getGuidFromResourceUrl(o.url) === i.id);
+          resource.shared = this.sharedResourcesIds.find(o => {
+            if (o.itemId) {
+              return o.itemId === i.id;
+            } else if (o.id) {
+              return o.id === i.id;
+            } else if (o.url) {
+              return this.guidUtilityService.getGuidFromResourceUrl(o.url) === i.id;
+            }
+          });
 
           if (isSharedPlan) {
             planDetailTags.topics.push(resource);

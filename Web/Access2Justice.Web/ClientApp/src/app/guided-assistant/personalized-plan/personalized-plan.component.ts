@@ -22,13 +22,13 @@ export class PersonalizedPlanComponent implements OnInit {
   tempTopicsList: Array<PersonalizedPlanTopic> = [];
   planDetails: any = [];
   planDetailTags: any;
-  type: string = "Plan";
-  name: string = "PersonalizedActionPlanPage";
+  type = "Plan";
+  name = "PersonalizedActionPlanPage";
   personalizedPlanContent: PersonalizedPlanDescription;
   staticContent: any;
   staticContentSubcription: any;
   // blobUrl: string = ENV.blobUrl;
-  description: string = "";
+  description = "";
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
@@ -40,7 +40,7 @@ export class PersonalizedPlanComponent implements OnInit {
 
   getTopics(): void {
     this.personalizedPlan = this.navigateDataService.getData();
-    if (this.personalizedPlan != undefined) {
+    if (this.personalizedPlan) {
       this.topics = this.personalizedPlan.topics;
       this.planDetailTags = this.personalizedPlan;
       this.setPlan();

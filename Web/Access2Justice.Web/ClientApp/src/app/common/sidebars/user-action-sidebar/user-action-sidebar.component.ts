@@ -12,8 +12,8 @@ export class UserActionSidebarComponent implements OnInit {
   @Input() showPrint = true;
   @Input() showDownload = true;
   @Input() showSetting = false;
-  @Input() id: string = "";
-  @Input() type: string = "";
+  @Input() id = "";
+  @Input() type = "";
   resourceId: string;
   resourceType: string;
 
