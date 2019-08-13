@@ -48,8 +48,12 @@
 <div class="row">
   <div class="col-sm-12">
     <div *ngFor="let resource of processedResources">
-      <app-resource-card [searchResource]="resource" [personalizedResources]="personalizedResources"
-                         [showRemoveOption]="true"></app-resource-card>
+      <app-resource-card [searchResource]="resource"
+                         [personalizedResources]="personalizedResources"
+                         [showRemoveOption]="true"
+                         [showSharedOptions]="true"
+      >
+      </app-resource-card>
     </div>
   </div>
 </div>

@@ -34,7 +34,7 @@
                                     [sharedToResources]="sharedToItem"
                                     [personalizedResources]="personalizedResources"></app-unshare-button>
               </li>
-              <li role="menuitem" *ngIf="global.showShare && !showUnshareOption">
+              <li role="menuitem" *ngIf="global.showShare && showSharedOptions">
                 <app-share-button class="dropdown-item" [showIcon]="false" [id]="resource.id"
                                   [type]="resource.resourceType" [url]="resource?.url | sanitize"
                                   [webResourceUrl]="resource?.resourceDetails?.url"></app-share-button>
@@ -391,7 +391,7 @@
                                     [sharedToResources]="sharedToItem"
                                     [personalizedResources]="personalizedResources"></app-unshare-button>
               </li>
-              <li role="menuitem" *ngIf="global.showShare && !showUnshareOption">
+              <li role="menuitem" *ngIf="global.showShare && showSharedOptions">
                 <app-share-button class="dropdown-item" [showIcon]="false" [id]="resource.id"
                                   [type]="resource.resourceType" [url]="resource?.url | sanitize"
                                   [webResourceUrl]="resource?.resourceDetails?.url"></app-share-button>
