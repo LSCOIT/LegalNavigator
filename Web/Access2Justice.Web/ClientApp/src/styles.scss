@@ -295,7 +295,8 @@ textarea {
   margin: 0;
 }
 
-#remove {
+#remove,
+#unshare {
   background-color: transparent;
   font-weight: 600;
   padding: 0;
@@ -433,4 +434,13 @@ textarea {
   .panel-heading .edit-location {
     width: auto;
   }
+
+  [fill-width] {
+    width: 100%;
+  }
+
+  [action-button-label]{
+    padding: .25rem 1.5rem;
+  }
+
 }

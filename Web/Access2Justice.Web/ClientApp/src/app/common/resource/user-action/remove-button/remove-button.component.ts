@@ -262,7 +262,7 @@ export class RemoveButtonComponent implements AfterViewInit {
             });
           });
         }
-      })
+      });
     });
-  };
+  }
 }

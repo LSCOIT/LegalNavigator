@@ -52,6 +52,7 @@
             >
               <li role="menuitem" *ngIf="showRemoveOption">
                   <app-remove-button
+                    dropdown-item-fill
                     class="dropdown-item"
                     [selectedPlanDetails]="selectedPlanDetails"
                     [isNeedToRemoveSharedPlan]="isSharedActionPlan"
@@ -59,6 +60,7 @@
               </li>
               <li role="menuitem" *ngIf="isNeedToShowShareTo(topic)">
                   <app-unshare-button
+                      dropdown-item-fill
                       class="dropdown-item" [showIcon]="false"
                       [selectedPlanDetails]="selectedPlanDetails"
                       [resourceType]="'Plan'"

@@ -284,6 +284,10 @@ span.carousel-control .glyphicon-chevron-left,
   text-align: left;
 }
 
+[dropdown-item-fill] {
+  padding: 0 0!important;
+}
+
 .dropdown-menu .dropdown-item:hover {
   -webkit-box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 4px 10px 0 rgba(0, 0, 0, 0.2);
