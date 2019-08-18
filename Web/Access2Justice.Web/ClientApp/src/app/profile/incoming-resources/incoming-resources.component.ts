@@ -25,7 +25,7 @@ export class IncomingResourcesComponent implements OnInit, OnDestroy {
 
   private getIncomingResources(): void {
     this.personalizedPlanService.getUserSavedResources('incoming-resources').
-                        subscribe(incResIds => { this.incomingResourcesIds = incResIds});
+                        subscribe(incResIds => { this.incomingResourcesIds = incResIds;});
     this.personalizedPlanService.getPersonalizedResources('incoming-resources').subscribe(incomingResources => {
 
       this.incomingResources = [];

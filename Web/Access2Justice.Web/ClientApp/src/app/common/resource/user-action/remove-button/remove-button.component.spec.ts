@@ -217,9 +217,9 @@ describe("UnshareButtonComponent", () => {
 
   it("should call removedSavedResource if selected plandetails exists", () => {
     component.resourceId = "d1d5f7a0-f1fa-464f-8da6-c2e7ce1501ef";
-    spyOn(component, "removedSavedResource");
+    spyOn(component, "removeSavedResource");
     component.removeSavedResources();
-    expect(component.removedSavedResource).toHaveBeenCalled();
+    expect(component.removeSavedResource).toHaveBeenCalled();
   });
 
   it("should call createRemovePlanTag, if selected plandetails exists", () => {
@@ -265,7 +265,7 @@ describe("UnshareButtonComponent", () => {
     component.personalizedResources = { resources: mockSavedResources };
     spyOn(component, "removeUserSavedResourceFromProfile");
     spyOn(component, "saveResourceToProfile");
-    component.removedSavedResource();
+    component.removeSavedResource();
     expect(component.removeUserSavedResourceFromProfile).toHaveBeenCalledWith(
       mockSavedResources,
       true
@@ -277,7 +277,7 @@ describe("UnshareButtonComponent", () => {
     component.personalizedResources = { webResources: mockSavedResources };
     spyOn(component, "removeUserSavedResourceFromProfile");
     spyOn(component, "saveResourceToProfile");
-    component.removedSavedResource();
+    component.removeSavedResource();
     expect(component.removeUserSavedResourceFromProfile).toHaveBeenCalledWith(
       mockSavedResources,
       false
@@ -297,7 +297,7 @@ describe("UnshareButtonComponent", () => {
     component.personalizedResources = { topics: mockSavedResources };
     spyOn(component, "removeUserSavedResourceFromProfile");
     spyOn(component, "saveResourceToProfile");
-    component.removedSavedResource();
+    component.removeSavedResource();
     expect(component.removeUserSavedResourceFromProfile).toHaveBeenCalledWith(
       mockSavedResources,
       false

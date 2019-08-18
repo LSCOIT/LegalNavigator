@@ -27,6 +27,7 @@ export class RemoveButtonComponent implements AfterViewInit {
   @Input() sharedToResources;
   @Input() isNeedToRemoveSharedPlan;
   @Input() isNeedRemoveIncomingPlan;
+  @Input() isNeedRemoveIncomingResource;
 
   removeResource: SavedResource;
   profileResources: ProfileResources = {oId: '', resourceTags: [], type: ''};
@@ -59,8 +60,10 @@ export class RemoveButtonComponent implements AfterViewInit {
       this.removeSharedResources();
     } else if (this.resourceId && this.sharedToResources) {
       this.removeSharedToResources();
-    } else if (this.resourceId) {
-      this.removedSavedResource();
+    } else if (this.resourceId && !this.isNeedRemoveIncomingResource) {
+      this.removeSavedResource();
+    } else if (this.resourceId && this.isNeedRemoveIncomingResource) {
+      this.removeIncomingResource();
     }
   }
 
@@ -104,7 +107,7 @@ export class RemoveButtonComponent implements AfterViewInit {
     }
   }
 
-  removedSavedResource() {
+  removeSavedResource() {
     this.removeResource = {itemId: '', resourceType: '', resourceDetails: {}, url: ''};
     this.profileResources.resourceTags = [];
     if (this.personalizedResources.resources) {
@@ -276,6 +279,22 @@ export class RemoveButtonComponent implements AfterViewInit {
       itemId: resourceId,
       resourceType: "Plan",
       sharedBy: sharedBy || 'katana_2w@ukr.net',
+      type: 'incoming-resources'
+    };
+    this.personalizedPlanService.removeSharedResources(removedElem).subscribe(() => {
+      this.personalizedPlanService.showSuccess(
+        'Incoming resource removed from profile'
+      );
+      this.eventUtilityService.updateSharedResource('RESOURCE REMOVED');
+    });
+  }
+
+  private removeIncomingResource() {
+    const removedElem = {
+      Oid: this.global.userId,
+      itemId: this.resourceId,
+      resourceType: this.resourceType,
+      sharedBy: '' || 'katana_2w@ukr.net',
       type: 'incoming-resources'
     };
     this.personalizedPlanService.removeSharedResources(removedElem).subscribe(() => {

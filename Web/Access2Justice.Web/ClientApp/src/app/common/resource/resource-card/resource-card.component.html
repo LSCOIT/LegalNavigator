@@ -382,7 +382,7 @@
               alt="Menu"
             />
             <ul id="dropdown-disabled-item" *dropdownMenu class="dropdown-menu dropdown-menu-right" role="menu">
-              <li role="menuitem" *ngIf="showUnshareOption">
+              <li role="menuitem" *ngIf="showUnshareOption && resource?.shared?.sharedBy">
                 <app-unshare-button class="dropdown-item" [showIcon]="false"
                                     [resourceId]="resource.id"
                                     [url]="resource?.url | sanitize"
@@ -404,7 +404,9 @@
                 <app-remove-button class="dropdown-item" [resourceId]="resource.id" [resourceType]="resource.resourceType"
                                    [sharedResources]="sharedResources"
                                    [sharedToResources]="sharedToResources"
-                                   [personalizedResources]="personalizedResources"></app-remove-button>
+                                   [personalizedResources]="personalizedResources"
+                                   [isNeedRemoveIncomingResource]="isIncomingResource"
+                ></app-remove-button>
               </li>
             </ul>
           </div>

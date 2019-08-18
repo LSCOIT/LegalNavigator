@@ -19,6 +19,7 @@ export class ResourceCardComponent implements OnInit {
   @Input() sharedToResources: boolean;
   @Input() showUnshareOption: boolean;
   @Input() showSharedOptions: boolean;
+  @Input() isIncomingResource: boolean;
   url: any;
   urlOrigin: string;
   applicationUrl: any = window.location.origin;
