@@ -188,7 +188,7 @@ export class ActionPlansComponent implements OnChanges {
     this.modalRef = this.modalService.show(modalTemplate);
   }
 
-  planTagOptions(topicId) {
+  planTagOptions(topic) {
     this.fillTopics();
     this.getRemovePlanDetails();
     this.planTopics = [];
@@ -206,7 +206,7 @@ export class ActionPlansComponent implements OnChanges {
     };
     this.selectedPlanDetails = {
       planDetails: this.personalizedPlan,
-      topic: topicId
+      topic: topic.topicId
     };
   }
 

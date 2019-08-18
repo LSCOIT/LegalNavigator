@@ -157,6 +157,10 @@ export class PersonalizedPlanService {
     return this.http.post(api.removeSharedResources, resource, httpOptions);
   }
 
+  removeIncomingResources(resource: RemovedElem){
+    //return this.http.delete(api.removeSharedResources, resource, httpOptions);
+  }
+
   unshareSharedToResources(resource: RemovedElem) {
     return this.http.post(api.unshareSharedToResources, resource, httpOptions);
   }

@@ -14,7 +14,6 @@ import {GuidUtilityService} from "../../../services/guid-utility.service";
   selector: 'app-remove-button',
   templateUrl: './remove-button.component.html',
   styleUrls: ['./remove-button.component.css'],
-  // tslint:disable-next-line
   host: {
     '[class.app-resource-button]': 'true',
   }
@@ -27,6 +26,7 @@ export class RemoveButtonComponent implements AfterViewInit {
   @Input() sharedResources;
   @Input() sharedToResources;
   @Input() isNeedToRemoveSharedPlan;
+  @Input() isNeedRemoveIncomingPlan;
 
   removeResource: SavedResource;
   profileResources: ProfileResources = {oId: '', resourceTags: [], type: ''};
@@ -47,10 +47,12 @@ export class RemoveButtonComponent implements AfterViewInit {
   }
 
   removeSavedResources() {
-    if (this.selectedPlanDetails && !this.isNeedToRemoveSharedPlan) {
+    if (this.selectedPlanDetails && !this.isNeedToRemoveSharedPlan && !this.isNeedRemoveIncomingPlan) {
       this.removeSavedPlan();
-    } else if (this.selectedPlanDetails && this.isNeedToRemoveSharedPlan) {
+    } else if (this.selectedPlanDetails && this.isNeedToRemoveSharedPlan && !this.isNeedRemoveIncomingPlan) {
       this.removeSharedPlan();
+    } else if (this.selectedPlanDetails && !this.isNeedToRemoveSharedPlan && this.isNeedRemoveIncomingPlan) {
+      this.removeIncomingPlan();
     }
 
     if (this.resourceId && this.sharedResources) {
@@ -263,6 +265,24 @@ export class RemoveButtonComponent implements AfterViewInit {
           });
         }
       });
+    });
+  }
+
+  removeIncomingPlan = () => {
+    const resourceId =  this.selectedPlanDetails.planDetails.topics["0"].shared.itemId;
+    const sharedBy =  this.selectedPlanDetails.planDetails.topics[0].shared.sharedBy;
+    const removedElem = {
+      Oid: this.global.userId,
+      itemId: resourceId,
+      resourceType: "Plan",
+      sharedBy: sharedBy || 'katana_2w@ukr.net',
+      type: 'incoming-resources'
+    };
+    this.personalizedPlanService.removeSharedResources(removedElem).subscribe(() => {
+      this.personalizedPlanService.showSuccess(
+        'Incoming resource removed from profile'
+      );
+      this.eventUtilityService.updateSharedResource('RESOURCE REMOVED');
     });
   }
 }

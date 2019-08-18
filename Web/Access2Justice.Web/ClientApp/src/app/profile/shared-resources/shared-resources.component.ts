@@ -27,6 +27,7 @@ export class SharedResourcesComponent implements OnInit, OnDestroy {
   private getSharedResources(): void {
     this.personalizedPlanService.getUserSavedResources('shared-resources').subscribe(incResIds => { this.sharedResourcesIds = incResIds; });
     this.personalizedPlanService.getPersonalizedResources('shared-resources').subscribe(sharedResources => {
+
       this.sharedResources = [];
       const planDetailTags = {
         topics: []
@@ -44,6 +45,10 @@ export class SharedResourcesComponent implements OnInit, OnDestroy {
               return this.guidUtilityService.getGuidFromResourceUrl(o.url) === i.id;
             }
           });
+
+          if (resource.shared && resource.shared.isShared === true) {
+            resource.topicId = this.guidUtilityService.getGuidFromResourceUrl(resource.shared.url);
+          }
 
           if (isSharedPlan) {
             planDetailTags.topics.push(resource);
