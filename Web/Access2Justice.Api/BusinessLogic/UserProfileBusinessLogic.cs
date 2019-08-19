@@ -471,11 +471,7 @@ namespace Access2Justice.Api.BusinessLogic
                         var resourceToRemove = userResources.Resources.FirstOrDefault(
                             r =>
                                 r.ResourceId == resource.ResourceId &&
-                                r.ResourceType == resource.ResourceType &&
-                                (
-                                    r.SharedFromResourceId != Guid.Empty && r.SharedFromResourceId == userProfile.SharedResourceId
-                                    || r.SharedFromResourceId == Guid.Empty && r.SharedBy == resource.SharedBy
-                                )
+                                r.ResourceType == resource.ResourceType && r.SharedBy == resource.SharedBy
                         );
 
                         if (resourceToRemove != null)

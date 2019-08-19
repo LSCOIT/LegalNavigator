@@ -290,11 +290,15 @@ export class RemoveButtonComponent implements AfterViewInit {
   }
 
   private removeIncomingResource() {
+
+   const resource = this.personalizedResources.find(o => {
+      return o.id === this.resourceId;
+    });
     const removedElem = {
       Oid: this.global.userId,
       itemId: this.resourceId,
       resourceType: this.resourceType,
-      sharedBy: '' || 'katana_2w@ukr.net',
+      sharedBy: resource.shared.sharedBy || 'katana_2w@ukr.net',
       type: 'incoming-resources'
     };
     this.personalizedPlanService.removeSharedResources(removedElem).subscribe(() => {
