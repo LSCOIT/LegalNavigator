@@ -285,7 +285,8 @@ span.carousel-control .glyphicon-chevron-left,
 }
 
 [dropdown-item-fill] {
-  padding: 0 0!important;
+  padding: 0 0.5em!important;
+  font-weight: 800!important;
 }
 
 .dropdown-menu .dropdown-item:hover {

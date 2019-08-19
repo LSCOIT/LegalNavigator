@@ -302,6 +302,16 @@ textarea {
   padding: 0;
 }
 
+[fill-width] {
+  width: 100%;
+}
+
+[action-button-label]{
+  padding: .5rem 0.3rem!important;
+  font-weight: 600;
+  font-size: 16px;
+}
+
 @media only screen and (min-width: 540px) {
   .modal-dialog {
     height: auto;
@@ -433,14 +443,6 @@ textarea {
 
   .panel-heading .edit-location {
     width: auto;
-  }
-
-  [fill-width] {
-    width: 100%;
-  }
-
-  [action-button-label]{
-    padding: .25rem 0.0rem;
   }
 
 }

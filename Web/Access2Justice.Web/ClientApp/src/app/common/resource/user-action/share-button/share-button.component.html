@@ -1,7 +1,7 @@
-<div id="share" *ngIf="global.showShare" class="user-button" [ngClass]="{ link: addLinkClass, '': !addLinkClass }"
+<div id="share" *ngIf="global.showShare" class="user-button"  action-button-label [ngClass]="{ link: addLinkClass, '': !addLinkClass }"
         tabindex="0">
   <img *ngIf="showIcon" src="./assets/images/small-icons/share.svg" class="nav-icon" aria-hidden="true"/>
-  Share
+  &nbsp;Share
 </div>
 
 <ng-template #template>
