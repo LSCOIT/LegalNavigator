@@ -14,7 +14,7 @@ namespace Access2Justice.Api.Tests.TestData
                    'ParentTopicId':'','keywords':'Eviction','location':[{'state':'Hawaii','county':'Kalawao County','city':'Kalawao',
                     'zipCode':'96742'},{'zipCode':'96741'},{'state':'Hawaii','county':'Honolulu County','city':'Honolulu'},{'state':
                    'Hawaii','city':'Hawaiian Beaches'},{'state':'Hawaii','city':'Haiku-Pauwela'},{'state':'Alaska'}],'jsonContent':'',
-                   'icon':'./assets/images/topics/topic14.png','createdBy':'','createdTimeStamp':'','modifiedBy':'','modifiedTimeStamp':'
+                   'icon':'./assets/images/topics/topic14.png','createdBy':'','createdTimeStamp':'10/10/2019','modifiedBy':'','modifiedTimeStamp':'10/10/2019
                    ','_rid':'mwoSALHtpAEBAAAAAAAAAA==','_self':'dbs/mwoSAA==/colls/mwoSALHtpAE=/docs/mwoSALHtpAEBAAAAAAAAAA==/',
                     '_etag':'\'05008e57-0000-0000-0000-5b0797c10000\'','_attachments':'attachments/','_ts':1527224257}]");
 		public static List<dynamic> resourcesData =

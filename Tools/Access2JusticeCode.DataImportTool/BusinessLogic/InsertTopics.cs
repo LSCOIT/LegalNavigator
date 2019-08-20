@@ -37,7 +37,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                     {
                         dynamic id = null; string name = string.Empty; string keywords = string.Empty; string organizationalUnit = string.Empty;
                         string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
-                        string overview = string.Empty; string icon = string.Empty;
+                        string overview = string.Empty; string icon = string.Empty; string delete = "N"; string ranking = "1";
                         List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
                         List<Shared.Models.Location> locations = new List<Shared.Models.Location>();
                         string topicIdCell = string.Empty;
@@ -166,6 +166,16 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                         {
                                             icon = cellActualValue;
                                         }
+
+                                        else if (val.EndsWith("Delete", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            delete = cellActualValue;
+                                        }
+
+                                        else if (val.EndsWith("Ranking", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            ranking = cellActualValue;
+                                        }
                                     }
                                 }
                             }
@@ -186,7 +196,9 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                 Location = locations,
                                 Icon = icon,
                                 CreatedBy = Constants.Admin,
-                                ModifiedBy = Constants.Admin
+                                ModifiedBy = Constants.Admin,
+                                Delete = delete,
+                                Ranking = InsertResources.GetRanking(ranking)
                             };
                             topic.Validate();
                             topicsList.Add(topic);

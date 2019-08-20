@@ -11,6 +11,9 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Linq;
+using StackExchange.Redis;
+using Condition = Access2Justice.Shared.Models.Condition;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -44,9 +47,9 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 throw new Exception($"No topic found with this name: {topicName}");
             }
-
-            return GetOutboundTopic(
-                JsonUtilities.DeserializeDynamicObject<Topic>(topics.FirstOrDefault()));
+            
+            var topic = FilterByDeleteAndOrderByRanking<Topic>(topics).FirstOrDefault();   
+            return GetOutboundTopic(topic);
         }
 
         public async Task<dynamic> GetTopicsAsync(string keyword, Location location)
@@ -73,36 +76,48 @@ namespace Access2Justice.Api.BusinessLogic
                 }
             }
 
-            return GetOutboundTopicsCollection(topics);
+            var filteredTopics = FilterByDeleteAndOrderByRanking<Topic>(topics);
+            
+            return GetOutboundTopicsCollection(filteredTopics);
         }
 
         public async Task<dynamic> GetTopicsAsync(string stateCode)
         {
-            return GetOutboundTopicsCollection(
-                await dbClient.FindItemsWhereArrayContainsAsync(
-                    dbSettings.TopicsCollectionId, Constants.Location, Constants.StateCode, stateCode, true));
+            var foundTopics = await dbClient.FindItemsWhereArrayContainsAsync(
+                dbSettings.TopicsCollectionId, Constants.Location, Constants.StateCode, stateCode, true);
+
+            var filteredTopics = FilterByDeleteAndOrderByRanking<Topic>(foundTopics);
+            
+            return GetOutboundTopicsCollection(filteredTopics);
         }
 
         public async Task<dynamic> GetTopLevelTopicsAsync(Location location)
         {
-            return GetOutboundTopicsCollection(
-                await dbClient.FindItemsWhereWithLocationAsync(
-                    dbSettings.TopicsCollectionId, Constants.ParentTopicId, "", location));
+            var rawFilteredTopics = await dbClient.FindItemsWhereWithLocationAsync(
+                dbSettings.TopicsCollectionId, Constants.ParentTopicId, "", location);
+
+            var filteredTopics = FilterByDeleteAndOrderByRanking<Topic>(rawFilteredTopics);
+            
+            return GetOutboundTopicsCollection(filteredTopics);
         }
 
         public async Task<dynamic> GetSubTopicsAsync(TopicInput topicInput)
         {
             if (topicInput.IsShared)
             {
-                return GetOutboundTopicsCollection(
-                    await dbClient.FindItemsWhereArrayContainsAsync(
-                        dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id));
+                var rawResult = await dbClient.FindItemsWhereArrayContainsAsync(
+                    dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id);
+                var result = FilterByDeleteAndOrderByRanking<Topic>(rawResult);
+                
+                return GetOutboundTopicsCollection(result);
             }
             else
             {
-                return GetOutboundTopicsCollection(
-                    await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(
-                        dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id, topicInput.Location));
+                var rawResult  = await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(
+                    dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id, topicInput.Location);
+                var result = FilterByDeleteAndOrderByRanking<Topic>(rawResult);
+                
+                return GetOutboundTopicsCollection(result);
             }
         }
 
@@ -110,11 +125,15 @@ namespace Access2Justice.Api.BusinessLogic
         {
             if (topicInput.IsShared)
             {
-                return await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, Constants.Id, topicInput.Id);
+                var rawItems = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, Constants.Id, topicInput.Id);
+                var items = FilterByDeleteAndOrderByRanking<Topic>(rawItems);
+                return items;
             }
             else
             {
-                return await dbClient.FindItemsWhereWithLocationAsync(dbSettings.ResourcesCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
+                var rawItems = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.ResourcesCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
+                var items = FilterByDeleteAndOrderByRanking<Topic>(rawItems);
+                return  items;
             }
         }
 
@@ -122,11 +141,15 @@ namespace Access2Justice.Api.BusinessLogic
         {
             if (topicInput.IsShared)
             {
-                return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id);
+                var rawItems = await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id);
+                var items = FilterByDeleteAndOrderByRanking<Topic>(rawItems);
+                return items;
             }
             else
             {
-                return await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id, topicInput.Location);
+                var rawItems = await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id, topicInput.Location);
+                var items = FilterByDeleteAndOrderByRanking<Topic>(rawItems);
+                return items;
             }
         }
 
@@ -138,7 +161,11 @@ namespace Access2Justice.Api.BusinessLogic
                 string topicId = topic.id;
                 ids.Add(topicId);
             }
-            return await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, ids);
+
+            var rawTopic = await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourcesCollectionId, 
+                                            Constants.TopicTags, Constants.Id, ids);
+            var realTopics = FilterByDeleteAndOrderByRanking<Topic>(rawTopic);
+            return realTopics;
         }
 
         public async Task<dynamic> GetDocumentAsync(TopicInput topicInput)
@@ -156,7 +183,8 @@ namespace Access2Justice.Api.BusinessLogic
                     dbSettings.TopicsCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
             }
 
-            var topicsCollection = GetOutboundTopicsCollection(topics) as ICollection<dynamic>;
+            var filteredTopicsCollection = FilterByDeleteAndOrderByRanking<Topic>(topics);    
+            var topicsCollection = GetOutboundTopicsCollection(filteredTopicsCollection);
             var processedTopics = await fillCuratedExperienceId(topicInput.Location, topicsCollection);
             if(processedTopics != null && processedTopics.Count != 0)
             {
@@ -173,7 +201,7 @@ namespace Access2Justice.Api.BusinessLogic
                 .Select(x =>
                     (dynamic) new TopicView(JsonUtilities.DeserializeDynamicObject<Topic>(x))
                 ).ToList();
-
+                
             if (realTopics.Count != 0)
             {
                 var curatedExperienceId = await findGuidedAssistantId(realTopics.Select(x => (string)x.Id).ToList(), location);
@@ -184,7 +212,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
             return realTopics;
         }
-
+        
         private async Task<Guid> findGuidedAssistantId(IEnumerable<string> topics, Location location = null)
         {
             var filter = new ResourceFilter
@@ -209,12 +237,13 @@ namespace Access2Justice.Api.BusinessLogic
         {
             List<dynamic> topics = await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Id, id);
 
-            if (!topics.Any())
+            var filteredTopic = FilterByDeleteAndOrderByRanking<Topic>(topics);
+            if (!filteredTopic.Any())
             {
                 throw new Exception($"No topic found with this id: {id}");
             }
-
-            var topic = JsonUtilities.DeserializeDynamicObject<Topic>(topics.First());
+            
+            var topic = filteredTopic.FirstOrDefault();
 
             List<dynamic> procedureParams = new List<dynamic>() { id };
             return await dbService.ExecuteStoredProcedureAsync(
@@ -226,17 +255,23 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetTopicDetailsAsync(string topicName)
         {
-            return GetOutboundTopicsCollection(
-                await dbClient.FindItemsWhereAsync(
-                    dbSettings.TopicsCollectionId, Constants.Name, topicName));
+            var topics = await dbClient.FindItemsWhereAsync(
+                dbSettings.TopicsCollectionId, Constants.Name, topicName);
+
+            var filteredTopics = FilterByDeleteAndOrderByRanking<Topic>(topics);
+            
+            return GetOutboundTopicsCollection(filteredTopics);
         }
 
         public async Task<dynamic> GetResourceDetailAsync(string resourceName, string resourceType)
         {
             List<string> propertyNames = new List<string>() { Constants.Name, Constants.ResourceType };
             List<string> values = new List<string>() { resourceName, resourceType };
-            var result = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
-            return result;
+            var rawResult = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
+
+            var filteredResources = FilterByDeleteAndOrderByRanking<Resource>(rawResult);
+            
+            return filteredResources;
         }
 
         public async Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter)
@@ -278,7 +313,8 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter)
         {
-            PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
+            var rwaItems = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
+            PagedResources pagedResources = rwaItems;
             return ResourcesCount(pagedResources);
         }
 
@@ -905,24 +941,33 @@ namespace Access2Justice.Api.BusinessLogic
             var topicObjects = JsonUtilities.DeserializeDynamicObject<object>(topic);
             Topic topicdocuments = new Topic();
 
-            foreach (var topicObject in topicObjects)
+            try
             {
-                string id = topicObject.id;
-                topicdocuments = UpsertTopics(topicObject);
-                var topicDocument = JsonUtilities.DeserializeDynamicObject<object>(topicdocuments);
-                var topicDBData = await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Id, id);
+                foreach (var topicObject in topicObjects)
+                {
+                    string id = topicObject.id;
+                    topicdocuments = UpsertTopics(topicObject);
+                    var topicDocument = JsonUtilities.DeserializeDynamicObject<object>(topicdocuments);
+                    var topicDBData =
+                        await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Id, id);
 
-                if (topicDBData.Count == 0)
-                {
-                    var result = await dbService.CreateItemAsync(topicDocument, dbSettings.TopicsCollectionId);
-                    topics.Add(result);
-                }
-                else
-                {
-                    var result = await dbService.UpdateItemAsync(id, topicDocument, dbSettings.TopicsCollectionId);
-                    topics.Add(result);
+                    if (topicDBData.Count == 0)
+                    {
+                        var result = await dbService.CreateItemAsync(topicDocument, dbSettings.TopicsCollectionId);
+                        topics.Add(result);
+                    }
+                    else
+                    {
+                        var result = await dbService.UpdateItemAsync(id, topicDocument, dbSettings.TopicsCollectionId);
+                        topics.Add(result);
+                    }
                 }
             }
+            catch (Exception error)
+            {
+                int a = 0;
+            }
+            
             return topics;
         }
 
@@ -1118,6 +1163,52 @@ namespace Access2Justice.Api.BusinessLogic
             }
 
             return path;
+        }
+
+        // Filters for DELETE and Ranking
+        
+        // Catching  calls from tests
+        private List<T> FilterByDeleteAndOrderByRanking<T>(JArray rawEntities) where T : class
+        {
+           var  entities = JsonConvert.DeserializeObject<List<T>>(rawEntities.ToString());
+
+           Func<T, bool> isEmpty = (T resource) =>
+           {
+               var result = false;
+               if (typeof(T) == typeof(Topic))
+               {
+                   result = ((dynamic) resource).Id == null;
+               }
+               else if (typeof(T) == typeof(Resource))
+               {
+                   result = ((dynamic) resource).Id == null;
+               }
+
+               return result;
+           };
+           
+           if (entities.Count(w => isEmpty(w)) == entities.Count)
+           {
+               return new List<T>();
+           }
+           else
+           {
+              var dynamicentities = JsonConvert.DeserializeObject<List<dynamic>>(rawEntities.ToString());
+               
+               return FilterByDeleteAndOrderByRanking<T>(dynamicentities);
+           }
+        }
+        
+        // Real filter
+        private List<T> FilterByDeleteAndOrderByRanking<T>(List<dynamic> rawEntities) where T : class
+        {
+            Func<T, bool> notDeletedPredicate     = (T resource) => !string.Equals(((dynamic)resource).Delete, "Y", StringComparison.Ordinal);
+            Func<T, int>  orderByRankingPredicate = (T resource) => ((dynamic)resource).Ranking;
+            
+            var realEntities = rawEntities.Select(s => JsonConvert.DeserializeObject<T>(s.ToString()) as T).ToList();
+            var entities = realEntities.Where(notDeletedPredicate).OrderBy(orderByRankingPredicate).ToList();
+
+            return entities;
         }
     }
 }

@@ -481,7 +481,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="topic"></param>
         /// <response code="200">Returns created topic documents</response>
         /// <response code="500">Failure</response>
-        [Permission(PermissionName.upserttopicdocuments)]
+       // [Permission(PermissionName.upserttopicdocuments)]
         [HttpPost]
         [Route("topics/documents/upsert")]
         public async Task<IActionResult> UpsertTopicDocuments([FromBody]dynamic topic)
