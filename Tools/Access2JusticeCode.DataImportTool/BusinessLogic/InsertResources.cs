@@ -20,7 +20,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
         string name, resourceCategory, description, url, resourceType, state, county, city, zipcode = string.Empty;
         string overview, address, telephone, eligibilityInformation, specialties, qualifications, businessHours = string.Empty;
         string organizationName, reviewerFullName, reviewerTitle, reviewText, reviewerImage = string.Empty;
-        string articleName, headline, content, organizationalUnit = string.Empty;
+        string articleName, headline, content, organizationalUnit = string.Empty; string delete = "N"; string ranking = "1";
         List<TopicTag> topicTagIds = null;
         List<Shared.Models.Location> locations = null;
         List<string> orgNameList = new List<string>();
@@ -167,7 +167,10 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             OrganizationalUnit = organizationalUnit,
                                             Location = locations,
                                             CreatedBy = Constants.Admin,
-                                            ModifiedBy = Constants.Admin
+                                            ModifiedBy = Constants.Admin,
+                                            Delete = delete,
+                                            Ranking = GetRanking(ranking)
+
                                         };
                                         form.Validate();
                                         ResourcesList.Add(form);
@@ -194,7 +197,9 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             Qualifications = qualifications,
                                             BusinessHours = businessHours,
                                             CreatedBy = Constants.Admin,
-                                            ModifiedBy = Constants.Admin
+                                            ModifiedBy = Constants.Admin,
+                                            Delete = delete,
+                                            Ranking = GetRanking(ranking)
                                         };
                                         organization.Validate();
                                         organizationsList.Add(organization);
@@ -222,7 +227,9 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             Location = locations,
                                             Overview = overview,
                                             CreatedBy = Constants.Admin,
-                                            ModifiedBy = Constants.Admin
+                                            ModifiedBy = Constants.Admin,
+                                            Delete = delete,
+                                            Ranking = GetRanking(ranking)
                                         };
                                         article.Validate();
                                         articlesList.Add(article);
@@ -250,7 +257,9 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             Location = locations,
                                             Overview = overview,
                                             CreatedBy = Constants.Admin,
-                                            ModifiedBy = Constants.Admin
+                                            ModifiedBy = Constants.Admin,
+                                            Delete = delete,
+                                            Ranking = GetRanking(ranking)
                                         };
                                         video.Validate();
                                         ResourcesList.Add(video);
@@ -268,7 +277,9 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             OrganizationalUnit = organizationalUnit,
                                             Location = locations,
                                             CreatedBy = Constants.Admin,
-                                            ModifiedBy = Constants.Admin
+                                            ModifiedBy = Constants.Admin,
+                                            Delete = delete,
+                                            Ranking = GetRanking(ranking)
                                         };
                                         additionalReading.Validate();
                                         ResourcesList.Add(additionalReading);
@@ -287,7 +298,9 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             OrganizationalUnit = organizationalUnit,
                                             Location = locations,
                                             CreatedBy = Constants.Admin,
-                                            ModifiedBy = Constants.Admin
+                                            ModifiedBy = Constants.Admin,
+                                            Delete = delete,
+                                            Ranking = GetRanking(ranking)
                                         };
                                         relatedLink.Validate();
                                         ResourcesList.Add(relatedLink);
@@ -409,6 +422,8 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             organizationalUnit = string.Empty;
             organizationName = string.Empty;
             reviewText = string.Empty;
+            delete = "N";
+            ranking = "1";
         }
         private static Spreadsheet.SharedStringItem GetSharedStringItemById(WorkbookPart workbookPart, int id)
         {
@@ -437,6 +452,17 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                 default:
                     return string.Empty;
             }
+        }
+
+        public static int GetRanking(string ranking)
+        {
+            var isRankingCorrect = int.TryParse(ranking, out var rank);
+            if (!isRankingCorrect)
+            {
+                throw new InvalidCastException("Ranking must be a number.");
+            }
+
+            return rank;
         }
 
         private void UpdateFormData(IEnumerable<string> keyValue, string cellActualValue, string resourceType)
@@ -515,6 +541,16 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                 {
                     overview = InsertTopics.FormatData(cellActualValue);
                 }
+            }
+
+            else if (val.EndsWith("Delete", StringComparison.CurrentCultureIgnoreCase))
+            {
+                delete = cellActualValue;
+            }
+
+            if (val.EndsWith("Ranking", StringComparison.CurrentCultureIgnoreCase))
+            {
+                ranking = cellActualValue;
             }
 
             if (resourceType == Constants.OrganizationResourceType)
@@ -726,5 +762,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             }
             return correctHeader;
         }
+
+
     }
 }

@@ -60,6 +60,13 @@ namespace Access2Justice.Shared.Models
         [JsonProperty("nsmiCode", NullValueHandling = NullValueHandling.Ignore)]
         public string NsmiCode { get; set; }
 
+        [JsonProperty(PropertyName = "delete")]
+        [Range(typeof(string), "N", "Y", ErrorMessage = "Delete must be a \"N\" or \"Y\"")]
+        public string Delete { get; set; } = "N";
+
+        [JsonProperty(PropertyName = "ranking")]
+        public int Ranking { get; set; } = 1;
+
         public void Validate()
         {
             ValidationContext context = new ValidationContext(this, serviceProvider: null, items: null);
