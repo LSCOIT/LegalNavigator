@@ -1083,21 +1083,39 @@ namespace Access2Justice.Api.BusinessLogic
         {
             if (topics != null)
             {
-                var listOfDynamic = topics as List<dynamic>;
-
-                if (listOfDynamic != null &&
-                    listOfDynamic.Any())
+                var listOfTopics = topics as List<Topic>;
+                if (listOfTopics != null)
                 {
-                    var preparedTopics = new List<dynamic>();
-
-                    foreach(var rawTopic in listOfDynamic)
+                    if (listOfTopics.Any())
                     {
-                        preparedTopics.Add(
-                            GetOutboundTopic(
-                                JsonUtilities.DeserializeDynamicObject<Topic>(rawTopic)));
-                    }
+                        var preparedTopics = new List<dynamic>();
 
-                    topics = preparedTopics;
+                        foreach (var topic in listOfTopics)
+                        {
+                            preparedTopics.Add(GetOutboundTopic(topic));
+                        }
+
+                        topics = preparedTopics;
+                    }
+                }
+                else
+                {
+                    var listOfDynamic = topics as List<dynamic>;
+
+                    if (listOfDynamic != null &&
+                        listOfDynamic.Any())
+                    {
+                        var preparedTopics = new List<dynamic>();
+
+                        foreach (var rawTopic in listOfDynamic)
+                        {
+                            preparedTopics.Add(
+                                GetOutboundTopic(
+                                    JsonUtilities.DeserializeDynamicObject<Topic>(rawTopic)));
+                        }
+
+                        topics = preparedTopics;
+                    }
                 }
             }
 
