@@ -6,6 +6,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --port=5150",
+    "start:local-dev": "ng serve --configuration=local-dev",
     "build": "ng build",
     "build:dev": "ng build --configuration=dev",
     "build:stage": "ng build --configuration=stage",

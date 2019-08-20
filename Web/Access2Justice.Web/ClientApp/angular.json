@@ -30,6 +30,14 @@
             ]
           },
           "configurations": {
+            "local-dev": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environment/index.ts",
+                  "with": "src/environment/environment.local-dev.ts"
+                }
+              ]
+            },
             "dev": {
               "optimization": true,
               "outputHashing": "all",
@@ -89,6 +97,9 @@
             "browserTarget": "Access2Justice.Web:build"
           },
           "configurations": {
+            "local-dev": {
+              "browserTarget": "Access2Justice.Web:build:local-dev"
+            },
             "production": {
               "browserTarget": "Access2Justice.Web:build:production"
             }
