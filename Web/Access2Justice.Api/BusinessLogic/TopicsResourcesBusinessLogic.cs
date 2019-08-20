@@ -108,7 +108,7 @@ namespace Access2Justice.Api.BusinessLogic
                 var rawResult = await dbClient.FindItemsWhereArrayContainsAsync(
                     dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id);
                 var result = FilterByDeleteAndOrderByRanking<Topic>(rawResult);
-                
+
                 return GetOutboundTopicsCollection(result);
             }
             else
@@ -116,7 +116,7 @@ namespace Access2Justice.Api.BusinessLogic
                 var rawResult  = await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(
                     dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id, topicInput.Location);
                 var result = FilterByDeleteAndOrderByRanking<Topic>(rawResult);
-                
+
                 return GetOutboundTopicsCollection(result);
             }
         }
@@ -1166,42 +1166,46 @@ namespace Access2Justice.Api.BusinessLogic
         }
 
         // Filters for DELETE and Ranking
-        
+
         // Catching  calls from tests
         private List<T> FilterByDeleteAndOrderByRanking<T>(JArray rawEntities) where T : class
         {
-           var  entities = JsonConvert.DeserializeObject<List<T>>(rawEntities.ToString());
+            var entities = JsonConvert.DeserializeObject<List<T>>(rawEntities.ToString());
 
-           Func<T, bool> isEmpty = (T resource) =>
-           {
-               var result = false;
-               if (typeof(T) == typeof(Topic))
-               {
-                   result = ((dynamic) resource).Id == null;
-               }
-               else if (typeof(T) == typeof(Resource))
-               {
-                   result = ((dynamic) resource).Id == null;
-               }
+            Func<T, bool> isEmpty = (T resource) =>
+            {
+                var result = false;
+                if (typeof(T) == typeof(Topic))
+                {
+                    result = ((dynamic)resource).Id == null;
+                }
+                else if (typeof(T) == typeof(Resource))
+                {
+                    result = ((dynamic)resource).ResourceId == null;
+                }
 
-               return result;
-           };
-           
-           if (entities.Count(w => isEmpty(w)) == entities.Count)
-           {
-               return new List<T>();
-           }
-           else
-           {
-              var dynamicentities = JsonConvert.DeserializeObject<List<dynamic>>(rawEntities.ToString());
-               
-               return FilterByDeleteAndOrderByRanking<T>(dynamicentities);
-           }
+                return result;
+            };
+
+            if (entities.Count(w => isEmpty(w)) == entities.Count)
+            {
+                return new List<T>();
+            }
+            else
+            {
+                var dynamicentities = JsonConvert.DeserializeObject<List<dynamic>>(rawEntities.ToString());
+
+                return FilterByDeleteAndOrderByRanking<T>(dynamicentities);
+            }
         }
-        
-        // Real filter
+
         private List<T> FilterByDeleteAndOrderByRanking<T>(List<dynamic> rawEntities) where T : class
         {
+            if (rawEntities == null)
+            {
+                return new List<T>();
+            }
+
             Func<T, bool> notDeletedPredicate     = (T resource) => !string.Equals(((dynamic)resource).Delete, "Y", StringComparison.Ordinal);
             Func<T, int>  orderByRankingPredicate = (T resource) => ((dynamic)resource).Ranking;
             
