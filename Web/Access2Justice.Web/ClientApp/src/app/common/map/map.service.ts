@@ -109,7 +109,7 @@ export class MapService {
       );
       if (this.locationDetails.location.state) {
         return this.stateCodeService.getStateCode(this.locationDetails.location.state).pipe(map(response => {
-          this.stateCode = response ? response : 'Default';
+          this.stateCode = response || 'Default';
           this.locationDetails.location.state = this.stateCode;
           this.setGlobalMapLocationDetails();
 
@@ -152,7 +152,7 @@ export class MapService {
   }
 
   mapLocationDetails(location) {
-    let pos = location.address;
+    const pos = location.address;
     this.location = location;
     this.mapLocation = {state: '', city: '', county: '', zipCode: ''};
     this.displayLocation = {locality: '', address: ''};
@@ -204,9 +204,9 @@ export class MapService {
       formattedAddress: this.state
     };
     if (ENV.map_type) {
-      this.locationDetails.location.city = '';
-      this.locationDetails.location.county = '';
-      this.locationDetails.location.zipCode = '';
+      // this.locationDetails.location.city = '';
+      // this.locationDetails.location.county = '';
+      // this.locationDetails.location.zipCode = '';
       sessionStorage.setItem(
         'globalSearchMapLocation',
         JSON.stringify(this.locationDetails)

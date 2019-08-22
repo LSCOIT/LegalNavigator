@@ -15,19 +15,19 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class TopicService {
-  topicInput: ITopicInput = { 
-    Id: "", 
-    Location: "", 
+  topicInput: ITopicInput = {
+    Id: "",
+    Location: "",
     IsShared: false };
-  mapLocation: MapLocation = { 
-    state: "", 
-    city: "", 
-    county: "", 
+  mapLocation: MapLocation = {
+    state: "",
+    city: "",
+    county: "",
     zipCode: "" };
   locationDetails: LocationDetails;
 
   constructor(
-    private http: HttpClient, 
+    private http: HttpClient,
     private global: Global
   ) {}
 

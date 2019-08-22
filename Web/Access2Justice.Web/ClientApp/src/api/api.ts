@@ -26,7 +26,7 @@ export const api = {
   getProfileUrl: userProfile + "/profile",
   userPlanUrl: userProfile + "/personalized-plan/upsert",
   removeSharedResources: userProfile + '/resources/delete',
-  //unshareSharedToResources: userProfile + '/share/permalink/remove',
+  // unshareSharedToResources: userProfile + '/share/permalink/remove',
   unshareSharedToResources: apiUrl + '/share/link/unshare',
   upsertUserProfileUrl: userProfile + "/profile/upsert",
   getOrganizationDetailsUrl: topic + "/organizations",
