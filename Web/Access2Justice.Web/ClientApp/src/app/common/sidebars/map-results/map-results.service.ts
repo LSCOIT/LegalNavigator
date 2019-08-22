@@ -48,15 +48,15 @@ export class MapResultsService {
   mapResults(locationCoordinates) {
     this.latitudeLongitude = locationCoordinates;
     if (this.latitudeLongitude.length === 1) {
-      let latitude = this.latitudeLongitude[0].latitude;
-      let longitude = this.latitudeLongitude[0].longitude;
-      let streetMap = new Microsoft.Maps.Map('#my-map-results', {
+      const latitude = this.latitudeLongitude[0].latitude;
+      const longitude = this.latitudeLongitude[0].longitude;
+      const streetMap = new Microsoft.Maps.Map('#my-map-results', {
         credentials: ENV.bingmap_key,
         mapTypeId: Microsoft.Maps.MapTypeId.streetside,
         zoom: 14,
         center: new Microsoft.Maps.Location(latitude, longitude)
       });
-      var pin = new Microsoft.Maps.Pushpin(
+      const pin = new Microsoft.Maps.Pushpin(
         new Microsoft.Maps.Location(latitude, longitude),
         {
           icon: '../../assets/images/location/poi_custom.png'
@@ -65,11 +65,11 @@ export class MapResultsService {
       streetMap.entities.push(pin);
       streetMap.setView({mapTypeId: Microsoft.Maps.MapTypeId.streetside});
     } else {
-      let map = new Microsoft.Maps.Map('#my-map-results', {
+      const map = new Microsoft.Maps.Map('#my-map-results', {
         credentials: ENV.bingmap_key
       });
       for (let i = 0, len = this.latitudeLongitude.length; i < len; i++) {
-        var pin = new Microsoft.Maps.Pushpin(
+        const pin = new Microsoft.Maps.Pushpin(
           new Microsoft.Maps.Location(
             this.latitudeLongitude[i].latitude,
             this.latitudeLongitude[i].longitude
@@ -79,7 +79,7 @@ export class MapResultsService {
           }
         );
         map.entities.push(pin);
-        let bestview = Microsoft.Maps.LocationRect.fromLocations(
+        const bestview = Microsoft.Maps.LocationRect.fromLocations(
           this.latitudeLongitude
         );
         map.setView({bounds: bestview, zoom: 5});

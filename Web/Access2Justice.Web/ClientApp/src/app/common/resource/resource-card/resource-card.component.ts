@@ -71,11 +71,7 @@ export class ResourceCardComponent implements OnInit {
 
   getLocation(resource): any {
     this.location = JSON.parse(sessionStorage.getItem("globalMapLocation"));
-    if (resource.location[0].state == this.location.location.state) {
-      return true;
-    } else {
-      return false;
-    }
+    return resource.location[0].state === this.location.location.state;
   }
 
   openWarningPopup(resource): any {
@@ -95,7 +91,7 @@ export class ResourceCardComponent implements OnInit {
       .getStateName(this.locationDetails.location.state)
       .subscribe(async response => {
         if (response) {
-          let stateName = response.toString();
+          const stateName = response.toString();
           this.locationDetails.location.state = stateName;
           this.locationDetails.displayLocationDetails.address = stateName;
           sessionStorage.setItem(
@@ -117,11 +113,10 @@ export class ResourceCardComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (this.searchResource != null || this.searchResource != undefined) {
+    if (this.searchResource != null || this.searchResource !== undefined) {
       this.resource = this.searchResource;
-    } else {
-      this.resource = this.resource;
     }
+
     if (this.resource.itemId) {
       this.resource.id = this.resource.itemId;
     }
@@ -130,7 +125,7 @@ export class ResourceCardComponent implements OnInit {
     } catch (e) {
       this.urlOrigin = this.resource.url;
     }
-    if(this.resource.resourceType === "Videos") {
+    if (this.resource.resourceType === "Videos") {
       var match = this.resource.url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/);
       var videoId = match && match[2];
       if (videoId && videoId.length === 11) {
