@@ -50,6 +50,7 @@ export class MapComponent implements OnInit, OnDestroy {
   locationError: boolean;
   successSubscription: any;
   @ViewChild('changeLocationButton') changeLocationButton: ElementRef;
+  locationInput = null;
 
   constructor(
     private modalService: BsModalService,

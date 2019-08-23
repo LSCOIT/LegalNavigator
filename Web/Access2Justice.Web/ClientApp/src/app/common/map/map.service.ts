@@ -44,8 +44,7 @@ export class MapService {
   getMap(mapType) {
     ENV.map_type = mapType;
     Microsoft.Maps.loadModule(
-      ['Microsoft.Maps.AutoSuggest', 'Microsoft.Maps.Search'], () => {
-        let searchManager;
+      ['Microsoft.Maps.AutoSuggest'], () => {
         const bingMap = new Microsoft.Maps.Map('#my-map', {
           credentials: ENV.bingmap_key
         });
@@ -55,7 +54,6 @@ export class MapService {
           '#searchbox-container',
           suggestionSelected
         );
-        searchManager = new Microsoft.Maps.Search.SearchManager(bingMap);
       }
     );
   }
