@@ -226,7 +226,7 @@ namespace Access2Justice.Api.Tests.TestData
     'sharedResources': [
       {
         'isShared': true,
-        'expirationDate': '2019-08-30T12:25:34.0461574Z',
+        'expirationDate': '2020-08-30T12:25:34.0461574Z',
         'permaLink': '32803EFB57602FF080B32575F327410A41A3346A2DC12809EBE7B2E3F307BCF7',
         'url': '/topics/5c035d27-2fdb-9776-6236-70983a918431'
       }
