@@ -135,6 +135,15 @@ namespace Access2Justice.Shared.A2JAuthor
 				var variableName = inputText.GetStringBetween(Tokens.VarNameLeftSign, Tokens.VarNameRightSign);
 				var valueString = inputText.GetStringRightSide(Tokens.TO);
 
+				if (valueString.Contains(Tokens.GOTO))
+				{
+					valueString = valueString.GetStringLeftSide(Tokens.GOTO);
+					foreach (var keyValue in valueString.GetStringRightSide(Tokens.GOTO).AddValue())
+					{
+						varsValues[keyValue.Key] = keyValue.Value;
+					}
+				}
+
 				if (valueString.ToUpperInvariant().Contains(Tokens.TrueTokens.True))
 				{
 					varsValues.Add(variableName, Tokens.TrueTokens.True.ToLower());
