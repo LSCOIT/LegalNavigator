@@ -14,7 +14,7 @@ h2 {
   .web-hidden {
     display: none;
   }
-  
+
   .user-action {
     margin: 10px auto;
   }
@@ -28,6 +28,6 @@ h2 {
 
 .newlines {
   white-space: pre-line;
-  margin-top: -20px;
-  margin-bottom: -40px;
+  /*margin-top: -20px;*/
+  /*margin-bottom: -40px;*/
 }
