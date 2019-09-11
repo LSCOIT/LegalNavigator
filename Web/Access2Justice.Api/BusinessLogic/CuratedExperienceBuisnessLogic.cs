@@ -230,7 +230,8 @@ namespace Access2Justice.Api.BusinessLogic
                     var parsedCode = parser.Parse(currentComponentLogic);
                     if (parsedCode.Any())
                     {
-                        destinationComponent = curatedExperience.Components.FirstOrDefault(x => x.Name.RemoveHtmlTags().Contains(parsedCode.Values.FirstOrDefault()));
+                        destinationComponent = curatedExperience.Components
+	                        .FirstOrDefault(x => x.Name.RemoveHtmlTags().Contains(parsedCode.FirstOrDefault(y=>y.Key.Contains(Tokens.GOTO)).Value));
                     }
                 }
             }

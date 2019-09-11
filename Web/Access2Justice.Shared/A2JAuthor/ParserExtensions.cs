@@ -137,11 +137,11 @@ namespace Access2Justice.Shared.A2JAuthor
 
 				if (valueString.Contains(Tokens.GOTO))
 				{
-					valueString = valueString.GetStringLeftSide(Tokens.GOTO);
 					foreach (var keyValue in valueString.GetStringRightSide(Tokens.GOTO).AddValue())
 					{
 						varsValues[keyValue.Key] = keyValue.Value;
 					}
+					valueString = valueString.GetStringLeftSide(Tokens.GOTO);
 				}
 
 				if (valueString.ToUpperInvariant().Contains(Tokens.TrueTokens.True))
