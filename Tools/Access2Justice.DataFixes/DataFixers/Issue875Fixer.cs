@@ -13,7 +13,9 @@ namespace Access2Justice.DataFixes.DataFixers
     public class Issue875Fixer : IssueFixerBase, IDataFixer
     {
         private readonly string _filePath;
-        private const string _predefinedFilePath = ".\\AppData\\NSMIv2.json";
+		// https://nsmi.lsntap.org/browse-v2
+		// [...document.getElementsByClassName("subterm-link")].forEach(x=>x.click()); setTimeout(()=>console.log(JSON.stringify([...document.getElementsByClassName("taxonomy-term view-mode-subterm")].map(x=>{ const y = { }; y.code = x.getElementsByClassName("field-name-field-nsmi-v2-code")[0].getElementsByClassName("field-item")[0].innerText; y.name = x.getElementsByClassName("field-name-title")[0].getElementsByTagName("a")[0].innerText; return y; }))), 2000)
+		private const string _predefinedFilePath = ".\\AppData\\NSMIv2.json";
         protected override string IssueId => "#875";
         
         public Issue875Fixer(string filePath = null)

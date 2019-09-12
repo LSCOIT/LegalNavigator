@@ -13,14 +13,15 @@ namespace Access2Justice.DataFixes
 {
     class Program
     {
-        private static Dictionary<string, Func<IDataFixer>> DataFixersRegistry =
-            new Dictionary<string, Func<IDataFixer>>
+        private static Dictionary<string, Func<CommandLineOptions, IDataFixer>> DataFixersRegistry =
+            new Dictionary<string, Func<CommandLineOptions, IDataFixer>>
             {
-                { "#829", () => new Issue829Fixer() },
-                { "#350", () => new Issue350DataFixer() },
-                { "#875", () => new Issue875Fixer() },
-                { "#__duplicates", () => new DuplicatesRemover() },
-                { "#953", () => new Issue953Fixer() }
+                { "#829", x => new Issue829Fixer() },
+                { "#350", x => new Issue350DataFixer() },
+                { "#875", x => new Issue875Fixer() },
+                { "#__duplicates", x => new DuplicatesRemover() },
+                { "#__getData", x => new DataLoader(x.AdditionalPram) },
+				{ "#953", x => new Issue953Fixer() }
             };
 
 
@@ -69,7 +70,7 @@ namespace Access2Justice.DataFixes
 
                 var cosmosDbService = new CosmosDbService(documentClient, cosmosDbSettings);
 
-                var dataFixer = DataFixersRegistry[issueId]();
+                var dataFixer = DataFixersRegistry[issueId](commandLineOptions);
 
                 await dataFixer.ApplyFixAsync(cosmosDbSettings, cosmosDbService);
             }

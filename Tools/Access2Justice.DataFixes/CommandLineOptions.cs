@@ -13,7 +13,10 @@ namespace Access2Justice.DataFixes
         [Option('d', "dbid", Required = true, HelpText = "CosmosDB Database Id")]
         public string CosmosDbDatabaseId { get; set; }
 
-        [Option('i', "issue", Required = true, HelpText = "Id of issue to be fixed. Fixes available for: #829")]
+        [Option('i', "issue", Required = true, HelpText = "Id of issue to be fixed. Fixes available for: #829,953,875,350")]
         public string IssueId { get; set; }
+
+        [Option('a', "additional", Required = false)]
+		public string AdditionalPram { get; set; }
     }
 }
