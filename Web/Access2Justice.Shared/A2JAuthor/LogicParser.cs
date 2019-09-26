@@ -64,7 +64,8 @@ namespace Access2Justice.Shared.A2JAuthor
                 }
             }
 
-            return evaluatedAnswers.AddDistinctRange(userAnswersKeyValuePairs);
+            evaluatedAnswers.AddDistinctRange(userAnswersKeyValuePairs);
+            return evaluatedAnswers;
         }
 
         private Dictionary<string, string> ExtractAnswersVarValues(CuratedExperienceAnswers curatedExperienceAnswers)
