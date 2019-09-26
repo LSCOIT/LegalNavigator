@@ -30,32 +30,26 @@ namespace Access2Justice.Shared.Extensions
             return dictionary;
         }
 
-        /// <summary>
-        /// Add new values to dictionary, if not exists
-        /// </summary>
-        /// <returns>Added values</returns>
-        public static Dictionary<TKey, TValue> AddDistinctRange<TKey, TValue>(this Dictionary<TKey, TValue> originalDic, Dictionary<TKey, TValue> newDic)
+        public static Dictionary<T, T> AddDistinctRange<T>(this Dictionary<T, T> originalDic, Dictionary<T, T> newDic)
         {
             if (originalDic == null)
             {
-                originalDic = new Dictionary<TKey, TValue>();
+                originalDic = new Dictionary<T, T>();
             }
             if (newDic == null)
             {
-                newDic = new Dictionary<TKey, TValue>();
+                newDic = new Dictionary<T, T>();
             }
 
-            var newValues = new Dictionary<TKey, TValue>();
             foreach (var item in newDic)
             {
                 if (!originalDic.Keys.Contains(item.Key))
                 {
                     originalDic.Add(item.Key, item.Value);
-                    newValues[item.Key] = item.Value;
                 }
             }
 
-            return newValues;
+            return originalDic;
         }
     }
 }
