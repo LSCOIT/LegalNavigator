@@ -32,6 +32,7 @@ using Access2Justice.Shared.Storage;
 using DinkToPdf;
 using DinkToPdf.Contracts;
 using Access2Justice.Shared.Spot;
+using Access2Justice.Shared.Luis;
 
 namespace Access2Justice.Api
 {
@@ -63,8 +64,8 @@ namespace Access2Justice.Api
 
             services.AddSingleton<ILuisSettings>(
                 serviceProvider =>
-                new SpotSettings(
-                    Configuration.GetSection("Spot"),
+                new LuisSettings(
+                    Configuration.GetSection("Luis"),
                     serviceProvider.GetService<ISecretsService>()));
             services.AddSingleton<ISpotSettings>(
                 serviceProvider =>
@@ -99,7 +100,7 @@ namespace Access2Justice.Api
                         Configuration.GetSection("QnAMaker"),
                         serviceProvider.GetService<ISecretsService>()));
 
-            services.AddSingleton<ILuisProxy, SpotProxy>();
+            services.AddSingleton<ILuisProxy, LuisProxy>();
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
             services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
             services.AddSingleton<IWebSearchBusinessLogic, WebSearchBusinessLogic>();
