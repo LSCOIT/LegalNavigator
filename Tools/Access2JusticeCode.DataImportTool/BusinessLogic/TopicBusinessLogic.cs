@@ -9,6 +9,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Configuration;
+using System.Data;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using System.IO;
+using DocumentFormat.OpenXml;
+using Access2JusticeCode.DataImportTool.Helper;
+using System.Reflection;
 
 namespace Access2Justice.DataImportTool.BusinessLogic
 {
@@ -69,12 +76,13 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                     var serializedTopics = JsonConvert.SerializeObject(topicsList);
                     StringContent content = new StringContent(serializedTopics, Encoding.UTF8, "application/json");
                     var response = await clientHttp.PostAsync("api/topics-resources/topics/documents/upsert", content).ConfigureAwait(false);
-                    var json = response.Content.ReadAsStringAsync().Result;
+                    var jsonString = response.Content.ReadAsStringAsync().Result;
                     response.EnsureSuccessStatusCode();
+                    ExcelHelper.CreateExcelFile(Path.Combine(Path.GetDirectoryName(Directory.GetCurrentDirectory())), jsonString);
                     if (response.IsSuccessStatusCode == true)
                     {
                         string fileName = $@"Topic{DateTime.Now.Ticks}.txt";
-                        LogHelper.DataLogging(json, fileName);                        
+                        LogHelper.DataLogging(jsonString, fileName);                        
                         MessageBox.Show("File got processed");
                     }
                     else

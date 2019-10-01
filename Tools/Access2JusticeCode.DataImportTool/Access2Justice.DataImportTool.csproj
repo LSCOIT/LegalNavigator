@@ -261,6 +261,7 @@
     <Compile Include="DataImport.Designer.cs">
       <DependentUpon>DataImport.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper\ExcelHelper.cs" />
     <Compile Include="Helper\LogHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

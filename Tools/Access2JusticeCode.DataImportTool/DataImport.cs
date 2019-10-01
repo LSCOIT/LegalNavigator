@@ -42,8 +42,13 @@ namespace Access2Justice.DataImportTool
                     openFileDialog1.ShowDialog();
                     openFileDialog1.Filter = "*.xlsx|*.xls";
                     if (string.IsNullOrEmpty(openFileDialog1.FileName))
-                    { MessageBox.Show("Please select proper excel file to process the Topics data"); }
-                    else { TopicBusinessLogic.GetTopics(userResponse.AccessToken, openFileDialog1.FileName).Wait(); }
+                    {
+                        MessageBox.Show("Please select proper excel file to process the Topics data");
+                    }
+                    else
+                    {
+                        TopicBusinessLogic.GetTopics(userResponse.AccessToken, openFileDialog1.FileName).Wait();
+                    }
                 }
                 else
                 {

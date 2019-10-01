@@ -9,6 +9,7 @@ using Spreadsheet = DocumentFormat.OpenXml.Spreadsheet;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Access2Justice.Shared.Models;
+using System.Text;
 
 namespace Access2Justice.DataImportTool.BusinessLogic
 {
@@ -738,31 +739,23 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             }
             else
             {
-                string column = string.Empty;
-                for (var iterator = 0; iterator < expectedHeader.Length; iterator++)
+                var missedElements = expectedHeader.Except(header);
+                var requiredElements = missedElements.Where(x => x.EndsWith("*"));
+                var optionalElements = missedElements.Except(requiredElements);
+                if (requiredElements.Any())
                 {
-                    if (!(header[iterator] == expectedHeader[iterator]))
-                    {
-                        column = expectedHeader[iterator];
-                        break;
-                    }
+                    System.Windows.Forms.MessageBox.Show("File missed required elements such as " + string.Join(" ", requiredElements));
+                    throw new Exception("File missed required elements such as " + string.Join(" ", requiredElements));
                 }
-                dynamic logHeader = null;
-                int count = 0;
-                foreach (var item in expectedHeader)
+
+                if (optionalElements.Any())
                 {
-                    logHeader = logHeader + item;
-                    if (count < expectedHeader.Count() - 1)
-                    {
-                        logHeader = logHeader + ", ";
-                        count++;
-                    }
+                    System.Windows.Forms.MessageBox.Show("File missed optional elements such as " + string.Join(" ", optionalElements));
                 }
-                throw new Exception("Header Mismatch for " + resourceType + " at column " + column + "\n" + "Expected header:" + "\n" + logHeader);
+                correctHeader = true;
             }
+            
             return correctHeader;
         }
-
-
     }
 }
