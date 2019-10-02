@@ -14,6 +14,7 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
+
 export class TopicService {
   topicInput: ITopicInput = {
     Id: "",
@@ -36,6 +37,9 @@ export class TopicService {
       this.locationDetails = JSON.parse(
         sessionStorage.getItem("globalMapLocation")
       );
+      if(this.locationDetails.location && this.locationDetails.location.county){
+        delete this.locationDetails.location.county;
+      }
       this.mapLocation = this.locationDetails.location;
       return this.mapLocation;
     }

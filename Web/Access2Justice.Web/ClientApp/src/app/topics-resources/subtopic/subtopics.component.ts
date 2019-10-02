@@ -38,17 +38,19 @@ export class SubtopicsComponent implements OnInit {
     var me = this;
     this.activeTopic = this.activeRoute.snapshot.params["topic"];
     this.topicService.getDocumentData(this.activeTopic).subscribe(topic => {
-      this.topic = topic[0];
-      this.icon =
-        topic[0].icon == ""
-          ? "../../../assets/images/categories/topic.svg"
-          : topic[0].icon;
-      this.guidedInput = { activeId: this.activeTopic, name: this.topic.name, guidedAssistantId: this.topic.curatedExperienceId  };
-      this.guidedAssistantId = this.topic.curatedExperienceId;
-      localStorage.setItem('answersDocId',this.activeTopic);
+      if (topic.length > 0) {
+        this.topic = topic[0];
+        this.icon =
+          topic[0].icon == ""
+            ? "../../../assets/images/categories/topic.svg"
+            : topic[0].icon;
+        this.guidedInput = { activeId: this.activeTopic, name: this.topic.name, guidedAssistantId: this.topic.curatedExperienceId };
+        this.guidedAssistantId = this.topic.curatedExperienceId;
+        localStorage.setItem('answersDocId', this.activeTopic);
 
-      sessionStorage.setItem("previousSearchText", this.topic.name);
-      sessionStorage.setItem("searchText", this.topic.name);
+        sessionStorage.setItem("previousSearchText", this.topic.name);
+        sessionStorage.setItem("searchText", this.topic.name);
+      }
     });
     this.topicService.getSubtopics(this.activeTopic).subscribe(subtopics => {
       this.sortAlphabetically(subtopics);

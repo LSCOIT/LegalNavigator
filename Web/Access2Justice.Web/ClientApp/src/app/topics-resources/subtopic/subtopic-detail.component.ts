@@ -98,7 +98,7 @@ export class SubtopicDetailComponent implements OnInit {
   getDataOnReload() {
     this.activeSubtopicParam = this.activeRoute.snapshot.params["topic"];
     this.subtopics = this.navigateDataService.getData();
-    if (this.subtopics) {
+    if (this.subtopics && this.subtopics.length > 0) {
       this.topicService
         .getDocumentData(this.activeSubtopicParam)
         .subscribe(data => {
