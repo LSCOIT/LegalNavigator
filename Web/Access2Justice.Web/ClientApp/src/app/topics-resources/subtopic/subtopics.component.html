@@ -19,15 +19,20 @@
         </div>
       </div>
       <div class="subtopics">
-        <ul *ngFor="let subtopic of subtopics">
-          <li>
-            <a
-            class="link"
-            [routerLink]="['/topics', subtopic.id]">
-              {{ subtopic.name }}
-            </a>
-          </li>
-        </ul>
+          <div *ngIf="subtopics?.length === 0">
+              <p>We didn't find any sub-topics</p>
+          </div>
+          <div *ngIf="subtopics?.length > 0">
+              <ul *ngFor="let subtopic of subtopics">
+                  <li>
+                    <a
+                    class="link"
+                    [routerLink]="['/topics', subtopic.id]">
+                      {{ subtopic.name }}
+                    </a>
+                  </li>
+                </ul>      
+          </div>
       </div>
       <a
       [routerLink]="['/topics']"
