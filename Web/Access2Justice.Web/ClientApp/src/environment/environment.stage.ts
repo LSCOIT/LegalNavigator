@@ -18,5 +18,6 @@ export const ENV = {
   postLogoutRedirectUri: "https://stage.legalnav.org/",
   topicUrl: "https://api-stage.legalnav.org/api/topics",
   userPersonalizedPlanUrl: "https://api-stage.legalnav.org/api/user/upsertuserpersonalizedplan",
-  apiScope: "api://110cf200-fc79-4551-8008-3a2eff53637b/access_as_user"
+  apiScope: "api://110cf200-fc79-4551-8008-3a2eff53637b/access_as_user",
+  bingMapUrl: "https://www.bing.com/api/maps/mapcontrol?callback=__onBingLoaded"
 };

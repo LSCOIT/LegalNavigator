@@ -3,7 +3,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
-
 import { ENV } from 'environment';
 import { StateCodeService } from '../services/state-code.service';
 import { DisplayLocationDetails, LocationDetails, MapLocation } from './map';
@@ -41,8 +40,7 @@ export class MapService {
   constructor(private stateCodeService: StateCodeService) {
   }
 
-  getMap(mapType) {
-    ENV.map_type = mapType;
+  initMap(){
     Microsoft.Maps.loadModule(
       ['Microsoft.Maps.AutoSuggest'], () => {
         const bingMap = new Microsoft.Maps.Map('#my-map', {
@@ -56,6 +54,13 @@ export class MapService {
         );
       }
     );
+  }
+
+  getMap(mapType) {
+    ENV.map_type = mapType;
+    if (typeof Microsoft !== 'undefined') {
+      this.initMap();
+    }
   }
 
   identifyLocation(searchLocation) {

@@ -10,6 +10,7 @@ import { StaticResourceService } from '../services/static-resource.service';
 import { MapResultsService } from '../sidebars/map-results/map-results.service';
 import { Location, LocationNavContent, Navigation } from '../navigation/navigation';
 import { DisplayLocationDetails, LocationDetails, MapLocation } from './map';
+import { BingMapsLoader } from './map.loader.service';
 import { MapService } from './map.service';
 
 @Component({
@@ -75,7 +76,10 @@ export class MapComponent implements OnInit, OnDestroy {
   openModal(template: TemplateRef<any>) {
     this.isError = false;
     this.modalRef = this.modalService.show(template, this.config);
-    this.mapService.getMap(this.mapType);
+    BingMapsLoader.loadMap()
+            .then(() => {
+              this.mapService.getMap(this.mapType);
+        });
     document.getElementById('search-box').focus();
   }
 
@@ -287,7 +291,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.locationError = false;
   }
 
-  ngOnInit() {
+  ngOnInit() {    
     this.getLocationNavigationContent();
     this.showLocality = false;
     this.locationError = undefined;

@@ -18,5 +18,6 @@ export const ENV = {
   postLogoutRedirectUri: "http://localhost:5150/",
   topicUrl: "http://localhost:4200/api/topics",
   userPersonalizedPlanUrl: "http://localhost:4200/api/user/upsertuserpersonalizedplan",
-  apiScope: "api://2a144325-4b1d-4270-ba78-dee12209263b/access_as_user"
+  apiScope: "api://2a144325-4b1d-4270-ba78-dee12209263b/access_as_user",
+  bingMapUrl: "https://www.bing.com/api/maps/mapcontrol?callback=__onBingLoaded"
 };
