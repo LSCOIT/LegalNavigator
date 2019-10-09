@@ -14,7 +14,7 @@ namespace Access2Justice.DataFixes.DataFixers
 		private readonly string _loadOption;
 		protected override string IssueId => "#__getData";
 
-		public DataLoader(string loadOption)
+		public DataLoader(string loadOption, string fileName = null) : base(fileName)
 		{
 			_loadOption = loadOption;
 		}
@@ -66,9 +66,44 @@ namespace Access2Justice.DataFixes.DataFixers
 				case "tr":
 					objects.AddRange(await GetTopicsAndResourses(cosmosDbSettings, cosmosDbService));
 					break;
+				case "all":
+					await GetAllResources(cosmosDbSettings, cosmosDbService);
+					return;
 			}
 
 			LogEntry(JsonConvert.SerializeObject(objects));
+		}
+
+		private async Task GetAllResources(CosmosDbSettings cosmosDbSettings, CosmosDbService cosmosDbService)
+		{
+			var allResources =
+				JsonHelper.Deserialize<List<object>>(
+					await cosmosDbService.FindAllItemsAsync(cosmosDbSettings.ResourcesCollectionId));
+			var resourcesPages = new Dictionary<string, List<object>>();
+			foreach (var resource in allResources)
+			{
+				var type = (string)resource.resourceType?.ToString();
+				if (type == null)
+				{
+					continue;
+				}
+				if (!resourcesPages.TryGetValue(type, out var resources))
+				{
+					resourcesPages[type] = resources = new List<object>();
+				}
+				resources.Add(resource);
+			}
+
+			resourcesPages["topics"] = JsonHelper.Deserialize<List<object>>(
+				await cosmosDbService.FindAllItemsAsync(cosmosDbSettings.TopicsCollectionId));
+			
+			foreach (var resourcesPage in resourcesPages)
+			{
+				LogEntry(JsonConvert.SerializeObject(resourcesPage.Value));
+				LogEntry(Environment.NewLine);
+				LogEntry(Environment.NewLine);
+				LogEntry(Environment.NewLine);
+			}
 		}
 
 		async Task<List<DataViewBase>> GetTopicsAndResourses(CosmosDbSettings cosmosDbSettings,

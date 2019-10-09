@@ -20,7 +20,7 @@ namespace Access2Justice.DataFixes
                 { "#350", x => new Issue350DataFixer() },
                 { "#875", x => new Issue875Fixer() },
                 { "#__duplicates", x => new DuplicatesRemover() },
-                { "#__getData", x => new DataLoader(x.AdditionalPram) },
+                { "#__getData", x => new DataLoader(x.AdditionalPram, x.LogFileName) },
 				{ "#953", x => new Issue953Fixer() }
             };
 

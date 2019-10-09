@@ -18,5 +18,8 @@ namespace Access2Justice.DataFixes
 
         [Option('a', "additional", Required = false)]
 		public string AdditionalPram { get; set; }
-    }
+
+		[Option('f', "fileName", Required = false)]
+		public string LogFileName { get; set; }
+	}
 }
