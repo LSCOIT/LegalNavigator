@@ -26,10 +26,10 @@
                 <a class="link col-md-12"  routerLink="/guidedassistant/{{ ga?.Item1 }}" >{{tag}}</a>
               </ng-container>
             </div>
-      </div>
-      <div>
-        <a class="link col-md-12 text-center" (click)="backToSearch()">Back</a>
-      </div>
+            <div>
+              <a class="link col-md-12 text-center" (click)="backToSearch()">Back</a>
+            </div>
+        </div>
     </ng-template>
     <ng-template #elseIfBlock>
       <div
@@ -50,13 +50,13 @@
           page to view other information and resources that may be helpful to
           you.
         </span>
-      </div>
-      <div class="row">
-        <a
-          routerLink="/guidedassistant"
-          class="link col-md-12 text-center">
-          Back
-        </a>
+        <div class="row">
+          <a
+            routerLink="/guidedassistant"
+            class="link col-md-12 text-center">
+            Back
+          </a>
+        </div>
       </div>
     </ng-template>
     <div class="row" *ngIf="relevantIntents.length > 0">
