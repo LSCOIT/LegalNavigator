@@ -29,7 +29,7 @@ export class Global {
   planSessionKey: string = "bookmarkedPlan";
   topicsSessionKey: string = "bookmarkedTopics";
   roleInformation: any;
-  displayResources: number = 3;
+  displayResources: number = 5;
   activeSubtopicParam: string;
   searchResultDetails: any = {
     filterParam: "All",
