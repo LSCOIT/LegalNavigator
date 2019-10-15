@@ -22,6 +22,8 @@ namespace Access2Justice.DataImportTool.BusinessLogic
         string overview, address, telephone, eligibilityInformation, specialties, qualifications, businessHours = string.Empty;
         string organizationName, reviewerFullName, reviewerTitle, reviewText, reviewerImage = string.Empty;
         string articleName, headline, content, organizationalUnit = string.Empty; string delete = "N"; string ranking = "1";
+        string display = "Yes";
+
         List<TopicTag> topicTagIds = null;
         List<Shared.Models.Location> locations = null;
         List<string> orgNameList = new List<string>();
@@ -170,8 +172,8 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             CreatedBy = Constants.Admin,
                                             ModifiedBy = Constants.Admin,
                                             Delete = delete,
+                                            Display = display,
                                             Ranking = GetRanking(ranking)
-
                                         };
                                         form.Validate();
                                         ResourcesList.Add(form);
@@ -200,6 +202,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             CreatedBy = Constants.Admin,
                                             ModifiedBy = Constants.Admin,
                                             Delete = delete,
+                                            Display = display,
                                             Ranking = GetRanking(ranking)
                                         };
                                         organization.Validate();
@@ -230,6 +233,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             CreatedBy = Constants.Admin,
                                             ModifiedBy = Constants.Admin,
                                             Delete = delete,
+                                            Display = display,
                                             Ranking = GetRanking(ranking)
                                         };
                                         article.Validate();
@@ -260,6 +264,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             CreatedBy = Constants.Admin,
                                             ModifiedBy = Constants.Admin,
                                             Delete = delete,
+                                            Display = display,
                                             Ranking = GetRanking(ranking)
                                         };
                                         video.Validate();
@@ -280,6 +285,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             CreatedBy = Constants.Admin,
                                             ModifiedBy = Constants.Admin,
                                             Delete = delete,
+                                            Display = display,
                                             Ranking = GetRanking(ranking)
                                         };
                                         additionalReading.Validate();
@@ -301,6 +307,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             CreatedBy = Constants.Admin,
                                             ModifiedBy = Constants.Admin,
                                             Delete = delete,
+                                            Display = display,
                                             Ranking = GetRanking(ranking)
                                         };
                                         relatedLink.Validate();
@@ -425,6 +432,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             reviewText = string.Empty;
             delete = "N";
             ranking = "1";
+            display = "Yes";
         }
         private static Spreadsheet.SharedStringItem GetSharedStringItemById(WorkbookPart workbookPart, int id)
         {
@@ -547,6 +555,11 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             else if (val.EndsWith("Delete", StringComparison.CurrentCultureIgnoreCase))
             {
                 delete = cellActualValue;
+            }
+
+            else if(val.EndsWith("Display", StringComparison.CurrentCultureIgnoreCase))
+            {
+                display = cellActualValue;
             }
 
             if (val.EndsWith("Ranking", StringComparison.CurrentCultureIgnoreCase))

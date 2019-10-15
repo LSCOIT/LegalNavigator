@@ -104,7 +104,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                     var response = await clientHttp.PostAsync("api/topics-resources/resources/documents/upsert", content).ConfigureAwait(false);
                     var json = response.Content.ReadAsStringAsync().Result;
                     response.EnsureSuccessStatusCode();
-                    if (response.IsSuccessStatusCode == true)
+                    if (response.IsSuccessStatusCode)
                     {
                         string fileName = $@"Resource{DateTime.Now.Ticks}.txt";
                         LogHelper.DataLogging(json, fileName);

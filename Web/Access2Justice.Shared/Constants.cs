@@ -51,6 +51,8 @@
         public const string SharedResources = "shared-resources";
         public const string Code = "code";
         public const string DefaultOgranizationalUnit = "Default";
+        public const string OrganizationalUnit = "organizationalUnit";
+
         public static readonly int StrigifiedGuidLength = System.Guid.Empty.ToString().Length;
 		/// <summary>
 		/// Size (width and height) of logo on printed pdf file

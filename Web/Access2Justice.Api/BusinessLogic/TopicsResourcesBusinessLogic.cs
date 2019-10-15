@@ -14,6 +14,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using StackExchange.Redis;
 using Condition = Access2Justice.Shared.Models.Condition;
+using System.Reflection;
+//using Microsoft.Azure.Documents;
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -571,138 +573,120 @@ namespace Access2Justice.Api.BusinessLogic
                 if (resourceObject.resourceType == "Forms")
                 {
                     forms = UpsertResourcesForms(resourceObject);
+
                     var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(forms);
-                    List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
-                    List<string> values = new List<string>() { id, resourceType };
-                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
-                    if (resourceDBData.Count == 0)
-                    {
-                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId);
-                        resources.Add(result);
-                    }
-                    else
-                    {
-                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId);
-                        resources.Add(result);
-                    }
+                    var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
+                        id, resourceType, forms.Name, forms.OrganizationalUnit);
+
+                    resources.Add(result);
                 }
 
                 else if (resourceObject.resourceType == "Action Plans")
                 {
                     actionPlans = UpsertResourcesActionPlans(resourceObject);
+
                     var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(actionPlans);
-                    List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
-                    List<string> values = new List<string>() { id, resourceType };
-                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
-                    if (resourceDBData.Count == 0)
-                    {
-                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId);
-                        resources.Add(result);
-                    }
-                    else
-                    {
-                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId);
-                        resources.Add(result);
-                    }
+
+                    var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
+                        id, resourceType, actionPlans.Name, actionPlans.OrganizationalUnit);
+
+                    resources.Add(result);
+
                 }
 
                 else if (resourceObject.resourceType == "Articles")
                 {
                     articles = UpsertResourcesArticles(resourceObject);
+
                     var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(articles);
-                    List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
-                    List<string> values = new List<string>() { id, resourceType };
-                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
-                    if (resourceDBData.Count == 0)
-                    {
-                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId);
-                        resources.Add(result);
-                    }
-                    else
-                    {
-                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId);
-                        resources.Add(result);
-                    }
+
+                    var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
+                        id, resourceType, articles.Name, articles.OrganizationalUnit);
+
+                    resources.Add(result);
                 }
 
                 else if (resourceObject.resourceType == "Videos")
                 {
                     videos = UpsertResourcesVideos(resourceObject);
+
                     var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(videos);
-                    List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
-                    List<string> values = new List<string>() { id, resourceType };
-                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
-                    if (resourceDBData.Count == 0)
-                    {
-                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId);
-                        resources.Add(result);
-                    }
-                    else
-                    {
-                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId);
-                        resources.Add(result);
-                    }
+
+                    var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
+                        id, resourceType, videos.Name, videos.OrganizationalUnit);
+
+                    resources.Add(result);
                 }
 
                 else if (resourceObject.resourceType == "Organizations")
                 {
                     organizations = UpsertResourcesOrganizations(resourceObject);
+
                     var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(organizations);
-                    List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
-                    List<string> values = new List<string>() { id, resourceType };
-                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
-                    if (resourceDBData.Count == 0)
-                    {
-                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId);
-                        resources.Add(result);
-                    }
-                    else
-                    {
-                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId);
-                        resources.Add(result);
-                    }
+                    var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
+                        id, resourceType, organizations.Name, organizations.OrganizationalUnit);
+
+                    resources.Add(result);
                 }
 
                 else if (resourceObject.resourceType == "Additional Readings")
                 {
                     additionalReadings = UpsertResourcesAdditionalReadings(resourceObject);
-                    var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(additionalReadings);
-                    List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
-                    List<string> values = new List<string>() { id, resourceType };
-                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
-                    if (resourceDBData.Count == 0)
-                    {
-                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId);
-                        resources.Add(result);
-                    }
-                    else
-                    {
-                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId);
-                        resources.Add(result);
-                    }
-                }
 
+                    var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(additionalReadings);
+                    var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
+                        id, resourceType, additionalReadings.Name, additionalReadings.OrganizationalUnit);
+
+                    resources.Add(result);
+
+                }
                 else if (resourceObject.resourceType == "Related Links")
                 {
                     relatedLinks = UpsertResourcesRelatedLinks(resourceObject);
                     var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(relatedLinks);
-                    List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
-                    List<string> values = new List<string>() { id, resourceType };
-                    var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
-                    if (resourceDBData.Count == 0)
-                    {
-                        var result = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId);
-                        resources.Add(result);
-                    }
-                    else
-                    {
-                        var result = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId);
-                        resources.Add(result);
-                    }
-                }
+                    var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId, 
+                        id, resourceType, relatedLinks.Name, relatedLinks.OrganizationalUnit);
 
+                    resources.Add(result);
+                }
             }
             return resources;
+        }
+
+        private async Task<Microsoft.Azure.Documents.Document> UpdateOrCreateResource(object resourceDocument, string settings,
+            string id, string resourceType, string resourceName, string resourceOrganizationUnit)
+        {
+            Microsoft.Azure.Documents.Document document;
+            List<string> propertyNames = new List<string>() { Constants.Id, Constants.ResourceType };
+            List<string> values = new List<string>() { id, resourceType };
+            var resourceDBData = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNames, values);
+            if (resourceDBData.Count == 0)
+            {
+                List<string> propertyNamesAdditional = new List<string>() { Constants.Name, Constants.OrganizationalUnit, Constants.ResourceType };
+                List<string> valuesAdditional = new List<string>() { resourceName, resourceOrganizationUnit, resourceType };
+                var resourceDBDataAdditional = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, propertyNamesAdditional, valuesAdditional);
+
+                if (resourceDBDataAdditional.Count == 0)
+                {
+                    document = await dbService.CreateItemAsync(resourceDocument, dbSettings.ResourcesCollectionId);
+                }
+                else
+                {
+                    var resourceData = resourceDBDataAdditional[0];
+                    var serializedObj = JsonConvert.SerializeObject(resourceDocument);
+                    dynamic dynamicObj = JsonConvert.DeserializeObject(serializedObj);
+                    dynamicObj.id = resourceData.id;
+                    var resDocument = JsonUtilities.DeserializeDynamicObject<object>(dynamicObj);
+
+                    document = await dbService.UpdateItemAsync(resourceData.id, resDocument, dbSettings.ResourcesCollectionId);
+                }
+            }
+            else
+            {
+                document = await dbService.UpdateItemAsync(id, resourceDocument, dbSettings.ResourcesCollectionId);
+            }
+
+            return document;
         }
 
         public dynamic UpsertResourcesForms(dynamic resourceObject)
@@ -859,7 +843,8 @@ namespace Access2Justice.Api.BusinessLogic
                 Qualifications = resourceObject.qualifications,
                 BusinessHours = resourceObject.businessHours,
                 Reviewer = organizationReviewers,
-                NsmiCode = resourceObject.nsmiCode
+                NsmiCode = resourceObject.nsmiCode,
+                Display = resourceObject.display
             };
             organizations.Validate();
             return organizations;
@@ -946,6 +931,7 @@ namespace Access2Justice.Api.BusinessLogic
                 foreach (var topicObject in topicObjects)
                 {
                     string id = topicObject.id;
+                    Microsoft.Azure.Documents.Document document;
                     topicdocuments = UpsertTopics(topicObject);
                     var topicDocument = JsonUtilities.DeserializeDynamicObject<object>(topicdocuments);
                     var topicDBData =
@@ -953,19 +939,35 @@ namespace Access2Justice.Api.BusinessLogic
 
                     if (topicDBData.Count == 0)
                     {
-                        var result = await dbService.CreateItemAsync(topicDocument, dbSettings.TopicsCollectionId);
-                        topics.Add(result);
+                        var topicDBDataAdditional = 
+                            await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Name, topicdocuments.Name);
+
+                        if (topicDBDataAdditional.Count == 0)
+                        {
+                            document = await dbService.CreateItemAsync(topicDocument, dbSettings.TopicsCollectionId);
+                        }
+                        else
+                        {
+                            var topicData = topicDBDataAdditional[0];
+                            var serializedObj = JsonConvert.SerializeObject(topicDocument);
+                            dynamic dynamicObj = JsonConvert.DeserializeObject(serializedObj);
+                            dynamicObj.id = topicData.id;
+                            var resDocument = JsonUtilities.DeserializeDynamicObject<object>(dynamicObj);
+
+                            document = await dbService.UpdateItemAsync(topicData.id, resDocument, dbSettings.ResourcesCollectionId);
+                        }
                     }
                     else
                     {
-                        var result = await dbService.UpdateItemAsync(id, topicDocument, dbSettings.TopicsCollectionId);
-                        topics.Add(result);
+                        document = await dbService.UpdateItemAsync(id, topicDocument, dbSettings.TopicsCollectionId);
                     }
+
+                    topics.Add(document);
                 }
             }
-            catch (Exception error)
+            catch (Exception e)
             {
-                int a = 0;
+                Console.WriteLine(e);
             }
             
             return topics;
@@ -1224,7 +1226,7 @@ namespace Access2Justice.Api.BusinessLogic
                 return new List<T>();
             }
 
-            Func<T, bool> notDeletedPredicate     = (T resource) => !string.Equals(((dynamic)resource).Delete, "Y", StringComparison.Ordinal);
+            Func<T, bool> notDeletedPredicate     = (T resource) => !string.Equals(((dynamic)resource).Display, "No", StringComparison.Ordinal);
             Func<T, int>  orderByRankingPredicate = (T resource) => ((dynamic)resource).Ranking;
             
             var realEntities = rawEntities.Select(s => JsonConvert.DeserializeObject<T>(s.ToString()) as T).ToList();

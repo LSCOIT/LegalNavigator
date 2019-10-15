@@ -64,6 +64,10 @@ namespace Access2Justice.Shared.Models
         [Range(typeof(string), "N", "Y", ErrorMessage = "Delete must be a \"N\" or \"Y\"")]
         public string Delete { get; set; } = "N";
 
+        [JsonProperty(PropertyName = "display")]
+        [Range(typeof(string), "No", "Yes", ErrorMessage = "Display must be a \"No\" or \"Yes\"")]
+        public string Display { get; set; } = "Yes";
+
         [JsonProperty(PropertyName = "ranking")]
         public int Ranking { get; set; } = 1;
 

@@ -37,7 +37,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                     {
                         dynamic id = null; string name = string.Empty; string keywords = string.Empty; string organizationalUnit = string.Empty;
                         string state = string.Empty; string county = string.Empty; string city = string.Empty; string zipcode = string.Empty;
-                        string overview = string.Empty; string icon = string.Empty; string delete = "N"; string ranking = "1";
+                        string overview = string.Empty; string icon = string.Empty; string delete = "N"; string ranking = "1"; string display = "Yes";
                         List<ParentTopicId> parentTopicIds = new List<ParentTopicId>();
                         List<Shared.Models.Location> locations = new List<Shared.Models.Location>();
                         string topicIdCell = string.Empty;
@@ -65,7 +65,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                             else if (!string.IsNullOrEmpty(cellValue))
                             {
                                 string cellActualValue = string.Empty;
-                                if (cell.DataType == Spreadsheet.CellValues.SharedString)
+                                if (cell.DataType != null && cell.DataType == Spreadsheet.CellValues.SharedString)
                                 {
                                     cellActualValue = sharedStringTable.ElementAt(Int32.Parse(cellValue, CultureInfo.InvariantCulture)).InnerText;
                                 }
@@ -172,6 +172,11 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             delete = cellActualValue;
                                         }
 
+                                        else if (val.EndsWith("Display", StringComparison.CurrentCultureIgnoreCase))
+                                        {
+                                            display = cellActualValue;
+                                        }
+
                                         else if (val.EndsWith("Ranking", StringComparison.CurrentCultureIgnoreCase))
                                         {
                                             ranking = cellActualValue;
@@ -198,6 +203,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                 CreatedBy = Constants.Admin,
                                 ModifiedBy = Constants.Admin,
                                 Delete = delete,
+                                Display = display,
                                 Ranking = InsertResources.GetRanking(ranking)
                             };
                             topic.Validate();
@@ -207,7 +213,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                         recordNumber++;
                     }
                     topics = topicsList;
-                }
+                }   
             }
             catch (Exception ex)
             {
