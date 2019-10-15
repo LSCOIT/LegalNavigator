@@ -362,11 +362,18 @@ namespace Access2Justice.Api.BusinessLogic
                     using (var reader = new StreamReader(destinationPath))
                     {
                         var json = reader.ReadToEnd();
+                        var jObject = JObject.Parse(json);
+
+                        if (destinationPath.EndsWith("Guide.json"))
+                        {
+                            FilterButtonLabels(jObject);
+                        }
+
                         templateModel.Add(new CuratedExperiencePackageTemplateModel
                         {
                             TemplateName = Path.GetFileNameWithoutExtension(entry.FullName)
-                                .Replace(adminSettings.TemplateFileName, ""),
-                            Template = JObject.Parse(json)
+                                .Replace(adminSettings.TemplateFileName, string.Empty),
+                            Template = jObject
                         });
                     }
 
@@ -381,6 +388,31 @@ namespace Access2Justice.Api.BusinessLogic
             
             //Delete temp directory
             DeleteDirectory(uploadPath);
+        }
+
+        private void FilterButtonLabels(JObject jObject)
+        {
+            var pages = jObject["pages"].ToList();
+
+            foreach (var page in pages)
+            {
+                var buttons = page.Children()["buttons"].ToList();
+                foreach (var button in buttons)
+                {
+                    var labels = button.Children()["label"].ToList();
+                    foreach (var label in labels)
+                    {
+                        var jProperty = label.Parent as JProperty;
+                        var stringLabel = jProperty.Value.ToString();
+                        if (stringLabel.Contains("<br>"))
+                        {
+                            var resultString = stringLabel.Replace("<br>", string.Empty);
+
+                            jProperty.Value = resultString;
+                        }
+                    }
+                }
+            }
         }
 
         private void DeleteDirectory(string uploadPath)
