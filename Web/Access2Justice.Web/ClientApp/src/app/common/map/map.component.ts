@@ -161,9 +161,9 @@ export class MapComponent implements OnInit, OnDestroy {
     });
   }
 
-  onSearchChange() {
-    this.isError = false;
-  }
+  // onSearchChange() {
+  //   this.isError = false;
+  // }
 
   displayLocationDetails(displayLocation) {
     this.displayLocation = displayLocation;
@@ -287,9 +287,10 @@ export class MapComponent implements OnInit, OnDestroy {
     }
   }
 
-  hideLocationError() {
-    this.locationError = false;
-  }
+  //TODO: make sure that this function is not needed
+  // hideLocationError() {
+  //   this.locationError = false;
+  // }
 
   ngOnInit() {    
     this.getLocationNavigationContent();

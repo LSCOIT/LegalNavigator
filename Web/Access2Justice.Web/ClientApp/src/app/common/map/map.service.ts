@@ -41,19 +41,22 @@ export class MapService {
   }
 
   initMap(){
-    Microsoft.Maps.loadModule(
-      ['Microsoft.Maps.AutoSuggest'], () => {
-        const bingMap = new Microsoft.Maps.Map('#my-map', {
-          credentials: ENV.bingmap_key
-        });
-        const manager = new Microsoft.Maps.AutosuggestManager({map: bingMap});
-        manager.attachAutosuggest(
-          '#search-box',
-          '#searchbox-container',
-          suggestionSelected
-        );
-      }
-    );
+      Microsoft.Maps.loadModule(
+        ['Microsoft.Maps.AutoSuggest'], () => {
+          
+          const bingMap = new Microsoft.Maps.Map('#my-map', {
+            credentials: ENV.bingmap_key,
+          });
+          var options = { maxResults: 5 };
+          const manager = new Microsoft.Maps.AutosuggestManager(options);
+            
+          manager.attachAutosuggest(
+            '#search-box',
+            '#searchbox-container',
+            suggestionSelected
+          );
+        }
+      );
   }
 
   getMap(mapType) {

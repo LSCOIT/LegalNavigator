@@ -50,6 +50,9 @@
           Enter a state name to see relevant information for that location.
         </p>
       </div>
+      <!-- TODO: make sure these functions are not needed -->
+      <!-- (input)="onSearchChange()" -->
+      <!-- (keyup)="hideLocationError()" -->
       <div class="row">
         <div id="searchbox-container">
           <input
@@ -58,10 +61,8 @@
             aria-label="search address box"
             autocomplete="off"
             placeholder="Enter a state name"
-            (input)="onSearchChange()"
             name="locationInput"
             [(ngModel)]="locationInput"
-            (keyup)="hideLocationError()"
             autofocus
           />
           <button

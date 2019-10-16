@@ -294,17 +294,17 @@ describe('MapComponent', () => {
     expect(component.locality).toEqual(mockDisplayLocationDetails.locality);
   });
 
-  it('should set the flag true on searchChange', () => {
-    component.isError = false;
-    component.onSearchChange();
-    expect(component.isError).toBe(false);
-  });
+  // it('should set the flag true on searchChange', () => {
+  //   component.isError = false;
+  //   component.onSearchChange();
+  //   expect(component.isError).toBe(false);
+  // });
 
-  it('should set the flag false on searchChange', () => {
-    component.isError = true;
-    component.onSearchChange();
-    expect(component.isError).toBe(false);
-  });
+  // it('should set the flag false on searchChange', () => {
+  //   component.isError = true;
+  //   component.onSearchChange();
+  //   expect(component.isError).toBe(false);
+  // });
 
   it('should load current location', () => {
     spyOn(component, 'loadCurrentLocation');
