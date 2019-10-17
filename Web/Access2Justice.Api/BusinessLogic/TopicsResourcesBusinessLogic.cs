@@ -115,12 +115,65 @@ namespace Access2Justice.Api.BusinessLogic
             }
             else
             {
-                var rawResult  = await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(
-                    dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id, topicInput.Location);
+                var rawResult = await GetSubtopicsFromLocation(topicInput);
                 var result = FilterByDeleteAndOrderByRanking<Topic>(rawResult);
 
                 return GetOutboundTopicsCollection(result);
             }
+        }
+
+        private async Task<dynamic> GetSubtopicsFromLocation(TopicInput topicInput)
+        {
+            List<dynamic> rawResult = await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(
+                    dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, topicInput.Id, topicInput.Location);
+
+            if (!rawResult.Any())
+            {
+                if (!IsValidLocation(topicInput))
+                {
+                   return await GetSubtopicsFromLocation(topicInput);
+                }
+            }
+
+            return rawResult;
+        }
+
+        private async Task<dynamic> GetResourcesFromLocation(TopicInput topicInput)
+        {
+            List<dynamic> rawItems = await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.ResourcesCollectionId, 
+                Constants.TopicTags, Constants.Id, topicInput.Id, topicInput.Location);
+
+            if (!rawItems.Any())
+            {
+                if (!IsValidLocation(topicInput))
+                {
+                    return await GetResourcesFromLocation(topicInput);
+                }
+            }
+
+            return rawItems;
+        }
+
+        private bool IsValidLocation(TopicInput topicInput)
+        {
+            if (!string.IsNullOrWhiteSpace(topicInput.Location.ZipCode))
+            {
+                topicInput.Location.ZipCode = null;
+            }
+            else if (!string.IsNullOrWhiteSpace(topicInput.Location.City))
+            {
+                topicInput.Location.City = null;
+            }
+            else if (!string.IsNullOrWhiteSpace(topicInput.Location.County))
+            {
+                topicInput.Location.County = null;
+            }
+            else
+            {
+                return true;
+            }
+
+            return false;
         }
 
         public async Task<dynamic> GetResourceByIdAsync(TopicInput topicInput)
@@ -149,7 +202,8 @@ namespace Access2Justice.Api.BusinessLogic
             }
             else
             {
-                var rawItems = await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id, topicInput.Location);
+                List<dynamic> rawItems = await GetResourcesFromLocation(topicInput);
+
                 var items = FilterByDeleteAndOrderByRanking<Topic>(rawItems);
                 return items;
             }
@@ -278,6 +332,14 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter)
         {
+            var curatedLocation = new Location
+            {
+                City = resourceFilter.Location.City,
+                County = resourceFilter.Location.County,
+                State = resourceFilter.Location.State,
+                ZipCode = resourceFilter.Location.ZipCode,
+            }; 
+
             PagedResourceViewModel pagedResourceViewModel = new PagedResourceViewModel();
             if (resourceFilter.IsResourceCountRequired)
             {
@@ -287,14 +349,16 @@ namespace Access2Justice.Api.BusinessLogic
             dynamic searchFilter = new JObject();
             searchFilter.OrderByField = resourceFilter.OrderByField;
             searchFilter.OrderBy = resourceFilter.OrderBy;
+
             PagedResources pagedResources = await ApplyPaginationAsync(resourceFilter);
+
             dynamic serializedToken = pagedResources?.ContinuationToken ?? Constants.EmptyArray;
             pagedResourceViewModel.Resources = JsonUtilities.DeserializeDynamicObject<dynamic>(pagedResources?.Results);
             pagedResourceViewModel.ContinuationToken = JsonConvert.DeserializeObject(serializedToken);
             pagedResourceViewModel.TopicIds = JsonUtilities.DeserializeDynamicObject<dynamic>(pagedResources?.TopicIds);
             pagedResourceViewModel.SearchFilter = searchFilter;
             pagedResourceViewModel.CuratedExperienceId = await findGuidedAssistantId(
-                JsonUtilities.DeserializeDynamicObject<List<string>>(pagedResourceViewModel.TopicIds), resourceFilter.Location);
+                JsonUtilities.DeserializeDynamicObject<List<string>>(pagedResourceViewModel.TopicIds), curatedLocation);
 
             return JObject.FromObject(pagedResourceViewModel).ToString();
         }

@@ -56,7 +56,7 @@ export class SubtopicsComponent implements OnInit {
           this.sortAlphabetically(subtopics);
           this.subtopics = subtopics;
           this.navigateDataService.setData(this.subtopics);
-           if (this.subtopics.length === 0 && this.topic) {
+           if (this.subtopics.length === 0) {
             this.router.navigateByUrl("/subtopics/" + this.activeTopic, {
               skipLocationChange: true
             });
