@@ -288,18 +288,18 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             Assert.Contains("[]", result, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        [Fact]
-        public void GetSubTopicDetailsAsyncTestsShouldReturnProperData()
-        {
-            //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.ResourcesCollectionId, "topicTags", "id", topicId, location);
-            dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
-            //act
-            var response = topicsResourcesBusinessLogic.GetResourceAsync(TopicResourceTestData.TopicInput).Result;
-            string result = JsonConvert.SerializeObject(response);
-            //assert
-            Assert.Contains(topicId, result, StringComparison.InvariantCulture);
-        }
+        //[Fact]
+        //public void GetSubTopicDetailsAsyncTestsShouldReturnProperData()
+        //{
+        //    //arrange
+        //    var dbResponse = dynamicQueries.FindItemsWhereArrayContainsAsyncWithLocation(cosmosDbSettings.ResourcesCollectionId, "topicTags", "id", topicId, location);
+        //    dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
+        //    //act
+        //    var response = topicsResourcesBusinessLogic.GetResourceAsync(TopicResourceTestData.TopicInput).Result;
+        //    string result = JsonConvert.SerializeObject(response);
+        //    //assert
+        //    Assert.Contains(topicId, result, StringComparison.InvariantCulture);
+        //}
 
         [Fact]
         public void GetSubTopicDetailsAsyncTestsShouldReturnEmptyData()
