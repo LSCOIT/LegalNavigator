@@ -40,16 +40,44 @@ export class MapService {
   constructor(private stateCodeService: StateCodeService) {
   }
 
+  loadLocationFromStorage(){
+    var jsonLatitude = localStorage.getItem('centerLatitude');
+    var jsonLongtitude = localStorage.getItem('centerLongitude');
+    var jsonZoom = localStorage.getItem('zoom');
+
+    if (jsonLatitude && jsonLongtitude && jsonZoom){
+      var location = {
+        latitude: JSON.parse(jsonLatitude),
+        longitude: JSON.parse(jsonLongtitude),
+        zoom: JSON.parse(jsonZoom),
+      };
+
+      return location;
+    }
+
+    return null;  
+  }
+
   initMap(){
-      Microsoft.Maps.loadModule(
+
+    Microsoft.Maps.loadModule(
         ['Microsoft.Maps.AutoSuggest'], () => {
-          
-          const bingMap = new Microsoft.Maps.Map('#my-map', {
+          var locationObject = this.loadLocationFromStorage();
+          if(locationObject){
+            var centerLocation = new Microsoft.Maps.Location(locationObject.latitude, locationObject.longitude);
+            const bingMap = new Microsoft.Maps.Map('#my-map', {
             credentials: ENV.bingmap_key,
+            center: centerLocation,
+            zoom: locationObject.zoom
           });
+          } else{
+            const bingMap = new Microsoft.Maps.Map('#my-map', {
+            credentials: ENV.bingmap_key
+            });
+          }   
           var options = { maxResults: 5 };
           const manager = new Microsoft.Maps.AutosuggestManager(options);
-            
+                     
           manager.attachAutosuggest(
             '#search-box',
             '#searchbox-container',
