@@ -449,6 +449,21 @@ namespace Access2Justice.Api.BusinessLogic
             return pagedResources;
         }
 
+        private async Task<dynamic> GetGroupedResourceType(ResourceFilter resourceFilter)
+        {
+            List<dynamic> groupedResourceType = await GetResourcesCountAsync(resourceFilter);
+            
+            if(groupedResourceType.Any(x => x.ResourceName == "All" && x.ResourceCount == 0))
+            {
+                if (!IsValidLocation(resourceFilter.Location))
+                {
+                    return await GetGroupedResourceType(resourceFilter);
+                }
+            }
+
+            return groupedResourceType;
+        }
+
         public async Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter)
         {
             var curatedLocation = new Location
@@ -462,7 +477,7 @@ namespace Access2Justice.Api.BusinessLogic
             PagedResourceViewModel pagedResourceViewModel = new PagedResourceViewModel();
             if (resourceFilter.IsResourceCountRequired)
             {
-                var groupedResourceType = await GetResourcesCountAsync(resourceFilter);
+                var groupedResourceType = await GetGroupedResourceType(resourceFilter);
                 pagedResourceViewModel.ResourceTypeFilter = JsonUtilities.DeserializeDynamicObject<dynamic>(groupedResourceType);
             }
             dynamic searchFilter = new JObject();
@@ -498,8 +513,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter)
         {
-            var rwaItems = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
-            PagedResources pagedResources = rwaItems;
+            PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
             return ResourcesCount(pagedResources);
         }
 
@@ -520,7 +534,7 @@ namespace Access2Justice.Api.BusinessLogic
                       ResourceName = n.Key,
                       ResourceCount = n.Count()
                   }).OrderBy(n => n.ResourceName);
-            dynamic resourceList = allResources.Concat(groupedResourceType);
+            List<dynamic> resourceList = allResources.Concat(groupedResourceType).ToList();
             return resourceList;
         }
 
