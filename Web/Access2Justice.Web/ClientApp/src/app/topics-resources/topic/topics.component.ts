@@ -4,13 +4,14 @@ import { MapService } from "../../common/map/map.service";
 import { Topic } from "../shared/topic";
 import { TopicService } from "../shared/topic.service";
 
+
 @Component({
   selector: "app-topics",
   templateUrl: "./topics.component.html",
   styleUrls: ["./topics.component.css"]
 })
 export class TopicsComponent implements OnInit {
-  topics: Topic;
+  topics: Topic[];
   @Input() topicLength: number;
   @Input() fullPage: true;
   subscription: any;
