@@ -90,7 +90,7 @@ namespace Access2Justice.CosmosDb
             await documentClient.DeleteDocumentAsync(
                 UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, collectionId, id));
         }
-        
+
         public async Task<dynamic> QueryItemsAsync(string collectionId, string query, Dictionary<string, object> sqlParams)
         {
             var uri = UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId);
@@ -101,6 +101,7 @@ namespace Access2Justice.CosmosDb
                 sqlParameters = new SqlParameterCollection(
                     sqlParams.Select(x => new SqlParameter($"@{x.Key}", x.Value)));
             }
+
             var docQuery = documentClient.CreateDocumentQuery<dynamic>(
                 uri,
                 new SqlQuerySpec(query) { Parameters = sqlParameters },
@@ -116,7 +117,7 @@ namespace Access2Justice.CosmosDb
             return results;
         }
 
-        public async Task<ICollection<T>> QueryItemsAsync<T>(string collectionId, params Expression<Func<T, bool>> [] whereCondition)
+        public async Task<ICollection<T>> QueryItemsAsync<T>(string collectionId, params Expression<Func<T, bool>>[] whereCondition)
         {
             var uri = UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId);
             var options = new FeedOptions { EnableCrossPartitionQuery = true };
@@ -145,10 +146,10 @@ namespace Access2Justice.CosmosDb
             var sqlParameters = new SqlParameterCollection();
             if (parameters != null && parameters.Count > 0)
             {
-                sqlParameters = new SqlParameterCollection(parameters.Select(x=> new SqlParameter($"@{x.Key}", x.Value)));
+                sqlParameters = new SqlParameterCollection(parameters.Select(x => new SqlParameter($"@{x.Key}", x.Value)));
             }
             var docQuery = documentClient.CreateDocumentQuery<dynamic>(
-                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId), 
+                UriFactory.CreateDocumentCollectionUri(cosmosDbSettings.DatabaseId, collectionId),
                 new SqlQuerySpec(query, sqlParameters),
                 feedOptions)
                 .AsDocumentQuery();
@@ -182,8 +183,8 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> QueryResourcesCountAsync(string query, Dictionary<string, object> parameters)
         {
-            var resources = await QueryItemsAsync(cosmosDbSettings.ResourcesCollectionId,query, parameters);
-            var results = new PagedResources(){ Results = resources };
+            var resources = await QueryItemsAsync(cosmosDbSettings.ResourcesCollectionId, query, parameters);
+            var results = new PagedResources() { Results = resources };
 
             return results;
         }
@@ -191,7 +192,7 @@ namespace Access2Justice.CosmosDb
         public async Task<ICollection<UserIncomingResources>> FindIncomingSharedResource(IncomingSharedResourceRetrieveParam incomingSharedResourceRetrieveParam)
         {
             var stringResourceIds = incomingSharedResourceRetrieveParam.ResourceIds.Select(x => x.ToString());
-            
+
             var whereCondition =
                 new List<Expression<Func<UserIncomingResources, bool>>>
                 {

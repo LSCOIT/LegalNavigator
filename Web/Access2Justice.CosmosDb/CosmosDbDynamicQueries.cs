@@ -134,6 +134,20 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query, _wrapSingleParam(value));
         }
 
+        public async Task<dynamic> FindResourcesWithLocationAsync(string collectionId, Location location)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId);
+            string locationFilter = FindLocationWhereArrayContains(location);
+            var query = string.Empty;
+            query = $"SELECT * FROM c";
+
+            if (!string.IsNullOrEmpty(locationFilter))
+            {
+                query += " WHERE " + locationFilter;
+            }
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, null);
+        }
+
         public async Task<dynamic> FindItemsWhereWithLocationAsync(string collectionId, string propertyName, string value, Location location)
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
@@ -397,7 +411,7 @@ namespace Access2Justice.CosmosDb
                 var parameterName = _parameterName(index);
                 index++;
                 parameters[parameterName] = value;
-                arrayContainsWithOrClause += $" ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : @{parameterName} }})";
+                arrayContainsWithOrClause += $" ARRAY_CONTAINS(c.{arrayName}, {{ '{propertyName}' : @{parameterName} }},true)";
                 if (value != lastItem)
                 {
                     arrayContainsWithOrClause += "OR";
@@ -443,6 +457,21 @@ namespace Access2Justice.CosmosDb
         {
             var query = "SELECT * FROM c";
             return await backendDatabaseService.QueryItemsAsync(collectionId, query, null);
+        }
+
+        public async Task<dynamic> FindTopicsByTopicIds(string collectionId, string propertyName, IEnumerable<string> topicsIds)
+        {
+            var topicsCollection = topicsIds?.Distinct().ToList();
+            if (topicsIds == null || topicsCollection.Count == 0)
+            {
+                return Constants.EmptyArray;
+            }
+
+            EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
+            var parameters = new Dictionary<string, object>();
+            var inClause = InClause(topicsCollection, parameters);
+            var query = $"SELECT * FROM c WHERE c.{propertyName} IN ({inClause})";
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, parameters);
         }
     }
 }
