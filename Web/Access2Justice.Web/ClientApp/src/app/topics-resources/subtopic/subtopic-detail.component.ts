@@ -7,6 +7,7 @@ import { NavigateDataService } from "../../common/services/navigate-data.service
 import { ShowMoreService } from "../../common/sidebars/show-more/show-more.service";
 import { ISubtopicGuidedInput } from "../shared/topic";
 import { TopicService } from "../shared/topic.service";
+import { ParamsChange } from "../../common/search/search-filter/search-filter.component";
 
 @Component({
   selector: "app-subtopic-detail",
@@ -16,6 +17,7 @@ import { TopicService } from "../shared/topic.service";
 export class SubtopicDetailComponent implements OnInit {
   searchResults: any;
   subtopicDetails: any;
+  isInternalResource: boolean;
   activeSubtopicParam = this.activeRoute.snapshot.params["topic"];
   actionPlanData: any;
   articleData: any;
@@ -25,6 +27,7 @@ export class SubtopicDetailComponent implements OnInit {
   relatedLinksData: any;
   subtopics: any;
   subtopic: any;
+  isSortingDisabled: boolean;
   topIntent: string;
   savedFrom: string = "subTopicDetails";
   type: string = "Topics";
@@ -33,6 +36,9 @@ export class SubtopicDetailComponent implements OnInit {
     activeId: "",
     name: ""
   };
+  locationDetails: any;
+  location: any;
+  resourceResults: any;
   luisInput: ILuisInput = {
     Sentence: "",
     Location: "",
@@ -130,7 +136,23 @@ export class SubtopicDetailComponent implements OnInit {
     );
   }
 
+  loadStatisticFilter() {
+    var obj = this;
+    this.showMoreService.loadStatisticFilter('All', this.activeSubtopicParam, function(response){
+      obj.searchResults = response;
+      obj.resourceResults = response.resourceTypeFilter;
+      obj.isInternalResource = true;
+      obj.isSortingDisabled = true;
+    });
+  }
+
+  enableFilter(event: ParamsChange){
+    var obj = event;
+    this.clickSeeMoreOrganizationsFromSubtopicDetails(obj.filterParam);
+  }
+
   ngOnInit() {
+    this.loadStatisticFilter();
     this.displayResources = this.global.displayResources;
     this.global.activeSubtopicParam = this.activeSubtopicParam;
     this.global.topIntent = this.topIntent;

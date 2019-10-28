@@ -22,6 +22,7 @@ export class SearchFilterComponent implements OnInit, OnChanges, AfterViewInit {
   sortParam = 'date';
   @ViewChildren('filterButtons') filterButtons: QueryList<any>;
   @Input() initialResourceFilter: string;
+  @Input() isSortingDisabled = false;
   buttonToHighlight = [];
   order: 'ASC' | 'DESC' = 'ASC';
 

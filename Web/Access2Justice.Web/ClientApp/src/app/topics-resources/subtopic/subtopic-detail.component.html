@@ -7,6 +7,17 @@
       [type]="type"
     ></app-user-action-sidebar>
   </div>
+  <div class="row" *ngIf="isInternalResource">
+    <div class="col-sm-12" >
+        <app-search-filter
+          (notifyFilterCriteria)="enableFilter($event)"
+          [resourceResults]="resourceResults"
+          [initialResourceFilter]="initialResourceFilter"
+          [searchResults]="searchResults"
+          [isSortingDisabled] = "true"
+        ></app-search-filter>
+      </div>
+  </div>
   <div class="row">
     <div class="col-md-10 col-sm-12">
       <h1 *ngIf="subtopics.id == activeSubtopicParam" class="subtopic-heading">

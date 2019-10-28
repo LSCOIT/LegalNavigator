@@ -68,4 +68,30 @@ export class ShowMoreService {
         }
       });
   }
+
+  loadStatisticFilter(resourceType, activeId, callback){
+    this.locationDetails = JSON.parse(
+      sessionStorage.getItem("globalMapLocation")
+    );
+    this.resourceFilter.ResourceType = resourceType;
+    this.resourceFilter.TopicIds = [];
+    if (activeId) {
+      this.resourceFilter.TopicIds.push(activeId);
+    }
+    this.resourceFilter.Location = this.locationDetails.location;
+    this.resourceFilter.IsResourceCountRequired = true;
+    this.resourceFilter.OrderBy = "ASC";
+    this.resourceFilter.OrderByField = "name";
+    this.paginationService
+      .getPagedResources(this.resourceFilter)
+      .subscribe(response => {
+        if (response != undefined) {
+          this.searchResults = response;
+          this.searchResults.topIntent = '';
+          this.searchResults.resourceType = resourceType;
+          this.searchResults.isItFromTopicPage = true;
+          callback(this.searchResults);
+        }
+      });
+  }
 }
