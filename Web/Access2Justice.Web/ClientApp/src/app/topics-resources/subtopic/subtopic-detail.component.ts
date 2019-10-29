@@ -96,7 +96,7 @@ export class SubtopicDetailComponent implements OnInit {
         resource => resource.resourceType === "Forms"
       );
       this.relatedLinksData = this.subtopicDetails.filter(
-        resource => resource.resourceType === "Additional Readings" || "Related Links"
+        resource => resource.resourceType === "Additional Readings" || resource.resourceType === "Related Links"
       );
     }
   }
