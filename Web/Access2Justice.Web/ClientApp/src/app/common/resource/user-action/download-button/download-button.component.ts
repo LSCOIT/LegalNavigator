@@ -48,19 +48,20 @@ export class DownloadButtonComponent implements OnInit {
 
   downloadPDF() {
     if (location.pathname.indexOf("/topics") >= 0) {
-      let address;
+      let address, location;
       // this.template = "app-subtopic-detail";
-      if (sessionStorage.getItem("mapAddress")) {
+      if (sessionStorage.getItem("globalMapLocation")) {
         address = JSON.parse(
-          sessionStorage.getItem("mapAddress")
+          sessionStorage.getItem("globalMapLocation")
         );
+        location = address.location;
       }
       let params = new HttpParams()
       .set("topicId", this.global.activeSubtopicParam)
-      .set("state", address.state || '')
-      .set("county", address.country || '')
-      .set("city", address.city || '')
-      .set("zipCode", address.zipCode || '');
+      .set("state", location.state || '')
+      .set("county", location.country || '')
+      .set("city", location.city || '')
+      .set("zipCode", location.zipCode || '');
       
       this.topicService.printTopic(params).subscribe(response => {
         if(response) {
