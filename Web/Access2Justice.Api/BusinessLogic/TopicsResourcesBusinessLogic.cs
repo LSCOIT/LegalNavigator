@@ -111,6 +111,25 @@ namespace Access2Justice.Api.BusinessLogic
             return listResources;
         }
 
+
+        public async Task<dynamic> FindAllResources(ResourceFilter resourceFilter)
+        {
+            
+            var parameters = new Dictionary<string, object>();
+            var query = dbClient.BuildQueryWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, parameters);
+            List<dynamic> items = await dbService.QueryItemsAsync(dbSettings.ResourcesCollectionId, query, parameters);
+
+            if (!items.Any() && resourceFilter.Location != null)
+            {
+                if (!IsValidLocation(resourceFilter.Location))
+                {
+                    return await FindAllResources(resourceFilter);
+                }
+            }
+
+            return items;
+        }
+
         private async Task GetParentTopics(List<string> topicIds, List<dynamic> parentTopics)
         {
             List<string> intermediateTopicIds = new List<string>();
@@ -495,14 +514,6 @@ namespace Access2Justice.Api.BusinessLogic
                 JsonUtilities.DeserializeDynamicObject<List<string>>(pagedResourceViewModel.TopicIds), curatedLocation);
 
             return JObject.FromObject(pagedResourceViewModel).ToString();
-        }
-
-        public async Task<dynamic> FindAllResources(ResourceFilter resourceFilter)
-        {
-            var parameters = new Dictionary<string, object>();
-            var query = dbClient.BuildQueryWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, parameters);
-            var items = await dbService.QueryItemsAsync(dbSettings.ResourcesCollectionId, query, parameters);
-            return items;
         }
 
         public async Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter)
