@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
+import { TopicService } from "../../../../topics-resources/shared/topic.service";
+import { HttpParams } from "@angular/common/http";
 
 @Component({
   selector: "app-print-button",
@@ -26,13 +28,22 @@ export class PrintButtonComponent implements OnInit {
   title: any = document.title;
   activeTab: string = "";
   activeRouteName: string = "";
+  activeTopic: any;
+  topic: any;
+  logoSrc: any;
   @Input() showIcon: boolean = true;
   @Input() addLinkClass: boolean = false;
 
-  constructor(private activeRoute: ActivatedRoute) {}
+  constructor(private activeRoute: ActivatedRoute, 
+    private topicService: TopicService) {
+  }
 
   print(): void {
+    debugger;
     this.activeRoute.url.subscribe(routeParts => {
+      if(routeParts.length > 1){
+        this.activeTopic = routeParts[routeParts.length-1].path;
+      }
       for (let i = 0; i < routeParts.length; i++) {
         this.activeRouteName = routeParts[i].path;
         break;
@@ -57,11 +68,36 @@ export class PrintButtonComponent implements OnInit {
     } else {
       this.template = "body";
     }
-    this.printContents(this.template);
+   
+    this.topicService.getDocumentDataWithShared(this.activeTopic, true).subscribe(topic => {
+      if(topic[0]) {
+        this.topic = topic[0];
+        var isShared = true;
+        let params = new HttpParams()
+          .set("organizationalUnit", this.topic.organizationalUnit);
+          
+        this.topicService.getLogo(params).subscribe(logo => {
+          this.logoSrc = logo ? logo.source : '';
+          this.printContents(this.template, this.topic.name, this.topic.overview, this.logoSrc);
+        });
+      }
+    });
+    
   }
 
-  printContents(template) {
+  printContents(template, name, overview, logoSrc) {
+    debugger;
+    var overviewElement = '';
+    var imageElement = '';
+    if(logoSrc){ 
+      imageElement = '<img src="data:image/gif;base64,' + logoSrc +' " width="100" height="100">';  
+    }
+
     let printContents = document.getElementsByTagName(template)[0].innerHTML;
+    var nameElement = '<div class="row"><h1 class="">' + name + '</h1></div>';
+    if(overview){
+      overviewElement = '<h2>Overview</h2><p>' + overview + '</p>';
+    }
     let popupWin = window.open(
       "",
       "_blank",
@@ -76,6 +112,10 @@ export class PrintButtonComponent implements OnInit {
                 .no-print, .no-print * {
                   display: none !important;
                 }
+                .row {
+                  margin: 10px auto;
+                  width: 100%;
+                }
                 .print-only * {
                    display: block;
                 }
@@ -89,13 +129,16 @@ export class PrintButtonComponent implements OnInit {
                 .hours li span {
                   margin-right: 10px;
                 }
+                .subtopic-heading {
+                  display: inline-block;
+                }
                 a {
                   text-decoration: none;
                 }
               }
             </style>
           </head>
-      <body onload="window.print();window.close()">${printContents}</body>
+      <body onload="window.print();window.close()">${imageElement} ${nameElement} ${overviewElement} ${printContents}</body>
         </html>`);
     popupWin.document.close();
   }

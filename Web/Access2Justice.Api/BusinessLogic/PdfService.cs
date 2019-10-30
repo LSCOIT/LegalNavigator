@@ -33,6 +33,12 @@ namespace Access2Justice.Api.BusinessLogic
             this.topicsResourcesBusinessLogic = topicsResourcesBusinessLogic;
         }
 
+        public async Task<Image> GetImage(string organizationalUnit)
+        {
+            var image = (await staticResources.RetrieveLogo(new List<string> { organizationalUnit })).FirstOrDefault();
+            return image.Value;
+        }
+
         public async Task<byte[]> PrintPlan(PersonalizedPlanViewModel personalizedPlan)
         {
             foreach (var personalizedPlanTopic in personalizedPlan.Topics)

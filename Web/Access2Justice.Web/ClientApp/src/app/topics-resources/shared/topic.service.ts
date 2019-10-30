@@ -6,6 +6,7 @@ import { api } from "../../../api/api";
 import { Global } from "../../global";
 import { LocationDetails, MapLocation } from "../../common/map/map";
 import { ITopicInput, Topic } from "./topic";
+import { Response } from 'selenium-webdriver/http';
 
 const httpOptions = {
   headers: new HttpHeaders({ "Content-Type": "application/json" })
@@ -72,7 +73,7 @@ export class TopicService {
       JSON.stringify(this.topicInput),
       httpOptions
     );
-  }
+  } 
 
   getDocumentData(id): Observable<any> {
     this.buildParams(id);
@@ -83,12 +84,31 @@ export class TopicService {
     );
   }
 
+  getDocumentDataWithShared(id, isShared): Observable<any> {
+    this.buildParamsWithShared(id, isShared);
+    return this.http.post<Topic>(
+      api.getDocumentUrl,
+      JSON.stringify(this.topicInput),
+      httpOptions
+    );
+  }
+
+  getLogo(params): Observable<any> {
+    return this.http.get<any>(api.getPrintLogo + "?" + params);
+  }
+
   buildParams(id) {
     this.topicInput.Id = id;
     this.topicInput.Location = this.loadStateName();
     if (location.pathname.indexOf(this.global.shareRouteUrl) >= 0) {
       this.topicInput.IsShared = true;
     }
+  }
+
+  buildParamsWithShared(id, isShared) {
+    this.topicInput.Id = id;
+    this.topicInput.Location = this.loadStateName();
+    this.topicInput.IsShared = isShared;
   }
 
   printTopic(params): Observable<any> {

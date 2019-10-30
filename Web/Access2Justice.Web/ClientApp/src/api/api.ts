@@ -14,6 +14,7 @@ export const api = {
   subtopicDetailUrl: topic + "/resources/details",
   printSubtopicUrl: topic + "/resources/print",
   getDocumentUrl: topic + "/topics/document",
+  getPrintLogo: topic + "/topics/image",
   printTopicUrl: topic + "/topics/print",
   searchUrl: apiUrl + "/search",
   getResourceUrl: topic + "/paged-resources",

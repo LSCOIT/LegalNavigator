@@ -26,7 +26,7 @@
                     <div class="box-no-shadow">
                         <div class="subtopic-body">
                             <div *ngIf="subtopics.overview">
-                                <h2>Overview</h2>
+                                <h2>Overview</h2>   
                                 <p>@Model.Topic.Overview</p>
                             </div>
                         </div>
@@ -52,16 +52,6 @@
                     <div class="row">
                         <h3>Articles</h3>
                         @foreach (var resource in Model.Articles)
-                        {
-                            @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
-                        }
-                    </div>
-                }
-                @if (Model.AdditionalReadings != null)
-                {
-                    <div class="row">
-                        <h3>Additional readings</h3>
-                        @foreach (var resource in Model.AdditionalReadings)
                         {
                             @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
                         }
@@ -97,13 +87,23 @@
                         }
                     </div>
                 }
-                @if (Model.RelatedLinks != null)
+                @if (Model.RelatedLinks != null || Model.AdditionalReadings != null)
                 {
                     <div class="row">
                         <h3>Additional Readings</h3>
-                        @foreach (var resource in Model.RelatedLinks)
+                        @if (Model.RelatedLinks != null)
                         {
-                            @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
+                            @foreach (var resource in Model.RelatedLinks)
+                            {
+                                @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
+                            }
+                        }
+                        @if (Model.AdditionalReadings != null)
+                        {
+                            @foreach (var resource in Model.AdditionalReadings)
+                            {
+                                @Html.Partial("~/Views/Templates/ResourceCard.cshtml", resource)
+                            }
                         }
                     </div>
                 }

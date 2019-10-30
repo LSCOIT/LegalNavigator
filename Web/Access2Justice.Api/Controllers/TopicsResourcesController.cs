@@ -11,6 +11,7 @@ using static Access2Justice.Api.Authorization.Permissions;
 using Pomelo.AntiXSS;
 using System.Diagnostics.CodeAnalysis;
 using Access2Justice.Shared;
+using System.Linq;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -183,6 +184,14 @@ namespace Access2Justice.Api.Controllers
             });
             var output = await pdfService.PrintTopic(topics[0], resources);
             return File(output, "application/pdf", $"{topics[0].Name}.pdf");
+        }
+
+        [HttpGet]
+        [Route("topics/image")]
+        public async Task<IActionResult> GetImageForTopic(string organizationalUnit)
+        {
+            var image = await pdfService.GetImage(organizationalUnit);
+            return Ok(image);
         }
 
         /// <summary>
