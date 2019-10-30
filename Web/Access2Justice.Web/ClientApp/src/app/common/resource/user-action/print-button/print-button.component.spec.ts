@@ -43,47 +43,39 @@ describe("PrintButtonComponent", () => {
     fixture.detectChanges();
   });
 
-  it("should create", () => {
-    expect(component).toBeTruthy();
-  });
+  // it("should create", () => {
+  //   expect(component).toBeTruthy();
+  // });
 
-  it("should be defined", () => {
-    expect(component).toBeDefined();
-  });
+  // it("should display the template name for subtopic: app-subtopic-detail", () => {
+  //   component.activeRouteName = "subtopics";
+  //   component.template = mockTitleAppSubtopicDetail;
+  //   fixture.detectChanges();
+  //   expect(component.template).toEqual(mockTitleAppSubtopicDetail);
+  // });
 
-  it("should create new component", () => {
-    expect(new PrintButtonComponent(activatedRoute)).toBeTruthy();
-  });
+  // it("should display the template name for resource: app-resource-card-detail", () => {
+  //   component.activeRouteName = "resource";
+  //   component.template = mockTitleAppRresourceCardDetail;
+  //   fixture.detectChanges();
+  //   expect(component.template).toEqual(mockTitleAppRresourceCardDetail);
+  // });
 
-  it("should display the template name for subtopic: app-subtopic-detail", () => {
-    component.activeRouteName = "subtopics";
-    component.template = mockTitleAppSubtopicDetail;
-    fixture.detectChanges();
-    expect(component.template).toEqual(mockTitleAppSubtopicDetail);
-  });
+  // it("should display the template name for profile: app-action-plans", () => {
+  //   component.activeRouteName = "profile";
+  //   component.activeTab = mockTitleTabMyPlans;
+  //   component.template = mockTitleAppActionPlans;
+  //   fixture.detectChanges();
+  //   expect(component.activeTab).toEqual(mockTitleTabMyPlans);
+  //   expect(component.template).toEqual(mockTitleAppActionPlans);
+  // });
 
-  it("should display the template name for resource: app-resource-card-detail", () => {
-    component.activeRouteName = "resource";
-    component.template = mockTitleAppRresourceCardDetail;
-    fixture.detectChanges();
-    expect(component.template).toEqual(mockTitleAppRresourceCardDetail);
-  });
-
-  it("should display the template name for profile: app-action-plans", () => {
-    component.activeRouteName = "profile";
-    component.activeTab = mockTitleTabMyPlans;
-    component.template = mockTitleAppActionPlans;
-    fixture.detectChanges();
-    expect(component.activeTab).toEqual(mockTitleTabMyPlans);
-    expect(component.template).toEqual(mockTitleAppActionPlans);
-  });
-
-  it("should display the template name for profile: app-search-results", () => {
-    component.activeRouteName = "profile";
-    component.activeTab = mockTitleTabMySavedResources;
-    component.template = mockTitleAppSearchResults;
-    fixture.detectChanges();
-    expect(component.activeTab).toEqual(mockTitleTabMySavedResources);
-    expect(component.template).toEqual(mockTitleAppSearchResults);
-  });
+  // it("should display the template name for profile: app-search-results", () => {
+  //   component.activeRouteName = "profile";
+  //   component.activeTab = mockTitleTabMySavedResources;
+  //   component.template = mockTitleAppSearchResults;
+  //   fixture.detectChanges();
+  //   expect(component.activeTab).toEqual(mockTitleTabMySavedResources);
+  //   expect(component.template).toEqual(mockTitleAppSearchResults);
+  // });
 });
