@@ -71,7 +71,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                 }
                                 else
                                 {
-                                    cellActualValue = cellValue;
+                                    cellActualValue = string.IsNullOrWhiteSpace(cellValue) ? "1" : cellValue;
                                 }
 
                                 if (counter == 0)
