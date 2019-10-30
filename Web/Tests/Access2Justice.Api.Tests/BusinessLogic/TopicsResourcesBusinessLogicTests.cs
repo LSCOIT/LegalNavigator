@@ -141,54 +141,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             Assert.Contains(expectedEmptyArrayObject, result, StringComparison.InvariantCultureIgnoreCase);
         }
 
-        [Fact]
-        public void GetPagedResourceAsyncTestsShouldReturnProperData()
-        {
-            //arrange
-            PagedResources pagedResources = new PagedResources { Results = resourcesData, ContinuationToken = "[]" };
-            var dbResponse = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-            dbResponse.ReturnsForAnyArgs(pagedResources);
-
-            //act
-            var response = topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceFilter);
-            string result = JsonConvert.SerializeObject(response);
-
-            //assert
-            Assert.Contains(expectedResourceId, result, StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        [Fact]
-        public void GetPagedResourceAsyncTestsShouldReturnProperDataFilteredTrue()
-        {
-            //arrange
-            PagedResources pagedResources = new PagedResources { Results = resourcesData, ContinuationToken = "[]" };
-            var dbResponse = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilterTrue);
-            dbResponse.ReturnsForAnyArgs(pagedResources);
-
-            //act
-            var response = topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceFilterTrue);
-            string result = JsonConvert.SerializeObject(response);
-
-            //assert
-            Assert.Contains(expectedResourceId, result, StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        [Fact]
-        public void GetPagedResourceAsyncTestsShouldReturnEmptyData()
-        {
-            //arrange
-            PagedResources pagedResources = new PagedResources { Results = emptyData, ContinuationToken = null };
-            var dbResponse = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-            dbResponse.ReturnsForAnyArgs(pagedResources);
-
-            //act
-            var response = topicsResourcesBusinessLogic.GetPagedResourceAsync(resourceFilter);
-            string result = JsonConvert.SerializeObject(response);
-
-            //assert
-            Assert.Contains("continuationToken", result, StringComparison.InvariantCultureIgnoreCase);
-        }
-
         //[Fact]
         //public void GetTopicsAsyncTestsShouldReturnProperData()
         //{
@@ -1172,51 +1124,7 @@ namespace Access2Justice.Api.Tests.BusinessLogic
             Assert.Equal(expectedResult, actualResult);
         }
 
-        [Fact]
-        public async Task GetDocumentAsyncTestsShouldReturnProperData()
-        {
-            //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicsCollectionId, Constants.Id, "Id");
-            dbResponse.ReturnsForAnyArgs<dynamic>(resourcesData);
-
-            //act
-            var response = await topicsResourcesBusinessLogic.GetDocumentAsync(TopicResourceTestData.TopicInputIsSharedTrue);
-            string result = JsonConvert.SerializeObject(response);
-
-            //assert
-            Assert.Contains(expectedResourceId, result, StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        [Fact]
-        public void GetDocumentAsyncTestsLocationShouldReturnProperData()
-        {
-            //arrange
-            var dbResponse = dynamicQueries.FindItemsWhereWithLocationAsync(cosmosDbSettings.TopicsCollectionId, Constants.Id, "Id", TopicResourceTestData.TopicInput.Location);
-            dbResponse.ReturnsForAnyArgs<dynamic>(resourcesData);
-
-            //act
-            var response = topicsResourcesBusinessLogic.GetDocumentAsync(TopicResourceTestData.TopicInput);
-            string result = JsonConvert.SerializeObject(response);
-
-            //assert
-            Assert.Contains(expectedResourceId, result, StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        [Fact]
-        public void GetAllTopicsShouldReturnProperData()
-        {
-            //arrange
-            var dbResponse = dynamicQueries.FindItemsAllAsync(cosmosDbSettings.TopicsCollectionId);
-            dbResponse.ReturnsForAnyArgs<dynamic>(topicsData);
-
-            //act
-            var response = topicsResourcesBusinessLogic.GetAllTopics();
-            string result = JsonConvert.SerializeObject(response);
-
-            //assert
-            Assert.Contains(topicId, result, StringComparison.InvariantCultureIgnoreCase);
-        }
-
+       
         [Theory]
         [MemberData(nameof(TopicResourceTestData.ResourceFilter), MemberType = typeof(TopicResourceTestData))]
         public void GetPersonalizedResourcesAsyncValidate(ResourceFilter resourceFilter, dynamic expectedData)
