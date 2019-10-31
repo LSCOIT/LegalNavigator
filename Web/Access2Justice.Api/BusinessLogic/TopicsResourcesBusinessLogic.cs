@@ -1148,7 +1148,9 @@ namespace Access2Justice.Api.BusinessLogic
                     if (topicDBData.Count == 0)
                     {
                         var topicDBDataAdditional =
-                            await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Name, topicdocuments.Name);
+                            await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId,
+                            new List<string> { Constants.Name, Constants.OrganizationalUnit },
+                            new List<string> { topicdocuments.Name, topicdocuments.OrganizationalUnit });
 
                         if (topicDBDataAdditional.Count == 0)
                         {
