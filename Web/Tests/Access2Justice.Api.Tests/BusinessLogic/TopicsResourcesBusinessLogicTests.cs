@@ -893,35 +893,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Fact]
-        public void UpsertTopicDocumentAsyncTestsShouldReturnProperData()
-        {
-            //arrange
-            var topic = this.topicData;
-            var topics = this.topicUpsertData;
-            Document document = new Document();
-            JsonTextReader reader = new JsonTextReader(new StringReader(topic[0].ToString()));
-            document.LoadFrom(reader);
-            dynamic actualTopicData = null;
-            object topicArray = emptyUpsertData;
-            string json = topicArray.ToString();
-            var topicObjects = JsonConvert.DeserializeObject<List<dynamic>>(json);
-            string id = "f47a01e9-c5dc-48f1-993f-6a69324317e6";
-
-            //act
-            var dbResponseFind = dynamicQueries.FindItemsWhereAsync(cosmosDbSettings.TopicsCollectionId, Constants.Id, id).ReturnsForAnyArgs(topicObjects);
-            var dbResponse = backendDatabaseService.CreateItemAsync<dynamic>(topic, cosmosDbSettings.TopicsCollectionId).ReturnsForAnyArgs(document);
-            var dbResponseTopicTag = topicsResourcesSettings.UpsertTopics(topic[0]).ReturnsForAnyArgs<dynamic>(expectedTopicData[0]);
-            var response = topicsResourcesBusinessLogic.UpsertTopicDocumentAsync(topic).Result;
-            foreach (var result in response)
-            {
-                actualTopicData = result;
-            }
-
-            //assert
-            Assert.Equal(expectedTopicsData[0].ToString(), actualTopicData.ToString());
-        }
-
-        [Fact]
         public void UpsertTopicsTestsShouldReturnProperData()
         {
             //arrange
