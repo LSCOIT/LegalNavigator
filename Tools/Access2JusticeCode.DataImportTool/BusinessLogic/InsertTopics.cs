@@ -206,8 +206,9 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                 Display = display,
                                 Ranking = InsertResources.GetRanking(ranking)
                             };
-                            topic.Validate();
-                            topicsList.Add(topic);
+                            if (topic.Validate()) {
+                                topicsList.Add(topic);
+                            };
                         }
                         counter++;
                         recordNumber++;

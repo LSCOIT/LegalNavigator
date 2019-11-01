@@ -50,5 +50,6 @@ namespace Access2Justice.Shared.Interfaces
         string GetAbsoluteStaticResourceStoragePath(string path);
         string GetRelativeStaticResourceStoragePath(string path);
         Task<dynamic> FindAllResources(ResourceFilter resourceFilter);
+        Task<dynamic> FindAllResourcesForDownload(ResourceFilter resourceFilter);
     }
 }

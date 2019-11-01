@@ -126,6 +126,12 @@ export class SubtopicDetailComponent implements OnInit {
         this.subtopicDetails = data.sort((a, b) => a.name === b.name ? 0 : (a.name < b.name ? -1 : 1));
         this.filterSubtopicDetail();
       });
+
+      this.topicService
+        .getDocumentData(this.activeSubtopicParam)
+        .subscribe(data => {
+          this.subtopics = data[0];
+        });
   }
 
   clickSeeMoreOrganizationsFromSubtopicDetails(resourceType: string) {

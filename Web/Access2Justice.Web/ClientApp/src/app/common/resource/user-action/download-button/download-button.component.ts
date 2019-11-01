@@ -2,6 +2,7 @@ import * as jsPDF from "jspdf";
 import { Component, Input, OnInit } from "@angular/core";
 import { HttpParams } from "@angular/common/http";
 import { Global, UserStatus } from '../../../../global';
+import { ActivatedRoute } from "@angular/router";
 
 import { PersonalizedPlanComponent } from '../../../../guided-assistant/personalized-plan/personalized-plan.component';
 import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
@@ -36,12 +37,14 @@ export class DownloadButtonComponent implements OnInit {
   content: any;
   mainHTML: any;
   activeTab: string = "";
+  activeResourceId: any;
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
     private personalizedPlanComponent: PersonalizedPlanComponent,
     private topicService: TopicService,
     private global: Global,
+    private activeRoute: ActivatedRoute,
   ) {
     global.showRemove = !(global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0);
   }
@@ -49,7 +52,6 @@ export class DownloadButtonComponent implements OnInit {
   downloadPDF() {
     if (location.pathname.indexOf("/topics") >= 0) {
       let address, location;
-      // this.template = "app-subtopic-detail";
       if (sessionStorage.getItem("globalMapLocation")) {
         address = JSON.parse(
           sessionStorage.getItem("globalMapLocation")
@@ -83,9 +85,15 @@ export class DownloadButtonComponent implements OnInit {
         }
       });
     } else if (location.pathname.indexOf("/resource") >= 0) {
+      this.activeRoute.url.subscribe(routeParts => {
+        if(routeParts.length > 1){
+          this.activeResourceId = routeParts[routeParts.length-1].path;
+        }
+      });
+
       // this.template = "app-resource-card-detail";
       let params = new HttpParams()
-      .set("resourceId", this.global.activeSubtopicParam);
+      .set("resourceId", this.activeResourceId);
       
       this.topicService.printResourceTopic(params).subscribe(response => {
         if(response) {

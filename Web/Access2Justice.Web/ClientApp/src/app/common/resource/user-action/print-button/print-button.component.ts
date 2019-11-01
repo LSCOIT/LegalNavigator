@@ -49,7 +49,6 @@ export class PrintButtonComponent implements OnInit {
         break;
       }
     });
-
     if (this.activeRouteName === "subtopics") {
       this.template = "app-subtopic-detail";
     } else if (this.activeRouteName === "plan") {
@@ -69,6 +68,11 @@ export class PrintButtonComponent implements OnInit {
       this.template = "body";
     }
    
+
+    if(this.template === "app-resource-card-detail"){
+      this.printContents(this.template);
+    }
+else{
     this.topicService.getDocumentDataWithShared(this.activeTopic, true).subscribe(topic => {
       if(topic[0]) {
         this.topic = topic[0];
@@ -82,10 +86,10 @@ export class PrintButtonComponent implements OnInit {
         });
       }
     });
-    
+  }
   }
 
-  printContents(template, name, overview, logoSrc) {
+  printContents(template, name = '', overview = '', logoSrc = '') {
     debugger;
     var overviewElement = '';
     var imageElement = '';

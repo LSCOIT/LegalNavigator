@@ -83,7 +83,7 @@ namespace Access2Justice.Api.BusinessLogic
             };
             foreach (var resource in resources)
             {
-                switch ((string) resource.resourceType)
+                switch ((string) resource.ResourceType)
                 {
                     case "Forms":
                         (printableTopic.Forms ?? (printableTopic.Forms = new List<Form>()))
@@ -127,7 +127,7 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<byte[]> PrintResource(dynamic resource)
         {
             Resource deserializedResource;
-            switch ((string) resource.resourceType)
+            switch ((string) resource.ResourceType)
             {
                 case "Forms":
                     deserializedResource = JsonUtilities.DeserializeDynamicObject<Form>(resource);

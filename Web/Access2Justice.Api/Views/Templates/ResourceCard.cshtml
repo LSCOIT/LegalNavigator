@@ -69,9 +69,6 @@
                     <div class="media">
                         <div class="media-body">
                             <h4 class="print-only">@Model.Name</h4>
-                            <div class="print-only">
-                                @Url.Content($"~/resource/{Model.ResourceId}")
-                            </div>
                             <div class="print-only">@Model.Description</div>
                         </div>
                     </div>
@@ -81,10 +78,6 @@
                     <div class="media">
                         <div class="media-body">
                             <h4 class="print-only">@Model.Name</h4>
-                            <div class="print-only">
-                                // @Url.Content($"~/resource/{Model.ResourceId}")
-                                @string.Join("/", Context.Request.Host, "/resource/{Model.ResourceId}")
-                            </div>
                             @if (((Organization)Model).IsFormAvailable)
                             {
                                 <div class="onboarding-label">
@@ -93,14 +86,19 @@
                             }
                             <div class="print-only">@Model.Description</div>
                             <div class="org-content span-text">
+
+                                @{
+                                    string address = ((Organization)Model).Address;
+                                }
                                 @if (!string.IsNullOrWhiteSpace(((Organization)Model).Address))
                                 {
+
                                     <div class="col-sm-4 col-xs-12">
                                         <div class="col-sm-9 col-xs-9">
                                             @if (((Organization)Model).Address != "NA")
                                             {
                                                 <a href="@Url.Content($"~/resource/{Model.ResourceId}")"
-                                                   class="link pxs">@((Organization)Model).Address</a>
+                                                   class="link pxs">@address</a>
                                             }
                                             else
                                             {
@@ -109,15 +107,19 @@
                                         </div>
                                     </div>
                                 }
+                                @{
+                                    string telephone = ((Organization)Model).Telephone;
+                                }
                                 @if (!string.IsNullOrWhiteSpace(((Organization)Model).Telephone))
                                 {
+
                                     <div class="col-sm-4 col-xs-12 org-phone-detail">
                                         <div class="col-sm-9 col-xs-9">
                                             @if (((Organization)Model).Telephone != "NA")
                                             {
                                                 <a class="link pxs" href="'tel:' + '@(((Organization) Model).Telephone)'">
 
-                                                    @((Organization)Model).Telephone
+                                                    @telephone
 
                                                 </a>
                                             }

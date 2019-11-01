@@ -135,7 +135,7 @@ namespace Access2Justice.Api.Controllers
             var topicInput = new TopicInput { Id = resourceId.ToString(), IsShared = true };
             var topics = await topicsResourcesBusinessLogic.GetResourceByIdAsync(topicInput);
             var output = await pdfService.PrintResource(topics[0]);
-            return File(output, "application/pdf", $"{topics[0].name}.pdf");
+            return File(output, "application/pdf", $"{topics[0].Name}.pdf");
         }
 
         /// <summary>
@@ -175,13 +175,14 @@ namespace Access2Justice.Api.Controllers
         {
             var topicInput = new TopicInput { Id = topicId.ToString(), IsShared = true };
             var topics = await topicsResourcesBusinessLogic.GetDocumentAsync(topicInput);
-            var resources = await topicsResourcesBusinessLogic.FindAllResources(new ResourceFilter
+            var resources = await topicsResourcesBusinessLogic.FindAllResourcesForDownload(new ResourceFilter
             {
                 TopicIds = new List<string> { topics[0].Id },
                 PageNumber = 0,
                 ResourceType = Constants.All,
                 Location = new Location { State = state, County = county, City = city, ZipCode = zipCode }
             });
+            
             var output = await pdfService.PrintTopic(topics[0], resources);
             return File(output, "application/pdf", $"{topics[0].Name}.pdf");
         }

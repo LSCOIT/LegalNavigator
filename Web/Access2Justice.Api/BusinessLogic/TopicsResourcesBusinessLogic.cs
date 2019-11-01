@@ -130,6 +130,28 @@ namespace Access2Justice.Api.BusinessLogic
             return items;
         }
 
+        public async Task<dynamic> FindAllResourcesForDownload(ResourceFilter resourceFilter)
+        {
+
+            var parameters = new Dictionary<string, object>();
+            var query = dbClient.BuildQueryWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, parameters);
+            List<dynamic> items = await dbService.QueryItemsAsync(dbSettings.ResourcesCollectionId, query, parameters);
+
+            if (!items.Any() && resourceFilter.Location != null)
+            {
+                if (!IsValidLocation(resourceFilter.Location))
+                {
+                    return await FindAllResources(resourceFilter);
+                }
+            }
+
+            var listResources = FilterByDeleteAndOrderByRanking<Resource>(items);
+
+            var tt = listResources.OrderBy(x => x.Name).ToList();
+
+            return GetOutboundTopicsCollection(tt);
+        }
+
         private async Task GetParentTopics(List<string> topicIds, List<dynamic> parentTopics)
         {
             List<string> intermediateTopicIds = new List<string>();
