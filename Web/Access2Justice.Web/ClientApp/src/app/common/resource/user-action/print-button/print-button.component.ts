@@ -39,7 +39,6 @@ export class PrintButtonComponent implements OnInit {
   }
 
   print(): void {
-    debugger;
     this.activeRoute.url.subscribe(routeParts => {
       if(routeParts.length > 1){
         this.activeTopic = routeParts[routeParts.length-1].path;
@@ -70,7 +69,19 @@ export class PrintButtonComponent implements OnInit {
    
 
     if(this.template === "app-resource-card-detail"){
-      this.printContents(this.template);
+          if (sessionStorage.getItem('globalMapLocation')) {
+            let location = JSON.parse(
+              sessionStorage.getItem('globalMapLocation')
+            );
+            let state = location.location.state;
+            let params = new HttpParams()
+            .set("organizationalUnit", state);    
+
+            this.topicService.getLogo(params).subscribe(logo => {
+              this.logoSrc = logo ? logo.source : '';
+              this.printContents(this.template, this.logoSrc);
+            });
+          }
     }
 else{
     this.topicService.getDocumentDataWithShared(this.activeTopic, true).subscribe(topic => {
@@ -82,26 +93,21 @@ else{
           
         this.topicService.getLogo(params).subscribe(logo => {
           this.logoSrc = logo ? logo.source : '';
-          this.printContents(this.template, this.topic.name, this.topic.overview, this.logoSrc);
+          this.printContents(this.template, this.logoSrc);
         });
       }
     });
   }
   }
 
-  printContents(template, name = '', overview = '', logoSrc = '') {
-    debugger;
-    var overviewElement = '';
+  printContents(template, logoSrc = '') {
     var imageElement = '';
     if(logoSrc){ 
       imageElement = '<img src="data:image/gif;base64,' + logoSrc +' " width="100" height="100">';  
     }
 
     let printContents = document.getElementsByTagName(template)[0].innerHTML;
-    var nameElement = '<div class="row"><h1 class="">' + name + '</h1></div>';
-    if(overview){
-      overviewElement = '<h2>Overview</h2><p>' + overview + '</p>';
-    }
+
     let popupWin = window.open(
       "",
       "_blank",
@@ -142,7 +148,7 @@ else{
               }
             </style>
           </head>
-      <body onload="window.print();window.close()">${imageElement} ${nameElement} ${overviewElement} ${printContents}</body>
+      <body onload="window.print();window.close()">${imageElement} ${printContents}</body>
         </html>`);
     popupWin.document.close();
   }
