@@ -65,6 +65,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                         {
                             Spreadsheet.Worksheet worksheet = ((WorksheetPart)workbookPart.GetPartById(sheet.Id)).Worksheet;
                             Spreadsheet.SheetData sheetData = worksheet.Elements<Spreadsheet.SheetData>().First();
+
                             Spreadsheet.SharedStringTable sharedStringTable = spreadsheetDocument.WorkbookPart.SharedStringTablePart.SharedStringTable;
 
                             Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
@@ -79,7 +80,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                             currentPage = sheet.Name.Value;
                             foreach (Spreadsheet.Row row in sheetData.Elements<Spreadsheet.Row>())
                             {
-                                if (counter == 1)
+	                            if (counter == 1)
                                 {
                                     var resourceIdColumn = from a in keyValuePairs where a.Key == "Id" select a.Value.First().ToString();
                                     if (resourceIdColumn.Count() > 0)
@@ -87,6 +88,12 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                         resourceIdCell = resourceIdColumn.First();
                                     }
                                 }
+
+	                            if (row.Elements<Spreadsheet.Cell>()
+		                            .All(x => string.IsNullOrWhiteSpace(x.InnerText)))
+	                            {
+									continue;
+	                            }
 
                                 foreach (Spreadsheet.Cell cell in row.Elements<Spreadsheet.Cell>())
                                 {
