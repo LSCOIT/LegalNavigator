@@ -28,7 +28,7 @@
   <div class="row">
     <div class="col-md-8 col-sm-12">
       <div
-        class="box-no-shadow"
+        class="box-no-shadow" 
         *ngIf="subtopics.overview">
         <div *ngIf="subtopics.overview" class="subtopic-body">
           <div >
@@ -75,21 +75,16 @@
           See more Articles
         </button>
       </div>
-      <div *ngIf="organizationData.length > 0" class="row">
-        <h3>Organizations That May Be Able To Help</h3>
-        <div *ngFor="let resource of organizationData; let indexer = index">
-          <app-resource-card
-            *ngIf="indexer < displayResources"
-            [resource]="resource"
-            [showRemoveOption]="showRemoveOption">
-          </app-resource-card>
-        </div>
-        <button
-          *ngIf="organizationData.length > 5"
-          class="btn btn-primary no-print"
-          (click)="clickSeeMoreOrganizationsFromSubtopicDetails(organizationData[0].resourceType)">
-          See more Organizations
-        </button>
+      <div class="row" *ngIf="relatedLinksData.length > 0">
+        <h3>Additional Readings</h3>
+        <div *ngFor="let resource of relatedLinksData;">
+        <app-resource-card
+          [resource]="resource"
+          [showRemoveOption]="false"
+          [sharedResources]="false"
+        >
+        </app-resource-card>
+      </div>
       </div>
       <div *ngIf="videoData.length > 0" class="row">
         <h3>Videos</h3>
@@ -123,17 +118,22 @@
           See more Forms
         </button>
       </div>
-      <div class="row" *ngIf="relatedLinksData.length > 0">
-        <h3>Additional Readings</h3>
-        <div *ngFor="let resource of relatedLinksData;">
-        <app-resource-card
-          [resource]="resource"
-          [showRemoveOption]="false"
-          [sharedResources]="false"
-        >
-        </app-resource-card>
+      <div *ngIf="organizationData.length > 0" class="row">
+        <h3>Organizations That May Be Able To Help</h3>
+        <div *ngFor="let resource of organizationData; let indexer = index">
+          <app-resource-card
+            *ngIf="indexer < displayResources"
+            [resource]="resource"
+            [showRemoveOption]="showRemoveOption">
+          </app-resource-card>
+        </div>
+        <button
+          *ngIf="organizationData.length > 5"
+          class="btn btn-primary no-print"
+          (click)="clickSeeMoreOrganizationsFromSubtopicDetails(organizationData[0].resourceType)">
+          See more Organizations
+        </button>
       </div>
-    </div>
     </div>
     <div class="col-md-4 col-sm-12 sidebars">
       <app-guided-assistant-sidebar
