@@ -62,7 +62,7 @@
                 resource.name
                 }}</a>
               <h4 class="print-only">{{ resource.name }}</h4>
-              <div class="print-only">{{ resource.url }}</div>
+              <div class="no-print">{{ resource.url }}</div>
               <div class="external-link no-print">
                 <img
                   src="./assets/images/small-icons/external_link.svg"
@@ -98,9 +98,9 @@
               >{{ resource.name }}</a
               >
               <h4 class="print-only">{{ resource.name }}</h4>
-              <div class="print-only">
+              <!-- <div class="print-only">
                 {{ applicationUrl + "/subtopics" + "/" + resource.id }}
-              </div>
+              </div> -->
               <p>{{ resource.overview }}</p>
             </div>
           </div>
@@ -351,7 +351,7 @@
             </div>
           </div>
         </ng-template>
-        <div class="shared-by" *ngIf="resource.shared && !showUnshareOption">Shared by: {{resource.shared.sharedBy}}</div>
+        <div class="shared-by" *ngIf="resource.shared && !showUnshareOption">Shared by: {{resource.shared.sharedBy}} s </div>
         <div class="shared-by" *ngIf="showUnshareOption">Shared to: {{sharedToItem}}</div>
       </div>
       </div>
@@ -454,9 +454,9 @@
               >{{ resource.name }}</a
               >
               <h4 class="print-only">{{ resource.name }}</h4>
-              <div class="print-only">
+              <!-- <div class="print-only">
                 {{ applicationUrl + "/subtopics" + "/" + resource.id }}
-              </div>
+              </div> -->
               <p>{{ resource.overview }}</p>
             </div>
           </div>
@@ -696,7 +696,7 @@
                 />
                 External Link
               </div>
-              <div class="print-only">{{ resource.url }}</div>
+              <!-- <div class="no-print">{{ resource.url }}</div> -->
               <app-read-more
                 class="no-print"
                 *ngIf="resource.description"
@@ -707,7 +707,7 @@
             </div>
           </div>
         </ng-template>
-        <div class="shared-by" *ngIf="resource.shared && !showUnshareOption">Shared by: {{resource.shared.sharedBy}}</div>
+        <div class="shared-by no-print" *ngIf="resource.shared && !showUnshareOption">Shared by: {{resource.shared.sharedBy}}</div>
       </div>
     </ng-template>
   </div>

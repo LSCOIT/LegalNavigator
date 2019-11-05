@@ -61,7 +61,9 @@ export class PrintButtonComponent implements OnInit {
       if (this.activeTab === "My Plan") {
         this.template = "app-action-plans";
       } else if (this.activeTab === "My Saved Resources") {
-        this.template = "app-search-results";
+        this.template = "app-saved-resources";
+      }else if (this.activeTab === "Incoming Resources") {
+        this.template = "app-incoming-resources";
       }
     } else {
       this.template = "body";
@@ -83,7 +85,7 @@ export class PrintButtonComponent implements OnInit {
             });
           }
     }
-else{
+else if(this.activeTopic){
     this.topicService.getDocumentDataWithShared(this.activeTopic, true).subscribe(topic => {
       if(topic[0]) {
         this.topic = topic[0];
@@ -97,8 +99,10 @@ else{
         });
       }
     });
+  } else{
+    this.printContents(this.template);
   }
-  }
+}
 
   printContents(template, logoSrc = '') {
     var imageElement = '';
