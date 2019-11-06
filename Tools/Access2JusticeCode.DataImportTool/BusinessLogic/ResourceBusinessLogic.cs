@@ -21,7 +21,9 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             clientHttp.BaseAddress = new Uri(ConfigurationManager.AppSettings["apiUrl"]);
             clientHttp.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             clientHttp.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            try
+            clientHttp.Timeout = TimeSpan.FromHours(1);
+
+			try
             {
                 InsertResources obj = new InsertResources();
                 List<dynamic> resourcesList = new List<dynamic>();
