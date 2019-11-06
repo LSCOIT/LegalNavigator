@@ -3,6 +3,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 
+import { Router } from "@angular/router";
 import { ENV } from 'environment';
 import { Global } from '../../global';
 import { EventUtilityService } from '../services/event-utility.service';
@@ -59,7 +60,8 @@ export class MapComponent implements OnInit, OnDestroy {
     private mapResultsService: MapResultsService,
     private staticResourceService: StaticResourceService,
     private global: Global,
-    private eventUtilityService: EventUtilityService
+    private eventUtilityService: EventUtilityService,
+    private router: Router
   ) {
   }
 
@@ -152,6 +154,7 @@ export class MapComponent implements OnInit, OnDestroy {
       if ((this.modalRef && this.mapLocation) || !this.mapType) {
         this.modalRef.hide();
         this.changeLocationButton.nativeElement.focus();
+        this.router.navigate(["/home"]);
       } else {
         this.isError = true;
       }
