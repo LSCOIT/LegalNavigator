@@ -943,8 +943,9 @@ namespace Access2Justice.Api.BusinessLogic
                 FullDescription = resourceObject.fullDescription,
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,
-                NsmiCode = resourceObject.nsmiCode
-            };
+                NsmiCode = resourceObject.nsmiCode,
+                Ranking = resourceObject.ranking
+			};
             forms.Validate();
             return forms;
         }
@@ -974,8 +975,9 @@ namespace Access2Justice.Api.BusinessLogic
                 Conditions = conditions,
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,
-                NsmiCode = resourceObject.nsmiCode
-            };
+                NsmiCode = resourceObject.nsmiCode,
+                Ranking = resourceObject.ranking
+			};
             actionPlans.Validate();
             return actionPlans;
         }
@@ -1006,8 +1008,9 @@ namespace Access2Justice.Api.BusinessLogic
                 ModifiedBy = resourceObject.modifiedBy,
                 Overview = resourceObject.overview,
                 Contents = articleContents,
-                NsmiCode = resourceObject.nsmiCode
-            };
+                NsmiCode = resourceObject.nsmiCode,
+                Ranking = resourceObject.ranking
+			};
             articles.Validate();
             return articles;
         }
@@ -1035,8 +1038,9 @@ namespace Access2Justice.Api.BusinessLogic
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,
                 Overview = resourceObject.overview,
-                NsmiCode = resourceObject.nsmiCode
-            };
+                NsmiCode = resourceObject.nsmiCode,
+                Ranking = resourceObject.ranking
+			};
             videos.Validate();
             return videos;
         }
@@ -1074,8 +1078,9 @@ namespace Access2Justice.Api.BusinessLogic
                 BusinessHours = resourceObject.businessHours,
                 Reviewer = organizationReviewers,
                 NsmiCode = resourceObject.nsmiCode,
-                Display = resourceObject.display
-            };
+                Display = resourceObject.display,
+				Ranking = resourceObject.ranking
+			};
             organizations.Validate();
             return organizations;
         }
@@ -1102,13 +1107,14 @@ namespace Access2Justice.Api.BusinessLogic
                 Location = locations,
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,
-                NsmiCode = resourceObject.nsmiCode
-            };
+                NsmiCode = resourceObject.nsmiCode,
+                Ranking = resourceObject.ranking
+			};
             additionalReadings.Validate();
             return additionalReadings;
-        }
+		}
 
-        public dynamic UpsertResourcesRelatedLinks(dynamic resourceObject)
+		public dynamic UpsertResourcesRelatedLinks(dynamic resourceObject)
         {
             RelatedLink relatedLink = new RelatedLink();
             List<TopicTag> topicTags = new List<TopicTag>();
@@ -1130,8 +1136,9 @@ namespace Access2Justice.Api.BusinessLogic
                 Location = locations,
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,
-                NsmiCode = resourceObject.nsmiCode
-            };
+                NsmiCode = resourceObject.nsmiCode,
+                Ranking = resourceObject.ranking
+			};
             relatedLink.Validate();
             return relatedLink;
         }
@@ -1233,7 +1240,7 @@ namespace Access2Justice.Api.BusinessLogic
             return topics;
         }
 
-        public async Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter)
+		public async Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter)
         {
             dynamic Topics = Array.Empty<string>();
             dynamic Resources = Array.Empty<string>();
