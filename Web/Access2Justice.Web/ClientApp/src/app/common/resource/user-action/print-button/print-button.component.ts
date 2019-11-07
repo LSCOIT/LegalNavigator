@@ -85,6 +85,9 @@ export class PrintButtonComponent implements OnInit {
             });
           }
     }
+    else if(this.template === "app-personalized-plan"){
+      this.printContents(this.template);
+    }
 else if(this.activeTopic){
     this.topicService.getDocumentDataWithShared(this.activeTopic, true).subscribe(topic => {
       if(topic[0]) {
