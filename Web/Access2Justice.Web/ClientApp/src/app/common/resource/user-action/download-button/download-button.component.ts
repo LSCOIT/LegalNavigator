@@ -109,7 +109,13 @@ export class DownloadButtonComponent implements OnInit {
       if (this.activeTab === "My Plan") {
         this.template = "app-action-plans";
       } else if (this.activeTab === "My Saved Resources") {
-        this.template = "app-search-results";
+        this.template = "app-saved-resources";
+      }
+      else if (this.activeTab === "Incoming Resources") {
+        this.template = "app-incoming-resources";
+      }
+      else if (this.activeTab === "Shared Resources") {
+        this.template = "app-shared-resources";
       }      
       this.buildContent(this.template);
     } else {

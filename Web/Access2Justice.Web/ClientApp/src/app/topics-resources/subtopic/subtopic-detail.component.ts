@@ -123,7 +123,19 @@ export class SubtopicDetailComponent implements OnInit {
     this.topicService
       .getSubtopicDetail(this.activeSubtopicParam)
       .subscribe(data => {
-        this.subtopicDetails = data.sort((a, b) => a.name === b.name ? 0 : (a.name < b.name ? -1 : 1));
+        var rankingData = [];
+        rankingData = data.filter(x => x.ranking == 1);
+        var newArray = [];
+        if(rankingData.length > 1){
+          rankingData = rankingData.sort((a, b) => a.name === b.name ? 0 : (a.name < b.name ? -1 : 1));
+        }
+        newArray = data.filter(x => !rankingData.includes(x));
+        if(newArray.length > 0){
+          newArray = rankingData.concat(newArray);
+        } else{
+          newArray = rankingData;
+        }
+        this.subtopicDetails = newArray;
         this.filterSubtopicDetail();
       });
 
