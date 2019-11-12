@@ -15,6 +15,7 @@
     <UserSecretsId>f42be599-a3e0-45e7-b6e3-3f6dd3cf99a3</UserSecretsId>
     <ApplicationInsightsResourceId>/subscriptions/892808ef-ec24-447c-9441-2a832d7a3d04/resourcegroups/A2J-develop-rg/providers/microsoft.insights/components/Access2JusticeApiAppInsights</ApplicationInsightsResourceId>
     <ApplicationInsightsAnnotationResourceId>/subscriptions/892808ef-ec24-447c-9441-2a832d7a3d04/resourcegroups/A2J-develop-rg/providers/microsoft.insights/components/Access2JusticeApiAppInsights</ApplicationInsightsAnnotationResourceId>
+	<SkipNpmInstall>false</SkipNpmInstall>
   </PropertyGroup>
 
   <ItemGroup>
@@ -69,7 +70,7 @@
 
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" ContinueOnError="true" />
 	<Exec WorkingDirectory="$(SpaRoot)" Command="
 IF EXIST dist-dev RMDIR /S /Q dist-dev
 IF EXIST dist-stage RMDIR /S /Q dist-stage
