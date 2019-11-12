@@ -53,7 +53,7 @@ export class SubtopicsComponent implements OnInit {
         }
 
         this.topicService.getSubtopics(this.activeTopic).subscribe(subtopics => {
-          this.sortAlphabetically(subtopics);
+          //this.sortAlphabetically(subtopics);
           this.subtopics = subtopics;
           this.navigateDataService.setData(this.subtopics);
            if (this.subtopics.length === 0) {
