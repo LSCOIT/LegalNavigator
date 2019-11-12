@@ -142,7 +142,9 @@ export class SubtopicDetailComponent implements OnInit {
       this.topicService
         .getDocumentData(this.activeSubtopicParam)
         .subscribe(data => {
-          this.subtopics = data[0];
+          if(data.length > 0){
+            this.subtopics = data[0];
+          }
         });
   }
 

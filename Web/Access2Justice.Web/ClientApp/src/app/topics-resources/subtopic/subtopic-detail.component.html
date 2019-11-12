@@ -77,14 +77,21 @@
       </div>
       <div class="row" *ngIf="relatedLinksData.length > 0">
         <h3>Additional Readings</h3>
-        <div *ngFor="let resource of relatedLinksData;">
+        <div *ngFor="let resource of relatedLinksData; let indexer = index">
         <app-resource-card
+          *ngIf = "indexer < displayResources"
           [resource]="resource"
           [showRemoveOption]="false"
           [sharedResources]="false"
         >
         </app-resource-card>
       </div>
+      <button
+          *ngIf="relatedLinksData.length > 5"
+          class="btn btn-primary no-print"
+          (click)="clickSeeMoreOrganizationsFromSubtopicDetails(relatedLinksData[0].resourceType)">
+          See more Additional Readings
+        </button>
       </div>
       <div *ngIf="videoData.length > 0" class="row">
         <h3>Videos</h3>

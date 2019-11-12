@@ -78,7 +78,7 @@ export class ServiceOrgSidebarComponent implements OnInit {
     this.paginationService
       .getPagedResources(this.resourceFilter)
       .subscribe(response => {
-        if (response != undefined) {
+        if (response && response["resources"].length > 0) {
           this.organizations = response["resources"];
           this.global.organizationsData = response["resources"];
 
