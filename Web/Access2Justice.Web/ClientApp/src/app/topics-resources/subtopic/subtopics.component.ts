@@ -54,7 +54,21 @@ export class SubtopicsComponent implements OnInit {
 
         this.topicService.getSubtopics(this.activeTopic).subscribe(subtopics => {
           //this.sortAlphabetically(subtopics);
-          this.subtopics = subtopics;
+
+          var rankingData = [];
+          rankingData = subtopics.filter(x => x.ranking == 1);
+          var newArraySubtopics = [];
+          if(rankingData.length > 1){
+            rankingData = rankingData.sort((a, b) => a.name === b.name ? 0 : (a.name < b.name ? -1 : 1));
+          }
+          newArraySubtopics = subtopics.filter(x => !rankingData.includes(x));
+          if(newArraySubtopics.length > 0){
+            newArraySubtopics = rankingData.concat(newArraySubtopics);
+          } else{
+            newArraySubtopics = rankingData;
+          }
+          this.subtopics = newArraySubtopics;
+
           this.navigateDataService.setData(this.subtopics);
            if (this.subtopics.length === 0) {
 
