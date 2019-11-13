@@ -524,6 +524,9 @@ namespace Access2Justice.Api.BusinessLogic
             dynamic searchFilter = new JObject();
             searchFilter.OrderByField = resourceFilter.OrderByField;
             searchFilter.OrderBy = resourceFilter.OrderBy;
+            
+            //Fix duplication
+            resourceFilter.TopicIds = resourceFilter.TopicIds.Distinct();
 
             PagedResources pagedResources = await GetPagedResourceWithLocation(resourceFilter);
 

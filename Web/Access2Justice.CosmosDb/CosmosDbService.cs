@@ -156,6 +156,12 @@ namespace Access2Justice.CosmosDb
             var results = new PagedResources();
             List<dynamic> resources = new List<dynamic>();
             var queryResult = await docQuery.ExecuteNextAsync();
+
+            while (queryResult.Count == 0 && docQuery.HasMoreResults)
+            {
+                queryResult = await docQuery.ExecuteNextAsync();
+            }
+
             if (!queryResult.Any())
             {
                 return results;

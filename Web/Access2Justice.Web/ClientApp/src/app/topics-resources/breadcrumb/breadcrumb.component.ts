@@ -22,11 +22,16 @@ export class BreadcrumbComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.activeRoute.url.subscribe(routeParts => {
-      for (let i = 1; i < routeParts.length; i++) {
-        this.getBreadcrumbDetails();
-      }
-    });
+    if(this.resourceTopic){
+      this.activeTopic = this.resourceTopic;
+      this.getBreadcrumbDetails();
+    } else {
+      this.activeRoute.url.subscribe(routeParts => {
+        for (let i = 1; i < routeParts.length; i++) {
+          this.getBreadcrumbDetails();
+        }
+      });
+    }
   }
 
   getBreadcrumbDetails() {
