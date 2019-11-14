@@ -21,7 +21,8 @@ namespace Access2Justice.DataFixes
                 { "#875", x => new Issue875Fixer() },
                 { "#__duplicates", x => new DuplicatesRemover() },
                 { "#__getData", x => new DataLoader(x.AdditionalPram) },
-				{ "#953", x => new Issue953Fixer() }
+				{ "#953", x => new Issue953Fixer() },
+                { "#__removeResources", x => new ResourcesRemoval() }
             };
 
 
