@@ -96,11 +96,11 @@ export class AppComponent implements OnInit, OnDestroy {
     let location = this.staticResourceService.loadStateName();
     this.staticResourceService.getStaticContents(location).subscribe(
       response => {
+        this.staticContentResults = response;
+        this.global.setData(this.staticContentResults);
         if (!sessionStorage.getItem(this.global.sessionKey)) {
           this.spinner.hide();
         }
-        this.staticContentResults = response;
-        this.global.setData(this.staticContentResults);
       },
       () => {
         this.spinner.hide();

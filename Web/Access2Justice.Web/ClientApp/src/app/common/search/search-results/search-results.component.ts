@@ -411,11 +411,12 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     this.spinner.show();
     this.paginationService.searchByOffset(this.searchText, offset).subscribe(
       response => {
-        this.spinner.hide();
+
         if (response != undefined) {
           this.searchResults = response;
         }
         window.scrollTo(0, 0);
+        this.spinner.hide();
       },
       error => {
         this.spinner.hide();
