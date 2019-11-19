@@ -68,7 +68,7 @@ namespace Access2Justice.Api.Controllers
         {
             if (!ignoreProgress)
             {
-                var currentProgress = await getCurrentComponent(curatedExperienceId, answerId ?? default(Guid));
+                var currentProgress = await GetCurrentComponent(curatedExperienceId, answerId ?? default(Guid));
                 if (currentProgress != null)
                 {
                     return currentProgress;
@@ -121,7 +121,7 @@ namespace Access2Justice.Api.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Description = "There is no matching answers batch")]
         public async Task<IActionResult> GetCurrentComponent(Guid? answerId = null)
         {
-            var result = await getCurrentComponent(answerId: answerId ?? default(Guid));
+            var result = await GetCurrentComponent(answerId: answerId ?? default(Guid));
             return result ?? StatusCode(StatusCodes.Status404NotFound);
         }
 
@@ -129,7 +129,7 @@ namespace Access2Justice.Api.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Description = "There is no matching answers batch")]
         public async Task<IActionResult> GetPreviousComponent(Guid? answerId = null)
         {
-            await curatedExperienceBusinessLogic.AnswersStepBack(await getCurrentUserAnswers(answerId: answerId ?? default(Guid)));
+            await curatedExperienceBusinessLogic.AnswersStepBack(await GetCurrentUserAnswers(answerId: answerId ?? default(Guid)));
             return await GetCurrentComponent(answerId);
         }
 
@@ -137,32 +137,13 @@ namespace Access2Justice.Api.Controllers
         [SwaggerResponse(StatusCodes.Status404NotFound, Description = "There is no matching answers batch")]
         public async Task<IActionResult> GetNextComponent(Guid? answerId = null)
         {
-            await curatedExperienceBusinessLogic.AnswersStepNext(await getCurrentUserAnswers(answerId: answerId ?? default(Guid)));
+            await curatedExperienceBusinessLogic.AnswersStepNext(await GetCurrentUserAnswers(answerId: answerId ?? default(Guid)));
             return await GetCurrentComponent(answerId);
         }
 
-        ///// <summary>
-        ///// Get specific component for curated experience
-        ///// </summary>
-        ///// <remarks>
-        ///// Helps to get specific component for curated experience 
-        ///// </remarks>
-        ///// <param name="curatedExperienceId"></param>
-        ///// <param name="componentId"></param>
-        ///// <response code="200">Returns specific component for curated experience </response>
-        ///// <response code="500">Failure</response>
-        //[HttpGet("component")]
-        //public async Task<IActionResult> GetSpecificComponent([FromQuery] Guid curatedExperienceId, [FromQuery] Guid componentId)
-        //{
-        //        var component = await curatedExperienceBusinessLogic.GetComponent(sessionManager.RetrieveCachedCuratedExperience(curatedExperienceId, HttpContext), componentId);
-        //        if (component == null) return NotFound();
-
-        //        return Ok(component);
-        //}
-
-        private async Task<IActionResult> getCurrentComponent(Guid curatedExperienceId = default(Guid), Guid answerId = default(Guid))
+        private async Task<IActionResult> GetCurrentComponent(Guid curatedExperienceId = default(Guid), Guid answerId = default(Guid))
         {
-            var answers = await getCurrentUserAnswers(curatedExperienceId, answerId);
+            var answers = await GetCurrentUserAnswers(curatedExperienceId, answerId);
             if (answers == null)
             {
                 return null;
@@ -183,7 +164,7 @@ namespace Access2Justice.Api.Controllers
             return Ok(await curatedExperienceBusinessLogic.GetNextComponentAsync(curatedExperience, answers));
         }
 
-        private async Task<CuratedExperienceAnswers> getCurrentUserAnswers(Guid curatedExperienceId = default(Guid), Guid answerId = default(Guid))
+        private async Task<CuratedExperienceAnswers> GetCurrentUserAnswers(Guid curatedExperienceId = default(Guid), Guid answerId = default(Guid))
         {
             var profileAnswers = Guid.Empty;
             var cookieAnswers = Guid.Empty;

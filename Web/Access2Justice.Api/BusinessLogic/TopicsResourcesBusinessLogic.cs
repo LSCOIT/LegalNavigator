@@ -111,6 +111,23 @@ namespace Access2Justice.Api.BusinessLogic
             return listResources;
         }
 
+        public async Task<List<Topic>> GetItemsWithLocationAsync(TopicInput topicInput)
+        {
+            var rawItems = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.ResourcesCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
+
+            List<Topic> listItems = FilterByDeleteAndOrderByRanking<Topic>(rawItems);
+
+            if (!listItems.Any())
+            {
+                if (!IsValidLocation(topicInput.Location))
+                {
+                    return await GetItemsWithLocationAsync(topicInput);
+                }
+            }
+
+            return listItems;
+        }
+
 
         public async Task<dynamic> FindAllResources(ResourceFilter resourceFilter)
         {
@@ -332,9 +349,8 @@ namespace Access2Justice.Api.BusinessLogic
             }
             else
             {
-                var rawItems = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.ResourcesCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
-                var items = FilterByDeleteAndOrderByRanking<Topic>(rawItems);
-                return items;
+                var rawItems = await GetItemsWithLocationAsync(topicInput);
+                return rawItems;
             }
         }
 
