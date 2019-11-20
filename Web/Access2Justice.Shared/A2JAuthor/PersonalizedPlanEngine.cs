@@ -1,13 +1,11 @@
-﻿using Access2Justice.Shared.Extensions;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Threading;
 
 namespace Access2Justice.Shared.A2JAuthor
 {

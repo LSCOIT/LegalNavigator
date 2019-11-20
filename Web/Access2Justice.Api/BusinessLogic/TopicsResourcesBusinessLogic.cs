@@ -245,14 +245,24 @@ namespace Access2Justice.Api.BusinessLogic
             if (topicIds.Any())
             {
                 List<Topic> topicsToRemove = new List<Topic>();
+                List<Topic> topicsWithoutResources = new List<Topic>();
                 List<dynamic> resources = await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, topicIds);
-
+                
                 var resourcesStronglyTyped = FilterByDeleteAndOrderByRanking<Resource>(resources);
                 foreach (var item in result)
                 {
                     if (!resourcesStronglyTyped.Any(x => x.TopicTags.Any(y => (string)y.TopicTags == (string)item.Id)))
                     {
                         item.Display = "No";
+                        topicsWithoutResources.Add(item);
+                    }
+                }
+
+                foreach (var item in topicsWithoutResources)
+                {
+                    var parentTopic = await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, item.Id);
+                    if(parentTopic.Count == 0)
+                    {
                         topicsToRemove.Add(item);
                     }
                 }

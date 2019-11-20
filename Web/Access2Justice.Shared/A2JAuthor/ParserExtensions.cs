@@ -1,9 +1,9 @@
-﻿using Access2Justice.Shared.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Access2Justice.Shared.Extensions;
 
 namespace Access2Justice.Shared.A2JAuthor
 {

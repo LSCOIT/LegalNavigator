@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Globalization;
-using Access2Justice.Shared.Interfaces;
 using Microsoft.Extensions.Configuration;
 
 namespace Access2Justice.Shared.Admin
