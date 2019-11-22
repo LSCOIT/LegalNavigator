@@ -41,16 +41,23 @@ namespace Access2Justice.Api.BusinessLogic
             dbService = backendDatabaseService;
         }
 
-        public async Task<Topic> GetTopic(string topicName)
+        public async Task<Topic> GetTopic(string topicName, string state = null)
         {
             List<dynamic> topics = await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName);
-
+            Topic topic;
             if (!topics.Any())
             {
                 throw new Exception($"No topic found with this name: {topicName}");
             }
-
-            var topic = FilterByDeleteAndOrderByRanking<Topic>(topics).FirstOrDefault();
+            if(!string.IsNullOrWhiteSpace(state))
+            {
+                topic = FilterByDeleteAndOrderByRanking<Topic>(topics).FirstOrDefault(x => x.Location[0].State == state);
+            }
+            else
+            {
+                topic = FilterByDeleteAndOrderByRanking<Topic>(topics).FirstOrDefault();
+            }
+            
             return GetOutboundTopic(topic);
         }
 

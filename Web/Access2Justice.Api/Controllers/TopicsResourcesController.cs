@@ -619,7 +619,7 @@ namespace Access2Justice.Api.Controllers
         [Route("resources")]
         public async Task<IActionResult> GetResources([FromQuery]string state, [FromQuery] string topicName)
         {
-            var topic = await topicsResourcesBusinessLogic.GetTopic(topicName);
+            var topic = await topicsResourcesBusinessLogic.GetTopic(topicName, state);
             TopicInput topicInput = new TopicInput();
             topicInput.Id = topic.Id;
             topicInput.Location = new Location(){ State = state };
