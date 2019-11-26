@@ -118,6 +118,21 @@ namespace Access2Justice.Api.BusinessLogic
             return listResources;
         }
 
+        public async Task<List<dynamic>> GetSpecificCollectionItem(TopicInput topicInput)
+        {
+            List<dynamic> rawItems = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.ResourcesCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
+
+            if (!rawItems.Any())
+            {
+                if (!IsValidLocation(topicInput.Location))
+                {
+                    return await GetSpecificCollectionItem(topicInput);
+                }
+            }
+
+            return rawItems;
+        }
+
         public async Task<List<Topic>> GetItemsWithLocationAsync(TopicInput topicInput)
         {
             var rawItems = await dbClient.FindItemsWhereWithLocationAsync(dbSettings.ResourcesCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
@@ -436,12 +451,11 @@ namespace Access2Justice.Api.BusinessLogic
             if (topicInput.IsShared)
             {
                 var rawItems = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, Constants.Id, topicInput.Id);
-                var items = FilterByDeleteAndOrderByRanking<Topic>(rawItems);
-                return items;
+                return rawItems;
             }
             else
             {
-                var rawItems = await GetItemsWithLocationAsync(topicInput);
+                var rawItems = await GetSpecificCollectionItem(topicInput);
                 return rawItems;
             }
         }
