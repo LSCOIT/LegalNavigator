@@ -236,6 +236,59 @@ namespace Access2Justice.CosmosDb
             }
         }
 
+        public string BuildQueryWhereArrayContainsWithAndClauseLocation(string arrayName,
+            string propertyName,
+            string andPropertyName,
+            ResourceFilter resourceFilter, Dictionary<string, object> parameters, Location location, bool isResourceCountCall = false)
+        {
+            EnsureParametersAreNotNullOrEmpty(arrayName, propertyName, andPropertyName, resourceFilter.ResourceType);
+
+            var arrayContainsWithAndClause = ArrayContainsWithOrClause(arrayName, propertyName,
+                resourceFilter.TopicIds as IList<string> ?? resourceFilter.TopicIds.ToList(), parameters);
+            if (!string.IsNullOrEmpty(arrayContainsWithAndClause))
+            {
+                arrayContainsWithAndClause = "(" + arrayContainsWithAndClause + ")";
+            }
+            if (resourceFilter.ResourceType.ToUpperInvariant() != Constants.ResourceTypeAll && !isResourceCountCall)
+            {
+                arrayContainsWithAndClause += string.IsNullOrEmpty(arrayContainsWithAndClause) ? $" c.{andPropertyName} = '" + resourceFilter.ResourceType + "'"
+                                             : $" AND c.{andPropertyName} = '" + resourceFilter.ResourceType + "'";
+            }
+            string resourceIsActiveFilter = FindItemsWhereResourceIsActive(resourceFilter.ResourceType);
+            if (!string.IsNullOrEmpty(resourceIsActiveFilter))
+            {
+                arrayContainsWithAndClause = string.IsNullOrEmpty(arrayContainsWithAndClause) ? resourceIsActiveFilter
+                                          : arrayContainsWithAndClause + " AND " + resourceIsActiveFilter;
+            }
+            string locationFilter = FindLocationWhereArrayContains(location);
+            if (!string.IsNullOrEmpty(locationFilter))
+            {
+                arrayContainsWithAndClause = string.IsNullOrEmpty(arrayContainsWithAndClause) ? locationFilter
+                                          : arrayContainsWithAndClause + " AND " + locationFilter;
+            }
+
+            if (isResourceCountCall)
+            {
+                var query = $"SELECT c.resourceType FROM c WHERE {arrayContainsWithAndClause}";
+                return query;
+            }
+            else
+            {
+                var query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause}";
+                if (resourceFilter.IsOrder)
+                {
+                    if (resourceFilter.OrderByField == "date")
+                    {
+                        resourceFilter.OrderByField = "modifiedTimeStamp";
+                    }
+                    var orderByField = resourceFilter.OrderByField ?? "name";
+                    query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause} order by c.{orderByField} {resourceFilter.OrderBy}";
+                }
+
+                return query;
+            }
+        }
+
         public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, bool isResourceCountCall = false)
         {
             var parameters = new Dictionary<string, object>();
@@ -251,6 +304,32 @@ namespace Access2Justice.CosmosDb
                 if (resourceFilter.PageNumber == 0)
                 {
                     pagedResources = await backendDatabaseService.QueryPagedResourcesAsync(query, parameters, "");
+                    pagedResources.TopicIds = resourceFilter.TopicIds;
+                }
+                else
+                {
+                    pagedResources = await backendDatabaseService.QueryPagedResourcesAsync(query, parameters, resourceFilter.ContinuationToken);
+                    pagedResources.TopicIds = resourceFilter.TopicIds;
+                }
+            }
+            return pagedResources;
+        }
+
+        public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseLocationAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, Location location, bool isResourceCountCall = false)
+        {
+            var parameters = new Dictionary<string, object>();
+            var query = BuildQueryWhereArrayContainsWithAndClauseLocation(arrayName, propertyName, andPropertyName,
+                resourceFilter, parameters, location, isResourceCountCall);
+            PagedResources pagedResources;
+            if (isResourceCountCall)
+            {
+                pagedResources = await backendDatabaseService.QueryResourcesCountAsync(query, parameters);
+            }
+            else
+            {
+                if (resourceFilter.PageNumber == 0)
+                {
+                    pagedResources = await backendDatabaseService.QueryPagedResourcesAsync(query, parameters, string.Empty);
                     pagedResources.TopicIds = resourceFilter.TopicIds;
                 }
                 else

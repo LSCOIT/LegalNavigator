@@ -40,6 +40,7 @@ namespace Access2Justice.Shared.Interfaces
         dynamic UpsertTopics(dynamic topic);
         Task<dynamic> GetPagedResourceAsync(ResourceFilter resourceFilter);
         Task<dynamic> ApplyPaginationAsync(ResourceFilter resourceFilter);
+        Task<dynamic> ApplyPaginationLocationAsync(ResourceFilter resourceFilter, Location location);
         Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter);
         Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter);
         Task<dynamic> GetOrganizationsAsync(Location location);
@@ -51,5 +52,6 @@ namespace Access2Justice.Shared.Interfaces
         string GetRelativeStaticResourceStoragePath(string path);
         Task<dynamic> FindAllResources(ResourceFilter resourceFilter);
         Task<dynamic> FindAllResourcesForDownload(ResourceFilter resourceFilter);
+        Task<dynamic> GetResourcesCountLocationAsync(ResourceFilter resourceFilter, Location location);
     }
 }

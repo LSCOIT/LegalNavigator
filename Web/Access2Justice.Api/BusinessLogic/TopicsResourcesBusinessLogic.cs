@@ -296,10 +296,85 @@ namespace Access2Justice.Api.BusinessLogic
             return rawResult;
         }
 
+        private Location GetProperLocation(TopicInput topicInput)
+        {
+            Location location;
+
+            if (!string.IsNullOrWhiteSpace(topicInput.Location.ZipCode))
+            {
+                location = new Location
+                {
+                    ZipCode = topicInput.Location.ZipCode
+                };
+            }
+            else if (!string.IsNullOrWhiteSpace(topicInput.Location.City))
+            {
+                location = new Location
+                {
+                    City = topicInput.Location.City
+                };
+            }
+            else if (!string.IsNullOrWhiteSpace(topicInput.Location.County))
+            {
+                location = new Location
+                {
+                    County = topicInput.Location.County
+                };
+            }
+            else 
+            {
+                location = new Location
+                {
+                    State = topicInput.Location.State
+                };
+            }
+
+            return location;
+        }
+
+        private Location GetProperLocation(ResourceFilter resFilter)
+        {
+            Location location;
+
+            if (!string.IsNullOrWhiteSpace(resFilter.Location.ZipCode))
+            {
+                location = new Location
+                {
+                    ZipCode = resFilter.Location.ZipCode
+                };
+            }
+            else if (!string.IsNullOrWhiteSpace(resFilter.Location.City))
+            {
+                location = new Location
+                {
+                    City = resFilter.Location.City
+                };
+            }
+            else if (!string.IsNullOrWhiteSpace(resFilter.Location.County))
+            {
+                location = new Location
+                {
+                    County = resFilter.Location.County
+                };
+            }
+            else
+            {
+                location = new Location
+                {
+                    State = resFilter.Location.State
+                };
+            }
+
+            return location;
+        }
+
         private async Task<dynamic> GetResourcesFromLocation(TopicInput topicInput)
         {
+            // Workaround
+            var location = GetProperLocation(topicInput);
+
             List<dynamic> rawItems = await dbClient.FindItemsWhereArrayContainsAsyncWithLocation(dbSettings.ResourcesCollectionId,
-                Constants.TopicTags, Constants.Id, topicInput.Id, topicInput.Location);
+                Constants.TopicTags, Constants.Id, topicInput.Id, location);
 
             if (!rawItems.Any())
             {
@@ -511,7 +586,9 @@ namespace Access2Justice.Api.BusinessLogic
 
         private async Task<PagedResources> GetPagedResourceWithLocation(ResourceFilter resourceFilter)
         {
-            PagedResources pagedResources = await ApplyPaginationAsync(resourceFilter);
+            var location = GetProperLocation(resourceFilter);
+
+            PagedResources pagedResources = await ApplyPaginationLocationAsync(resourceFilter, location);
             if (!pagedResources.Results.Any())
             {
                 if (!IsValidLocation(resourceFilter.Location))
@@ -525,7 +602,9 @@ namespace Access2Justice.Api.BusinessLogic
 
         private async Task<dynamic> GetGroupedResourceType(ResourceFilter resourceFilter)
         {
-            List<dynamic> groupedResourceType = await GetResourcesCountAsync(resourceFilter);
+            var location = GetProperLocation(resourceFilter);
+
+            List<dynamic> groupedResourceType = await GetResourcesCountLocationAsync(resourceFilter, location);
             
             if(groupedResourceType.Any(x => x.ResourceName == "All" && x.ResourceCount == 0))
             {
@@ -580,9 +659,21 @@ namespace Access2Justice.Api.BusinessLogic
             return pagedResources;
         }
 
+        public async Task<dynamic> ApplyPaginationLocationAsync(ResourceFilter resourceFilter, Location location)
+        {
+            PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseLocationAsync("topicTags", "id", "resourceType", resourceFilter, location);
+            return pagedResources;
+        }
+
         public async Task<dynamic> GetResourcesCountAsync(ResourceFilter resourceFilter)
         {
             PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
+            return ResourcesCount(pagedResources);
+        }
+
+        public async Task<dynamic> GetResourcesCountLocationAsync(ResourceFilter resourceFilter,  Location location)
+        {
+            PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseLocationAsync("topicTags", "id", "resourceType", resourceFilter, location, true);
             return ResourcesCount(pagedResources);
         }
 
