@@ -359,6 +359,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
         this.searchResults = this.resourceTypeFilter[index].ResourceList[
         this.page - 1
           ];
+        this.searchResults.topicIds = this.topicIds;
         if (this.page === 1) {
           this.updateCacheStorage(resourceName);
         }
