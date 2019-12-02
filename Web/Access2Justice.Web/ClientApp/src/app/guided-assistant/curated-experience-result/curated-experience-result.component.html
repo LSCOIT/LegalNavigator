@@ -59,35 +59,39 @@
         </div>
       </div>
     </ng-template>
-    <div class="row" *ngIf="relevantIntents.length > 0">
+    <div class="row" *ngIf="guidedAssistantResults?.relevantIntents?.length > 0">
       <div class="col-sm-12 relevant-intent">
-        <h5>You may also be interested in the following topic{{ relevantIntents.length > 1 ? 's' : '' }}:</h5>
+        <h5>You may also be interested in the following topic{{ guidedAssistantResults.relevantIntents.length > 1 ? 's' : '' }}:</h5>
         <form>
           <div class="button-container">
             <ul>
               <li
-                *ngFor="let intent of relevantIntents"
+                *ngFor="let intent of guidedAssistantResults.relevantIntents"
               >
+              <div (change) = "onSelectTopic($event, intent.Name)">
                 <input
                   type="checkbox"
-                  [id]="intent"
-                  [value]="intent"
+                  [id]="intent.Name"
+                  [value]="intent.Name"
                   name="multiSelectOptions"
+                  #checkBox 
                   ngModel
-                  (change)="onSelectTopic($event, intent)"
                 />
                 <label
-                  [for]="intent"
+                  [for]="intent.Name"
                   class="p text-capitalize"
                   tabindex="0"
                   (keyup.enter)="$event.target.click()"
                 >
-                  {{intent}}
+                  {{intent.Name}}
                 </label>
-                <div class="check"></div>
+                <div (click) = "checkBox.click()" class="check">
+                </div>
+              </div>
                 <a
                   class="link p"
-                  [routerLink]="['/topics/bdc07e7a-1f06-4517-88d8-9345bb87c3cf']">
+                  routerLink="/topics/{{ intent.Id }}"
+                >
                   Learn More
                 </a>
               </li>

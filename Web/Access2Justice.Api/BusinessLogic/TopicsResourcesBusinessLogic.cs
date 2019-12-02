@@ -85,9 +85,9 @@ namespace Access2Justice.Api.BusinessLogic
                 }
             }
 
-            var filteredTopics = FilterByDeleteAndOrderByRanking<Topic>(topics);
+             List<Topic> filteredTopics = FilterByDeleteAndOrderByRanking<Topic>(topics);
 
-            return GetOutboundTopicsCollection(filteredTopics);
+            return filteredTopics;
         }
 
         public async Task<dynamic> GetTopicsAsync(string stateCode)

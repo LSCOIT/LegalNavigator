@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -39,7 +40,7 @@ namespace Access2Justice.Api
             if (string.IsNullOrEmpty(luisInput.LuisTopScoringIntent))
             {
                 dynamic luisResponse = await luisProxy.GetIntents(encodedSentence);
-                luisTopIntents = ParseLuisIntent(luisResponse);
+                luisTopIntents = await ParseLuisIntent(luisResponse, luisInput.Location);
             }
             LuisViewModel luisViewModel = null;
             if ((luisTopIntents != null && IsIntentAccurate(luisTopIntents)) || !string.IsNullOrEmpty(luisInput.LuisTopScoringIntent))
@@ -57,16 +58,18 @@ namespace Access2Justice.Api
             await GetWebResourcesAsync(encodedSentence);
         }
 
-        public IntentWithScore ParseLuisIntent(string LuisResponse)
+        public IntentWithScore ParseLuisIntent(string LuisResponse, Location location = null)
         {
             LuisIntent luisIntent = JsonConvert.DeserializeObject<LuisIntent>(LuisResponse);
+
+            var topIntents = luisIntent?.Intents.Skip(1).Take(luisSettings.TopIntentsCount).Select(x => x.Intent).ToList();
 
             return new IntentWithScore
             {
                 IsSuccessful = true,
                 TopScoringIntent = luisIntent?.TopScoringIntent?.Intent,
                 Score = luisIntent?.TopScoringIntent?.Score ?? 0,
-                TopNIntents = luisIntent?.Intents.Skip(1).Take(luisSettings.TopIntentsCount).Select(x => x.Intent).ToList()
+                TopNIntents = topIntents
             };
         }
 
@@ -120,7 +123,7 @@ namespace Access2Justice.Api
                 sortResourceFilter.IsOrder = true;
                 sortResourceFilter.OrderByField = luisInput.OrderByField;
                 sortResourceFilter.OrderBy = luisInput.OrderBy;
-               
+
                 var ApplyPaginationTask = topicsResourcesBusinessLogic.ApplyPaginationAsync(sortResourceFilter);
                 //To get guided assistant id
                 resourceFilter.ResourceType = Constants.GuidedAssistant;
@@ -130,18 +133,18 @@ namespace Access2Justice.Api
                 groupedResourceType = GetResourcesTask.Result;
                 resources = ApplyPaginationTask.Result;
                 PagedResources guidedAssistantResponse = GetGuidedAssistantId.Result;
-                    
-                 guidedAssistantsResult = guidedAssistantResponse?
-                                          .Results.Select(s=>
-                                          {
-                                              var ga = JsonUtilities.DeserializeDynamicObject<GuidedAssistant>(s);
 
-                                              var child2Topics = topicsResourcesBusinessLogic.GetChild2TopicsAsync(ga.TopicTags[0].TopicTags.ToString());
-                                              return  (id:ga.CuratedExperienceId, tags: child2Topics);
+                guidedAssistantsResult = guidedAssistantResponse?
+                                         .Results.Select(s =>
+                                         {
+                                             var ga = JsonUtilities.DeserializeDynamicObject<GuidedAssistant>(s);
 
-                                          })
-                                          .OfType<dynamic>().ToArray();
-                 guidedAssistantsResult = CleanGuidedAssistantsResult(guidedAssistantsResult);
+                                             var child2Topics = topicsResourcesBusinessLogic.GetChild2TopicsAsync(ga.TopicTags[0].TopicTags.ToString());
+                                             return (id: ga.CuratedExperienceId, tags: child2Topics);
+
+                                         })
+                                         .OfType<dynamic>().ToArray();
+                guidedAssistantsResult = CleanGuidedAssistantsResult(guidedAssistantsResult);
 
                 if (resources != null &&
                     resources.Results != null &&
@@ -154,11 +157,34 @@ namespace Access2Justice.Api
             dynamic searchFilter = new JObject();
             searchFilter.OrderByField = resourceFilter.OrderByField;
             searchFilter.OrderBy = resourceFilter.OrderBy;
+
+            var relevantTopics = new List<dynamic>();
+            foreach (var intent in relevantIntents)
+            {
+                List<Topic> topic = await topicsResourcesBusinessLogic.GetTopicsAsync(intent, location);
+                foreach (var item in topic)
+                {
+                    if(relevantTopics.Count > 2)
+                    {
+                        break;
+                    }
+
+                    List<Topic> ttt = await topicsResourcesBusinessLogic.GetResourceAsync(new TopicInput { Id = item.Id, Location = location });
+                    if (ttt.Any())
+                    {
+                        dynamic dynamicObject = new ExpandoObject();
+                        dynamicObject.Id = item.Id;
+                        dynamicObject.Name = item.Name;
+                        relevantTopics.Add(dynamicObject);
+                    }
+                }
+
+            }
             var result = new LuisViewModel
             {
                 TopIntent = keyword,
                 RelevantIntents = relevantIntents != null
-                    ? JsonUtilities.DeserializeDynamicObject<dynamic>(relevantIntents)
+                    ? JsonUtilities.DeserializeDynamicObject<dynamic>(relevantTopics)
                     : JsonConvert.DeserializeObject(Constants.EmptyArray),
                 Topics = JsonUtilities.DeserializeDynamicObject<dynamic>(topics),
                 Resources = resources != null
