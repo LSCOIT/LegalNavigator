@@ -310,10 +310,10 @@ export class PersonalizedPlanService {
         this.resourceIndex++;
         this.resourceTags.push(savedResource);
       }
-      if (this.resourceIndex > 0) {
-        this.saveResourcesToProfile(this.resourceTags);
-      }
     });
+    if (this.resourceIndex > 0) {
+      this.saveResourcesToProfile(this.resourceTags);
+    }
     if (sessionStorage.getItem(this.global.topicsSessionKey)) {
       sessionStorage.removeItem(this.global.topicsSessionKey);
     } else if (sessionStorage.getItem(this.global.sessionKey)) {
