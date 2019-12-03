@@ -40,7 +40,7 @@ namespace Access2Justice.Api
             if (string.IsNullOrEmpty(luisInput.LuisTopScoringIntent))
             {
                 dynamic luisResponse = await luisProxy.GetIntents(encodedSentence);
-                luisTopIntents = await ParseLuisIntent(luisResponse, luisInput.Location);
+                luisTopIntents = ParseLuisIntent(luisResponse, luisInput.Location);
             }
             LuisViewModel luisViewModel = null;
             if ((luisTopIntents != null && IsIntentAccurate(luisTopIntents)) || !string.IsNullOrEmpty(luisInput.LuisTopScoringIntent))
