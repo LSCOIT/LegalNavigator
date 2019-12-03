@@ -149,50 +149,6 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             Assert.Equal(expectedhreshold, threshold);
         }
 
-
-        [Fact]
-        public void GetInternalResourcesAsyncTestsShouldReturnProperResult()
-        {
-            //arrange
-            PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
-            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            topicResponse.ReturnsForAnyArgs(topicsData);
-            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
-            resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
-            var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-            paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
-            luisInput.Location = new Location { State = "AK" };
-
-            //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>()).Result;
-            result = JsonConvert.SerializeObject(result);
-
-            //assert            
-            Assert.Contains(expectedTopicId, result);
-        }
-
-
-        [Fact]
-        public void GetInternalResourcesAsyncTestsShouldReturnEmptyResources()
-        {
-            //arrange
-            PagedResources pagedResources = new PagedResources() { TopicIds = new List<string>() };
-            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            topicResponse.ReturnsForAnyArgs(topicsData);
-            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
-            resourceCount.ReturnsForAnyArgs<dynamic>(new List<dynamic>());
-            var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-            paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
-            luisInput.Location = new Location{State="AK"};
-
-            //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>()).Result;
-            result = JsonConvert.SerializeObject(result);
-
-            //assert            
-            Assert.Contains(expectedTopicId, result);
-        }
-
         [Fact]
         public void GetInternalResourcesAsyncTestsShouldReturnTopIntent()
         {
@@ -211,68 +167,6 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
             //assert            
             Assert.Contains(keyword, result);
-        }
-
-        [Fact]
-        public void GetInternalResourcesAsyncTestsShouldValidateGuidedAssistant()
-        {
-            //arrange
-            luisInput.Sentence = searchText;
-            luisInput.Location = locationInput;
-            var luisResponse = luisProxy.GetIntents(searchText);
-            luisResponse.ReturnsForAnyArgs(properLuisResponse);
-
-            //arrange
-            PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
-            PagedResources pagedGuidedAssistantResources = new PagedResources() { Results = guidedAssistantResourcesData, ContinuationToken = "[]", TopicIds = topicIds };
-            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, locationInput);
-            topicResponse.Returns(topicsData);
-            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
-            resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
-            var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-            paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
-            var guidedAssistantResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-            paginationResult.ReturnsForAnyArgs<dynamic>(pagedGuidedAssistantResources);
-
-            var internalResponse = luis.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>());
-            internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
-
-            //act
-            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
-
-            //assert
-            Assert.Contains(expectedGuidedAssistant, result.ToString());
-        }
-
-        [Fact]
-        public void GetInternalResourcesAsyncTestsShouldValidateEmptyGuidedAssistantId()
-        {
-            //arrange
-            luisInput.Sentence = searchText;
-            luisInput.Location = locationInput;
-            var luisResponse = luisProxy.GetIntents(searchText);
-            luisResponse.ReturnsForAnyArgs(properLuisResponse);
-
-            //arrange
-            PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
-            PagedResources pagedGuidedAssistantResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
-            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, locationInput);
-            topicResponse.Returns(topicsData);
-            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
-            resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
-            var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-            paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
-            var guidedAssistantResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-            paginationResult.ReturnsForAnyArgs<dynamic>(pagedGuidedAssistantResources);
-
-            var internalResponse = luis.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>());
-            internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
-
-            //act
-            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
-
-            //assert
-            Assert.Contains(expectedEmptyGuidedAssistant, result.ToString());
         }
 
         [Fact]
@@ -306,61 +200,61 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
         }
         
 
-       [Fact]
-        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateLuisTopScoringIntentAndFetchResources()
-        {
-            //arrange
-            luisInput.Sentence = searchText;
-            luisInput.Location = locationInput;
-            luisInput.LuisTopScoringIntent = "Eviction";
+       //[Fact]
+       // public void GetResourceBasedOnThresholdAsyncTestsShouldValidateLuisTopScoringIntentAndFetchResources()
+       // {
+       //     //arrange
+       //     luisInput.Sentence = searchText;
+       //     luisInput.Location = locationInput;
+       //     luisInput.LuisTopScoringIntent = "Eviction";
 
-            //arrange
-            PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
-            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, locationInput);
-            topicResponse.Returns(topicsData);
-            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
-            resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
-            var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-            paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
+       //     //arrange
+       //     PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
+       //     var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, locationInput);
+       //     topicResponse.Returns(topicsData);
+       //     var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+       //     resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
+       //     var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+       //     paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
 
-            var internalResponse = luis.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>());
-            internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
+       //     var internalResponse = luis.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>());
+       //     internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
 
-            //act
-            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
+       //     //act
+       //     var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
 
-            //assert
-            Assert.Contains(expectedInternalResponse, result.ToString());
-        }
+       //     //assert
+       //     Assert.Contains(expectedInternalResponse, result.ToString());
+       // }
 
-        [Fact]
-        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateInternalResources()
-        {
-            //arrange
-            luisInput.Sentence = searchText;
-            luisInput.Location = locationInput;
-            var luisResponse = luisProxy.GetIntents(searchText);
-            luisResponse.ReturnsForAnyArgs(properLuisResponse);
+        //[Fact]
+        //public void GetResourceBasedOnThresholdAsyncTestsShouldValidateInternalResources()
+        //{
+        //    //arrange
+        //    luisInput.Sentence = searchText;
+        //    luisInput.Location = locationInput;
+        //    var luisResponse = luisProxy.GetIntents(searchText);
+        //    luisResponse.ReturnsForAnyArgs(properLuisResponse);
 
-            //arrange
-            PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
-            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, locationInput);
-            topicResponse.Returns(topicsData);
-            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
-            resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
-            var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-            paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
+        //    //arrange
+        //    PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
+        //    var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, locationInput);
+        //    topicResponse.Returns(topicsData);
+        //    var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+        //    resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
+        //    var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+        //    paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
 
-            var internalResponse = luis.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>());
-            internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
+        //    var internalResponse = luis.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>());
+        //    internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
 
-            //act
-            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
+        //    //act
+        //    var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
 
-            //assert
-            Assert.Contains(expectedInternalResponse, result.ToString());
+        //    //assert
+        //    Assert.Contains(expectedInternalResponse, result.ToString());
 
-        }
+        //}
 
         [Fact]
         public void GetResourceBasedOnThresholdAsyncTestsShouldValidateEmptyResources()
@@ -386,28 +280,28 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             Assert.Contains(expectedInternalResponse, result);
         }
 
-        [Fact]
-        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateWebResources()
-        {
-            //arrange
-            var luisResponse = luisProxy.GetIntents(searchText);
-            luisResponse.ReturnsForAnyArgs(properLuisResponse);
+        //[Fact]
+        //public void GetResourceBasedOnThresholdAsyncTestsShouldValidateWebResources()
+        //{
+        //    //arrange
+        //    var luisResponse = luisProxy.GetIntents(searchText);
+        //    luisResponse.ReturnsForAnyArgs(properLuisResponse);
 
-            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            topicResponse.ReturnsForAnyArgs<dynamic>(emptyTopicObject);
+        //    var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
+        //    topicResponse.ReturnsForAnyArgs<dynamic>(emptyTopicObject);
 
-            var internalResponse = luis.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>());
-            internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
+        //    var internalResponse = luis.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>());
+        //    internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
 
-            var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(new Uri("http://www.bing.com"));
-            webResponse.ReturnsForAnyArgs<dynamic>(webData);
+        //    var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(new Uri("http://www.bing.com"));
+        //    webResponse.ReturnsForAnyArgs<dynamic>(webData);
 
-            //act
-            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
+        //    //act
+        //    var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
 
-            //assert
-            Assert.Contains(expectedWebResponse, result);
-        }
+        //    //assert
+        //    Assert.Contains(expectedWebResponse, result);
+        //}
 
         [Fact]
         public void GetWebResourcesAsyncTestsShouldValidateWebResources()
