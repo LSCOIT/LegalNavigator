@@ -128,13 +128,13 @@ describe("CuratedExperienceResultComponent", () => {
     expect(component).toBeTruthy();
   });
 
-  it("should filter out relevant intents that are None", () => {
-    component.filterIntent();
-    expect(component.relevantIntents).toEqual([
-      "Domestic Violence",
-      "Tenant's rights"
-    ]);
-  });
+  // it("should filter out relevant intents that are None", () => {
+  //   component.filterIntent();
+  //   expect(component.relevantIntents).toEqual([
+  //     "Domestic Violence",
+  //     "Tenant's rights"
+  //   ]);
+  // });
 
   it("should call toastr when Save for Later button is clicked", () => {
     spyOn(component, "saveForLater");
