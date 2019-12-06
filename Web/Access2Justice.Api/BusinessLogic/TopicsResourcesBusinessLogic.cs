@@ -199,9 +199,6 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 if (topic.parentTopicId == null)
                 {
-                    var dynamicResponse = JsonConvert.SerializeObject(topic);
-                    var topicResult = (JObject)JsonConvert.DeserializeObject(dynamicResponse);
-                    Topic topicResult2 = topicResult.ToObject<Topic>();
                     if (!parentTopics.Any(x => x.id == topic.id))
                     {
                         parentTopics.Add(topic);
@@ -244,6 +241,39 @@ namespace Access2Justice.Api.BusinessLogic
             return GetOutboundTopicsCollection(filteredTopics);
         }
 
+        private Topic CastDynamicTo(dynamic obj)
+        {
+            var dynamicResponse = JsonConvert.SerializeObject(obj);
+            var topicResult = (JObject)JsonConvert.DeserializeObject(dynamicResponse);
+            var topicResult2 = topicResult.ToObject<Topic>();
+            return topicResult2;
+        }
+        private async Task<List<Topic>> GetSubtopicsByParentTopic(List<string> topicIds, dynamic parentTopicId)
+        {
+            List<dynamic> topics = await dbClient.FindItemsWhereInClauseAsync(dbSettings.TopicsCollectionId, Constants.Id, topicIds);
+            var topicsStronglyTyped = topics.Select(x => CastDynamicTo(x)).Cast<Topic>();
+
+            var newTopics = topicsStronglyTyped.Where(x => x.ParentTopicId != null && x.ParentTopicId.Where(y => y.ParentTopicIds == parentTopicId).Any()).ToList();
+            
+            List<Topic> resources = await GetResourcesByTopicIdsAsync(new List<string> { parentTopicId });
+            if (resources.Any())
+            {
+                return new List<Topic>();
+            }
+
+            if (newTopics.Any())
+            {
+                return newTopics;
+            }
+            else
+            {
+
+                parentTopicId = topicsStronglyTyped.SelectMany(x => x.ParentTopicId.Select(y => y.ParentTopicIds)).FirstOrDefault();
+               
+                return await GetSubtopicsByParentTopic(topicIds, parentTopicId);
+            }
+        }
+
         public async Task<dynamic> GetSubTopicsAsync(TopicInput topicInput)
         {
             List<Topic> result;
@@ -256,7 +286,17 @@ namespace Access2Justice.Api.BusinessLogic
             }
             else
             {
-                rawResult = await GetSubtopicsFromLocation(topicInput);
+                if(string.IsNullOrWhiteSpace(topicInput.Location.County) && string.IsNullOrWhiteSpace(topicInput.Location.City)
+                    && string.IsNullOrWhiteSpace(topicInput.Location.ZipCode)){
+                    rawResult = await GetSubtopicsFromLocation(topicInput);
+                }
+                else
+                {
+                    var resources = await GetResourcesWithLocationAsync(topicInput.Location);
+                    var topicIdsFromResources = resources.SelectMany(x => x.TopicTags).Select(x => (string)x.TopicTags).Distinct().ToList();
+                    var res = await GetSubtopicsByParentTopic(topicIdsFromResources, topicInput.Id);
+                    return GetOutboundTopicsCollection(res);
+                }
             }
 
 
@@ -490,6 +530,14 @@ namespace Access2Justice.Api.BusinessLogic
                                             Constants.TopicTags, Constants.Id, ids);
             var realTopics = FilterByDeleteAndOrderByRanking<Topic>(rawTopic);
             return realTopics;
+        }
+
+        public async Task<List<Topic>> GetResourcesByTopicIdsAsync(List<string> topicIds)
+        {
+            var rawTopic = await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourcesCollectionId,
+                                            Constants.TopicTags, Constants.Id, topicIds);
+            List<Topic> resources = FilterByDeleteAndOrderByRanking<Topic>(rawTopic);
+            return resources;
         }
 
         public async Task<dynamic> GetDocumentAsync(TopicInput topicInput)
