@@ -1,20 +1,17 @@
-﻿using Access2Justice.Api.ViewModels;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Linq;
-using StackExchange.Redis;
 using Condition = Access2Justice.Shared.Models.Condition;
-using System.Reflection;
 //using Microsoft.Azure.Documents;
 
 namespace Access2Justice.Api.BusinessLogic
@@ -237,7 +234,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
 
             var filteredTopics = FilterByDeleteAndOrderByRanking<Topic>(parentTopics.ToList());
-
+            filteredTopics = filteredTopics.Where(x => x.Location.Any(y => y.State == location.State)).ToList();
             return GetOutboundTopicsCollection(filteredTopics);
         }
 
