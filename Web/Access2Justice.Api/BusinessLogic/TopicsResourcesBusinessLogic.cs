@@ -40,6 +40,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<Topic> GetTopic(string topicName, string state = null)
         {
+            topicName = topicName.Replace("'", "’");
             List<dynamic> topics = await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Name, topicName);
             Topic topic;
             if (!topics.Any())
