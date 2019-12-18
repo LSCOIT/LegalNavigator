@@ -83,7 +83,12 @@ namespace Access2Justice.Api.BusinessLogic
                 return getTemplatesResult;
             }
 
-            if (!string.Equals(resourceTitle, curatedTemplate.Name, StringComparison.InvariantCultureIgnoreCase))
+            if(resourceTitle == "Untitled Template")
+            {
+                resourceTitle = curatedTemplate.Name;
+            }
+
+            if (!string.Equals(resourceTitle.Trim(), curatedTemplate.Name, StringComparison.InvariantCultureIgnoreCase))
             {
                 return new JsonUploadResult
                 {
