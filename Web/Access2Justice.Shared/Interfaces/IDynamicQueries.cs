@@ -31,5 +31,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> FindAllChildTopicsAsync(string value);
         Task<dynamic> FindResourcesWithLocationAsync(string collectionId, Location location);
         Task<dynamic> FindTopicsByTopicIds(string collectionId, string propertyName, IEnumerable<string> topicsIds);
+        Task<dynamic> FindResourcesWithCuratedExperiences(string collectionId, Location location);
+        Task<dynamic> FindCuratedExperiences(string collectionId, IEnumerable<string> curatedExperienceIds);
     }
 }

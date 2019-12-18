@@ -148,6 +148,20 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query, null);
         }
 
+        public async Task<dynamic> FindResourcesWithCuratedExperiences(string collectionId, Location location)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId);
+            string locationFilter = FindLocationWhereArrayContains(location);
+            var query = string.Empty;
+            query = $"SELECT * FROM c WHERE c.curatedExperienceId != null AND c.isActive = true";
+
+            if (!string.IsNullOrEmpty(locationFilter))
+            {
+                query += " AND " + locationFilter;
+            }
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, null);
+        }
+
         public async Task<dynamic> FindItemsWhereWithLocationAsync(string collectionId, string propertyName, string value, Location location)
         {
             EnsureParametersAreNotNullOrEmpty(collectionId, propertyName);
@@ -550,6 +564,20 @@ namespace Access2Justice.CosmosDb
             var parameters = new Dictionary<string, object>();
             var inClause = InClause(topicsCollection, parameters);
             var query = $"SELECT * FROM c WHERE c.{propertyName} IN ({inClause})";
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, parameters);
+        }
+
+        public async Task<dynamic> FindCuratedExperiences(string collectionId, IEnumerable<string> curatedExperienceIds)
+        {
+            var curatedExpCollection = curatedExperienceIds?.Distinct().ToList();
+            if (curatedExperienceIds == null || curatedExpCollection.Count == 0)
+            {
+                return Constants.EmptyArray;
+            }
+
+            var parameters = new Dictionary<string, object>();
+            var inClause = InClause(curatedExpCollection, parameters);
+            var query = $"SELECT * FROM c WHERE c.id IN ({inClause})";
             return await backendDatabaseService.QueryItemsAsync(collectionId, query, parameters);
         }
     }

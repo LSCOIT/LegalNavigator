@@ -1660,5 +1660,28 @@ namespace Access2Justice.Api.BusinessLogic
 
             return entities;
         }
+
+        private T CastDynamicToObj<T>(dynamic obj)
+        {
+            var dynamicResponse = JsonConvert.SerializeObject(obj);
+            var topicResult = (JObject)JsonConvert.DeserializeObject(dynamicResponse);
+            var topicResult2 = topicResult.ToObject<T>();
+            return topicResult2;
+        }
+
+        public async Task<IEnumerable<string>> GetActiveCuratedExperienceIds(Location location)
+        {   
+            List<dynamic> foundResources = await dbClient.FindResourcesWithCuratedExperiences(
+                dbSettings.ResourcesCollectionId, location);
+
+            return foundResources.Select(x => CastDynamicToObj<GuidedAssistant>(x)).Cast<GuidedAssistant>().Select(x=>x.CuratedExperienceId);
+        }
+
+        public async Task<IEnumerable<CuratedExperience>> GetCuratedExperiences(List<string> ids)
+        {
+            List<dynamic> curatedExperiences = await dbClient.FindCuratedExperiences(dbSettings.CuratedExperiencesCollectionId, ids);
+
+            return curatedExperiences.Select(x => CastDynamicToObj<CuratedExperience>(x)).Cast<CuratedExperience>();
+        }
     }
 }

@@ -30,6 +30,9 @@ namespace Access2Justice.Api.ViewModels
         [JsonProperty(PropertyName = "resourceTypeFilter")]
         public dynamic ResourceTypeFilter { get; set; }
 
+        [JsonProperty(PropertyName = "curatedExperiences")]
+        public dynamic CuratedExperiences { get; set; }
+
         [DefaultValue("")]
         [JsonProperty(PropertyName = "guidedAssistants")]
         public IEnumerable<dynamic> GuidedAssistants { get; set; }

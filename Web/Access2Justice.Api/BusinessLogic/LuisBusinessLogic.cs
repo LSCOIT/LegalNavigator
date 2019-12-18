@@ -1,5 +1,6 @@
 ﻿using Access2Justice.Api.ViewModels;
 using Access2Justice.Shared;
+using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
@@ -85,7 +86,11 @@ namespace Access2Justice.Api
             Location location = luisInput.Location;
 
             var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-
+            var curatedExperienceIds = await topicsResourcesBusinessLogic.GetActiveCuratedExperienceIds(location);
+            var curatedExperiences = (await topicsResourcesBusinessLogic.GetCuratedExperiences(curatedExperienceIds.ToList()))
+                .Where(x=>x.Title.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+                .Select(x => new {x.CuratedExperienceId, x.Title });
+            
             List<string> topicIds = new List<string>();
             foreach (var item in topics)
             {
@@ -180,13 +185,15 @@ namespace Access2Justice.Api
                 }
 
             }
+
             var result = new LuisViewModel
             {
                 TopIntent = keyword,
                 RelevantIntents = relevantIntents != null
                     ? JsonUtilities.DeserializeDynamicObject<dynamic>(relevantTopics)
                     : JsonConvert.DeserializeObject(Constants.EmptyArray),
-                Topics = JsonUtilities.DeserializeDynamicObject<dynamic>(topics),
+                Topics = JsonUtilities.DeserializeDynamicObject<dynamic>(topics),   
+                CuratedExperiences = JsonUtilities.DeserializeDynamicObject<dynamic>(curatedExperiences),
                 Resources = resources != null
                     ? JsonUtilities.DeserializeDynamicObject<dynamic>(resources.Results)
                     : JsonConvert.DeserializeObject(Constants.EmptyArray),

@@ -7,6 +7,8 @@ namespace Access2Justice.Shared.Interfaces
     public interface ITopicsResourcesBusinessLogic
     {
         Task<Topic> GetTopic(string topicName, string state = null);
+        Task<IEnumerable<string>> GetActiveCuratedExperienceIds(Location location);
+        Task<IEnumerable<CuratedExperience>> GetCuratedExperiences(List<string> ids);
         Task<dynamic> GetTopicsAsync(string stateCode);
         Task<dynamic> GetTopicsAsync(string keyword, Location location);
         Task<dynamic> GetResourcesAsync(dynamic resourcesIds);

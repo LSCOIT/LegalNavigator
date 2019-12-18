@@ -101,5 +101,10 @@ namespace Access2Justice.Shared.Extensions
         {
             return string.IsNullOrWhiteSpace(s);
         }
+
+        public static bool Contains(this string source, string toCheck, StringComparison comp)
+        {
+            return source?.IndexOf(toCheck, comp) >= 0;
+        }
     }
 }
