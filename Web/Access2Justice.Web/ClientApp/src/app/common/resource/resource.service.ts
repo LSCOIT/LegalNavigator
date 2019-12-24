@@ -15,6 +15,7 @@ const httpOptions = {
 export class ResourceService {
   topicInput: ITopicInput = {
     Id: "",
+    Name: "",
     Location: "",
     IsShared: false
   };

@@ -73,7 +73,7 @@ export class SubtopicsComponent implements OnInit {
            if (this.subtopics.length === 0) {
 
             this.topicService
-              .getSubtopicDetail(this.activeTopic).subscribe(data => {
+              .getSubtopicDetail(this.activeTopic,"").subscribe(data => {
                 if(data.length > 0){
                   this.router.navigateByUrl("/subtopics/" + this.activeTopic, {
                     skipLocationChange: true

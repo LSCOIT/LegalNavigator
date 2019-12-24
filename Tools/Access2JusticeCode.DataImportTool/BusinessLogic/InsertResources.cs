@@ -10,6 +10,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Spreadsheet;
 using Access2Justice.Shared.Models;
 using System.Text;
+using System.IO;
 
 namespace Access2Justice.DataImportTool.BusinessLogic
 {
@@ -80,7 +81,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                             currentPage = sheet.Name.Value;
                             foreach (Spreadsheet.Row row in sheetData.Elements<Spreadsheet.Row>())
                             {
-	                            if (counter == 1)
+                                if (counter == 1)
                                 {
                                     var resourceIdColumn = from a in keyValuePairs where a.Key == "Id" select a.Value.First().ToString();
                                     if (resourceIdColumn.Count() > 0)
@@ -89,11 +90,11 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                     }
                                 }
 
-	                            if (row.Elements<Spreadsheet.Cell>()
-		                            .All(x => string.IsNullOrWhiteSpace(x.InnerText)))
-	                            {
-									continue;
-	                            }
+                                if (row.Elements<Spreadsheet.Cell>()
+                                    .All(x => string.IsNullOrWhiteSpace(x.InnerText)))
+                                {
+                                    continue;
+                                }
 
                                 foreach (Spreadsheet.Cell cell in row.Elements<Spreadsheet.Cell>())
                                 {
@@ -387,6 +388,11 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                 Resources = null;
             }
             Resources = ResourcesList;
+
+            //List<string>  ids = Resources.Select(x => "Id: "+  (string)x.ResourceId + " Name: " + (string)x.Name).ToList();
+
+            //File.WriteAllLines(@"C:\Work\Remote\Tools\ids.txt", ids);
+
             return Resources;
         }
 
@@ -470,15 +476,44 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             }
         }
 
-        public static int GetRanking(string ranking)
+        public static dynamic GetRanking(string ranking)
         {
-            var isRankingCorrect = int.TryParse(ranking, out var rank);
-            if (!isRankingCorrect)
+            Dictionary<string, int> keyValues = new Dictionary<string, int>();
+            var rankingValues = ranking.Split('|');
+
+            //Value is already a number
+            if(int.TryParse(rankingValues.First(), out int value))
             {
-                throw new InvalidCastException("Ranking must be a number.");
+                return value;
+            }
+            else
+            {
+                foreach (var item in rankingValues)
+                {
+                    item.Replace(';', ':');
+                    var rankKeyvalue = item.Split(':');
+                    if (string.IsNullOrWhiteSpace(rankKeyvalue.First()))
+                    {
+                        continue;
+                    }
+                    if (!int.TryParse(rankKeyvalue.First(), out int rankValue))
+                    {
+                        if (!keyValues.ContainsKey(rankKeyvalue.First().Trim()))
+                        {
+                            keyValues.Add(rankKeyvalue.First().Trim(), 1);
+                        }
+                    }
+                    else
+                    {
+                        if (!keyValues.ContainsKey(rankKeyvalue.Last().Trim()))
+                        {
+                            keyValues.Add(rankKeyvalue.Last().Trim(), rankValue);
+                        }
+                    }
+                }
             }
 
-            return rank;
+            return keyValues;
         }
 
         private void UpdateFormData(IEnumerable<string> keyValue, string cellActualValue, string resourceType)
@@ -564,7 +599,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                 delete = cellActualValue;
             }
 
-            else if(val.EndsWith("Display", StringComparison.CurrentCultureIgnoreCase))
+            else if (val.EndsWith("Display", StringComparison.CurrentCultureIgnoreCase))
             {
                 display = cellActualValue;
             }
@@ -774,7 +809,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                 }
                 correctHeader = true;
             }
-            
+
             return correctHeader;
         }
     }

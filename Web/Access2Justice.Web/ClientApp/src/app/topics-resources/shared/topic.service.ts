@@ -19,8 +19,10 @@ const httpOptions = {
 export class TopicService {
   topicInput: ITopicInput = {
     Id: "",
+    Name: "",
     Location: "",
-    IsShared: false };
+    IsShared: false 
+  };
   mapLocation: MapLocation = {
     state: "",
     city: "",
@@ -66,8 +68,8 @@ export class TopicService {
     );
   }
 
-  getSubtopicDetail(id): Observable<any> {
-    this.buildParams(id);
+  getSubtopicDetail(id,name): Observable<any> {
+    this.buildParams(id,name);
     return this.http.post<Topic>(
       api.subtopicDetailUrl,
       JSON.stringify(this.topicInput),
@@ -97,8 +99,11 @@ export class TopicService {
     return this.http.get<any>(api.getPrintLogo + "?" + params);
   }
 
-  buildParams(id) {
+  buildParams(id,name="") {
     this.topicInput.Id = id;
+    if(name){
+      this.topicInput.Name = name;
+    }
     this.topicInput.Location = this.loadStateName();
     if (location.pathname.indexOf(this.global.shareRouteUrl) >= 0) {
       this.topicInput.IsShared = true;

@@ -12,6 +12,7 @@ export interface Subtopic {
 
 export interface ITopicInput {
   Id: string;
+  Name: string;
   Location: any;
   IsShared: boolean;
 }

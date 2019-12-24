@@ -69,7 +69,7 @@ namespace Access2Justice.Shared.Models
         public string Display { get; set; } = "Yes";
 
         [JsonProperty(PropertyName = "ranking")]
-        public int Ranking { get; set; } = 1;
+        public dynamic Ranking { get; set; }
 
         public void Validate()
         {

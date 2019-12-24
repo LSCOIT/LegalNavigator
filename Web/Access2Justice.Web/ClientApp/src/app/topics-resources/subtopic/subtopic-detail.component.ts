@@ -104,7 +104,7 @@ export class SubtopicDetailComponent implements OnInit {
   getDataOnReload() {
     this.activeSubtopicParam = this.activeRoute.snapshot.params["topic"];
     this.subtopics = this.navigateDataService.getData();
-    if (this.subtopics && this.subtopics.length > 0) {
+    if (this.subtopics) {
       this.topicService
         .getDocumentData(this.activeSubtopicParam)
         .subscribe(data => {
@@ -114,14 +114,15 @@ export class SubtopicDetailComponent implements OnInit {
             activeId: this.activeSubtopicParam,
             name: this.subtopics.name
           };
-        });
+          this.getSubtopicDetail();
+        });   
     }
-    this.getSubtopicDetail();
+
   }
 
   getSubtopicDetail(): void {
     this.topicService
-      .getSubtopicDetail(this.activeSubtopicParam)
+      .getSubtopicDetail(this.activeSubtopicParam, this.subtopics.name)
       .subscribe(data => {
         var rankingData = [];
         rankingData = data.filter(x => x.ranking == 1);

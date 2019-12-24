@@ -47,7 +47,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 throw new Exception($"No topic found with this name: {topicName}");
             }
-            if(!string.IsNullOrWhiteSpace(state))
+            if (!string.IsNullOrWhiteSpace(state))
             {
                 topic = FilterByDeleteAndOrderByRanking<Topic>(topics).FirstOrDefault(x => x.Location[0].State == state);
             }
@@ -55,7 +55,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 topic = FilterByDeleteAndOrderByRanking<Topic>(topics).FirstOrDefault();
             }
-            
+
             return GetOutboundTopic(topic);
         }
 
@@ -83,7 +83,7 @@ namespace Access2Justice.Api.BusinessLogic
                 }
             }
 
-             List<Topic> filteredTopics = FilterByDeleteAndOrderByRanking<Topic>(topics);
+            List<Topic> filteredTopics = FilterByDeleteAndOrderByRanking<Topic>(topics);
 
             return filteredTopics;
         }
@@ -104,7 +104,7 @@ namespace Access2Justice.Api.BusinessLogic
                 dbSettings.ResourcesCollectionId, location);
 
             List<Resource> listResources = FilterByDeleteAndOrderByRanking<Resource>(foundResources);
-
+            //listResources = listResources.OrderBy(x=>x.Ranking)
             if (!listResources.Any())
             {
                 if (!IsValidLocation(location))
@@ -151,7 +151,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<dynamic> FindAllResources(ResourceFilter resourceFilter)
         {
-            
+
             var parameters = new Dictionary<string, object>();
             var query = dbClient.BuildQueryWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, parameters);
             List<dynamic> items = await dbService.QueryItemsAsync(dbSettings.ResourcesCollectionId, query, parameters);
@@ -226,7 +226,7 @@ namespace Access2Justice.Api.BusinessLogic
         public async Task<dynamic> GetTopLevelTopicsAsync(Location location)
         {
             var resources = await GetResourcesWithLocationAsync(location);
-         
+
             List<dynamic> parentTopics = new List<dynamic>();
             List<string> topicIds = resources.SelectMany(x => x.TopicTags).Select(x => (string)x.TopicTags).Distinct().ToList();
             if (topicIds.Any())
@@ -235,6 +235,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
 
             var filteredTopics = FilterByDeleteAndOrderByRanking<Topic>(parentTopics.ToList());
+
             filteredTopics = filteredTopics.Where(x => x.Location.Any(y => y.State == location.State)).ToList();
             return GetOutboundTopicsCollection(filteredTopics);
         }
@@ -252,7 +253,7 @@ namespace Access2Justice.Api.BusinessLogic
             var topicsStronglyTyped = topics.Select(x => CastDynamicTo(x)).Cast<Topic>();
 
             var newTopics = topicsStronglyTyped.Where(x => x.ParentTopicId != null && x.ParentTopicId.Where(y => y.ParentTopicIds == parentTopicId).Any()).ToList();
-            
+
             List<Topic> resources = await GetResourcesByTopicIdsAsync(new List<string> { parentTopicId });
             if (resources.Any())
             {
@@ -267,7 +268,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
 
                 parentTopicId = topicsStronglyTyped.SelectMany(x => x.ParentTopicId.Select(y => y.ParentTopicIds)).FirstOrDefault();
-               
+
                 return await GetSubtopicsByParentTopic(topicIds, parentTopicId);
             }
         }
@@ -284,8 +285,9 @@ namespace Access2Justice.Api.BusinessLogic
             }
             else
             {
-                if(string.IsNullOrWhiteSpace(topicInput.Location.County) && string.IsNullOrWhiteSpace(topicInput.Location.City)
-                    && string.IsNullOrWhiteSpace(topicInput.Location.ZipCode)){
+                if (string.IsNullOrWhiteSpace(topicInput.Location.County) && string.IsNullOrWhiteSpace(topicInput.Location.City)
+                    && string.IsNullOrWhiteSpace(topicInput.Location.ZipCode))
+                {
                     rawResult = await GetSubtopicsFromLocation(topicInput);
                 }
                 else
@@ -307,7 +309,7 @@ namespace Access2Justice.Api.BusinessLogic
                 List<Topic> topicsToRemove = new List<Topic>();
                 List<Topic> topicsWithoutResources = new List<Topic>();
                 List<dynamic> resources = await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, topicIds);
-                
+
                 var resourcesStronglyTyped = FilterByDeleteAndOrderByRanking<Resource>(resources);
                 foreach (var item in result)
                 {
@@ -321,7 +323,7 @@ namespace Access2Justice.Api.BusinessLogic
                 foreach (var item in topicsWithoutResources)
                 {
                     var parentTopic = await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.TopicsCollectionId, Constants.ParentTopicId, Constants.Id, item.Id);
-                    if(parentTopic.Count == 0)
+                    if (parentTopic.Count == 0)
                     {
                         topicsToRemove.Add(item);
                     }
@@ -329,7 +331,7 @@ namespace Access2Justice.Api.BusinessLogic
 
                 result = result.Except(topicsToRemove).ToList();
             }
-           
+
             return GetOutboundTopicsCollection(result);
         }
 
@@ -374,7 +376,7 @@ namespace Access2Justice.Api.BusinessLogic
                     County = topicInput.Location.County
                 };
             }
-            else 
+            else
             {
                 location = new Location
                 {
@@ -510,7 +512,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 List<dynamic> rawItems = await GetResourcesFromLocation(topicInput);
 
-                var items = FilterByDeleteAndOrderByRanking<Topic>(rawItems);
+                var items = FilterByDeleteAndOrderByRanking<Topic>(rawItems, topicInput.Name);
                 return items;
             }
         }
@@ -665,8 +667,8 @@ namespace Access2Justice.Api.BusinessLogic
             var location = GetProperLocation(resourceFilter);
 
             List<dynamic> groupedResourceType = await GetResourcesCountLocationAsync(resourceFilter, location);
-            
-            if(groupedResourceType.Any(x => x.ResourceName == "All" && x.ResourceCount == 0))
+
+            if (groupedResourceType.Any(x => x.ResourceName == "All" && x.ResourceCount == 0))
             {
                 if (!IsValidLocation(resourceFilter.Location))
                 {
@@ -696,7 +698,7 @@ namespace Access2Justice.Api.BusinessLogic
             dynamic searchFilter = new JObject();
             searchFilter.OrderByField = resourceFilter.OrderByField;
             searchFilter.OrderBy = resourceFilter.OrderBy;
-            
+
             //Fix duplication
             resourceFilter.TopicIds = resourceFilter.TopicIds.Distinct();
 
@@ -731,7 +733,7 @@ namespace Access2Justice.Api.BusinessLogic
             return ResourcesCount(pagedResources);
         }
 
-        public async Task<dynamic> GetResourcesCountLocationAsync(ResourceFilter resourceFilter,  Location location)
+        public async Task<dynamic> GetResourcesCountLocationAsync(ResourceFilter resourceFilter, Location location)
         {
             PagedResources pagedResources = await dbClient.FindItemsWhereArrayContainsWithAndClauseLocationAsync("topicTags", "id", "resourceType", resourceFilter, location, true);
             return ResourcesCount(pagedResources);
@@ -1132,7 +1134,7 @@ namespace Access2Justice.Api.BusinessLogic
                 ModifiedBy = resourceObject.modifiedBy,
                 NsmiCode = resourceObject.nsmiCode,
                 Ranking = resourceObject.ranking
-			};
+            };
             forms.Validate();
             return forms;
         }
@@ -1164,7 +1166,7 @@ namespace Access2Justice.Api.BusinessLogic
                 ModifiedBy = resourceObject.modifiedBy,
                 NsmiCode = resourceObject.nsmiCode,
                 Ranking = resourceObject.ranking
-			};
+            };
             actionPlans.Validate();
             return actionPlans;
         }
@@ -1197,7 +1199,7 @@ namespace Access2Justice.Api.BusinessLogic
                 Contents = articleContents,
                 NsmiCode = resourceObject.nsmiCode,
                 Ranking = resourceObject.ranking
-			};
+            };
             articles.Validate();
             return articles;
         }
@@ -1227,7 +1229,7 @@ namespace Access2Justice.Api.BusinessLogic
                 Overview = resourceObject.overview,
                 NsmiCode = resourceObject.nsmiCode,
                 Ranking = resourceObject.ranking
-			};
+            };
             videos.Validate();
             return videos;
         }
@@ -1266,8 +1268,8 @@ namespace Access2Justice.Api.BusinessLogic
                 Reviewer = organizationReviewers,
                 NsmiCode = resourceObject.nsmiCode,
                 Display = resourceObject.display,
-				Ranking = resourceObject.ranking
-			};
+                Ranking = resourceObject.ranking
+            };
             organizations.Validate();
             return organizations;
         }
@@ -1296,12 +1298,12 @@ namespace Access2Justice.Api.BusinessLogic
                 ModifiedBy = resourceObject.modifiedBy,
                 NsmiCode = resourceObject.nsmiCode,
                 Ranking = resourceObject.ranking
-			};
+            };
             additionalReadings.Validate();
             return additionalReadings;
-		}
+        }
 
-		public dynamic UpsertResourcesRelatedLinks(dynamic resourceObject)
+        public dynamic UpsertResourcesRelatedLinks(dynamic resourceObject)
         {
             RelatedLink relatedLink = new RelatedLink();
             List<TopicTag> topicTags = new List<TopicTag>();
@@ -1325,7 +1327,7 @@ namespace Access2Justice.Api.BusinessLogic
                 ModifiedBy = resourceObject.modifiedBy,
                 NsmiCode = resourceObject.nsmiCode,
                 Ranking = resourceObject.ranking
-			};
+            };
             relatedLink.Validate();
             return relatedLink;
         }
@@ -1427,7 +1429,7 @@ namespace Access2Justice.Api.BusinessLogic
             return topics;
         }
 
-		public async Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter)
+        public async Task<dynamic> GetPersonalizedResourcesAsync(ResourceFilter resourceFilter)
         {
             dynamic Topics = Array.Empty<string>();
             dynamic Resources = Array.Empty<string>();
@@ -1645,7 +1647,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
         }
 
-        private List<T> FilterByDeleteAndOrderByRanking<T>(List<dynamic> rawEntities) where T : class
+        private List<T> FilterByDeleteAndOrderByRanking<T>(List<dynamic> rawEntities, string topicName = "") where T : class
         {
             if (rawEntities == null)
             {
@@ -1654,9 +1656,34 @@ namespace Access2Justice.Api.BusinessLogic
 
             Func<T, bool> notDeletedPredicate = (T resource) => !string.Equals(((dynamic)resource).Display, "No", StringComparison.Ordinal);
             Func<T, int> orderByRankingPredicate = (T resource) => ((dynamic)resource).Ranking;
+            var realEntities = new List<T>();
+            foreach (var entity in rawEntities)
+            {
+                dynamic rankingArray = null;
+                try
+                {
+                    rankingArray = entity.ranking;
+                    var test = (int)rankingArray;
+                    continue;
+                }
+                catch (Exception e)
+                {
+                    if (rankingArray is null)
+                    {
+                        continue;
+                    }
+                }
+                foreach (var item in rankingArray)
+                { 
+                    if (item.Name == topicName)
+                    {
+                        entity.ranking = item.Value;
+                    }
+                }
 
-            var realEntities = rawEntities.Select(s => JsonConvert.DeserializeObject<T>(s.ToString()) as T).ToList();
-            var entities = realEntities.Where(notDeletedPredicate).OrderBy(orderByRankingPredicate).ToList();
+            }
+            realEntities = rawEntities.Select(s => JsonConvert.DeserializeObject<T>(s.ToString()) as T).ToList();
+            var entities = realEntities.Where(notDeletedPredicate).OrderBy(x => orderByRankingPredicate).ToList();
 
             return entities;
         }
@@ -1670,11 +1697,11 @@ namespace Access2Justice.Api.BusinessLogic
         }
 
         public async Task<IEnumerable<string>> GetActiveCuratedExperienceIds(Location location)
-        {   
+        {
             List<dynamic> foundResources = await dbClient.FindResourcesWithCuratedExperiences(
                 dbSettings.ResourcesCollectionId, location);
 
-            return foundResources.Select(x => CastDynamicToObj<GuidedAssistant>(x)).Cast<GuidedAssistant>().Select(x=>x.CuratedExperienceId);
+            return foundResources.Select(x => CastDynamicToObj<GuidedAssistant>(x)).Cast<GuidedAssistant>().Select(x => x.CuratedExperienceId);
         }
 
         public async Task<IEnumerable<CuratedExperience>> GetCuratedExperiences(List<string> ids)
