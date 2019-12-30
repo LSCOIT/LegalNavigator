@@ -176,6 +176,7 @@
             </div>
             <div class="media-body">
               <a
+              target="_blank"
                 class="h4 no-print"
                 [routerLink]="
                 getLocation(resource) ? ['/resource', resource.id] : null
@@ -328,7 +329,7 @@
               />
             </div>
             <div class="media-body">
-              <a class="h4 no-print" [href]="resource.url | sanitize">{{
+              <a class="h4 no-print" target="_blank" [href]="resource.url | sanitize">{{
                 resource.name
                 }}</a>
               <h4 class="print-only">{{ resource.name }}</h4>
@@ -414,7 +415,7 @@
               />
             </div>
             <div class="media-body">
-              <a class="h4 no-print" [href]="resource.url | sanitize">{{
+              <a class="h4 no-print" [target] = "_blank" [href]="resource.url | sanitize">{{
                 resource.name
                 }}</a>
               <h4 class="print-only">{{ resource.name }}</h4>
@@ -684,9 +685,7 @@
               />
             </div>
             <div class="media-body">
-              <a class="h4 no-print" [href]="resource.url | sanitize">{{
-                resource.name
-                }}</a>
+              <a class="h4 no-print" [target] ="_blank" [href]="resource.url | sanitize">{{ resource.name }}</a>
               <h4 class="print-only">{{ resource.name }}</h4>
               <div class="external-link no-print">
                 <img
