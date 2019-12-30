@@ -106,20 +106,4 @@ describe("TopicService", () => {
       done();
     });
   });
-
-  it("should return details for the subtopic", done => {
-    let mockSubtopicDetail = {
-      title: "Eviction",
-      overview:
-        "Lorem ipsum solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter. Solor sit amet bibodem consecuter orem ipsum solor sit amet bibodem consecuter lorem ipsum solor sit amet bibodem consecuter.",
-      resources: []
-    };
-    const mockResponse = Observable.of(mockSubtopicDetail);
-    httpSpy.post.and.returnValue(mockResponse);
-    service.getSubtopicDetail(1).subscribe(subtopicDetail => {
-      expect(httpSpy.post).toHaveBeenCalled();
-      expect(subtopicDetail).toEqual(mockSubtopicDetail);
-      done();
-    });
-  });
 });

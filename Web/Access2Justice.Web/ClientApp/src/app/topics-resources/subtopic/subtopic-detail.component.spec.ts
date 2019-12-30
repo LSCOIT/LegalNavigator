@@ -180,14 +180,6 @@ describe('SubtopicDetailComponent', () => {
     expect(mockShowMoreService.clickSeeMoreOrganizations).toHaveBeenCalled();
   });
 
-  it('should call filterSubtopicDetail in getSubtopicDetail method', () => {
-    component.activeSubtopicParam = 'bd900039-2236-8c2c-8702-d31855c56b0f';
-    spyOn(component, 'filterSubtopicDetail');
-    component.getSubtopicDetail();
-    expect(component.subtopicDetails).toEqual(mockSubTopicDetailData);
-    expect(component.filterSubtopicDetail).toHaveBeenCalled();
-  });
-
   it('should assign component values in getDataOnReload method', () => {
     let mockGuidedSutopicDetailsInput = {
       activeId: 'bd900039-2236-8c2c-8702-d31855c56b0f',
