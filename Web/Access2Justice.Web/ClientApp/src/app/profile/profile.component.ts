@@ -105,6 +105,20 @@ export class ProfileComponent implements OnInit {
   getPersonalizedPlan() {
     this.personalizedPlanService.getPersonalizedPlan().subscribe(plan => {
       if (plan) {
+        //iterate each description, find <a>, insert target="_blank" there
+        var topics = plan.topics
+        topics.forEach(topic => {
+          var steps = topic.steps
+          var position = 0;
+          steps.forEach(step => {
+            position = step.description.indexOf("<a");
+            while(position != -1){
+              position+=2;
+              step.description = step.description.substring(0, position) + " target='_blank'" + step.description.substring(position);
+              position = step.description.indexOf("<a",position);
+            }            
+          });
+        });
         this.planId = plan.id;
         this.plan = plan;
       }

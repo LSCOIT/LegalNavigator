@@ -265,7 +265,7 @@
           <p>Additional Readings</p>
           <ul>
             <li *ngFor="let additionalReading of topic.additionalReadings">
-              <a href="{{ additionalReading.url }}" class="link">{{
+              <a target="_blank" href="{{ additionalReading.url }}" class="link">{{
                 additionalReading.text
               }}</a>
               <div class="print-only">{{ additionalReading.url }}</div>
