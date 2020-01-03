@@ -108,13 +108,15 @@ export class SubtopicDetailComponent implements OnInit {
       this.topicService
         .getDocumentData(this.activeSubtopicParam)
         .subscribe(data => {
-          this.subtopics = data[0];
-          this.topIntent = data[0].name;
-          this.guidedSutopicDetailsInput = {
-            activeId: this.activeSubtopicParam,
-            name: this.subtopics.name
-          };
-          this.getSubtopicDetail();
+          if(data && data.length > 0){
+            this.subtopics = data[0];
+            this.topIntent = data[0].name;
+            this.guidedSutopicDetailsInput = {
+              activeId: this.activeSubtopicParam,
+              name: this.subtopics.name
+            };
+            this.getSubtopicDetail();
+          }
         });   
     }
 

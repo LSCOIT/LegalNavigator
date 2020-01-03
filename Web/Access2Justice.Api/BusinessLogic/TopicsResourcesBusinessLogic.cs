@@ -351,6 +351,24 @@ namespace Access2Justice.Api.BusinessLogic
             return rawResult;
         }
 
+        private async Task<dynamic> GetTopicsByLocation(TopicInput topicInput)
+        {
+            var location = GetProperLocation(topicInput);
+            List<dynamic> topics = await dbClient.FindItemsWhereWithLocationAsync(
+                dbSettings.TopicsCollectionId, Constants.Id, topicInput.Id, location);
+
+            if (!topics.Any())
+            {
+                if (!IsValidLocation(topicInput))
+                {
+                    return await GetTopicsByLocation(topicInput);
+                }
+            }
+
+            return topics;
+        }
+
+        
         private Location GetProperLocation(TopicInput topicInput)
         {
             Location location;
@@ -551,8 +569,8 @@ namespace Access2Justice.Api.BusinessLogic
             }
             else
             {
-                topics = await dbClient.FindItemsWhereWithLocationAsync(
-                    dbSettings.TopicsCollectionId, Constants.Id, topicInput.Id, topicInput.Location);
+
+                topics = await GetTopicsByLocation(topicInput);
             }
 
             var filteredTopicsCollection = FilterByDeleteAndOrderByRanking<Topic>(topics);
