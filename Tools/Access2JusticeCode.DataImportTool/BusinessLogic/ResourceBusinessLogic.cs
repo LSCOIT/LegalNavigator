@@ -27,6 +27,19 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             {
                 InsertResources obj = new InsertResources();
                 List<dynamic> resourcesList = new List<dynamic>();
+                var resourcesToDelete = obj.GetDeleteEntries(filePath);
+                var serializedResourcesToDelete = JsonConvert.SerializeObject(resourcesToDelete);
+                StringContent contentToDelete = new StringContent(serializedResourcesToDelete, Encoding.UTF8, "application/json");
+                var deleteResult = await clientHttp.PostAsync("api/topics-resources/resources/delete", contentToDelete).ConfigureAwait(false);
+                if (deleteResult.IsSuccessStatusCode)
+                {
+                    MessageBox.Show("Resources were succesfully deleted");
+                }
+                else
+                {
+                    MessageBox.Show("Deletion failed, please check log file");
+                }
+
                 var resources = obj.CreateJsonFromCSV(filePath);
                 if (resources == null || resources.Count == 0)
                 {

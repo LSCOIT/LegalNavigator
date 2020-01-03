@@ -654,5 +654,22 @@ namespace Access2Justice.Api.Controllers
 
             return Ok(topics);
         }
+
+        /// <summary>
+        /// Delete a list of resources 
+        /// </summary>
+        /// <remarks>
+        /// Delete resources
+        /// </remarks>
+        /// <param name="resources"></param>
+        /// <response code="200"></response>
+        [HttpPost]
+        [Route("resources/delete")]
+        public async Task<IActionResult> DeleteResources([FromBody]Dictionary<Guid, string> resources)
+        {
+            await topicsResourcesBusinessLogic.DeleteResources(resources);
+
+            return Ok();
+        }
     }
 }

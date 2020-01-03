@@ -254,5 +254,12 @@ namespace Access2Justice.CosmosDb
                 new RequestOptions { PartitionKey = new PartitionKey(partitionKey) },
                 procedureParams);
         }
+
+        public async Task DeleteResourceAsync(string id, string partitionKey, string collectionId)
+        {
+            await documentClient.DeleteDocumentAsync(
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, collectionId, id),
+                new RequestOptions { PartitionKey = new PartitionKey(partitionKey)});
+        }
     }
 }

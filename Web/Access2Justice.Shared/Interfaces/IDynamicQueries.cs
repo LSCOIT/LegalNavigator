@@ -33,5 +33,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> FindTopicsByTopicIds(string collectionId, string propertyName, IEnumerable<string> topicsIds);
         Task<dynamic> FindResourcesWithCuratedExperiences(string collectionId, Location location);
         Task<dynamic> FindCuratedExperiences(string collectionId, IEnumerable<string> curatedExperienceIds);
+        Task DeleteResource(string collectionId, string id, string partitionKey);
     }
 }

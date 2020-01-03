@@ -1,4 +1,5 @@
 ﻿using Access2Justice.Shared.Models;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -55,5 +56,6 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> FindAllResources(ResourceFilter resourceFilter);
         Task<dynamic> FindAllResourcesForDownload(ResourceFilter resourceFilter);
         Task<dynamic> GetResourcesCountLocationAsync(ResourceFilter resourceFilter, Location location);
+        Task DeleteResources(Dictionary<Guid, string> resources);
     }
 }

@@ -1674,7 +1674,7 @@ namespace Access2Justice.Api.BusinessLogic
                     }
                 }
                 foreach (var item in rankingArray)
-                { 
+                {
                     if (item.Name == topicName)
                     {
                         entity.ranking = item.Value;
@@ -1709,6 +1709,19 @@ namespace Access2Justice.Api.BusinessLogic
             List<dynamic> curatedExperiences = await dbClient.FindCuratedExperiences(dbSettings.CuratedExperiencesCollectionId, ids);
 
             return curatedExperiences.Select(x => CastDynamicToObj<CuratedExperience>(x)).Cast<CuratedExperience>();
+        }
+
+        public async Task DeleteResources(Dictionary<Guid, string> resources)
+        {
+            foreach (var item in resources)
+            {
+                List<dynamic> resource = await dbClient.FindItemsWhereAsync(dbSettings.ResourcesCollectionId, Constants.Id, item.Key.ToString());
+                if(resource.Count > 0)
+                {
+                    var orgUnit = resource[0].organizationalUnit;
+                    await dbClient.DeleteResource(dbSettings.ResourcesCollectionId, item.Key.ToString(), orgUnit.ToString());
+                }
+            }
         }
     }
 }

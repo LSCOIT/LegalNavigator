@@ -580,5 +580,10 @@ namespace Access2Justice.CosmosDb
             var query = $"SELECT * FROM c WHERE c.id IN ({inClause})";
             return await backendDatabaseService.QueryItemsAsync(collectionId, query, parameters);
         }
+
+        public async Task DeleteResource(string collectionId, string id, string partitionKey)
+        {
+            await backendDatabaseService.DeleteResourceAsync(id, partitionKey, collectionId);
+        }
     }
 }

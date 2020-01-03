@@ -1,4 +1,7 @@
-﻿using DocumentFormat.OpenXml.Packaging;
+﻿using Access2Justice.Shared.Models;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Newtonsoft.Json;
 using System;
 using System.Collections;
@@ -6,11 +9,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Spreadsheet = DocumentFormat.OpenXml.Spreadsheet;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Spreadsheet;
-using Access2Justice.Shared.Models;
-using System.Text;
-using System.IO;
 
 namespace Access2Justice.DataImportTool.BusinessLogic
 {
@@ -38,6 +36,83 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
         #endregion Variables
 
+        public Dictionary<Guid, string> GetDeleteEntries(string filePath)
+        {
+            using (SpreadsheetDocument spreadsheetDocument =
+                        SpreadsheetDocument.Open(filePath, true))
+            {
+                WorkbookPart workbookPart = spreadsheetDocument.WorkbookPart;
+                Sheets sheets = workbookPart.Workbook.GetFirstChild<Sheets>();
+                foreach (Sheet sheet in sheets)
+                {
+                    if (sheet.Name.HasValue && sheet.Name.Value == Constants.Delete)
+                    {
+                        Worksheet worksheet = ((WorksheetPart)workbookPart.GetPartById(sheet.Id)).Worksheet;
+                        SheetData sheetData = worksheet.Elements<SheetData>().First();
+
+                        SharedStringTable sharedStringTable = spreadsheetDocument.WorkbookPart.SharedStringTablePart.SharedStringTable;
+
+                        var keyValuesPairs = new Dictionary<Guid, string>();
+                        string cellValue;
+                        foreach (Row row in sheetData.Elements<Row>())
+                        {
+                            string id = string.Empty, name = string.Empty;
+                            var cellRef = string.Empty;
+                            if (row.Elements<Cell>()
+                                .All(x => string.IsNullOrWhiteSpace(x.InnerText)))
+                            {
+                                continue;
+                            }
+
+                            foreach (Cell cell in row.Elements<Cell>())
+                            {
+                                cellValue = cell.InnerText;
+                                if (string.IsNullOrEmpty(cellValue))
+                                {
+                                    continue;
+                                }
+                                else if (!string.IsNullOrEmpty(cellValue))
+                                {
+                                    string cellActualValue = string.Empty;
+                                    if (cell.DataType != null && cell.DataType == CellValues.SharedString)
+                                    {
+                                        cellActualValue = sharedStringTable.ElementAt(int.Parse(cellValue, CultureInfo.InvariantCulture)).InnerText;
+                                    }
+                                    else
+                                    {
+                                        cellActualValue = cellValue;
+                                    }
+
+                                    if (cellRef.EndsWith(cell.CellReference.Value.Last().ToString()))
+                                    {
+                                        name = cellActualValue;
+                                    }
+                                    else
+                                    {
+                                        id = cellActualValue;
+                                    }
+
+                                    if (!string.IsNullOrWhiteSpace(name) && !string.IsNullOrWhiteSpace(id))
+                                    {
+                                        if (Guid.TryParse(id, out Guid guid))
+                                        {
+                                            keyValuesPairs.Add(guid, name);
+                                        }
+                                    }
+
+                                    cellRef = cell.CellReference;
+                                }
+                            }
+                        }
+
+                        return keyValuesPairs;
+                    }
+                }
+            }
+
+            throw new NotImplementedException();
+        }
+
         public dynamic CreateJsonFromCSV(string filePath)
         {
             int recordNumber = 1;
@@ -47,7 +122,10 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             List<dynamic> articlesList = new List<dynamic>();
             List<dynamic> organizationReviewsList = new List<dynamic>();
             List<dynamic> Resources = new List<dynamic>();
-            List<string> sheetNames = new List<string>() { Constants.ArticleSheetName, Constants.ArticleSectionSheetName, Constants.VideoSheetName, Constants.AdditionalReadingSheetName, Constants.FormSheetName, Constants.OrganizationSheetName, Constants.OrganizationReviewSheetName, Constants.RelatedLinkSheetName };
+            List<string> sheetNames = new List<string>() { Constants.ArticleSheetName, Constants.ArticleSectionSheetName,
+                Constants.VideoSheetName, Constants.AdditionalReadingSheetName, Constants.FormSheetName,
+                Constants.OrganizationSheetName, Constants.OrganizationReviewSheetName, Constants.RelatedLinkSheetName
+            };
 
             var currentPage = string.Empty;
             var currentPageRecord = 1;
@@ -68,7 +146,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                             Spreadsheet.SheetData sheetData = worksheet.Elements<Spreadsheet.SheetData>().First();
 
                             Spreadsheet.SharedStringTable sharedStringTable = spreadsheetDocument.WorkbookPart.SharedStringTablePart.SharedStringTable;
-
+                            currentPage = sheet.Name.Value;
                             Dictionary<string, string> keyValuePairs = new Dictionary<string, string>();
                             string cellValue;
                             int counter = 0;
@@ -78,7 +156,6 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                             locations = new List<Shared.Models.Location>();
                             string resourceIdCell = string.Empty;
                             string resourceType = GetResourceType(sheet.Name.Value);
-                            currentPage = sheet.Name.Value;
                             foreach (Spreadsheet.Row row in sheetData.Elements<Spreadsheet.Row>())
                             {
                                 if (counter == 1)
@@ -482,7 +559,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             var rankingValues = ranking.Split('|');
 
             //Value is already a number
-            if(int.TryParse(rankingValues.First(), out int value))
+            if (int.TryParse(rankingValues.First(), out int value))
             {
                 return value;
             }

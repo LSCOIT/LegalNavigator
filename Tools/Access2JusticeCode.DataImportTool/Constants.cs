@@ -20,5 +20,6 @@
         public const string RelatedLinkSheetName = "Related Links";
         public const string Admin = "Admin Import tool";
         public const string GuidedAssistantResourceType = "Guided Assistant";
+        public const string Delete = "DELETE";
     }
 }
