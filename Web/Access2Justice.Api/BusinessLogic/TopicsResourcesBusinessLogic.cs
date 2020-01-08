@@ -100,8 +100,9 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<List<Resource>> GetResourcesWithLocationAsync(Location location)
         {
+            var properLocation = GetProperLocation(location);
             var foundResources = await dbClient.FindResourcesWithLocationAsync(
-                dbSettings.ResourcesCollectionId, location);
+                dbSettings.ResourcesCollectionId, properLocation);
 
             List<Resource> listResources = FilterByDeleteAndOrderByRanking<Resource>(foundResources);
             //listResources = listResources.OrderBy(x=>x.Ranking)
@@ -389,6 +390,10 @@ namespace Access2Justice.Api.BusinessLogic
             }
             else if (!string.IsNullOrWhiteSpace(topicInput.Location.County))
             {
+                if (topicInput.Location.County.Contains("County"))
+                {
+                    topicInput.Location.County = topicInput.Location.County.Replace("County", string.Empty).Trim();
+                }
                 location = new Location
                 {
                     County = topicInput.Location.County
@@ -399,6 +404,46 @@ namespace Access2Justice.Api.BusinessLogic
                 location = new Location
                 {
                     State = topicInput.Location.State
+                };
+            }
+
+            return location;
+        }
+
+        private Location GetProperLocation(Location inputLocation)
+        {
+            Location location;
+
+            if (!string.IsNullOrWhiteSpace(inputLocation.ZipCode))
+            {
+                location = new Location
+                {
+                    ZipCode = inputLocation.ZipCode
+                };
+            }
+            else if (!string.IsNullOrWhiteSpace(inputLocation.City))
+            {
+                location = new Location
+                {
+                    City = inputLocation.City
+                };
+            }
+            else if (!string.IsNullOrWhiteSpace(inputLocation.County))
+            {
+                if (inputLocation.County.Contains("County"))
+                {
+                    inputLocation.County = inputLocation.County.Replace("County", string.Empty).Trim();
+                }
+                location = new Location
+                {
+                    County = inputLocation.County
+                };
+            }
+            else
+            {
+                location = new Location
+                {
+                    State = inputLocation.State
                 };
             }
 
@@ -423,8 +468,13 @@ namespace Access2Justice.Api.BusinessLogic
                     City = resFilter.Location.City
                 };
             }
+
             else if (!string.IsNullOrWhiteSpace(resFilter.Location.County))
             {
+                if (resFilter.Location.County.Contains("County"))
+                {
+                    resFilter.Location.County = resFilter.Location.County.Replace("County", string.Empty).Trim();
+                }
                 location = new Location
                 {
                     County = resFilter.Location.County
@@ -721,7 +771,7 @@ namespace Access2Justice.Api.BusinessLogic
             resourceFilter.TopicIds = resourceFilter.TopicIds.Distinct();
 
             PagedResources pagedResources = await GetPagedResourceWithLocation(resourceFilter);
-
+            pagedResources.Results = pagedResources.Results.Where(x => x.display != "No").ToList();
             dynamic serializedToken = pagedResources?.ContinuationToken ?? Constants.EmptyArray;
             pagedResourceViewModel.Resources = JsonUtilities.DeserializeDynamicObject<dynamic>(pagedResources?.Results);
             pagedResourceViewModel.ContinuationToken = JsonConvert.DeserializeObject(serializedToken);

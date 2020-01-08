@@ -283,7 +283,7 @@ namespace Access2Justice.CosmosDb
 
             if (isResourceCountCall)
             {
-                var query = $"SELECT c.resourceType FROM c WHERE {arrayContainsWithAndClause}";
+                var query = $"SELECT c.resourceType FROM c WHERE {arrayContainsWithAndClause}" + " AND c.display != 'No'";
                 return query;
             }
             else
