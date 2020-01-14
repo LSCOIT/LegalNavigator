@@ -38,6 +38,13 @@ export class PrintButtonComponent implements OnInit {
     private topicService: TopicService) {
   }
 
+  getOrganizationalUnit(): string {
+    var locationDetails = JSON.parse(
+      sessionStorage.getItem("globalMapLocation")
+    );
+    return locationDetails.location.state;
+  }
+
   print(): void {
     this.activeRoute.url.subscribe(routeParts => {
       if(routeParts.length > 1){
@@ -92,7 +99,6 @@ else if(this.activeTopic){
     this.topicService.getDocumentDataWithShared(this.activeTopic, true).subscribe(topic => {
       if(topic[0]) {
         this.topic = topic[0];
-        var isShared = true;
         let params = new HttpParams()
           .set("organizationalUnit", this.topic.organizationalUnit);
           
@@ -102,7 +108,17 @@ else if(this.activeTopic){
         });
       }
     });
-  } else{
+  } else if(this.template === "app-action-plans"){
+    var organizationalUnit = this.getOrganizationalUnit();
+    let params = new HttpParams()
+    .set("organizationalUnit", organizationalUnit);
+    
+    this.topicService.getLogo(params).subscribe(logo => {
+      this.logoSrc = logo ? logo.source : '';
+      this.printContents(this.template, this.logoSrc);
+    });
+  }
+  else{
     this.printContents(this.template);
   }
 }

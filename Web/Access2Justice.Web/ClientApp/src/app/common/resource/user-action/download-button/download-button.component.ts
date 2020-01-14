@@ -38,6 +38,7 @@ export class DownloadButtonComponent implements OnInit {
   mainHTML: any;
   activeTab: string = "";
   activeResourceId: any;
+  logoSrc: any;
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,
@@ -47,6 +48,13 @@ export class DownloadButtonComponent implements OnInit {
     private activeRoute: ActivatedRoute,
   ) {
     global.showRemove = !(global.role === UserStatus.Shared && location.pathname.indexOf(global.shareRouteUrl) >= 0);
+  }
+
+  getOrganizationalUnit(): string {
+    var locationDetails = JSON.parse(
+      sessionStorage.getItem("globalMapLocation")
+    );
+    return locationDetails.location.state;
   }
 
   downloadPDF() {
@@ -73,7 +81,6 @@ export class DownloadButtonComponent implements OnInit {
         }
       });
     } else if (location.pathname.indexOf("/plan") >= 0) {
-      //this.template = "app-personalized-plan";
       let params = new HttpParams()
       .set("curatedExperienceId", this.personalizedPlanService.planDetails.curatedExperienceId)
       .set("answersDocId", this.personalizedPlanService.planDetails.answersDocId);
@@ -91,7 +98,6 @@ export class DownloadButtonComponent implements OnInit {
         }
       });
 
-      // this.template = "app-resource-card-detail";
       let params = new HttpParams()
       .set("resourceId", this.activeResourceId);
       
@@ -116,46 +122,51 @@ export class DownloadButtonComponent implements OnInit {
       }
       else if (this.activeTab === "Shared Resources") {
         this.template = "app-shared-resources";
-      }      
+      } 
+
       this.buildContent(this.template);
     } else {
       this.template = "body";
-      this.buildContent(this.template);
+      this.buildContent(this.template); 
     }
   }
 
-  // downloadPDF(): void {
-  //   if (location.pathname.indexOf("/topics") >= 0) {
-  //     this.template = "app-subtopic-detail";
-  //   } else if (location.pathname.indexOf("/plan") >= 0) {
-  //     this.template = "app-personalized-plan";
-  //   } else if (location.pathname.indexOf("/resource") >= 0) {
-  //     this.template = "app-resource-card-detail";
-  //   } else if (location.pathname.indexOf("/profile") >= 0) {
-  //     this.activeTab = document.getElementsByClassName(
-  //       "nav-link active"
-  //     )[0].firstElementChild.textContent;
-  //     if (this.activeTab === "My Plan") {
-  //       this.template = "app-action-plans";
-  //     } else if (this.activeTab === "My Saved Resources") {
-  //       this.template = "app-search-results";
-  //     }
-  //   } else {
-  //     this.template = "body";
-  //   }
-  //   this.buildContent(this.template);
-  // }
-
   buildContent(template) {
-    let printContents = document.getElementsByTagName(template)[0].innerHTML;
-    let popupWin = window.open(
+    debugger;
+    var organizationalUnit = this.getOrganizationalUnit();
+    var params = new HttpParams()
+      .set("organizationalUnit", organizationalUnit); 
+    var imageElement = '';
+    if(organizationalUnit === 'AK'){
+      this.topicService.getLogo(params).subscribe(logo => {
+        this.logoSrc = logo ? logo.source : '';
+        
+        if(this.logoSrc){ 
+          imageElement = '<img src="data:image/gif;base64,' + this.logoSrc +'" width="20" height="20">';  
+        }
+        let printContents = imageElement + ' ' + document.getElementsByTagName(template)[0].innerHTML;
+        let popupWin = window.open(
       "",
       "_blank",
       "top=0,left=0,height=100%,width=auto"
-    );
-    popupWin.document.write(`${printContents}`);
-    this.excludeItems(popupWin);
-    this.savePDF(popupWin);
+      );
+
+      popupWin.document.write(`${printContents}`);
+      this.excludeItems(popupWin);
+      this.savePDF(popupWin);
+      });
+      
+    }else{
+      let printContents = document.getElementsByTagName(template)[0].innerHTML;
+      let popupWin = window.open(
+        "",
+        "_blank",
+        "top=0,left=0,height=100%,width=auto"
+      );
+      popupWin.document.write(`${printContents}`);
+      this.excludeItems(popupWin);
+      this.savePDF(popupWin);
+    } 
   }
 
   savePDF(content) {
