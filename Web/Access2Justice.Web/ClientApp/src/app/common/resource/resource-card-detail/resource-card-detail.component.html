@@ -8,10 +8,10 @@
       resource.resourceType === 'Service Providers'
     "
   >
-    <app-organizations [resource]="resource"></app-organizations>
+    <app-organizations [topicId]="topicId" [resource]="resource"></app-organizations>
   </div>
   <div *ngIf="resource.resourceType === 'Videos'">
-    <app-videos [resource]="resource"></app-videos>
+    <app-videos [topicId]="topicId" [resource]="resource"></app-videos>
   </div>
   <div *ngIf="resource.resourceType === 'Action Plans'">
     <app-action-plans></app-action-plans>

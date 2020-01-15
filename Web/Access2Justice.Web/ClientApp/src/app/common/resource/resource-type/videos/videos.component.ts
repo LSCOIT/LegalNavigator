@@ -10,6 +10,7 @@ import { ShowMoreService } from '../../../sidebars/show-more/show-more.service';
 })
 export class VideosComponent implements OnInit {
   @Input() resource;
+  @Input() topicId;
   safeUrl: any;
   url: any;
 

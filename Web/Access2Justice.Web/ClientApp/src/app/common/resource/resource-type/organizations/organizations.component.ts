@@ -14,6 +14,7 @@ export class OrganizationsComponent implements OnInit {
   modalRef: BsModalRef;
   @Input() resource;
   @Input() searchResource: any = { resources: [] };
+  @Input() topicId;
 
   constructor(private modalService: BsModalService) {}
 

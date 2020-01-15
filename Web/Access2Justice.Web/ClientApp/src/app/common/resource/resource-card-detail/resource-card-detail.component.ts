@@ -11,6 +11,7 @@ export class ResourceCardDetailComponent implements OnInit {
   resource: any;
   resourceId: string;
   activeSubtopicParam: any;
+  topicId: string;
 
   constructor(
     private resourceService: ResourceService,
@@ -24,8 +25,16 @@ export class ResourceCardDetailComponent implements OnInit {
       this.resource = resource[0];
     });
   }
-
+  getTopicId(){
+    if (sessionStorage.getItem('cacheSearchResults')) {
+      const sessionData = JSON.parse(
+        sessionStorage.getItem('cacheSearchResults')
+      );
+      this.topicId = sessionData.topicIds[0];
+    }
+  }
   ngOnInit() {
+    this.getTopicId();
     this.getResource();
   }
 }
