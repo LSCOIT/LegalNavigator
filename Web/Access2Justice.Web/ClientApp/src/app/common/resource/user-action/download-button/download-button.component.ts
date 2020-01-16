@@ -145,6 +145,11 @@ export class DownloadButtonComponent implements OnInit {
           imageElement = '<img src="data:image/gif;base64,' + this.logoSrc +'" width="20" height="20">';  
         }
         let printContents = imageElement + ' ' + document.getElementsByTagName(template)[0].innerHTML;
+
+        printContents = printContents.replace(/’|”|“/g, function(x){
+          return "'";
+        });
+
         let popupWin = window.open(
       "",
       "_blank",
@@ -158,6 +163,9 @@ export class DownloadButtonComponent implements OnInit {
       
     }else{
       let printContents = document.getElementsByTagName(template)[0].innerHTML;
+      printContents = printContents.replace(/’|”|“/g, function(x){
+        return "'";
+      });
       let popupWin = window.open(
         "",
         "_blank",
