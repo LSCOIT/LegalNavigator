@@ -22,6 +22,7 @@ export const api = {
   breadcrumbsUrl: topic + "/topics/breadcrumbs",
   personalizedPlan: apiUrl + "/personalized-plans/generate",
   printPersonalizedPlan: apiUrl + "/personalized-plans/generate-print",
+  printPersonalizedPlanById: apiUrl + "/personalized-plans/plan/print",
   planUrl: apiUrl + "/personalized-plans",
   getPersonalizedResourcesUrl: topic + "/personalized-resources",
   getProfileUrl: userProfile + "/profile",

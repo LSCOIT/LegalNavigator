@@ -172,6 +172,9 @@ export class PersonalizedPlanService {
   printUserPlan(params): Observable<any> {
     return this.http.get<any>(api.printPersonalizedPlan + "?" + params, {responseType: 'arraybuffer' as 'json'});
   }
+  printUserPlanById(params): Observable<any> {
+    return this.http.get<any>(api.printPersonalizedPlanById + "?" + params, {responseType: 'arraybuffer' as 'json'});
+  }
 
   getTopicDetails(intentInput): Observable<any> {
     return this.http.post<any>(

@@ -6,7 +6,7 @@
 @using Access2Justice.Shared
 @using Access2Justice.Shared.Models
 @model Access2Justice.Api.ViewModels.PersonalizedPlanViewModel
-@if (ViewBag.Logos != null && ViewBag.SingleImage)
+@if (ViewBag.Logos != null)
 {
     var logo = ((Dictionary<string, Image>) ViewBag.Logos).FirstOrDefault().Value;
     if (logo != null)
@@ -18,14 +18,15 @@
 <div style="font-size: 1.2em;">
         @foreach (var topic in Model.Topics)
         {
-             @if (ViewBag.Logos != null && !ViewBag.SingleImage)
+            //NOTE: temp commented to clarify needs
+             @*@if (ViewBag.Logos != null && !ViewBag.SingleImage)
              {
                  if (((Dictionary<string, Image>) ViewBag.Logos).TryGetValue(topic.TopicId.ToString(), out var logo))
                  {
                      <img src="data:image/gif;base64,@logo.Source" alt="@logo.AltText" 
                           width="@Constants.PrintableLogoSize" height="@Constants.PrintableLogoSize" />
                  }
-             }
+             }*@
             <div class="col-sm-12 box-shadow">
                 <div class="col-xs-12 plan-spacing plan-heading">
                     <div class="col-xs-11">

@@ -113,19 +113,28 @@ export class DownloadButtonComponent implements OnInit {
         "nav-link active"
       )[0].firstElementChild.textContent;
       if (this.activeTab === "My Plan") {
-        this.template = "app-action-plans";
+        let params = new HttpParams()
+          .set("personalizedPlanId", this.personalizedPlanService.planDetails.id);
+        this.personalizedPlanService.printUserPlanById(params).subscribe(response => {
+        if(response) {
+          var file = new Blob([response], {type: 'application/pdf'});
+          var fileURL = URL.createObjectURL(file);
+          window.open(fileURL, '_blank', '');
+        }
+        });
       } else if (this.activeTab === "My Saved Resources") {
         this.template = "app-saved-resources";
+         this.buildContent(this.template);
       }
       else if (this.activeTab === "Incoming Resources") {
         this.template = "app-incoming-resources";
+        this.buildContent(this.template);
       }
       else if (this.activeTab === "Shared Resources") {
         this.template = "app-shared-resources";
+        this.buildContent(this.template);
       } 
-
-      this.buildContent(this.template);
-    } else {
+        } else {
       this.template = "body";
       this.buildContent(this.template); 
     }
