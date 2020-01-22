@@ -149,6 +149,12 @@ else if(this.activeTopic){
                   margin: 10px auto;
                   width: 100%;
                 }
+                .nav-icon {
+                  width: 20px;
+                  height: 20px;
+                  margin: 0 5px 2px 5px;
+                  cursor: pointer;
+                }
                 .print-only * {
                    display: block;
                 }
