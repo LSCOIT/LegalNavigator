@@ -87,9 +87,11 @@ namespace Access2Justice.Api.Controllers
         }
 
         [HttpGet("plan/print")]
-        public async Task<IActionResult> PrintPersonalActionPlanById(Guid personalizedPlanId)
+        public async Task<IActionResult> PrintPersonalActionPlanById(Guid personalizedPlanId, string topicIds)
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.GetPersonalizedPlanAsync(personalizedPlanId);
+            var topicList = topicIds.Split(',');
+            personalizedPlan.Topics = personalizedPlan.Topics.Where(x => topicList.Contains(x.TopicId.ToString())).ToList();
 
             if (personalizedPlan == null || personalizedPlan.PersonalizedPlanId == default(Guid))
             {

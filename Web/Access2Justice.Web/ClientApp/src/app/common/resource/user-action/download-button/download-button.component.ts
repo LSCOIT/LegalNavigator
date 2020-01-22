@@ -113,8 +113,11 @@ export class DownloadButtonComponent implements OnInit {
         "nav-link active"
       )[0].firstElementChild.textContent;
       if (this.activeTab === "My Plan") {
+        let topicIds = this.personalizedPlanService.topicsList.filter(x=>x.isSelected).map(x=>x.topic.topicId);
         let params = new HttpParams()
-          .set("personalizedPlanId", this.personalizedPlanService.planDetails.id);
+          .set("personalizedPlanId", this.personalizedPlanService.planDetails.id)
+          .set("topicIds", topicIds.join(','));
+        
         this.personalizedPlanService.printUserPlanById(params).subscribe(response => {
         if(response) {
           var file = new Blob([response], {type: 'application/pdf'});
