@@ -261,8 +261,8 @@
             </accordion-group>
           </accordion>
         </div>
-        <div class="col-md-3 col-sm-12 quick-links">
-          <p>Additional Readings</p>
+        <!-- <div class="col-md-3 col-sm-12 quick-links">
+          <p>Related Readings</p>
           <ul>
             <li *ngFor="let additionalReading of topic.additionalReadings">
               <a target="_blank" href="{{ additionalReading.url }}" class="link">{{
@@ -271,7 +271,7 @@
               <div class="print-only">{{ additionalReading.url }}</div>
             </li>
           </ul>
-        </div>
+        </div> -->
       </div>
       <!--<div class="shared-by" *ngIf="topic.shared">Shared by: {{topic.shared.sharedBy}}</div>-->
       <div class="shared-by" *ngIf="isIncomingResource">Shared by: {{sharedby}}</div>

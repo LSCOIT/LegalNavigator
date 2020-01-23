@@ -205,7 +205,7 @@ export class ShareButtonComponent implements OnInit {
     if (this.type === 'Plan') {
       return '/plan/' + this.id;
     }
-    if (this.type === 'Forms' || this.type === 'Additional Readings') {
+    if (this.type === 'Forms' || this.type === 'Related Readings') {
       return this.url;
     }
     if (this.type === 'WebResources') {
