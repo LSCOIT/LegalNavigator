@@ -71,6 +71,9 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "ranking")]
         public dynamic Ranking { get; set; }
 
+        [JsonProperty(PropertyName = "xlsFileName")]
+        public dynamic XlsFileName { get; set; }
+
         public void Validate()
         {
             ValidationContext context = new ValidationContext(this, serviceProvider: null, items: null);

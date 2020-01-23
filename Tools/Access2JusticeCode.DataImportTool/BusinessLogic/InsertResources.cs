@@ -7,6 +7,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using Spreadsheet = DocumentFormat.OpenXml.Spreadsheet;
 
@@ -115,8 +116,8 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
         public dynamic CreateJsonFromCSV(string filePath)
         {
+            string fileName = Path.GetFileName(filePath);
             int recordNumber = 1;
-            Resource resource = new Resource();
             List<dynamic> ResourcesList = new List<dynamic>();
             List<dynamic> organizationsList = new List<dynamic>();
             List<dynamic> articlesList = new List<dynamic>();
@@ -258,7 +259,8 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             ModifiedBy = Constants.Admin,
                                             Delete = delete,
                                             Display = display,
-                                            Ranking = GetRanking(ranking)
+                                            Ranking = GetRanking(ranking),
+                                            XlsFileName = fileName
                                         };
                                         form.Validate();
                                         ResourcesList.Add(form);
@@ -288,7 +290,8 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             ModifiedBy = Constants.Admin,
                                             Delete = delete,
                                             Display = display,
-                                            Ranking = GetRanking(ranking)
+                                            Ranking = GetRanking(ranking),
+                                            XlsFileName = fileName
                                         };
                                         organization.Validate();
                                         organizationsList.Add(organization);
@@ -319,7 +322,8 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             ModifiedBy = Constants.Admin,
                                             Delete = delete,
                                             Display = display,
-                                            Ranking = GetRanking(ranking)
+                                            Ranking = GetRanking(ranking),
+                                            XlsFileName = fileName
                                         };
                                         article.Validate();
                                         articlesList.Add(article);
@@ -350,7 +354,8 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             ModifiedBy = Constants.Admin,
                                             Delete = delete,
                                             Display = display,
-                                            Ranking = GetRanking(ranking)
+                                            Ranking = GetRanking(ranking),
+                                            XlsFileName = fileName
                                         };
                                         video.Validate();
                                         ResourcesList.Add(video);
@@ -371,7 +376,8 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             ModifiedBy = Constants.Admin,
                                             Delete = delete,
                                             Display = display,
-                                            Ranking = GetRanking(ranking)
+                                            Ranking = GetRanking(ranking),
+                                            XlsFileName = fileName
                                         };
                                         additionalReading.Validate();
                                         ResourcesList.Add(additionalReading);
@@ -393,7 +399,8 @@ namespace Access2Justice.DataImportTool.BusinessLogic
                                             ModifiedBy = Constants.Admin,
                                             Delete = delete,
                                             Display = display,
-                                            Ranking = GetRanking(ranking)
+                                            Ranking = GetRanking(ranking),
+                                            XlsFileName = fileName
                                         };
                                         relatedLink.Validate();
                                         ResourcesList.Add(relatedLink);

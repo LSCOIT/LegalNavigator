@@ -1201,7 +1201,8 @@ namespace Access2Justice.Api.BusinessLogic
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,
                 NsmiCode = resourceObject.nsmiCode,
-                Ranking = resourceObject.ranking
+                Ranking = resourceObject.ranking,
+                XlsFileName = resourceObject.xlsFileName
             };
             forms.Validate();
             return forms;
@@ -1266,7 +1267,8 @@ namespace Access2Justice.Api.BusinessLogic
                 Overview = resourceObject.overview,
                 Contents = articleContents,
                 NsmiCode = resourceObject.nsmiCode,
-                Ranking = resourceObject.ranking
+                Ranking = resourceObject.ranking,
+                XlsFileName = resourceObject.xlsFileName
             };
             articles.Validate();
             return articles;
@@ -1296,7 +1298,8 @@ namespace Access2Justice.Api.BusinessLogic
                 ModifiedBy = resourceObject.modifiedBy,
                 Overview = resourceObject.overview,
                 NsmiCode = resourceObject.nsmiCode,
-                Ranking = resourceObject.ranking
+                Ranking = resourceObject.ranking,
+                XlsFileName = resourceObject.xlsFileName
             };
             videos.Validate();
             return videos;
@@ -1336,7 +1339,8 @@ namespace Access2Justice.Api.BusinessLogic
                 Reviewer = organizationReviewers,
                 NsmiCode = resourceObject.nsmiCode,
                 Display = resourceObject.display,
-                Ranking = resourceObject.ranking
+                Ranking = resourceObject.ranking,
+                XlsFileName = resourceObject.xlsFileName
             };
             organizations.Validate();
             return organizations;
@@ -1365,7 +1369,8 @@ namespace Access2Justice.Api.BusinessLogic
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,
                 NsmiCode = resourceObject.nsmiCode,
-                Ranking = resourceObject.ranking
+                Ranking = resourceObject.ranking,
+                XlsFileName = resourceObject.xlsFileName
             };
             additionalReadings.Validate();
             return additionalReadings;
@@ -1394,7 +1399,8 @@ namespace Access2Justice.Api.BusinessLogic
                 CreatedBy = resourceObject.createdBy,
                 ModifiedBy = resourceObject.modifiedBy,
                 NsmiCode = resourceObject.nsmiCode,
-                Ranking = resourceObject.ranking
+                Ranking = resourceObject.ranking,
+                XlsFileName = resourceObject.xlsFileName
             };
             relatedLink.Validate();
             return relatedLink;
