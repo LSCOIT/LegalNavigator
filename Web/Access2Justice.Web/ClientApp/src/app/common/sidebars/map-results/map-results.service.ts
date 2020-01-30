@@ -16,6 +16,11 @@ export class MapResultsService {
   constructor(private http: HttpClient) {
   }
 
+  getLocationPoints(address): any {
+    var requestUrl = virtualEarthUrl + "/US" + encodeURIComponent(address.replace(/(\r\n|\n|\r)/g, ' ')) + "?key=" + bingMapKey + "&jsonp=JSONP_CALLBACK";
+    return this.http.jsonp(requestUrl, 'JSONP_CALLBACK');
+  }
+
   getLocationDetails(address): any {
     return this.http.get(virtualEarthUrl + encodeURIComponent(address.replace(/(\r\n|\n|\r)/g, ' ')), {
       params: {

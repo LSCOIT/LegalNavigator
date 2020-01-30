@@ -80,9 +80,28 @@ export class MapComponent implements OnInit, OnDestroy {
     this.modalRef = this.modalService.show(template, this.config);
     BingMapsLoader.loadMap()
             .then(() => {
-              this.mapService.getMap(this.mapType);
+              if(this.address){
+                this.mapResultsService.getLocationPoints(this.address).subscribe(result =>
+                  {
+                    var resourceTemp = result.resourceSets[0].resources.filter(resource => resource.name === this.address);
+                    if(resourceTemp){
+                      var resourcePoint = resourceTemp[0].point;
+                      if(resourcePoint){
+                        var centralLat = resourcePoint.coordinates[0];
+                        var centralLon = resourcePoint.coordinates[1];  
+                        localStorage.setItem("centerLatitude", centralLat)
+                        localStorage.setItem("centerLongitude", centralLon)
+                      }
+                    }
+                    this.locationInput = this.address;
+                    this.mapService.getMap(this.mapType);
+                  });
+              }
+              else{
+                this.mapService.getMap(this.mapType);
+              }
         });
-    document.getElementById('search-box').focus();
+        document.getElementById('search-box').focus();
   }
 
   geocode() {
@@ -110,7 +129,7 @@ export class MapComponent implements OnInit, OnDestroy {
     this.locationDetails = ENV.map_type
       ? JSON.parse(sessionStorage.getItem('globalSearchMapLocation'))
       : JSON.parse(sessionStorage.getItem('localSearchMapLocation'));
-    if (this.locationDetails.formattedAddress) {
+    if (this.locationDetails && this.locationDetails.formattedAddress) {
       if (this.locationDetails.formattedAddress.length < 3) {
         this.mapResultsService
           .getStateFullName(
@@ -343,7 +362,7 @@ export class MapComponent implements OnInit, OnDestroy {
     }
     this.setLocalMapLocation();
     this.subscription = this.global.notifyLocationUpate.subscribe(value => {
-      ENV.map_type = false;
+      ENV.map_type = true;
       this.updateLocation();
     });
   }

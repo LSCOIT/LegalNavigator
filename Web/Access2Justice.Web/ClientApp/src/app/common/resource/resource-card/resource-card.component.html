@@ -91,7 +91,7 @@
             <div class="media-body">
               <a
                 [routerLink]="
-                getLocation(resource) ? ['/subtopics', resource.id] : null
+                getLocation(resource) ? ['/topics', resource.id] : null
               "
                 class="h4 no-print"
                 (click)="openWarningPopup(resource)"
@@ -99,7 +99,7 @@
               >
               <h4 class="print-only">{{ resource.name }}</h4>
               <!-- <div class="print-only">
-                {{ applicationUrl + "/subtopics" + "/" + resource.id }}
+                {{ applicationUrl + "/topics" + "/" + resource.id }}
               </div> -->
               <p>{{ resource.overview }}</p>
             </div>
@@ -448,7 +448,7 @@
             <div class="media-body">
               <a
                 [routerLink]="
-                getLocation(resource) ? ['/subtopics', resource.id] : null
+                getLocation(resource) ? ['/topics', resource.id] : null
               "
                 class="h4 no-print"
                 (click)="openWarningPopup(resource)"
@@ -456,7 +456,7 @@
               >
               <h4 class="print-only">{{ resource.name }}</h4>
               <!-- <div class="print-only">
-                {{ applicationUrl + "/subtopics" + "/" + resource.id }}
+                {{ applicationUrl + "/topics" + "/" + resource.id }}
               </div> -->
               <p>{{ resource.overview }}</p>
             </div>

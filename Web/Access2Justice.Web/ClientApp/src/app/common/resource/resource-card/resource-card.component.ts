@@ -4,6 +4,7 @@ import { BsModalRef, BsModalService } from "ngx-bootstrap";
 import { Global, UserStatus } from "../../../global";
 import { StateCodeService } from "../../services/state-code.service";
 import { LocationDetails } from "../../map/map";
+import {ENV} from 'environment';
 
 @Component({
   selector: "app-resource-card",
@@ -91,6 +92,8 @@ export class ResourceCardComponent implements OnInit {
       .getStateName(this.locationDetails.location.state)
       .subscribe(async response => {
         if (response) {
+          ENV.map_type = true;
+          this.global.topicsData = null;
           const stateName = response.toString();
           this.locationDetails.location.state = stateName;
           this.locationDetails.displayLocationDetails.address = stateName;
