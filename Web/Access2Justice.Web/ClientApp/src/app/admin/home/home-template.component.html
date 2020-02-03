@@ -268,9 +268,9 @@
             <label class="col-md-2 col-sm-3">Slide Quote {{ i }}</label>
             <app-ngx-editor [config]="editorConfig" height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
                             [(ngModel)]="slide.quote"
-                            name="'slideQuote' + i"
+                            [name]="'slideQuote' + i"
             ></app-ngx-editor>
-            <!--<textarea-->
+            <!--<textarea-->  
               <!--class="form-control col-md-10 col-sm-9"-->
               <!--[(ngModel)]="slide.quote"-->
               <!--[name]="'slideQuote' + i"-->
