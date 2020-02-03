@@ -100,7 +100,7 @@
             <a [href]="news.url"
               ><h4 class="media-heading">{{ news.title }}</h4></a
             >
-            <p>{{ news.description }}</p>
+            <p [innerHTML]="news.description"></p>
           </div>
         </div>
       </div>
@@ -112,7 +112,7 @@
       *ngIf="aboutContent.contactUs"
     >
       <h4>{{ aboutContent.contactUs.title }}</h4>
-      <p>{{ aboutContent.contactUs.description }}</p>
+      <p [innerHTML]="aboutContent.contactUs.description"></p>
       <a [href]="'mailto:' + aboutContent.contactUs.email" class="link">{{
         aboutContent.contactUs.email
       }}</a>
@@ -122,7 +122,7 @@
       *ngIf="aboutContent.mediaInquiries"
     >
       <h4>{{ aboutContent.mediaInquiries.title }}</h4>
-      <p>{{ aboutContent.mediaInquiries.description }}</p>
+      <p [innerHTML]="aboutContent.mediaInquiries.description"></p>
       <a [href]="'mailto:' + aboutContent.mediaInquiries.email" class="link">{{
         aboutContent.mediaInquiries.email
       }}</a>

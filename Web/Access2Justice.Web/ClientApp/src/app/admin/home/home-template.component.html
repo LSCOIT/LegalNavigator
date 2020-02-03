@@ -44,6 +44,7 @@
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Current Image</label>
           <img
+          width="300" height="300"
             class="hero-image media-object"
             [src]="blobUrl + homeContent?.hero?.image?.source"
             [alt]="homeContent?.hero?.image?.altText"
@@ -74,6 +75,7 @@
         </div>
         <div *ngIf="heroImageSelected" class="description col-md-offset-2">
           <img
+          width="300" height="300"
             class="hero-image"
             #newHeroImage
             [src]="blobUrl + heroImageSelected"
@@ -160,6 +162,7 @@
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Current Image</label>
           <img
+          width="300" height="400"
             class="hero-image"
             [src]="
               blobUrl + homeContent?.guidedAssistantOverview?.image?.source
@@ -187,7 +190,7 @@
             ngModel
           />
           <p class="pxs">
-            Size limit: 300kg | Recommended dimension: 300px by 400px
+            Size limit: 300kb | Recommended dimension: 300px by 400px
           </p>
         </div>
         <div class="description col-sm-12">
@@ -263,7 +266,7 @@
         >
           <div class="description col-sm-12">
             <label class="col-md-2 col-sm-3">Slide Quote {{ i }}</label>
-            <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+            <app-ngx-editor [config]="editorConfig" height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
                             [(ngModel)]="slide.quote"
                             name="'slideQuote' + i"
             ></app-ngx-editor>
@@ -294,6 +297,7 @@
           <div class="description col-sm-12">
             <label class="col-md-2 col-sm-3">Current Image {{ i }}</label>
             <img
+              width="300" height="300"
               class="media-object"
               [src]="'data:image/jpg;base64,' + slide?.image?.source"
               [alt]="slide.image.altText"
@@ -319,7 +323,7 @@
               ngModel
             />
             <p class="pxs">
-              Size limit: 300kg | Recommended dimension: 300px by 300px
+              Size limit: 300kb | Recommended dimension: 300px by 300px
             </p>
           </div>
           <div class="description col-sm-12">
@@ -347,7 +351,7 @@
         </div>
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Description</label>
-          <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+          <app-ngx-editor [config]="editorConfig" height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
                           [(ngModel)]="homeContent.sponsorOverview.description"
                           name="sponsorOverviewDescription"
           ></app-ngx-editor>
@@ -367,6 +371,7 @@
           <div class="description col-sm-12">
             <label class="col-md-2 col-sm-3">Sponsor {{ i }}</label>
             <img
+              width="200" height="50"
               class="media-object"
               [src]="'data:image/jpg;base64,' + sponsor?.source"
               [alt]="sponsor.altText"
@@ -392,7 +397,7 @@
               ngModel
             />
             <p class="pxs">
-              Size limit: 100kg | Recommended dimension: 200px by 50px
+              Size limit: 100kb | Recommended dimension: 200px by 50px
             </p>
           </div>
           <div class="description col-sm-12">
@@ -467,6 +472,7 @@
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Current Image</label>
           <img
+          width="400" height="400"
             class="hero-image"
             [src]="blobUrl + homeContent?.privacy?.image?.source"
             [alt]="homeContent?.privacy?.image?.altText"
@@ -492,7 +498,7 @@
             ngModel
           />
           <p class="pxs">
-            Size limit: 400kg | Recommended dimension: 400px by 400px
+            Size limit: 400kb | Recommended dimension: 400px by 400px
           </p>
         </div>
         <div class="description col-sm-12">

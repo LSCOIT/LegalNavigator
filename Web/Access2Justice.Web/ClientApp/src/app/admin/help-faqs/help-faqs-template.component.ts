@@ -23,6 +23,22 @@ export class HelpFaqsTemplateComponent implements OnInit {
   };
   newHelpAndFaqsContent: any;
   faqParams: Array<Object>;
+  editorConfig = {
+    editable: true,
+    spellcheck: false,
+    height: '10rem',
+    minHeight: '5rem',
+    placeholder: '',
+    translate: 'no',
+    "toolbar": [
+        ["bold", "italic", "underline", "strikeThrough", "superscript", "subscript"],
+        [],
+        ["justifyLeft", "justifyCenter", "justifyRight", "justifyFull", "indent", "outdent"],
+        ["cut", "copy", "delete", "removeFormat", "undo", "redo"],
+        ["paragraph", "blockquote", "removeBlockquote", "horizontalLine", "orderedList", "unorderedList"],
+        []
+    ]
+};
 
   constructor(
     private fb: FormBuilder,

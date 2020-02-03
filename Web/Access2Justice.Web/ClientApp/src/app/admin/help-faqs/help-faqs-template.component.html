@@ -6,7 +6,7 @@
       <div class="row">
         <div class="description col-sm-12">
           <label class="col-md-2 col-sm-3">Page Description</label>
-          <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+          <app-ngx-editor [config]="editorConfig" height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
                           name="helpPageDescription"
                           value="helpAndFaqsContent.description"
                           [(ngModel)]="helpAndFaqsContent.description"
@@ -29,7 +29,7 @@
         >
           <div class="description col-sm-12">
             <label class="col-md-2 col-sm-3">Question{{ i }}</label>
-            <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+            <app-ngx-editor [config]="editorConfig" height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
                             name="'question' + i"
                             value="faq.question"
                             [(ngModel)]="faq.question"
@@ -43,7 +43,7 @@
           </div>
           <div class="description col-sm-12">
             <label class="col-md-2 col-sm-3">Answer{{ i }}</label>
-            <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+            <app-ngx-editor [config]="editorConfig" height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
                             name="'answer' + i"
                             value="faq.answer"
                             [(ngModel)]="faq.answer"
@@ -69,7 +69,7 @@
           <div [formGroupName]="i">
             <div class="row">
               <label class="col-md-2 col-sm-3">New Question{{ i }}:</label>
-              <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+              <app-ngx-editor [config]="editorConfig" height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
                               formControlName="question"
               ></app-ngx-editor>
               <!--<textarea-->
@@ -80,7 +80,7 @@
             </div>
             <div class="row">
               <label class="col-md-2 col-sm-3">New Answer{{ i }}:</label>
-              <app-ngx-editor height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
+              <app-ngx-editor [config]="editorConfig" height="200px" minHeight="50px" class="col-md-10 col-sm-9" [spellcheck]="true"
                               formControlName="answer"
               ></app-ngx-editor>
               <!--<textarea-->

@@ -29,6 +29,22 @@ export class PersonalizedPlanTemplateComponent implements OnInit {
   location: MapLocation = {
     state: this.activeRoute.snapshot.queryParams["state"]
   };
+  editorConfig = {
+    editable: true,
+    spellcheck: false,
+    height: '10rem',
+    minHeight: '5rem',
+    placeholder: '',
+    translate: 'no',
+    "toolbar": [
+        ["bold", "italic", "underline", "strikeThrough", "superscript", "subscript"],
+        [],
+        ["justifyLeft", "justifyCenter", "justifyRight", "justifyFull", "indent", "outdent"],
+        ["cut", "copy", "delete", "removeFormat", "undo", "redo"],
+        ["paragraph", "blockquote", "removeBlockquote", "horizontalLine", "orderedList", "unorderedList"],
+        []
+    ]
+};
   @ViewChildren("sponsorImageUpload") sponsorImageUpload: QueryList<any>;
 
   constructor(

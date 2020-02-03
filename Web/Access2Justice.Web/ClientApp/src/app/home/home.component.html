@@ -120,7 +120,7 @@
               />
             </div>
             <div class="slide-content col-sm-8">
-              <h4>{{ slide.quote }}</h4>
+             <div class="quote-block" [innerHTML]="slide.quote"></div>
               <div class="mobile-hidden">
                 <hr />
                 <p>{{ slide?.author }}</p>
