@@ -124,12 +124,4 @@ describe("ResourceCardDetailComponent", () => {
   it("should create", () => {
     expect(component).toBeTruthy();
   });
-
-  it("should call getResource ", () => {
-    spyOn(component, "getResource");
-    component.resourceId = component.resource.id;
-    mockResourceService.getResource();
-    component.getResource();
-    expect(component.resourceId).toEqual(mockResource[0].id);
-  });
 });

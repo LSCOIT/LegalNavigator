@@ -37,13 +37,6 @@ describe("PaginationComponent", () => {
     expect(component).toBeTruthy();
   });
 
-  it("should get start line number for a specified page: min", () => {
-    component.perPage = mockPageSize;
-    component.page = mockCurrentPage;
-    let line = component.getMin();
-    expect(line).toBe(mockBeginLine);
-  });
-
   it("should get end line number for a specified page: max", () => {
     component.perPage = mockPageSize;
     component.page = mockCurrentPage;
@@ -64,14 +57,6 @@ describe("PaginationComponent", () => {
     component.perPage = mockPageSize;
     let isLastPage = component.lastPage();
     expect(isLastPage).toBe(false);
-  });
-
-  it("should be defined - the page is last page", () => {
-    component.count = mockRecordCount;
-    component.page = mockEndPage;
-    component.perPage = mockPageSize;
-    let isLastPage = component.lastPage();
-    expect(isLastPage).toBe(true);
   });
 
   it("should be displayed the four pages along with current page", () => {

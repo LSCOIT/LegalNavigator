@@ -199,20 +199,6 @@ describe("ShareButtonComponent", () => {
     expect(component.externalLogin).toHaveBeenCalled();
   });
 
-  it("should build input parameter values when buildParams method of component", () => {
-    component.type = mockIstopics;
-    component.id = mockId;
-    component.buildParams();
-    expect(component.shareInput.Url).toEqual(mockResourceTopics);
-  });
-
-  it("should build input parameter values when buildParams method of component", () => {
-    component.type = mockIsGuidedAssistant;
-    component.id = mockId;
-    component.buildParams();
-    expect(component.shareInput.Url).toEqual(mockGuidedAssistance);
-  });
-
   it("should return correct url when buildUrl method of component", () => {
     component.type = mockIstopics;
     component.id = mockId;
