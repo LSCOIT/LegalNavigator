@@ -24,7 +24,7 @@
     <div class="resource-sections" *ngFor="let content of resource.contents">
       <h4>{{ content.headline }}</h4>
       <div class="newlines">
-        <p [innerHTML]="content.content" | sanitizeHtml></p>
+        <p [innerHTML]="content.content | sanitizeHtml"></p>
       </div>
     </div>
   </div>

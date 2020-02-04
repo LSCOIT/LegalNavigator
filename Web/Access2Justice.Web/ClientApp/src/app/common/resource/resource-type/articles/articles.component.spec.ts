@@ -12,6 +12,8 @@ import { ServiceOrgSidebarComponent } from "../../../sidebars/service-org-sideba
 import { ShowMoreService } from "../../../sidebars/show-more/show-more.service";
 import { UserActionSidebarComponent } from "../../../sidebars/user-action-sidebar/user-action-sidebar.component";
 import { ArticlesComponent } from "./articles.component";
+import { SharedModule } from "../../../../shared/shared.module";
+//
 
 describe("ArticlesComponent", () => {
   let component: ArticlesComponent;
@@ -73,7 +75,7 @@ describe("ArticlesComponent", () => {
   beforeEach(async(() => {
     mockShowMoreService = jasmine.createSpyObj(["clickSeeMoreOrganizations"]);
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
+      imports: [HttpClientModule, SharedModule],
       declarations: [
         ArticlesComponent,
         UserActionSidebarComponent,

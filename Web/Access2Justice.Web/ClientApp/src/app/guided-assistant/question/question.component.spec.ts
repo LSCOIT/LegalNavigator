@@ -8,6 +8,7 @@ import { of } from "rxjs";
 import { NavigateDataService } from "../../common/services/navigate-data.service";
 import { QuestionComponent } from "./question.component";
 import { QuestionService } from "./question.service";
+import { SharedModule } from "../../shared/shared.module";
 
 describe("QuestionComponent", () => {
   let component: QuestionComponent;
@@ -43,7 +44,7 @@ describe("QuestionComponent", () => {
     mockNavigateDataService = jasmine.createSpyObj(["setData"]);
 
     TestBed.configureTestingModule({
-      imports: [FormsModule],
+      imports: [FormsModule, SharedModule],
       declarations: [QuestionComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [

@@ -4,6 +4,7 @@ import { Global } from "../global";
 import { MapService } from "../common/map/map.service";
 import { StaticResourceService } from "../common/services/static-resource.service";
 import { PrivacyPromiseComponent } from "./privacy-promise.component";
+import { SharedModule } from '../shared/shared.module';
 
 describe("PrivacyPromiseComponent", () => {
   let component: PrivacyPromiseComponent;
@@ -32,6 +33,7 @@ describe("PrivacyPromiseComponent", () => {
     mockGlobal.getData.and.returnValue(globalData);
 
     TestBed.configureTestingModule({
+      imports: [SharedModule],
       declarations: [PrivacyPromiseComponent],
       providers: [
         {

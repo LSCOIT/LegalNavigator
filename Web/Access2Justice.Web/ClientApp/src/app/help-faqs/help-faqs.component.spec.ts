@@ -4,6 +4,7 @@ import { Global } from "../global";
 import { StateCodeService } from "../common/services/state-code.service";
 import { StaticResourceService } from "../common/services/static-resource.service";
 import { HelpFaqsComponent } from "./help-faqs.component";
+import { SharedModule } from "../shared/shared.module";
 
 describe("HelpFaqsComponent", () => {
   let component: HelpFaqsComponent;
@@ -32,6 +33,7 @@ describe("HelpFaqsComponent", () => {
     mockGlobal.getData.and.returnValue(globalData);
 
     TestBed.configureTestingModule({
+      imports: [SharedModule],
       declarations: [HelpFaqsComponent],
       providers: [
         StateCodeService,

@@ -3,6 +3,7 @@ import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { Global } from "../global";
 import { StaticResourceService } from "../common/services/static-resource.service";
 import { AboutComponent } from "./about.component";
+import { SharedModule } from "../shared/shared.module";
 
 describe("AboutComponent", () => {
   let component: AboutComponent;
@@ -35,6 +36,7 @@ describe("AboutComponent", () => {
     mockGlobal.getData.and.returnValue(globalData);
 
     TestBed.configureTestingModule({
+      imports: [SharedModule],
       declarations: [AboutComponent],
       providers: [
         {
