@@ -11,7 +11,7 @@
   </div>
   <div class="row">
     <div class="col-md-10 resource-sections">
-      <p [innerHTML]="privacyContent?.description"></p>
+      <p [innerHTML]="privacyContent?.description | sanitizeHtml"></p>
     </div>
   </div>
   <div class="row">
@@ -20,7 +20,7 @@
       *ngFor="let content of privacyContent?.details"
     >
       <h3>{{ content.title }}</h3>
-      <p [innerHTML]="content.description"></p>
+      <p [innerHTML]="content.description | sanitizeHtml"></p>
     </div>
   </div>
 </div>

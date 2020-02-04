@@ -2,7 +2,7 @@
   *ngIf="question"
   class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 text-center question"
 >
-  <h3 *ngIf="question.text" id="question-text" [innerHTML]="question.text"></h3>
+  <h3 *ngIf="question.text" id="question-text" [innerHTML]="question.text | sanitizeHtml"></h3>
   <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
     <div *ngIf="question.fields">
       <div *ngFor="let field of question.fields">
