@@ -94,6 +94,7 @@ export class ResourceCardComponent implements OnInit {
         if (response) {
           ENV.map_type = true;
           this.global.topicsData = null;
+          this.global.organizationsData = null;
           const stateName = response.toString();
           this.locationDetails.location.state = stateName;
           this.locationDetails.displayLocationDetails.address = stateName;
