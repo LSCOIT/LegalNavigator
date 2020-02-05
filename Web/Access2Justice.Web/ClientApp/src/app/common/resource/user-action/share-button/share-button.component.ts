@@ -52,7 +52,7 @@ export class ShareButtonComponent implements OnInit {
     private modalService: BsModalService,
     private shareService: ShareService,
     private activeRoute: ActivatedRoute,
-    private global: Global,
+    public global: Global,
     private msalService: MsalService,
     private navigateDataService: NavigateDataService,
     private router: Router,
