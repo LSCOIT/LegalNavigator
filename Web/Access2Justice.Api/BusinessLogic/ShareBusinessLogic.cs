@@ -90,7 +90,8 @@ namespace Access2Justice.Api.BusinessLogic
                 ExpirationDate = DateTime.UtcNow.AddYears(Constants.ExpirationDateDurationInYears),
                 IsShared = true,
                 Url = new Uri(shareInput.Url.OriginalString, UriKind.RelativeOrAbsolute),
-                PermaLink = permaLink
+                PermaLink = permaLink,
+                Location = shareInput.Location 
             };
             response = await UpsertSharedResource(userProfile, sharedResource);
             if (shareInput.Url.OriginalString.Contains("plan"))
@@ -362,7 +363,7 @@ namespace Access2Justice.Api.BusinessLogic
             }
             List<ShareProfileDetails> shareProfileDetails = JsonUtilities.DeserializeDynamicObject<List<ShareProfileDetails>>(response);
             ShareProfileViewModel profileViewModel = new ShareProfileViewModel();
-
+            
             if (shareProfileDetails.Count() > 0)
             {
                 var userprofileResponse = await dbClient.FindFieldWhereArrayContainsAsync(dbSettings.ProfilesCollectionId, Constants.sharedResourceId, shareProfileDetails[0].Id);
@@ -377,7 +378,9 @@ namespace Access2Justice.Api.BusinessLogic
                             profileViewModel.UserName = profile.Name;
                             profileViewModel.UserId = profile.OId;
                         }
+
                         profileViewModel.ResourceLink = profile.Link;
+                        profileViewModel.Location = shareProfileDetails.FirstOrDefault().Location;
                     }
                 }
             }

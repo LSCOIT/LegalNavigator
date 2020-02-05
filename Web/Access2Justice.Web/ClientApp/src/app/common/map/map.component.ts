@@ -342,9 +342,9 @@ export class MapComponent implements OnInit, OnDestroy {
       }
     );
 
-    if (location.pathname.indexOf(this.global.shareRouteUrl) !== -1) {
-      return;
-    }
+    // if (location.pathname.indexOf(this.global.shareRouteUrl) !== -1) {
+    //   return;
+    // }
 
     if (this.mapType) {
       if (!sessionStorage.getItem('globalMapLocation')) {

@@ -36,7 +36,9 @@ export class StaticResourceService {
         sessionStorage.getItem("globalMapLocation")
       );
       this.mapLocation = this.locationDetails.location;
-      this.state = this.locationDetails.displayLocationDetails.address;
+      this.state = this.locationDetails.displayLocationDetails 
+        ? this.locationDetails.displayLocationDetails.address 
+        : this.locationDetails.location.state;
       return this.mapLocation;
     } else {
       return { state: "Default" };
@@ -50,7 +52,7 @@ export class StaticResourceService {
     if (!(this.location == "AK" || this.location == "HI")) {
       this.location = "Default";
     }
-    return this.location;
+    return this.location; 
   }
 
   getStaticContents(location) {

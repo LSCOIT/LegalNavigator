@@ -7,6 +7,9 @@ import { BsModalRef } from "ngx-bootstrap/modal/bs-modal-ref.service";
 import { Global, UserStatus } from "../../../../../global";
 import { ShareView } from "../../share-button/share.model";
 import { ShareService } from "../../share-button/share.service";
+import { StateCodeService } from '../../../../services/state-code.service';
+import { LocationDetails, MapLocation } from '../../../../map/map';
+import { MapService } from '../../../../map/map.service';
 
 @Component({
   selector: "app-share-button-route",
@@ -18,6 +21,10 @@ export class ShareButtonRouteComponent implements OnInit {
   modalRef: BsModalRef;
   @ViewChild("template") template: TemplateRef<any>;
   agreed: boolean = true;
+  locationDetails: LocationDetails = {
+    location: {state: '', city: '', county: '', zipCode: ''},
+    displayLocationDetails: {address: '', locality: ''}
+ };
 
   constructor(
     private modalService: BsModalService,
@@ -25,7 +32,9 @@ export class ShareButtonRouteComponent implements OnInit {
     private shareService: ShareService,
     private router: Router,
     private activeRoute: ActivatedRoute,
-    private global: Global
+    private global: Global,
+    private stateCodeService: StateCodeService,
+    private mapService: MapService
   ) {}
 
   openModal(template: TemplateRef<any>) {
@@ -37,6 +46,7 @@ export class ShareButtonRouteComponent implements OnInit {
   }
 
   getResourceLink(): void {
+    debugger;
     let params = new HttpParams().set(
       "permaLink",
       this.activeRoute.snapshot.params["id"]
@@ -56,14 +66,35 @@ export class ShareButtonRouteComponent implements OnInit {
             this.openModal(this.template);
           }
           this.global.role = UserStatus.Shared;
-          return this.router.navigateByUrl(response.resourceLink, {
-            skipLocationChange: true
-          });
+          this.stateCodeService
+            .getStateName(response.location.state)
+            .subscribe(async responseState => {
+            if (responseState) { 
+              debugger;
+              this.global.topicsData = null;
+              const stateName = responseState.toString();
+              this.locationDetails.location.state = response.location.state;
+              this.locationDetails.displayLocationDetails.address = stateName;
+              sessionStorage.setItem(
+                "globalSearchMapLocation",
+                JSON.stringify(this.locationDetails)
+              );
+              sessionStorage.setItem("globalMapLocation", JSON.stringify(this.locationDetails));
+              
+              this.router.navigateByUrl(response.resourceLink, {
+                skipLocationChange: true
+              });
+
+              this.global.notifyLocationUpdate(
+                JSON.stringify(this.locationDetails));
+            }
+            });
         } else {
           return (location.href = response.resourceLink);
         }
+      } else{
+        return this.router.navigateByUrl("/404");
       }
-      return this.router.navigateByUrl("/404");
     });
   }
 

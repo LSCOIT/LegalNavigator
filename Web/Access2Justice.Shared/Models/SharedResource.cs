@@ -32,6 +32,9 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "url")]
         public Uri Url { get; set; }
+
+        [JsonProperty(PropertyName = "location")]
+        public Location Location { get; set; }
     }
 
     public class SharedResourceView: SharedResource

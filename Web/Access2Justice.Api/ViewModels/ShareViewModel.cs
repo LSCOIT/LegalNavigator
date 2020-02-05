@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using System.Diagnostics.CodeAnalysis;
+using Access2Justice.Shared.Models;
 
 namespace Access2Justice.Api.ViewModels
 {
@@ -22,6 +23,8 @@ namespace Access2Justice.Api.ViewModels
         public string UserName { get; set; }
         [JsonProperty(PropertyName = "resourceLink")]
         public string ResourceLink { get; set; }
+        [JsonProperty(PropertyName = "location")]
+        public Location Location { get; set; }
     }
 
     [ExcludeFromCodeCoverage]
@@ -32,6 +35,9 @@ namespace Access2Justice.Api.ViewModels
 
         [JsonProperty(PropertyName = "url")]
         public string Link { get; set; }
+
+        [JsonProperty(PropertyName = "location")]
+        public Location Location { get; set; }
     }
 
     [ExcludeFromCodeCoverage]

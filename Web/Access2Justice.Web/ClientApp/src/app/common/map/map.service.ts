@@ -143,11 +143,15 @@ export class MapService {
       );
       if (this.locationDetails.location.state) {
         return this.stateCodeService.getStateCode(this.locationDetails.location.state).pipe(map(response => {
+          if(this.locationDetails.location.state == "AK" || this.locationDetails.location.state == "HI"){
+            this.setGlobalMapLocationDetails();
+          return this.locationDetails;
+          }else{
           this.stateCode = response || 'Default';
           this.locationDetails.location.state = this.stateCode;
           this.setGlobalMapLocationDetails();
-
           return this.locationDetails;
+          }
         }));
       } else {
         this.setGlobalMapLocationDetails();

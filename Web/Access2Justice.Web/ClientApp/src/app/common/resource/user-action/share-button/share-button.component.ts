@@ -11,6 +11,7 @@ import { PersonalizedPlanService } from '../../../../guided-assistant/personaliz
 import { NavigateDataService } from '../../../services/navigate-data.service';
 import { Share } from './share.model';
 import { ShareService } from './share.service';
+import { MapLocation } from '../../../map/map';
 
 @Component({
   selector: 'app-share-button',
@@ -34,7 +35,8 @@ export class ShareButtonComponent implements OnInit {
   shareInput: Share = {
     ResourceId: '',
     UserId: '',
-    Url: ''
+    Url: '',
+    Location: null
   };
   shareView: any;
   blank = '';
@@ -44,12 +46,13 @@ export class ShareButtonComponent implements OnInit {
     window.location.protocol + '//' + window.location.host + '/share/';
   emptyId = '{00000000-0000-0000-0000-000000000000}';
   @Input() addLinkClass = false;
+  location: MapLocation;
 
   constructor(
     private modalService: BsModalService,
     private shareService: ShareService,
     private activeRoute: ActivatedRoute,
-    public global: Global,
+    private global: Global,
     private msalService: MsalService,
     private navigateDataService: NavigateDataService,
     private router: Router,
@@ -185,13 +188,15 @@ export class ShareButtonComponent implements OnInit {
   }
 
   buildParams() {
+    this.location = JSON.parse(sessionStorage.getItem("globalMapLocation")).location;
+    this.shareInput.Location = this.location;
     if (this.id || this.type === 'WebResources') {
       this.shareInput.Url = this.buildUrl();
       this.shareInput.ResourceId = this.id;
     } else {
       this.shareInput.Url = location.pathname;
       this.shareInput.ResourceId = this.getActiveParam();
-    }
+    } 
     this.shareInput.UserId = this.global.userId;
   }
 

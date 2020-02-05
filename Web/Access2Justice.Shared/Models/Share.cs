@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Access2Justice.Shared.Models;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -16,6 +17,8 @@ namespace Access2Justice.Shared
 
         [Required]
         public Guid ResourceId { get; set; }
+
+        public Location Location { get; set; }
 
         public ShareInput()
         {
