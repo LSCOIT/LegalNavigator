@@ -468,17 +468,28 @@ namespace Access2Justice.Api.BusinessLogic
 
                     if (userResources.Resources != null)
                     {
-                        var resourceToRemove = userResources.Resources.FirstOrDefault(
+                        if(resource.ResourceType == "Plan")
+                        {
+                            var oldResource = userResources.Resources.FirstOrDefault(x => x.ResourceId == resource.ResourceId);
+                            oldResource.Plan.TopicIds.Remove(resource.TopicId);
+                            if (!oldResource.Plan.TopicIds.Any())
+                            {
+                                userResources.Resources.Remove(oldResource);
+                            }
+                        }
+                        else
+                        {
+                            var resourceToRemove = userResources.Resources.FirstOrDefault(
                             r =>
                                 r.ResourceId == resource.ResourceId &&
-                                r.ResourceType == resource.ResourceType && r.SharedBy == resource.SharedBy
-                        );
+                                r.ResourceType == resource.ResourceType && r.SharedBy == resource.SharedBy);
 
-                        if (resourceToRemove != null)
-                        {
-                            userResources.Resources.Remove(resourceToRemove);
+                            if (resourceToRemove != null)
+                            {
+                                userResources.Resources.Remove(resourceToRemove);
+                            }
                         }
-
+                        
                         var document = JsonConvert.DeserializeObject<UserIncomingResources>(JsonConvert.SerializeObject(userResources));
                         userResourcesDBData = await dbService.UpdateItemAsync(
                             userResources.IncomingResourcesId.ToString(),

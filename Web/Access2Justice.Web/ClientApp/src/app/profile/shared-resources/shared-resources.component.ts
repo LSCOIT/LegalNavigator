@@ -72,7 +72,7 @@ export class SharedResourcesComponent implements OnInit, OnDestroy {
       this.getSharedResources();
     }
 
-    this.eventsSub = this.eventUtilityService.sharedResourceUpdated$.subscribe(() => this.getSharedResources());
+  //  this.eventsSub = this.eventUtilityService.sharedResourceUpdated$.subscribe(() => this.getSharedResources());
   }
 
   ngOnDestroy() {

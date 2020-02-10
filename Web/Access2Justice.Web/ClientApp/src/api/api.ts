@@ -36,6 +36,7 @@ export const api = {
   questionBackUrl: curatedExperience + "/components/back",
   saveAndGetNextUrl: curatedExperience + "/components/save-and-get-next",
   updateUserPlanUrl: apiUrl + "/personalized-plans/save",
+  getActionPlanIds: apiUrl + "/personalized-plans/action-plans",
   resourceUrl: topic + "/resources",
   getContentsUrl: contentUrl,
   shareUrl: apiUrl + "/share/permalink/generate",

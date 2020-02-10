@@ -70,7 +70,6 @@ export class ShareButtonRouteComponent implements OnInit {
             .getStateName(response.location.state)
             .subscribe(async responseState => {
             if (responseState) { 
-              debugger;
               this.global.topicsData = null;
               const stateName = responseState.toString();
               this.locationDetails.location.state = response.location.state;

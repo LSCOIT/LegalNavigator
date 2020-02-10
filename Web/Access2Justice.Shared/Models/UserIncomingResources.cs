@@ -34,6 +34,9 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "sharedFromResourceId")]
         public Guid SharedFromResourceId { get; set; }
+
+        [JsonProperty(PropertyName = "plan")]
+        public Plan Plan { get; set; }
     }
 
     public class ProfileIncomingResources

@@ -272,14 +272,17 @@ export class RemoveButtonComponent implements AfterViewInit {
   }
 
   removeIncomingPlan = () => {
-    const resourceId =  this.selectedPlanDetails.planDetails.topics["0"].shared.itemId;
-    const sharedBy =  this.selectedPlanDetails.planDetails.topics[0].shared.sharedBy;
+
+    var item = this.selectedPlanDetails.planDetails.topics.filter(x=> x.topicId == this.selectedPlanDetails.topic);
+    const resourceId =  item[0].shared.itemId;
+    const sharedBy =  item[0].shared.sharedBy;
     const removedElem = {
       Oid: this.global.userId,
       itemId: resourceId,
       resourceType: "Plan",
       sharedBy: sharedBy || 'katana_2w@ukr.net',
-      type: 'incoming-resources'
+      type: 'incoming-resources',
+      topicId: this.selectedPlanDetails.topic
     };
     this.personalizedPlanService.removeSharedResources(removedElem).subscribe(() => {
       this.personalizedPlanService.showSuccess(

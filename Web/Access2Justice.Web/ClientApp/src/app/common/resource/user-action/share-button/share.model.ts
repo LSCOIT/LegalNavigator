@@ -21,4 +21,5 @@ export interface ShareData {
   ItemId?: string;
   ResourceType?: string;
   ResourceDetails?: any;
+  Plan?: any;
 }

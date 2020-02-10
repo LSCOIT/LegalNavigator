@@ -1,6 +1,7 @@
 ﻿using Access2Justice.Shared.Models;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Access2Justice.Shared
@@ -45,5 +46,17 @@ namespace Access2Justice.Shared
 
         [JsonProperty(PropertyName = "resourceDetails")]
         public dynamic ResourceDetails { get; set; }
+
+        [JsonProperty(PropertyName = "plan")]
+        public Plan Plan { get; set; }
+    }
+
+    public class Plan
+    {
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        [JsonProperty(PropertyName = "topicIds")]
+        public List<string> TopicIds { get; set; }
     }
 }

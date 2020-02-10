@@ -29,9 +29,9 @@
   </div>
 </div>
 <div class="row">
-  <tabset>
+  <tabset (click)="handleClick($event)" >
     <tab heading="My Plan">
-      <div class="container">
+      <div class="container" >
         <div class="row plan-spacing filter-plan no-print">
           <span class="p">Show:</span>
           <div class="mobile-hidden col-sm-10">

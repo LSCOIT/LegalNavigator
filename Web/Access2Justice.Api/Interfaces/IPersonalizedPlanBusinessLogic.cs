@@ -2,6 +2,7 @@
 using Access2Justice.Shared.Models;
 using Microsoft.Azure.Documents;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.Interfaces
@@ -11,5 +12,6 @@ namespace Access2Justice.Api.Interfaces
         Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId, string userId = null);
         Task<PersonalizedPlanViewModel> GetPersonalizedPlanAsync(Guid personalizedPlanId);
         Task<Document> UpsertPersonalizedPlanAsync(UserPlan userPlan);
+        Task<List<PlanTopic>> GetPlanTopicsAsync(List<string> planIds);
     }
 }

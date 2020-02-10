@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
@@ -154,6 +155,32 @@ namespace Access2Justice.Api.Controllers
                 }
 
                 return Ok(newPlan); 
+            }
+            return StatusCode(400);
+        }
+
+        /// <summary>
+        /// Get action plans by ids
+        /// </summary>
+        /// <remarks>
+        /// Use to get proper action plan by plan ids
+        /// </remarks>
+        ///<param name="planIds"></param>
+        /// <response code="200">List of action plans </response>
+        /// <response code="500">Failure</response>      
+        //[Permission(PermissionName.updateplan)]
+        [HttpPost("action-plans")]
+        public async Task<IActionResult> GetActionPlans([FromBody] List<string> planIds)
+        {
+            if (planIds != null && planIds.Any())
+            {
+                var newPlan = await personalizedPlanBusinessLogic.GetPlanTopicsAsync(planIds);
+                if (newPlan == null)
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError);
+                }
+
+                return Ok(newPlan);
             }
             return StatusCode(400);
         }

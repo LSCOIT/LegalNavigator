@@ -93,6 +93,7 @@ export class PersonalizedPlanService {
     return this.getUserSavedResources(type).pipe(
       switchMap(resources => {
         const webResources = [];
+        const planIds = [];
 
         const resourcesFilter: IResourceFilter = {
           TopicIds: [],
@@ -109,12 +110,19 @@ export class PersonalizedPlanService {
           sharedTo: []
         };
 
+        var plans = [];
+
         resources.forEach(resource => {
           if (resource.resourceType === 'Topics') {
             resourcesFilter.TopicIds.push(resource.itemId);
           } else if (resource.resourceType === 'WebResources') {
             webResources.push(resource);
-          } else {
+          } else if(resource.resourceType === 'plan'){
+            if(resource.plan){
+              plans.push({id: resource.plan.id, topicIds: resource.plan.topicIds});
+            }
+          }
+           else {
             if (resource.itemId) {
               resourcesFilter.ResourceIds.push(resource.itemId);
             } else {
@@ -129,7 +137,8 @@ export class PersonalizedPlanService {
         const personalizedResources = {
           resources: [],
           topics: [],
-          webResources
+          webResources,
+          plans
         };
 
         return this.http.put<any>(api.getPersonalizedResourcesUrl, resourcesFilter, httpOptions).pipe(
@@ -185,8 +194,10 @@ export class PersonalizedPlanService {
   }
 
   getPlanDetails(topics, planDetailTags): any {
-    this.topicsList = this.createTopicsList(topics);
-    this.planDetails = this.displayPlanDetails(planDetailTags, this.topicsList);
+    if(topics.length > 0){
+      this.topicsList = this.createTopicsList(topics);
+      this.planDetails = this.displayPlanDetails(planDetailTags, this.topicsList);
+    }
     return this.planDetails;
   }
 
@@ -378,6 +389,10 @@ export class PersonalizedPlanService {
     return this.resourceIds;
   }
 
+  getActionPlanByIds(planIds) : Observable<any>{
+    return this.http.post<any>(api.getActionPlanIds, planIds, httpOptions);
+  }
+  
   showSuccess(message) {
     this.toastr.success(message);
   }

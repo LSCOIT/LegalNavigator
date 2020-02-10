@@ -101,7 +101,12 @@ export class ProfileComponent implements OnInit {
     this.topicsList = event.topicsList;
     this.filterPlan('');
   }
-
+  handleClick($event){
+    if($event.target.innerText == 'My Plan'){
+      this.personalizedPlanService.planDetails = this.planDetailTags;
+      this.personalizedPlanService.topicsList = this.topicsList;
+    }
+  }
   getPersonalizedPlan() {
     this.personalizedPlanService.getPersonalizedPlan().subscribe(plan => {
       if (plan) {

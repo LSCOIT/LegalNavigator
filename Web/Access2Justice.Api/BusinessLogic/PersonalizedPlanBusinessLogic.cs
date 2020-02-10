@@ -152,5 +152,11 @@ namespace Access2Justice.Api.BusinessLogic
                 await backendDatabaseService.UpdateItemAsync(userProfile.Id, userProfile, cosmosDbSettings.ProfilesCollectionId);
             }
         }
+
+        public async Task<List<PlanTopic>> GetPlanTopicsAsync(List<string> planIds)
+        {
+            var topicsPlans = await backendDatabaseService.GetItemsAsync<PlanTopic>(x => planIds.Contains(x.TopicId.ToString()), cosmosDbSettings.ActionPlansCollectionId);
+            return topicsPlans.ToList();
+        }
     }
 }

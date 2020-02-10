@@ -51,6 +51,7 @@ namespace Access2Justice.Shared.Models
     {
         [JsonProperty(PropertyName = "oId")]
         public string OId { get; set; }
+
         [JsonProperty(PropertyName = "type")]
         public string ResourcesType { get; set; }
 
@@ -59,7 +60,11 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "resourceType")]
         public string ResourceType { get; set; }
+
         [JsonProperty(PropertyName = "sharedBy")]
         public string SharedBy { get; set; }
+
+        [JsonProperty(PropertyName = "topicId")]
+        public string TopicId { get; set; }
     }
 }

@@ -131,7 +131,8 @@ namespace Access2Justice.Api.BusinessLogic
                 ResourceDetails = sendLinkInput.ResourceDetails,
                 ResourceType = sendLinkInput.ResourceType,
                 SharedBy = senderUserProfile.FullName,
-                SharedFromResourceId = senderUserProfile.SharedResourceId
+                SharedFromResourceId = senderUserProfile.SharedResourceId,
+                Plan = sendLinkInput.Plan
             };
 
             response = await UpsertIncomingResourceAsync(recipientUserProfile, incomingResource);
@@ -281,6 +282,8 @@ namespace Access2Justice.Api.BusinessLogic
                     userIncomingResources[0].Resources.Add(resource);
                 }
 
+                var plan = userIncomingResources[0].Resources.Where(x => x.ResourceId == resource.ResourceId).FirstOrDefault();
+                plan.Plan = resource.Plan;
                 response = await dbService.UpdateItemAsync(
                     userProfile.IncomingResourcesId.ToString(),
                     userIncomingResources[0],

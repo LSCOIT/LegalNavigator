@@ -8,6 +8,7 @@ export interface SavedResource {
   resourceDetails: any;
   UserId?: string;
   ResourceId?: string;
+  plan?: any;
 }
 
 export interface ProfileResources {
@@ -25,6 +26,7 @@ export interface RemovedElem {
   url?: string;
   email?: string;
   resourceDetails?: any;
+  topicId?: string;
 }
 
 export interface PersonalizedPlan {

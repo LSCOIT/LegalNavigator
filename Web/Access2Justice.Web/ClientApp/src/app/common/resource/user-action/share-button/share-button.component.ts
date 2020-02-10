@@ -28,6 +28,7 @@ export class ShareButtonComponent implements OnInit {
   @Input() id: string;
   @Input() type: string;
   @Input() url: string;
+  @Input() topicsList: any[];
   @Input() webResourceUrl: string;
   @ViewChild('template') public modalTemplate: TemplateRef<any>;
   userId: string;
@@ -166,18 +167,23 @@ export class ShareButtonComponent implements OnInit {
   }
 
   submitShareLink() {
+    let topicIds = this.personalizedPlanService.topicsList.filter(x=>x.isSelected).map(x=>x.topic.topicId);
+    let plan = {id: this.personalizedPlanService.planDetails.id, topicIds};
     this.shareService.shareLinkToUser({
+
       Oid: this.global.userId,
       Email: this.formSharedResources.value.email,
       ItemId: this.id,
-      ResourceType: this.type,
-      ResourceDetails: {}
+      ResourceType: this.type || 'plan',
+      ResourceDetails: {},
+      Plan: plan
     }).subscribe(() => {
       this.formSharedResources.reset();
     });
   }
 
   ngOnInit() {
+
     if (this.global.userId) {
       const hasLoggedIn = sessionStorage.getItem(this.sessionKey);
       if (hasLoggedIn) {
