@@ -112,6 +112,7 @@ export class PersonalizedPlanTemplateComponent implements OnInit {
         response => {
           this.spinner.hide();
           if (response) {
+            this.personalizedPlanContent = <PersonalizedPlan>response;
             this.toastr.success("Page updated successfully");
           }
         },
