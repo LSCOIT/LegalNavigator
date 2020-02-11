@@ -278,6 +278,7 @@ export class AboutTemplateComponent implements OnInit {
       response => {
         this.spinner.hide();
         if (response) {
+          this.aboutContent = <About>response;
           this.toastr.success("Page updated successfully");
         }
       },
