@@ -1456,7 +1456,7 @@ namespace Access2Justice.Api.BusinessLogic
                             dynamicObj.id = topicData.id;
                             var resDocument = JsonUtilities.DeserializeDynamicObject<object>(dynamicObj);
 
-                            document = await dbService.UpdateItemAsync(topicData.id, resDocument, dbSettings.ResourcesCollectionId);
+                            document = await dbService.UpdateItemAsync(topicData.id, resDocument, dbSettings.TopicsCollectionId);
                         }
                     }
                     else
