@@ -112,7 +112,7 @@ namespace Access2Justice.CosmosDb
 
             var parameters = new Dictionary<string, object>();
             string arrayContainsClause = ArrayContainsWithOrClause(arrayName, propertyName, values as IList<string> ?? values.ToList(), parameters);
-            var query = $"SELECT * FROM c WHERE {arrayContainsClause}";
+            var query = $"SELECT * FROM c WHERE {arrayContainsClause} AND c.resourceType != 'Guided Assistant' AND c.display = 'Yes'";
             return await backendDatabaseService.QueryItemsAsync(collectionId, query, parameters);
         }
 
@@ -145,6 +145,8 @@ namespace Access2Justice.CosmosDb
             {
                 query += " WHERE " + locationFilter;
             }
+
+            query = query + " AND c.display='Yes' AND c.resourceType != 'Guided Assistant'"; 
             return await backendDatabaseService.QueryItemsAsync(collectionId, query, null);
         }
 
@@ -543,6 +545,7 @@ namespace Access2Justice.CosmosDb
             {
                 query = query + " AND " + locationFilter;
             }
+            query = query + " AND c.display = 'Yes' AND c.resourceType != 'Guided Assistant' ";
             return await backendDatabaseService.QueryItemsAsync(collectionId, query, parameters);
         }
 
