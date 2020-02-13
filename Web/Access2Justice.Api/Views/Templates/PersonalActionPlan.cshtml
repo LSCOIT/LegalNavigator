@@ -70,40 +70,6 @@
                                         <div>
                                             <p>@Html.Raw(step.Description)</p>
                                         </div>
-                                        
-                                            @if (step.Resources != null && step.Resources.Count != 0)
-                                            {
-                                                <h4>Additional Resources</h4>
-                                                @foreach (var resource in step.Resources)
-                                                 {
-                                                     <div id="additional-resource"
-                                                          class="row">
-                                                         <div class="media-body">
-                                                             @if (resource.ResourceType == "Videos")
-                                                             {
-                                                                 <span>@resource.Name</span>
-                                                             }
-                                                             else if (resource.ResourceType == "Forms")
-                                                             {
-                                                                 <a href="@resource.Url" class="link">
-                                                                     @resource.Name
-                                                                     <img class="nav-icon"
-                                                                          src="@Url.Content("../../../assets/images/small-icons/external_link.svg")"/>
-                                                                 </a>
-                                                             }
-                                                             else
-                                                             {
-                                                                 <a href="@Href("/resource/" + "@resource.ResourceId.ToString()")"
-                                                                    class="link">@resource.Name</a>
-                                                             }
-
-                                                             
-                                                            
-                                                         </div>
-                                                     </div>
-                                                 }
-                                            }
-                                        
                                     </div>
                                 }
                     </div>
