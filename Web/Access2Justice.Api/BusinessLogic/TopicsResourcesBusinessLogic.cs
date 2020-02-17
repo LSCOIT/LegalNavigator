@@ -1494,6 +1494,7 @@ namespace Access2Justice.Api.BusinessLogic
                 Keywords = topicObject.keywords,
                 OrganizationalUnit = topicObject.organizationalUnit,
                 Location = locations,
+                Ranking = topicObject.ranking,
                 Icon = GetRelativeStaticResourceStoragePath((string)topicObject.icon),
                 CreatedBy = topicObject.createdBy,
                 ModifiedBy = topicObject.modifiedBy,
