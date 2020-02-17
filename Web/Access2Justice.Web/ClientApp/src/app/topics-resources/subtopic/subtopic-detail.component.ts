@@ -16,7 +16,7 @@ import { ParamsChange } from "../../common/search/search-filter/search-filter.co
 })
 export class SubtopicDetailComponent implements OnInit {
   searchResults: any;
-  subtopicDetails: any;
+  subtopicDetails: any[];
   isInternalResource: boolean;
   activeSubtopicParam = this.activeRoute.snapshot.params["topic"];
   actionPlanData: any;
@@ -138,7 +138,17 @@ export class SubtopicDetailComponent implements OnInit {
         } else{
           newArray = rankingData;
         }
-        this.subtopicDetails = newArray;
+        this.subtopicDetails = newArray.sort((n1,n2) => {
+          if (n1.ranking > n2.ranking) {
+              return 1;
+          }
+      
+          if (n1.ranking < n2.ranking) {
+              return -1;
+          }
+      
+          return 0;
+      });
         this.filterSubtopicDetail();
       });
 
