@@ -190,6 +190,34 @@ namespace Access2Justice.Api.BusinessLogic
             return GetOutboundTopicsCollection(tt);
         }
 
+        private async Task GetParentSubTopic(List<string> topicIds, List<Topic> resultTopics, string parentTopicId)
+        {
+            List<string> intermediateTopicIds = new List<string>();
+            List<dynamic> topics = await dbClient.FindItemsWhereInClauseAsync(dbSettings.TopicsCollectionId, Constants.Id, topicIds);
+            var topicsStronglyTyped = topics.Select(x => CastDynamicTo(x)).Cast<Topic>();
+            foreach (var topic in topicsStronglyTyped)
+            {
+                if (topic.ParentTopicId == null)
+                {
+                    continue;
+                }
+                var listParentTopicIds = topic.ParentTopicId.Select(x => (string)x.ParentTopicIds).ToList();
+                if (listParentTopicIds.Contains(parentTopicId))
+                {
+                    resultTopics.Add(topic);
+                }
+                else
+                {
+                    intermediateTopicIds.AddRange(listParentTopicIds);
+                }
+            }
+
+            if (intermediateTopicIds.Any())
+            {
+                await GetParentSubTopic(intermediateTopicIds, resultTopics, parentTopicId);
+            }
+        }
+
         private async Task GetParentTopics(List<string> topicIds, List<dynamic> parentTopics)
         {
             List<string> intermediateTopicIds = new List<string>();
@@ -250,28 +278,19 @@ namespace Access2Justice.Api.BusinessLogic
         }
         private async Task<List<Topic>> GetSubtopicsByParentTopic(List<string> topicIds, dynamic parentTopicId)
         {
+            var resultTopics = new List<Topic>();
             List<dynamic> topics = await dbClient.FindItemsWhereInClauseAsync(dbSettings.TopicsCollectionId, Constants.Id, topicIds);
-            var topicsStronglyTyped = topics.Select(x => CastDynamicTo(x)).Cast<Topic>();
+            IEnumerable<Topic> topicsStronglyTyped = topics.Select(x => CastDynamicTo(x)).Cast<Topic>();
 
-            var newTopics = topicsStronglyTyped.Where(x => x.ParentTopicId != null && x.ParentTopicId.Where(y => y.ParentTopicIds == parentTopicId).Any()).ToList();
+            await GetParentSubTopic(topicIds, resultTopics, parentTopicId);
 
             List<Topic> resources = await GetResourcesByTopicIdsAsync(new List<string> { parentTopicId });
             if (resources.Any())
             {
                 return new List<Topic>();
             }
-
-            if (newTopics.Any())
-            {
-                return newTopics;
-            }
-            else
-            {
-
-                parentTopicId = topicsStronglyTyped.SelectMany(x => x.ParentTopicId.Select(y => y.ParentTopicIds)).FirstOrDefault();
-
-                return await GetSubtopicsByParentTopic(topicIds, parentTopicId);
-            }
+            
+            return resultTopics;
         }
 
         public async Task<dynamic> GetSubTopicsAsync(TopicInput topicInput)
