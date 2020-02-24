@@ -84,7 +84,7 @@ export class MapComponent implements OnInit, OnDestroy {
                 this.mapResultsService.getLocationPoints(this.address).subscribe(result =>
                   {
                     var resourceTemp = result.resourceSets[0].resources.filter(resource => resource.name === this.address);
-                    if(resourceTemp){
+                    if(resourceTemp && resourceTemp.length > 1){
                       var resourcePoint = resourceTemp[0].point;
                       if(resourcePoint){
                         var centralLat = resourcePoint.coordinates[0];
