@@ -127,6 +127,10 @@ namespace Access2Justice.Api.Controllers
         [Route("privacy/upsert")]
         public async Task<IActionResult> UpsertStaticPrivacyPromisePageDataAsync([FromBody]PrivacyPromiseContent privacyPromiseContent)
         {
+            privacyPromiseContent.OrganizationalUnit = string.IsNullOrWhiteSpace(privacyPromiseContent.OrganizationalUnit)
+                ? "Default"
+                : privacyPromiseContent.OrganizationalUnit;
+
             if (await userRoleBusinessLogic.ValidateOrganizationalUnit(privacyPromiseContent.OrganizationalUnit))
             {
                 var contents = await staticResourceBusinessLogic.UpsertStaticPrivacyPromisePageDataAsync(privacyPromiseContent);
