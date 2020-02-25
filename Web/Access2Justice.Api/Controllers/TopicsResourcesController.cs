@@ -49,6 +49,10 @@ namespace Access2Justice.Api.Controllers
         [HttpPost]
         public async Task<IActionResult> GetTopics([FromBody]Location location)
         {
+            if(location is null)
+            {
+                return StatusCode(StatusCodes.Status204NoContent);
+            }
             var response = await topicsResourcesBusinessLogic.GetTopLevelTopicsAsync(location);
             if (response == null)
             {

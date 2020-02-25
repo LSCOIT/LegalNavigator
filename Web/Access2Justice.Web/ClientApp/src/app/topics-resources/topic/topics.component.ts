@@ -36,24 +36,24 @@ export class TopicsComponent implements OnInit {
 
   getTopics(): void {
     this.topicService.getTopics().subscribe(topics => {
-      // this.topics = topics;
-
-      var rankingData = [];
-      rankingData = topics.filter(x => x.ranking == 1);
-      if(rankingData.length > 1){
-        rankingData = rankingData.sort((a, b) => a.name === b.name ? 0 : (a.name < b.name ? -1 : 1));
+      if(topics){
+        var rankingData = [];
+        rankingData = topics.filter(x => x.ranking == 1);
+        if(rankingData.length > 1){
+          rankingData = rankingData.sort((a, b) => a.name === b.name ? 0 : (a.name < b.name ? -1 : 1));
+        }
+        var newTopicArray = [];
+        newTopicArray = topics.filter(x => !rankingData.includes(x));
+        if(newTopicArray.length > 0){
+          newTopicArray = rankingData.concat(newTopicArray);
+        } else{
+          newTopicArray = rankingData;
+        }
+        this.topics = newTopicArray;
+  
+        this.global.topicsData = newTopicArray;
+        setTimeout(() => this.findBottomRowTopics(), 0);
       }
-      var newTopicArray = [];
-      newTopicArray = topics.filter(x => !rankingData.includes(x));
-      if(newTopicArray.length > 0){
-        newTopicArray = rankingData.concat(newTopicArray);
-      } else{
-        newTopicArray = rankingData;
-      }
-      this.topics = newTopicArray;
-
-      this.global.topicsData = newTopicArray;
-      setTimeout(() => this.findBottomRowTopics(), 0);
     });
   }
 
