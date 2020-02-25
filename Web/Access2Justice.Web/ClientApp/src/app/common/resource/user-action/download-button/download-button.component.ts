@@ -144,7 +144,6 @@ export class DownloadButtonComponent implements OnInit {
   }
 
   buildContent(template) {
-    debugger;
     var organizationalUnit = this.getOrganizationalUnit();
     var params = new HttpParams()
       .set("organizationalUnit", organizationalUnit); 

@@ -46,7 +46,6 @@ export class ShareButtonRouteComponent implements OnInit {
   }
 
   getResourceLink(): void {
-    debugger;
     let params = new HttpParams().set(
       "permaLink",
       this.activeRoute.snapshot.params["id"]

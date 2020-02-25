@@ -62,14 +62,13 @@ export class IncomingResourcesComponent implements OnInit, OnDestroy {
        .subscribe(dataArray => {
           
           for(let g =0;g<dataArray.length;g++){
-            debugger;
             var test = this.incomingResourcesIds.find(x=>x.plan && x.plan.id === dataArray[g].id);
             for(let f = 0; f < dataArray[g].topics.length;f++){
               dataArray[g].topics[f].shared = {sharedBy: test.sharedBy, itemId: test.itemId};
             }
-            var fffftopic = dataArray[g].topics;
-            var fff = fffftopic.filter(x=>incomingResources.plans[g].topicIds.includes(x.topicId));
-            planDetailTags.topics = planDetailTags.topics.concat(fff);
+            var nonfilteredTopics = dataArray[g].topics;
+            var resTopics = nonfilteredTopics.filter(x=>incomingResources.plans[g].topicIds.includes(x.topicId));
+            planDetailTags.topics = planDetailTags.topics.concat(resTopics);
           }
           planDetailTags.id = this.personalizedPlanService.planDetails.id;
 
@@ -82,7 +81,6 @@ export class IncomingResourcesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    debugger;
     if (this.tab) {
       this.tab.select.subscribe(() => this.getIncomingResources());
     } else {
