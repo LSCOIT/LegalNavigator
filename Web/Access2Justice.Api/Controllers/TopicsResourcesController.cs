@@ -625,6 +625,10 @@ namespace Access2Justice.Api.Controllers
         {
             var topic = await topicsResourcesBusinessLogic.GetTopic(topicName, state);
             TopicInput topicInput = new TopicInput();
+            if(topic is null)
+            {
+                return Ok();
+            }
             topicInput.Id = topic.Id;
             topicInput.Location = new Location(){ State = state };
             var resource = await topicsResourcesBusinessLogic.GetResourceAsync(topicInput);
