@@ -153,7 +153,7 @@ namespace Access2Justice.Api
 
                 if (resources != null &&
                     resources.Results != null &&
-                    resources.Results.Count() > 0)
+                    resources.Results.Count() > 0 && guidedAssistantsResult != null)
                 {
                     break;
                 }

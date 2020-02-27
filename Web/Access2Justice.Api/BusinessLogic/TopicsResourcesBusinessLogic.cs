@@ -1792,9 +1792,18 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<IEnumerable<string>> GetActiveCuratedExperienceIds(Location location)
         {
-            List<dynamic> foundResources = await dbClient.FindResourcesWithCuratedExperiences(
-                dbSettings.ResourcesCollectionId, location);
+            List<dynamic> foundResources = new List<dynamic>();
+            foreach (var searchLocation in LocationUtilities.GetSearchLocations(location))
+            {
+                foundResources = await dbClient.FindResourcesWithCuratedExperiences(
+                dbSettings.ResourcesCollectionId, searchLocation);
 
+                if (foundResources.Count > 0)
+                {
+                    break;
+                }
+            }
+            
             return foundResources.Select(x => CastDynamicToObj<GuidedAssistant>(x)).Cast<GuidedAssistant>().Select(x => x.CuratedExperienceId);
         }
 
