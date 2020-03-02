@@ -9,6 +9,7 @@ import { IUserProfile } from "./common/login/user-profile.model";
 import { MapService } from "./common/map/map.service";
 import { SaveButtonService } from "./common/resource/user-action/save-button/save-button.service";
 import { StaticResourceService } from "./common/services/static-resource.service";
+import { HeapIoService } from './heap/heap.io-service';
 
 @Component({
   selector: "app-root",
@@ -45,7 +46,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private global: Global,
+    private global: Global,    
     private staticResourceService: StaticResourceService,
     private msalService: MsalService,
     private mapService: MapService,
@@ -53,12 +54,15 @@ export class AppComponent implements OnInit, OnDestroy {
     private spinner: NgxSpinnerService,
     private router: Router,
     private personalizedPlanService: PersonalizedPlanService,
-    private saveButtonService: SaveButtonService
+    private saveButtonService: SaveButtonService,
+    private heapIo: HeapIoService
   ) {}
 
   createOrGetProfile() {
     this.loginService.getUserProfile().subscribe(response => {
       if (response) {
+        this.heapIo.load({ app_id: 151498151, force_ssl: true, secure_cookie: true, disable_text_capture: true, cookie_path: '/' });
+        this.heapIo.addUserProperties({'email': response.eMail, 'Name': response.name});
         this.global.setProfileData(
           response.oId,
           response.name,

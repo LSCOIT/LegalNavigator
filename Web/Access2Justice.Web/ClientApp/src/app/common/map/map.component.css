@@ -47,6 +47,7 @@ p {
   width: 60%;
   float: left;
   margin-left: 13%;
+  box-sizing: border-box !important;
 }
 
 .search-btn {
