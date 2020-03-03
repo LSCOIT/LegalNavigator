@@ -36,7 +36,7 @@ const appRoutes: Routes = [
   { path: 'plan/:id', component: PersonalizedPlanComponent },
   { path: 'share/:id', component: ShareButtonRouteComponent },
   { path: 'help', component: HelpFaqsComponent },
-  { path: 'home', component: HomeComponent },
+  // { path: 'home', component: HomeComponent },
   { path: 'privacy', component: PrivacyPromiseComponent },
   { path: 'profile', component: ProfileComponent, resolve: { cres: ProfileResolver } },
   { path: '', component: HomeComponent },

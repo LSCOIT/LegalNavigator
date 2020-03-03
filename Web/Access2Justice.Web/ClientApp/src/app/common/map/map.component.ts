@@ -173,7 +173,7 @@ export class MapComponent implements OnInit, OnDestroy {
       if ((this.modalRef && this.mapLocation) || !this.mapType) {
         this.modalRef.hide();
         this.changeLocationButton.nativeElement.focus();
-        this.router.navigate(["/home"]);
+        this.router.navigate(["/"]);
       } else {
         this.isError = true;
       }
