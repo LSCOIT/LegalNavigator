@@ -21,7 +21,7 @@ export class PrivacyPromiseTemplateComponent implements OnInit {
   detailParams: any;
   privacyContent: PrivacyContent;
   newPrivacyContent;
-  name: string = "PrivacyPromisePage";
+  name: string = "PrivacyNoticePage";
   staticContent: any;
   blobUrl: string = ENV.blobUrl;
   state: string;
@@ -100,14 +100,14 @@ export class PrivacyPromiseTemplateComponent implements OnInit {
     if (this.navigateDataService.getData()) {
       this.staticContent = this.navigateDataService.getData();
       this.privacyContent = this.staticContent.find(
-        x => x.name === "PrivacyPromisePage"
+        x => x.name === "PrivacyNoticePage"
       );
     } else {
       this.staticResourceService.getStaticContents(this.location).subscribe(
         response => {
           this.staticContent = response;
           this.privacyContent = this.staticContent.find(
-            x => x.name === "PrivacyPromisePage"
+            x => x.name === "PrivacyNoticePage"
           );
         },
         error => this.router.navigateByUrl("error")

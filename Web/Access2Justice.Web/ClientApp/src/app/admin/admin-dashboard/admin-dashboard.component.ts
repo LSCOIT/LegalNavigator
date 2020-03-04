@@ -63,7 +63,7 @@ export class AdminDashboardComponent implements OnInit {
           queryParams: { state: this.location.state }
         });
         break;
-      case "PrivacyPromisePage":
+      case "PrivacyNoticePage":
         this.router.navigate(["/admin/privacy"], {
           queryParams: { state: this.location.state }
         });

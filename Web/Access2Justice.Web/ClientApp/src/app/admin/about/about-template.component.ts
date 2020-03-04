@@ -240,11 +240,11 @@ export class AboutTemplateComponent implements OnInit {
             this.aboutContent["privacyPromise"].image.altText
         },
         privacyPromiseButton: {
-          buttonText: "View our privacy promise",
-          buttonAltText: "View our privacy promise",
+          buttonText: "View our privacy notice",
+          buttonAltText: "View our privacy notice",
           buttonLink: "privacy"
         },
-        title: "Our Privacy Promise"
+        title: "Our Privacy Notice"
       },
       service: {
         description: aboutForm.value.serviceDescription,

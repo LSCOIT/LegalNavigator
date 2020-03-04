@@ -14,7 +14,7 @@ export class PrivacyPromiseComponent implements OnInit {
   privacyContent: PrivacyContent;
   informationData: Array<Details> = [];
   imageData: Image;
-  name: string = "PrivacyPromisePage";
+  name: string = "PrivacyNoticePage";
   staticContent: any;
   staticContentSubcription: any;
   blobUrl: string = ENV.blobUrl;
