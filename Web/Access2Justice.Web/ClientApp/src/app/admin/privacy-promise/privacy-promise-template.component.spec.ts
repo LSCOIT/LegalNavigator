@@ -93,7 +93,7 @@ describe("PrivacyPromiseTemplateComponent", () => {
         ],
         organizationalUnit: "Alaska",
         id: "",
-        name: "PrivacyPromisePage",
+        name: "PrivacyNoticePage",
         location: [
           {
             state: "Alaska",
@@ -122,7 +122,7 @@ describe("PrivacyPromiseTemplateComponent", () => {
           description: "Need language here"
         }
       ],
-      name: "PrivacyPromisePage",
+      name: "PrivacyNoticePage",
       location: [
         {
           state: "Alaska"

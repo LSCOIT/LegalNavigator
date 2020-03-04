@@ -16,12 +16,12 @@ describe("PrivacyPromiseComponent", () => {
 
   beforeEach(async(() => {
     (privacyContent = {
-      name: "PrivacyPromisePage",
+      name: "PrivacyNoticePage",
       location: [{ state: "Default" }]
     }),
       (globalData = [
         {
-          name: "PrivacyPromisePage",
+          name: "PrivacyNoticePage",
           location: [{ state: "Default" }]
         }
       ]);
