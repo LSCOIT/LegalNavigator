@@ -40,9 +40,9 @@
     <div class="col-md-4 col-sm-12 pull-right" *ngIf='guidedAssistantId || true'>
       <app-guided-assistant-sidebar [activeSubTopic]="guidedInput" [showSidebar]="true" [guidedAssistantId] = "guidedAssistantId">
       </app-guided-assistant-sidebar>
-      <app-service-org-sidebar
+      <!-- <app-service-org-sidebar
         (showMoreOrganizations)="clickSeeMoreOrganizationsFromSubtopic($event)">
-      </app-service-org-sidebar>
+      </app-service-org-sidebar> -->
     </div>
   </div>
 </div>
