@@ -13,7 +13,7 @@ using Spreadsheet = DocumentFormat.OpenXml.Spreadsheet;
 
 namespace Access2Justice.DataImportTool.BusinessLogic
 {
-    class InsertResources
+    public class InsertResources
     {
         #region Variables
 
@@ -574,24 +574,21 @@ namespace Access2Justice.DataImportTool.BusinessLogic
             {
                 foreach (var item in rankingValues)
                 {
-                    item.Replace(';', ':');
-                    var rankKeyvalue = item.Split(':');
-                    if (string.IsNullOrWhiteSpace(rankKeyvalue.First()))
+                    var rankValue = item.Substring(0, item.IndexOf(':'));
+                    var topicName = item.Substring(item.IndexOf(':') + 1, item.Length - (item.IndexOf(':') + 1));
+
+                    if (!int.TryParse(rankValue, out int rankResult))
                     {
-                        continue;
-                    }
-                    if (!int.TryParse(rankKeyvalue.First(), out int rankValue))
-                    {
-                        if (!keyValues.ContainsKey(rankKeyvalue.First().Trim()))
+                        if (!keyValues.ContainsKey(topicName.Trim()))
                         {
-                            keyValues.Add(rankKeyvalue.First().Trim(), 1);
+                            keyValues.Add(rankValue, 1);
                         }
                     }
                     else
                     {
-                        if (!keyValues.ContainsKey(rankKeyvalue.Last().Trim()))
+                        if (!keyValues.ContainsKey(topicName.Trim()))
                         {
-                            keyValues.Add(rankKeyvalue.Last().Trim(), rankValue);
+                            keyValues.Add(topicName.Trim(), rankResult);
                         }
                     }
                 }

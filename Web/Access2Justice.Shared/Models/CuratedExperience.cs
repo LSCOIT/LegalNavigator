@@ -26,6 +26,9 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty("nsmiCode")]
         public string NsmiCode { get; set; }
+
+        [JsonProperty("_ts")]
+        public string ts { get; set; }
     }
 
     public class CuratedExperienceComponent
