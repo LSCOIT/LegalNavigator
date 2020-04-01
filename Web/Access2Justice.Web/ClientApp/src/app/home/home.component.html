@@ -8,7 +8,7 @@
         }"
         class="tagline"
       >
-        <h1>{{ heroData.heading }} {{ state }}</h1>
+        <h1>{{ heroData.heading }} {{ state }}</h1> 
         <p class="hero-description">
           {{ heroData.description.text }}
           <a
@@ -120,7 +120,10 @@
               />
             </div>
             <div class="slide-content col-sm-8">
-             <p class="quote-block" [innerHTML]="slide.quote | sanitizeHtml"></p>
+              <p
+                class="quote-block"
+                [innerHTML]="slide.quote | sanitizeHtml"
+              ></p>
               <div class="mobile-hidden">
                 <hr />
                 <p>{{ slide?.author }}</p>
@@ -142,10 +145,16 @@
   <div class="row">
     <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2">
       <h2>{{ sponsorOverviewData?.heading }}</h2>
-      <div class="row" [innerHTML]="sponsorOverviewData?.description | sanitizeHtml"></div>
+      <div
+        class="row"
+        [innerHTML]="sponsorOverviewData?.description | sanitizeHtml"
+      ></div>
 
       <div class="row">
-        <div *ngFor="let sponsor of sponsors" class="col-md-4 sponsor-block text-center d-flex">
+        <div
+          *ngFor="let sponsor of sponsors"
+          class="col-md-4 sponsor-block text-center d-flex"
+        >
           <img
             *ngIf="sponsor.source"
             class="sponsor-img mx-auto my-auto"

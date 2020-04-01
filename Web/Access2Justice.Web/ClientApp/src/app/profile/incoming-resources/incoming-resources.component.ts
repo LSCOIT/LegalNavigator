@@ -1,17 +1,16 @@
-import {Component, OnDestroy, OnInit, Optional} from '@angular/core';
+import { Component, OnDestroy, OnInit, Optional } from "@angular/core";
 import { TabDirective } from "ngx-bootstrap";
 
-import { PersonalizedPlanService } from '../../guided-assistant/personalized-plan/personalized-plan.service';
+import { PersonalizedPlanService } from "../../guided-assistant/personalized-plan/personalized-plan.service";
 import { Subscription, Observable, forkJoin } from "rxjs";
 import { EventUtilityService } from "../../common/services/event-utility.service";
 
 @Component({
-  selector: 'app-incoming-resources',
-  templateUrl: './incoming-resources.component.html',
-  styleUrls: ['./incoming-resources.component.scss']
+  selector: "app-incoming-resources",
+  templateUrl: "./incoming-resources.component.html",
+  styleUrls: ["./incoming-resources.component.scss"]
 })
 export class IncomingResourcesComponent implements OnInit, OnDestroy {
-
   public incomingResources = [];
   public planDetails = [];
   public planIds = [];
@@ -22,62 +21,75 @@ export class IncomingResourcesComponent implements OnInit, OnDestroy {
     private personalizedPlanService: PersonalizedPlanService,
     @Optional() private tab: TabDirective,
     private eventUtilityService: EventUtilityService
-  ) { }
+  ) {}
 
   private getIncomingResources(): void {
-    this.personalizedPlanService.getUserSavedResources('incoming-resources').
-                        subscribe(incResIds => { this.incomingResourcesIds = incResIds;});
+    this.personalizedPlanService
+      .getUserSavedResources("incoming-resources")
+      .subscribe(incResIds => {
+        this.incomingResourcesIds = incResIds;
+      });
 
-    this.personalizedPlanService.getPersonalizedResources('incoming-resources').subscribe(incomingResources => {
-      this.incomingResources = [];
-      const planDetailTags = {
-        topics: [],
-        id: ''
-      };
+    this.personalizedPlanService
+      .getPersonalizedResources("incoming-resources")
+      .subscribe(incomingResources => {
+        this.incomingResources = [];
+        const planDetailTags = {
+          topics: [],
+          id: ""
+        };
 
-      for (const key in incomingResources) {
-        incomingResources[key].forEach(i => {
-         
-          const resource = i;
-          if(resource.topicIds){
-            this.planIds.push(resource);
-          } 
-          else
-          {
-            resource.shared = this.incomingResourcesIds.find(o => o.itemId === i.id);
-            this.incomingResources.push(resource);
-          }
-        });
-      }
-
-      //get plan Details
-      if(incomingResources.plans){
-        
-        let observables: Observable<any>[] = [];
-        for (let h = 0; h < incomingResources.plans.length; h++) {
-          observables.push(this.personalizedPlanService.getActionPlanConditions(incomingResources.plans[h].id))
-        }
-        
-        forkJoin(observables)
-       .subscribe(dataArray => {
-          
-          for(let g =0;g<dataArray.length;g++){
-            var test = this.incomingResourcesIds.find(x=>x.plan && x.plan.id === dataArray[g].id);
-            for(let f = 0; f < dataArray[g].topics.length;f++){
-              dataArray[g].topics[f].shared = {sharedBy: test.sharedBy, itemId: test.itemId};
+        for (const key in incomingResources) {
+          incomingResources[key].forEach(i => {
+            const resource = i;
+            if (resource.topicIds) {
+              this.planIds.push(resource);
+            } else {
+              resource.shared = this.incomingResourcesIds.find(
+                o => o.itemId === i.id
+              );
+              this.incomingResources.push(resource);
             }
-            var nonfilteredTopics = dataArray[g].topics;
-            var resTopics = nonfilteredTopics.filter(x=>incomingResources.plans[g].topicIds.includes(x.topicId));
-            planDetailTags.topics = planDetailTags.topics.concat(resTopics);
-          }
-          planDetailTags.id = this.personalizedPlanService.planDetails.id;
+          });
+        }
 
-          this.planDetails = this.personalizedPlanService.getPlanDetails(
-              planDetailTags.topics, planDetailTags
+        //get plan Details
+        if (incomingResources.plans) {
+          let observables: Observable<any>[] = [];
+          for (let h = 0; h < incomingResources.plans.length; h++) {
+            observables.push(
+              this.personalizedPlanService.getActionPlanConditions(
+                incomingResources.plans[h].id
+              )
             );
-        }); 
-      }
-    });
+          }
+
+          forkJoin(observables).subscribe(dataArray => {
+            for (let g = 0; g < dataArray.length; g++) {
+              var test = this.incomingResourcesIds.find(
+                x => x.plan && x.plan.id === dataArray[g].id
+              );
+              for (let f = 0; f < dataArray[g].topics.length; f++) {
+                dataArray[g].topics[f].shared = {
+                  sharedBy: test.sharedBy,
+                  itemId: test.itemId
+                };
+              }
+              var nonfilteredTopics = dataArray[g].topics;
+              var resTopics = nonfilteredTopics.filter(x =>
+                incomingResources.plans[g].topicIds.includes(x.topicId)
+              );
+              planDetailTags.topics = planDetailTags.topics.concat(resTopics);
+            }
+            planDetailTags.id = this.personalizedPlanService.planDetails.id;
+
+            this.planDetails = this.personalizedPlanService.getPlanDetails(
+              planDetailTags.topics,
+              planDetailTags
+            );
+          });
+        }
+      });
   }
 
   ngOnInit() {
@@ -87,7 +99,9 @@ export class IncomingResourcesComponent implements OnInit, OnDestroy {
       this.getIncomingResources();
     }
 
-    this.eventsSub = this.eventUtilityService.sharedResourceUpdated$.subscribe(() => this.getIncomingResources());
+    this.eventsSub = this.eventUtilityService.sharedResourceUpdated$.subscribe(
+      () => this.getIncomingResources()
+    );
   }
 
   ngOnDestroy() {
@@ -95,5 +109,4 @@ export class IncomingResourcesComponent implements OnInit, OnDestroy {
       this.eventsSub.unsubscribe();
     }
   }
-
 }
