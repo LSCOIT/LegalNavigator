@@ -21,6 +21,9 @@ namespace Access2Justice.Shared.Models
 
     public class SharedResource
     {
+        [JsonProperty(PropertyName = "itemId")]
+        public string ItemId { get; set; }
+
         [JsonProperty(PropertyName = "isShared")]
         public bool IsShared { get; set; }
 
@@ -29,6 +32,9 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "permaLink")]
         public string PermaLink { get; set; }
+
+        [JsonProperty(PropertyName = "resourceType")]
+        public string ResourceType { get; set; }
 
         [JsonProperty(PropertyName = "url")]
         public Uri Url { get; set; }
@@ -45,6 +51,8 @@ namespace Access2Justice.Shared.Models
             IsShared = other.IsShared;
             ExpirationDate = other.ExpirationDate;
             PermaLink = other.PermaLink;
+            ResourceType = other.ResourceType;
+            ItemId = other.ItemId;
         }
 
         public SharedResourceView()

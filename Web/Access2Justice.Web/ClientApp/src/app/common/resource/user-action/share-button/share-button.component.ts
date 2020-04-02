@@ -1,25 +1,32 @@
-import { Component, HostListener, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators} from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { MsalService } from '@azure/msal-angular';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import {
+  Component,
+  HostListener,
+  Input,
+  OnInit,
+  TemplateRef,
+  ViewChild
+} from "@angular/core";
+import { FormControl, FormGroup, Validators } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { MsalService } from "@azure/msal-angular";
+import { BsModalService } from "ngx-bootstrap/modal";
+import { BsModalRef } from "ngx-bootstrap/modal/bs-modal-ref.service";
 
-import { ENV } from 'environment';
-import { Global, UserStatus } from '../../../../global';
-import { PersonalizedPlanService } from '../../../../guided-assistant/personalized-plan/personalized-plan.service';
-import { NavigateDataService } from '../../../services/navigate-data.service';
-import { Share } from './share.model';
-import { ShareService } from './share.service';
-import { MapLocation } from '../../../map/map';
+import { ENV } from "environment";
+import { Global, UserStatus } from "../../../../global";
+import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
+import { NavigateDataService } from "../../../services/navigate-data.service";
+import { Share } from "./share.model";
+import { ShareService } from "./share.service";
+import { MapLocation } from "../../../map/map";
 
 @Component({
-  selector: 'app-share-button',
-  templateUrl: './share-button.component.html',
-  styleUrls: ['./share-button.component.css'],
+  selector: "app-share-button",
+  templateUrl: "./share-button.component.html",
+  styleUrls: ["./share-button.component.css"],
   // tslint:disable-next-line
   host: {
-    '[class.app-resource-button]': 'true',
+    "[class.app-resource-button]": "true"
   }
 })
 export class ShareButtonComponent implements OnInit {
@@ -30,22 +37,23 @@ export class ShareButtonComponent implements OnInit {
   @Input() url: string;
   @Input() topicsList: any[];
   @Input() webResourceUrl: string;
-  @ViewChild('template') public modalTemplate: TemplateRef<any>;
+  @ViewChild("template") public modalTemplate: TemplateRef<any>;
   userId: string;
-  sessionKey = 'showModal';
+  sessionKey = "showModal";
   shareInput: Share = {
-    ResourceId: '',
-    UserId: '',
-    Url: '',
-    Location: null
+    ResourceId: "",
+    UserId: "",
+    Url: "",
+    Location: null,
+    ResourceType: ""
   };
   shareView: any;
-  blank = '';
-  permaLink = '';
+  blank = "";
+  permaLink = "";
   showGenerateLink = true;
   resourceUrl: string =
-    window.location.protocol + '//' + window.location.host + '/share/';
-  emptyId = '{00000000-0000-0000-0000-000000000000}';
+    window.location.protocol + "//" + window.location.host + "/share/";
+  emptyId = "{00000000-0000-0000-0000-000000000000}";
   @Input() addLinkClass = false;
   location: MapLocation;
 
@@ -57,7 +65,7 @@ export class ShareButtonComponent implements OnInit {
     private msalService: MsalService,
     private navigateDataService: NavigateDataService,
     private router: Router,
-    private personalizedPlanService: PersonalizedPlanService,
+    private personalizedPlanService: PersonalizedPlanService
   ) {
     if (
       global.role === UserStatus.Shared &&
@@ -69,11 +77,11 @@ export class ShareButtonComponent implements OnInit {
     }
   }
 
-  @HostListener('click')
+  @HostListener("click")
   openModal() {
     this.savePersonalizationPlan();
     if (!this.global.userId) {
-      sessionStorage.setItem(this.sessionKey, 'true');
+      sessionStorage.setItem(this.sessionKey, "true");
       this.externalLogin();
     } else {
       this.checkPermalink();
@@ -81,7 +89,7 @@ export class ShareButtonComponent implements OnInit {
   }
 
   formSharedResources = new FormGroup({
-    email: new FormControl('', [Validators.required, Validators.email])
+    email: new FormControl("", [Validators.required, Validators.email])
   });
 
   close() {
@@ -104,7 +112,7 @@ export class ShareButtonComponent implements OnInit {
   }
 
   savePersonalizationPlan() {
-    if (this.router.url.indexOf('/plan') !== -1) {
+    if (this.router.url.indexOf("/plan") !== -1) {
       const params = {
         personalizedPlan: this.navigateDataService.getData(),
         oId: this.global.userId,
@@ -112,13 +120,14 @@ export class ShareButtonComponent implements OnInit {
       };
       this.personalizedPlanService.userPlan(params).subscribe(response => {
         if (response) {
-          console.log('Plan Added to Session');
+          console.log("Plan Added to Session");
         }
       });
     }
   }
 
   generateLink() {
+    debugger;
     this.buildParams();
     this.shareService.generateLink(this.shareInput).subscribe(response => {
       if (response != undefined) {
@@ -141,25 +150,26 @@ export class ShareButtonComponent implements OnInit {
   }
 
   getActiveParam() {
-    if (this.activeRoute.snapshot.params['topic'] != null) {
-      return this.activeRoute.snapshot.params['topic'];
+    if (this.activeRoute.snapshot.params["topic"] != null) {
+      return this.activeRoute.snapshot.params["topic"];
     }
-    if (this.activeRoute.snapshot.params['id'] != null) {
-      return this.activeRoute.snapshot.params['topic'];
+    if (this.activeRoute.snapshot.params["id"] != null) {
+      return this.activeRoute.snapshot.params["topic"];
     }
   }
 
   copyLink(inputElement) {
     inputElement.select();
-    document.execCommand('copy');
+    document.execCommand("copy");
     inputElement.setSelectionRange(0, 0);
   }
 
   getPermaLink() {
     if (this.shareView.permaLink) {
       return this.resourceUrl + this.shareView.permaLink;
+    } else {
+      return this.blank;
     }
-    else { return this.blank; }
   }
 
   externalLogin() {
@@ -167,23 +177,26 @@ export class ShareButtonComponent implements OnInit {
   }
 
   submitShareLink() {
-    let topicIds = this.personalizedPlanService.topicsList.filter(x=>x.isSelected).map(x=>x.topic.topicId);
-    let plan = {id: this.personalizedPlanService.planDetails.id, topicIds};
-    this.shareService.shareLinkToUser({
-
-      Oid: this.global.userId,
-      Email: this.formSharedResources.value.email,
-      ItemId: this.id,
-      ResourceType: this.type || 'plan',
-      ResourceDetails: {},
-      Plan: plan
-    }).subscribe(() => {
-      this.formSharedResources.reset();
-    });
+    debugger;
+    let topicIds = this.personalizedPlanService.topicsList
+      .filter(x => x.isSelected)
+      .map(x => x.topic.topicId);
+    let plan = { id: this.personalizedPlanService.planDetails.id, topicIds };
+    this.shareService
+      .shareLinkToUser({
+        Oid: this.global.userId,
+        Email: this.formSharedResources.value.email,
+        ItemId: this.id,
+        ResourceType: this.type || "plan",
+        ResourceDetails: {},
+        Plan: plan
+      })
+      .subscribe(() => {
+        this.formSharedResources.reset();
+      });
   }
 
   ngOnInit() {
-
     if (this.global.userId) {
       const hasLoggedIn = sessionStorage.getItem(this.sessionKey);
       if (hasLoggedIn) {
@@ -194,32 +207,36 @@ export class ShareButtonComponent implements OnInit {
   }
 
   buildParams() {
-    this.location = JSON.parse(sessionStorage.getItem("globalMapLocation")).location;
+    debugger;
+    this.location = JSON.parse(
+      sessionStorage.getItem("globalMapLocation")
+    ).location;
     this.shareInput.Location = this.location;
-    if (this.id || this.type === 'WebResources') {
+    if (this.id || this.type === "WebResources") {
       this.shareInput.Url = this.buildUrl();
       this.shareInput.ResourceId = this.id;
     } else {
       this.shareInput.Url = location.pathname;
       this.shareInput.ResourceId = this.getActiveParam();
-    } 
+    }
     this.shareInput.UserId = this.global.userId;
+    this.shareInput.ResourceType = this.type;
   }
 
   buildUrl() {
-    if (this.type === 'Topics') {
-      return '/topics/' + this.id;
+    if (this.type === "Topics") {
+      return "/topics/" + this.id;
     }
-    if (this.type === 'Guided Assistant') {
-      return '/guidedassistant/' + this.id;
+    if (this.type === "Guided Assistant") {
+      return "/guidedassistant/" + this.id;
     }
-    if (this.type === 'Plan') {
-      return '/plan/' + this.id;
+    if (this.type === "Plan") {
+      return "/plan/" + this.id;
     }
-    if (this.type === 'Forms' || this.type === 'Related Readings') {
+    if (this.type === "Forms" || this.type === "Related Readings") {
       return this.url;
     }
-    if (this.type === 'WebResources') {
+    if (this.type === "WebResources") {
       this.id = this.emptyId;
       if (this.url) {
         return this.url;
@@ -227,7 +244,7 @@ export class ShareButtonComponent implements OnInit {
         return this.webResourceUrl;
       }
     } else {
-      return '/resource/' + this.id;
+      return "/resource/" + this.id;
     }
   }
 }

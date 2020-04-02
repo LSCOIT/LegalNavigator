@@ -1,10 +1,11 @@
-import { MapLocation } from '../../../map/map';
+import { MapLocation } from "../../../map/map";
 
 export interface Share {
   Url?: string;
   ResourceId?: string;
   UserId?: string;
-  Location : MapLocation;
+  Location: MapLocation;
+  ResourceType: string;
 }
 
 export interface ShareView {

@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { map } from 'rxjs/operators';
-import { MsalService } from '@azure/msal-angular';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { Component, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { map } from "rxjs/operators";
+import { MsalService } from "@azure/msal-angular";
+import { NgxSpinnerService } from "ngx-spinner";
 
-import { ENV } from 'environment';
-import { Global } from '../global';
-import { PersonalizedPlan, PersonalizedPlanTopic } from '../guided-assistant/personalized-plan/personalized-plan';
-import { PersonalizedPlanService } from '../guided-assistant/personalized-plan/personalized-plan.service';
+import { ENV } from "environment";
+import { Global } from "../global";
+import {
+  PersonalizedPlan,
+  PersonalizedPlanTopic
+} from "../guided-assistant/personalized-plan/personalized-plan";
+import { PersonalizedPlanService } from "../guided-assistant/personalized-plan/personalized-plan.service";
 
 @Component({
-  selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  selector: "app-profile",
+  templateUrl: "./profile.component.html",
+  styleUrls: ["./profile.component.css"]
 })
 export class ProfileComponent implements OnInit {
   topics: any;
@@ -99,10 +102,10 @@ export class ProfileComponent implements OnInit {
     this.topics = event.plan.topics;
     this.planDetailTags = event.plan;
     this.topicsList = event.topicsList;
-    this.filterPlan('');
+    this.filterPlan("");
   }
-  handleClick($event){
-    if($event.target.innerText == 'My Plan'){
+  handleClick($event) {
+    if ($event.target.innerText == "My Plan") {
       this.personalizedPlanService.planDetails = this.planDetailTags;
       this.personalizedPlanService.topicsList = this.topicsList;
     }
@@ -111,17 +114,20 @@ export class ProfileComponent implements OnInit {
     this.personalizedPlanService.getPersonalizedPlan().subscribe(plan => {
       if (plan) {
         //iterate each description, find <a>, insert target="_blank" there
-        var topics = plan.topics
+        var topics = plan.topics;
         topics.forEach(topic => {
-          var steps = topic.steps
+          var steps = topic.steps;
           var position = 0;
           steps.forEach(step => {
             position = step.description.indexOf("<a");
-            while(position != -1){
-              position+=2;
-              step.description = step.description.substring(0, position) + " target='_blank'" + step.description.substring(position);
-              position = step.description.indexOf("<a",position);
-            }            
+            while (position != -1) {
+              position += 2;
+              step.description =
+                step.description.substring(0, position) +
+                " target='_blank'" +
+                step.description.substring(position);
+              position = step.description.indexOf("<a", position);
+            }
           });
         });
         this.planId = plan.id;

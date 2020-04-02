@@ -1,14 +1,14 @@
-import { Component, OnDestroy, OnInit, Optional } from '@angular/core';
-import { TabDirective } from 'ngx-bootstrap';
-import { Subscription } from 'rxjs';
+import { Component, OnDestroy, OnInit, Optional } from "@angular/core";
+import { TabDirective } from "ngx-bootstrap";
+import { Subscription } from "rxjs";
 
-import { PersonalizedPlanService } from '../../guided-assistant/personalized-plan/personalized-plan.service';
-import { ResourceResult } from '../../common/search/search-results/search-result';
-import { EventUtilityService } from '../../common/services/event-utility.service';
+import { PersonalizedPlanService } from "../../guided-assistant/personalized-plan/personalized-plan.service";
+import { ResourceResult } from "../../common/search/search-results/search-result";
+import { EventUtilityService } from "../../common/services/event-utility.service";
 
 export interface SortingParams {
-  field: '_ts' | 'name';
-  order: 'ASC' | 'DESC';
+  field: "_ts" | "name";
+  order: "ASC" | "DESC";
 }
 
 export interface SortingOptions {
@@ -18,27 +18,27 @@ export interface SortingOptions {
 
 export const SORTING_OPTIONS: SortingOptions[] = [
   {
-    label: 'A-Z',
-    params: {field: 'name', order: 'ASC'}
+    label: "A-Z",
+    params: { field: "name", order: "ASC" }
   },
   {
-    label: 'Z-A',
-    params: {field: 'name', order: 'DESC'}
+    label: "Z-A",
+    params: { field: "name", order: "DESC" }
   },
   {
-    label: 'Newest to Oldest',
-    params: {field: '_ts', order: 'DESC'}
+    label: "Newest to Oldest",
+    params: { field: "_ts", order: "DESC" }
   },
   {
-    label: 'Oldest to Newest',
-    params: {field: '_ts', order: 'ASC'}
-  },
+    label: "Oldest to Newest",
+    params: { field: "_ts", order: "ASC" }
+  }
 ];
 
 @Component({
-  selector: 'app-saved-resources',
-  templateUrl: './saved-resources.component.html',
-  styleUrls: ['./saved-resources.component.scss']
+  selector: "app-saved-resources",
+  templateUrl: "./saved-resources.component.html",
+  styleUrls: ["./saved-resources.component.scss"]
 })
 export class SavedResourcesComponent implements OnInit, OnDestroy {
   personalizedResources: {
@@ -49,8 +49,8 @@ export class SavedResourcesComponent implements OnInit, OnDestroy {
     webResources: any[];
   };
   countsByType: ResourceResult[];
-  typeFilter = 'All';
-  sortingParams: SortingParams = {field: '_ts', order: 'DESC'};
+  typeFilter = "All";
+  sortingParams: SortingParams = { field: "_ts", order: "DESC" };
 
   private resources: any[] = [];
   private eventsSub: Subscription;
@@ -59,21 +59,22 @@ export class SavedResourcesComponent implements OnInit, OnDestroy {
     private personalizedPlanService: PersonalizedPlanService,
     @Optional() private tab: TabDirective,
     private eventUtilityService: EventUtilityService
-  ) {
-  }
+  ) {}
 
   get processedResources(): any[] {
     let result: any[];
 
-    if (this.typeFilter && this.typeFilter !== 'All') {
-      result = this.resources.filter(resource => resource.resourceType === this.typeFilter);
+    if (this.typeFilter && this.typeFilter !== "All") {
+      result = this.resources.filter(
+        resource => resource.resourceType === this.typeFilter
+      );
     } else {
       result = this.resources.slice(0);
     }
 
     if (this.sortingParams) {
       const field = this.sortingParams.field;
-      const orderModifier = this.sortingParams.order === 'ASC' ? 1 : -1;
+      const orderModifier = this.sortingParams.order === "ASC" ? 1 : -1;
 
       result.sort((res1, res2) => {
         if (res1[field] === res2[field]) {
@@ -89,10 +90,12 @@ export class SavedResourcesComponent implements OnInit, OnDestroy {
   }
 
   get filterDropdownLabel(): string {
-    let label = 'Resource type';
+    let label = "Resource type";
 
     if (this.typeFilter && Array.isArray(this.countsByType)) {
-      const activeFilter = this.countsByType.find(filter => filter.ResourceName === this.typeFilter);
+      const activeFilter = this.countsByType.find(
+        filter => filter.ResourceName === this.typeFilter
+      );
       if (activeFilter) {
         label = `${activeFilter.ResourceName} (${activeFilter.ResourceCount})`;
       }
@@ -106,20 +109,24 @@ export class SavedResourcesComponent implements OnInit, OnDestroy {
       return this.countsByType;
     }
 
-    return this.countsByType.filter(filter => filter.ResourceName !== this.typeFilter);
+    return this.countsByType.filter(
+      filter => filter.ResourceName !== this.typeFilter
+    );
   }
 
   get sortingDropdownLabel(): string {
     if (this.sortingParams) {
       const activeOption = SORTING_OPTIONS.find(
-        option => option.params.field === this.sortingParams.field && option.params.order === this.sortingParams.order
+        option =>
+          option.params.field === this.sortingParams.field &&
+          option.params.order === this.sortingParams.order
       );
       if (activeOption) {
         return activeOption.label;
       }
     }
 
-    return 'Sort by';
+    return "Sort by";
   }
 
   get sortingOptions(): SortingOptions[] {
@@ -127,7 +134,11 @@ export class SavedResourcesComponent implements OnInit, OnDestroy {
       return SORTING_OPTIONS;
     } else {
       return SORTING_OPTIONS.filter(
-        option => !(option.params.field === this.sortingParams.field && option.params.order === this.sortingParams.order)
+        option =>
+          !(
+            option.params.field === this.sortingParams.field &&
+            option.params.order === this.sortingParams.order
+          )
       );
     }
   }
@@ -139,7 +150,9 @@ export class SavedResourcesComponent implements OnInit, OnDestroy {
       this.getResources();
     }
 
-    this.eventsSub = this.eventUtilityService.resourceUpdated$.subscribe(() => this.getResources());
+    this.eventsSub = this.eventUtilityService.resourceUpdated$.subscribe(() =>
+      this.getResources()
+    );
   }
 
   ngOnDestroy() {
@@ -149,35 +162,39 @@ export class SavedResourcesComponent implements OnInit, OnDestroy {
   }
 
   private getResources(): void {
-    this.personalizedPlanService.getPersonalizedResources().subscribe(personalizedResources => {
-      this.personalizedResources = personalizedResources;
+    this.personalizedPlanService
+      .getPersonalizedResources()
+      .subscribe(personalizedResources => {
+        this.personalizedResources = personalizedResources;
 
-      if (this.personalizedResources) {
-        this.resources = this.personalizedResources.resources.concat(
-          this.personalizedResources.topics,
-          this.personalizedResources.webResources
-        );
+        if (this.personalizedResources) {
+          this.resources = this.personalizedResources.resources.concat(
+            this.personalizedResources.topics,
+            this.personalizedResources.webResources
+          );
 
-        const countsByType: Map<string, number> = new Map<string, number>();
-        this.resources.forEach(resource => {
-          const typeCount: number = countsByType.has(resource.resourceType) ? countsByType.get(resource.resourceType) : 0;
-          countsByType.set(resource.resourceType, typeCount + 1);
-        });
-        this.countsByType = [
-          {
-            ResourceName: 'All',
-            ResourceCount: this.resources.length
-          },
-          ...Array.from(countsByType, ([type, count]) => ({
-            ResourceName: type,
-            ResourceCount: count
-          }))
-        ];
+          const countsByType: Map<string, number> = new Map<string, number>();
+          this.resources.forEach(resource => {
+            const typeCount: number = countsByType.has(resource.resourceType)
+              ? countsByType.get(resource.resourceType)
+              : 0;
+            countsByType.set(resource.resourceType, typeCount + 1);
+          });
+          this.countsByType = [
+            {
+              ResourceName: "All",
+              ResourceCount: this.resources.length
+            },
+            ...Array.from(countsByType, ([type, count]) => ({
+              ResourceName: type,
+              ResourceCount: count
+            }))
+          ];
 
-        if (!countsByType.has(this.typeFilter)) {
-          this.typeFilter = 'All';
+          if (!countsByType.has(this.typeFilter)) {
+            this.typeFilter = "All";
+          }
         }
-      }
-    });
+      });
   }
 }

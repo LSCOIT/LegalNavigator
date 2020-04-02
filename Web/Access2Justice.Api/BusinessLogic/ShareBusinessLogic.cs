@@ -91,7 +91,9 @@ namespace Access2Justice.Api.BusinessLogic
                 IsShared = true,
                 Url = new Uri(shareInput.Url.OriginalString, UriKind.RelativeOrAbsolute),
                 PermaLink = permaLink,
-                Location = shareInput.Location 
+                Location = shareInput.Location,
+                ResourceType = shareInput.ResourseType,
+                ItemId = shareInput.ResourceId.ToString()
             };
             response = await UpsertSharedResource(userProfile, sharedResource);
             if (shareInput.Url.OriginalString.Contains("plan"))

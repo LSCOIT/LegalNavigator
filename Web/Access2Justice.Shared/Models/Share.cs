@@ -21,6 +21,9 @@ namespace Access2Justice.Shared
 
         public Location Location { get; set; }
 
+        [JsonProperty(PropertyName = "resourceType")]
+        public string ResourseType { get; set; }
+
         public ShareInput()
         {
             UniqueId = Guid.Empty;

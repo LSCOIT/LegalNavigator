@@ -190,15 +190,18 @@ export class RemoveButtonComponent implements AfterViewInit {
       Oid: this.global.userId,
       itemId: this.resourceId,
       resourceType: this.resourceType,
-      sharedBy: (resource.shared && resource.shared.sharedBy) || 'katana_2w@ukr.net',
-      type: 'incoming-resources'
+      sharedBy:
+        (resource.shared && resource.shared.sharedBy) || "katana_2w@ukr.net",
+      type: "shared-resources"
     };
-    this.personalizedPlanService.removeSharedResources(removedElem).subscribe(() => {
-      this.personalizedPlanService.showSuccess(
-        'Shared resource removed from profile'
-      );
-      this.eventUtilityService.updateSharedResource('RESOURCE REMOVED');
-    });
+    this.personalizedPlanService
+      .removeSharedResources(removedElem)
+      .subscribe(() => {
+        this.personalizedPlanService.showSuccess(
+          "Shared resource removed from profile"
+        );
+        this.eventUtilityService.updateSharedResource("RESOURCE REMOVED");
+      });
   }
 
   removeSharedToResources() {
