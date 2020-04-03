@@ -12,7 +12,8 @@ describe("ShareService", () => {
     UserId:
       "ACB833BB3F817C2FBE5A72CE37FE7AB9CD977E58580B9832B9…64748F3098C9FE3374106B6F4A2B157FE091CA6332C88A89B",
     Url: "/topics/bdc07e7a-1f06-4517-88d8-9345bb87c3cf",
-    Location: null
+    Location: null,
+    ResourceType: ''
   };
 
   beforeEach(() => {
