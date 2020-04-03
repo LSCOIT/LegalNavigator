@@ -23,7 +23,8 @@ li:last-child a {
   height: 96px;
 }
 
-.filter-type .p, .sort-type .p {
+.filter-type .p,
+.sort-type .p {
   float: left;
 }
 
@@ -101,7 +102,8 @@ li:last-child a {
 }
 
 @media only screen and (min-width: 768px) {
-  .filter-type .p, .sort-type .p {
+  .filter-type .p,
+  .sort-type .p {
     display: inline-block;
   }
 

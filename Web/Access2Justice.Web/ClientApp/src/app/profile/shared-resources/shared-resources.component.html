@@ -1,5 +1,8 @@
 <div class="row">
   <div class="col-sm-12">
+    <div *ngIf="!sharedResources.length">
+      There aren't any shared resources
+    </div>
     <ng-container *ngFor="let resource of sharedResources">
       <app-resource-card
         [searchResource]="resource"
