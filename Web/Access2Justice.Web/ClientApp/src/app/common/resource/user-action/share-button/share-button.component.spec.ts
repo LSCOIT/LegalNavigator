@@ -2,9 +2,14 @@ import { HttpClientModule } from "@angular/common/http";
 import { async, ComponentFixture, TestBed } from "@angular/core/testing";
 import { ActivatedRoute, Router } from "@angular/router";
 import { MsalService } from "@azure/msal-angular";
-import { BsModalRef, BsModalService, ComponentLoaderFactory, PositioningService } from "ngx-bootstrap";
+import {
+  BsModalRef,
+  BsModalService,
+  ComponentLoaderFactory,
+  PositioningService
+} from "ngx-bootstrap";
 import { from } from "rxjs";
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from "@angular/forms";
 
 import { Global } from "../../../../global";
 import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
@@ -35,7 +40,8 @@ describe("ShareButtonComponent", () => {
     ResourceId: "bdc07e7a-1f06-4517-88d8-9345bb87c3cf",
     UserId:
       "ACB833BB3F817C2FBE5A72CE37FE7AB9CD977E58580B9832B9ů64748F3098C9FE3374106B6F4A2B157FE091CA6332C88A89B",
-    Location: null
+    Location: null,
+    ResourceType: ""
   };
   let mockIstopics = "Topics";
   let mockIsGuidedAssistant = "Guided Assistant";
@@ -47,10 +53,7 @@ describe("ShareButtonComponent", () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        HttpClientModule,
-        ReactiveFormsModule
-      ],
+      imports: [HttpClientModule, ReactiveFormsModule],
       declarations: [ShareButtonComponent],
       providers: [
         BsModalRef,
@@ -139,7 +142,9 @@ describe("ShareButtonComponent", () => {
 
   it("should hide model popup when close method of component called", () => {
     spyOn(modalService, "hide");
-    const modalRefInstance: jasmine.SpyObj<BsModalRef> = jasmine.createSpyObj<BsModalRef>('BsModalRef', ['hide']);
+    const modalRefInstance: jasmine.SpyObj<BsModalRef> = jasmine.createSpyObj<
+      BsModalRef
+    >("BsModalRef", ["hide"]);
     component.modalRef = modalRefInstance;
     component.close();
     expect(modalRefInstance.hide).toHaveBeenCalled();
@@ -156,9 +161,7 @@ describe("ShareButtonComponent", () => {
   });
 
   it("should generate perma link when generateLink  method of share service called", () => {
-    spyOn(shareService, "generateLink").and.returnValue(
-      from([mockPermaLink])
-    );
+    spyOn(shareService, "generateLink").and.returnValue(from([mockPermaLink]));
     spyOn(component, "generateLink");
     component.generateLink();
     component.shareView = mockPermaLink;
