@@ -1,4 +1,4 @@
-import {ENV} from 'environment';
+import { ENV } from "environment";
 
 const apiUrl = ENV.apiUrl;
 const topic = apiUrl + "/topics-resources";
@@ -27,20 +27,21 @@ export const api = {
   getPersonalizedResourcesUrl: topic + "/personalized-resources",
   getProfileUrl: userProfile + "/profile",
   userPlanUrl: userProfile + "/personalized-plan/upsert",
-  removeSharedResources: userProfile + '/resources/delete',
+  removeSharedResources: userProfile + "/resources/delete",
   // unshareSharedToResources: userProfile + '/share/permalink/remove',
-  unshareSharedToResources: apiUrl + '/share/link/unshare',
+  unshareSharedToResources: apiUrl + "/share/link/unshare",
   upsertUserProfileUrl: userProfile + "/profile/upsert",
   getOrganizationDetailsUrl: topic + "/organizations",
   questionUrl: curatedExperience + "/start",
   questionBackUrl: curatedExperience + "/components/back",
   saveAndGetNextUrl: curatedExperience + "/components/save-and-get-next",
+  curatedExperienceUrl: curatedExperience,
   updateUserPlanUrl: apiUrl + "/personalized-plans/save",
   getActionPlanIds: apiUrl + "/personalized-plans/action-plans",
   resourceUrl: topic + "/resources",
   getContentsUrl: contentUrl,
   shareUrl: apiUrl + "/share/permalink/generate",
-  shareLinkToUser: apiUrl + '/share/link/send',
+  shareLinkToUser: apiUrl + "/share/link/send",
   unShareUrl: apiUrl + "/share/permalink/remove",
   getResourceLink: apiUrl + "/share/permalink/resource",
   checkPermaLink: apiUrl + "/share/permalink/check",
@@ -56,5 +57,5 @@ export const api = {
   onboardingSubmissionUrl: onboarding + "/eform-submit",
   getTopicDetailsUrl: topic + "/get-topic-details",
   getStateNameUrl: apiUrl + "/StateProvince/state-name",
-  getAnswerUrl: apiUrl + "/qnabot/"
+  getAnswerUrl: apiUrl + "/qnabot/",
 };

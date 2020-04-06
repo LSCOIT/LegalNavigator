@@ -85,10 +85,19 @@ namespace Access2Justice.CosmosDb
                 UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, collectionId, id), item);
         }
 
-        public async Task DeleteItemAsync(string id, string collectionId)
+        public async Task DeleteItemAsync(string id, string collectionId, string partitionKey = null)
         {
-            await documentClient.DeleteDocumentAsync(
+            if(partitionKey != null)
+            {
+                RequestOptions key = new RequestOptions { PartitionKey = new PartitionKey(partitionKey) };
+                await documentClient.DeleteDocumentAsync(
+                UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, collectionId, id), key);
+            }
+            else
+            {
+                await documentClient.DeleteDocumentAsync(
                 UriFactory.CreateDocumentUri(cosmosDbSettings.DatabaseId, collectionId, id));
+            }
         }
 
         public async Task<dynamic> QueryItemsAsync(string collectionId, string query, Dictionary<string, object> sqlParams)

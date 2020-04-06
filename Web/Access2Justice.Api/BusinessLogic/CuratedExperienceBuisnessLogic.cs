@@ -38,6 +38,30 @@ namespace Access2Justice.Api.BusinessLogic
             return await dbService.GetItemAsync<CuratedExperience>(id.ToString(), dbSettings.CuratedExperiencesCollectionId);
         }
 
+        public async Task<IEnumerable<CuratedExperienceViewModel>> GetCuratedExperiencesAsync(string location)
+        {
+            IEnumerable<CuratedExperienceViewModel> items = new List<CuratedExperienceViewModel>();
+            if (location == "Hawaii")
+            {
+                items = await dbService.GetItemsAsync<CuratedExperienceViewModel>(x => !x.Title.Contains("Alaska"), dbSettings.CuratedExperiencesCollectionId);
+            }
+            else if (location == "Alaska")
+            {
+                items = await dbService.GetItemsAsync<CuratedExperienceViewModel>(x => x.Title.Contains(location), dbSettings.CuratedExperiencesCollectionId);
+            }
+            else
+            {
+                items = await dbService.GetItemsAsync<CuratedExperienceViewModel>(x => x.Title != string.Empty, dbSettings.CuratedExperiencesCollectionId);
+            }
+
+            return items.OrderBy(x => x.ts).ToList();
+        }
+
+        public async Task DeleteCuratedExperienceAsync(string id, string partitionKey = null)
+        {
+            await dbService.DeleteItemAsync(id, dbSettings.CuratedExperiencesCollectionId, partitionKey);
+        }
+
         public async Task<CuratedExperienceComponentViewModel> GetComponent(CuratedExperience curatedExperience, Guid componentId)
         {
             var dbComponent = new CuratedExperienceComponent();

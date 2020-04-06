@@ -33,6 +33,38 @@ namespace Access2Justice.Api.Controllers
         }
 
         /// <summary>
+        /// returns list of curated experiences
+        /// </summary>
+        /// <remarks>
+        /// Helps to get list of curated experiences
+        /// </remarks>
+        /// <param name="location"></param>
+        /// <response code="200">Returns curated experiences </response>
+        /// <response code="500">Failure</response>
+        [HttpGet]
+        public async Task<IActionResult> GetCuratedExperiences([FromQuery]string location = "Alaska")
+        {
+            return Ok(await curatedExperienceBusinessLogic.GetCuratedExperiencesAsync(location));
+        }
+
+        /// <summary>
+        /// deletes curated experiences by id
+        /// </summary>
+        /// <remarks>
+        /// Helps to delete curated experience
+        /// </remarks>
+        /// <param name="id"></param>
+        /// <param name="partitionKey"></param>
+        /// <response code="200"></response>
+        /// <response code="500">Failure</response>
+        [HttpDelete("{id}/{partitionKey}")]
+        public async Task<IActionResult> DeleteCuratedExperience(string id, string partitionKey = null)
+        {
+            await curatedExperienceBusinessLogic.DeleteCuratedExperienceAsync(id, partitionKey);
+            return Ok();
+        }
+
+        /// <summary>
         /// Convert A2JAuthor to curated experience
         /// </summary>
         /// <remarks>

@@ -29,7 +29,7 @@ namespace Access2Justice.Shared.Interfaces
     public interface IBackendDatabaseService
     {
         Task<Document> CreateItemAsync<T>(T item, string collectionId);
-        Task DeleteItemAsync(string id, string collectionId);
+        Task DeleteItemAsync(string id, string collectionId, string partitionKey = null);
         Task DeleteResourceAsync(string id, string partitionKey, string collectionId);
         Task<T> GetItemAsync<T>(string id, string collectionId);
         Task<IEnumerable<T>> GetItemsAsync<T>(Expression<Func<T, bool>> predicate,string collectionId);

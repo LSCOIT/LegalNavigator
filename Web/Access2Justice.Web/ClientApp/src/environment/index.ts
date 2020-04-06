@@ -1,7 +1,8 @@
 export const ENV = {
   production: false,
   apiUrl: "http://localhost:4200/api",
-  bingmap_key: "AkaN9T4QD5xmxp3PbDCeEmnIi-BDrMd7Hi4Lp8P_orTTQ2L_s1QKSumVBlefNKrk",
+  bingmap_key:
+    "AkaN9T4QD5xmxp3PbDCeEmnIi-BDrMd7Hi4Lp8P_orTTQ2L_s1QKSumVBlefNKrk",
   map_type: false,
   internalResourcePagesToShow: 2,
   internalResourceRecordsToDisplay: 10,
@@ -17,7 +18,10 @@ export const ENV = {
   navigateToLoginRequestUrl: true,
   postLogoutRedirectUri: "http://localhost:5150/",
   topicUrl: "http://localhost:4200/api/topics",
-  userPersonalizedPlanUrl: "http://localhost:4200/api/user/upsertuserpersonalizedplan",
+  curatedExperienceUrl: "http://localhost:4200/api/curated-experiences",
+  userPersonalizedPlanUrl:
+    "http://localhost:4200/api/user/upsertuserpersonalizedplan",
   apiScope: "api://2a144325-4b1d-4270-ba78-dee12209263b/access_as_user",
-  bingMapUrl: "https://www.bing.com/api/maps/mapcontrol?callback=__onBingLoaded"
+  bingMapUrl:
+    "https://www.bing.com/api/maps/mapcontrol?callback=__onBingLoaded",
 };

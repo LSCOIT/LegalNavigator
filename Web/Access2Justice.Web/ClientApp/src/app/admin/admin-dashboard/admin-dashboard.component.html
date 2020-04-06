@@ -82,6 +82,9 @@
         <h3>Upload Curated Experiences</h3>
         <app-curated-experience-template></app-curated-experience-template>
       </tab>
+      <tab *ngIf="isPortalAdmin" heading="Manage Curated Experiences">
+        <app-curated-experience-list></app-curated-experience-list
+      ></tab>
       <tab *ngIf="isPortalAdmin" heading="Edit Roles">Vertical content 1</tab>
     </tabset>
   </div>
