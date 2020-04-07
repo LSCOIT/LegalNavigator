@@ -15,6 +15,7 @@ export const ENV = {
   consentScopes: ["api://14c21c74-5579-43c3-9c55-cf5cf265d518/access_as_user"],
   redirectUri: "https://www.legalnav.org/",
   navigateToLoginRequestUrl: true,
+  curatedExperienceUrl: "https://api-dev.legalnav.org/api/curated-experiences",
   postLogoutRedirectUri: "https://www.legalnav.org/",
   topicUrl: "https://api.legalnav.org/api/topics",
   userPersonalizedPlanUrl: "https://api.legalnav.org/api/user/upsertuserpersonalizedplan",
