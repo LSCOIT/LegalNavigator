@@ -38,22 +38,32 @@
         [resourceResults]="resourceResults"
         [initialResourceFilter]="initialResourceFilter"
         [searchResults]="searchResults"
+        [isSortingDisabled]="true"
       ></app-search-filter>
     </div>
   </div>
   <div class="row">
     <div [ngClass]="{ 'col-sm-12': fullPage, 'col-md-8 col-sm-12': !fullPage }">
       <div *ngIf="isInternalResource">
-        <div
-          *ngFor="let searchResource of (searchResults.resources | searchFilter: { filter: sortType, source: 'internal' })">
-          <app-resource-card [searchResource]="searchResource"
-                             [showRemoveOption]="showRemoveOption"></app-resource-card>
+        <div *ngFor="let searchResource of searchResults.resources">
+          <app-resource-card
+            [searchResource]="searchResource"
+            [showRemoveOption]="showRemoveOption"
+          ></app-resource-card>
         </div>
       </div>
       <div *ngIf="isWebResource">
-        <div *ngIf="searchResults &&searchResults.webResources &&searchResults.webResources.webPages">
-          <div class="col-md-12 sidebar"
-               *ngFor="let webResult of (searchResults.webResources.webPages.value | searchFilter: { filter: sortType, source: 'external' })">
+        <div
+          *ngIf="
+            searchResults &&
+            searchResults.webResources &&
+            searchResults.webResources.webPages
+          "
+        >
+          <div
+            class="col-md-12 sidebar"
+            *ngFor="let webResult of searchResults.webResources.webPages.value"
+          >
             <app-web-resource [webResult]="webResult"></app-web-resource>
           </div>
         </div>
