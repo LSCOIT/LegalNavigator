@@ -1,20 +1,34 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, HostListener, Input, Output, TemplateRef, ViewChild} from "@angular/core";
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
+  TemplateRef,
+  ViewChild,
+} from "@angular/core";
 import { OnChanges } from "@angular/core/src/metadata/lifecycle_hooks";
 import { DomSanitizer } from "@angular/platform-browser";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { BsModalRef } from "ngx-bootstrap/modal/bs-modal-ref.service";
 import { ToastrService } from "ngx-toastr";
 import { Global, UserStatus } from "../../../../global";
-import { PersonalizedPlan, PersonalizedPlanTopic, PlanTopic } from "../../../../guided-assistant/personalized-plan/personalized-plan";
+import {
+  PersonalizedPlan,
+  PersonalizedPlanTopic,
+  PlanTopic,
+} from "../../../../guided-assistant/personalized-plan/personalized-plan";
 import { PersonalizedPlanService } from "../../../../guided-assistant/personalized-plan/personalized-plan.service";
 import { NavigateDataService } from "../../../services/navigate-data.service";
-import {Router} from "@angular/router";
-import {template} from "@angular/core/src/render3";
+import { Router } from "@angular/router";
+import { template } from "@angular/core/src/render3";
 
 @Component({
   selector: "app-action-plans",
   templateUrl: "./action-plans.component.html",
-  styleUrls: ["./action-plans.component.css"]
+  styleUrls: ["./action-plans.component.css"],
 })
 export class ActionPlansComponent implements OnChanges {
   @Input() planDetails;
@@ -40,7 +54,7 @@ export class ActionPlansComponent implements OnChanges {
     topics: this.planTopics,
     answersDocId: "",
     curatedExperienceId: "",
-    isShared: false
+    isShared: false,
   };
   selectedPlanDetails: any;
   tempFilteredtopicsList: Array<PersonalizedPlanTopic> = [];
@@ -53,20 +67,21 @@ export class ActionPlansComponent implements OnChanges {
     "Guided Assistant",
     "Organizations",
     "Videos",
-    "Articles"
+    "Articles",
   ];
   videoTemplateContext: any;
-  @ViewChild('videoTemplateForInnerHtml') videoTemplateForInnerHtml: ElementRef;
-  @HostListener("window:resource", ['$event'])
+  @ViewChild("videoTemplateForInnerHtml") videoTemplateForInnerHtml: ElementRef;
+  @HostListener("window:resource", ["$event"])
   onCallResource(param) {
     if (param.detail.type === "Videos") {
-      this.videoTemplateContext = {resource: {name: param.detail.name, url: param.detail.url}};
+      this.videoTemplateContext = {
+        resource: { name: param.detail.name, url: param.detail.url },
+      };
       this.modalRef = this.modalService.show(this.videoTemplateForInnerHtml);
     } else {
-      this.router.navigate(['/resource', param.detail.id]);
+      this.router.navigate(["/resource", param.detail.id]);
     }
   }
-
 
   constructor(
     private modalService: BsModalService,
@@ -91,10 +106,16 @@ export class ActionPlansComponent implements OnChanges {
   }
 
   public isNeedToShowShareTo = (topic) => {
-    return this.isSharedActionPlan && this.showUnshareOption && topic.shared && topic.shared.sharedTo;
-  }
+    return (
+      this.isSharedActionPlan &&
+      this.showUnshareOption &&
+      topic.shared &&
+      topic.shared.sharedTo
+    );
+  };
 
   getPersonalizedPlan(planDetails): void {
+    debugger;
     this.planDetails = planDetails;
     if (!planDetails || planDetails.length === 0) {
       this.displaySteps = false;
@@ -105,41 +126,48 @@ export class ActionPlansComponent implements OnChanges {
   }
 
   sortStepsByOrder(planDetails) {
-    planDetails.topics.forEach(topic => {
-      topic.steps.forEach(step => {
+    planDetails.topics.forEach((topic) => {
+      topic.steps.forEach((step) => {
+        debugger;
         // Match all URLs outside <a> tags. Next these urls will be wrapped with <a> tag.
         step.description = step.description.replace(
           /(([--:\w?@%&+~#=]*\.[a-z]{2,4}\/{0,2})((?:[?&](?:\w+)=(?:\w+))+|[\w?@%&+~#=;\/\-]+)?)(?![^<>]*>|[^"]*?<\/a)/g,
-          '<a href=\"$1\">$1</a>');
-        step.resources.forEach(resource => {
+          '<a href="$1">$1</a>'
+        );
+        step.resources.forEach((resource) => {
           // If resource GUID present in description, need replace guid with <a> tag.
-          step.description = step.description.replace(resource.id, this.generateLink(resource));
+          step.description = step.description.replace(
+            resource.id,
+            this.generateLink(resource)
+          );
         });
       });
       topic.steps = this.orderBy(topic.steps, this.sortOrder);
     });
   }
 
-
   generateLink(resource) {
     let tag = '<a class="link" ';
 
-    if (resource.resourceType === 'Forms') {
-      tag += `href="${resource.url}">${resource.name}</a>`;
-    } else {
-      tag += `href='javascript:void(0)' onclick="window.dispatchEvent(new CustomEvent(\'resource\', {detail:{id:\'${resource.id}\',` +
+    if (resource.resourceType === "Forms") {
+      tag += `target="_blank" href="${resource.url}">${resource.name}</a>`;
+      // }
+    } else if (resource.resourceType === "Videos") {
+      tag +=
+        `href='javascript:void(0)' onclick="window.dispatchEvent(new CustomEvent(\'resource\', {detail:{id:\'${resource.id}\',` +
         `type:\'${resource.resourceType}\', name:\'${resource.name}\', url:\'${resource.url}\'}}));">${resource.name}</a>`;
+    } else {
+      tag += `target="_blank" href="${resource.url}">${resource.name}</a>`;
     }
 
     return tag;
   }
 
-
   checkCompleted(event, topicId, stepId) {
     this.isChecked = event.target.checked;
-    this.planDetails.topics.forEach(topic => {
+    this.planDetails.topics.forEach((topic) => {
       if (topic.topicId === topicId) {
-        topic.steps.forEach(step => {
+        topic.steps.forEach((step) => {
           if (step.stepId === stepId) {
             step.isComplete = this.isChecked;
           }
@@ -161,9 +189,9 @@ export class ActionPlansComponent implements OnChanges {
         ? this.navigateDataService.getData()
         : this.personalizedPlanService.planDetails,
       oId: this.global.userId,
-      saveActionPlan: true
+      saveActionPlan: true,
     };
-    this.personalizedPlanService.userPlan(params).subscribe(response => {
+    this.personalizedPlanService.userPlan(params).subscribe((response) => {
       if (response) {
         this.showStepCompleteStatus();
       }
@@ -193,7 +221,7 @@ export class ActionPlansComponent implements OnChanges {
     this.getRemovePlanDetails();
     this.planTopics = [];
     if (this.removePlanDetails.length > 0) {
-      this.removePlanDetails.forEach(planTopic => {
+      this.removePlanDetails.forEach((planTopic) => {
         this.planTopics.push(!planTopic.topic ? planTopic : planTopic.topic);
       });
     }
@@ -202,17 +230,17 @@ export class ActionPlansComponent implements OnChanges {
       topics: this.planTopics,
       answersDocId: this.planDetails.answersDocId,
       curatedExperienceId: this.planDetails.curatedExperienceId,
-      isShared: this.planDetails.isShared
+      isShared: this.planDetails.isShared,
     };
     this.selectedPlanDetails = {
       planDetails: this.personalizedPlan,
-      topic: topic.topicId
+      topic: topic.topicId,
     };
   }
 
   getRemovePlanDetails() {
     this.removePlanDetails = [];
-    this.tempFilteredtopicsList.forEach(topic => {
+    this.tempFilteredtopicsList.forEach((topic) => {
       this.removePlanDetails.push(topic);
     });
   }
@@ -223,7 +251,9 @@ export class ActionPlansComponent implements OnChanges {
 
   fillTopics() {
     this.getPersonalizedPlan(this.planDetails);
-    this.tempFilteredtopicsList = !this.topicsList ? this.planDetails.topics : this.topicsList;
+    this.tempFilteredtopicsList = !this.topicsList
+      ? this.planDetails.topics
+      : this.topicsList;
   }
 
   orderBy(items, field) {
