@@ -1,7 +1,14 @@
-<div class="search-result" [ngClass]="{ 'no-container': fullPage, container: !fullPage }">
-    <app-breadcrumb
+<div
+  class="search-result"
+  [ngClass]="{ 'no-container': fullPage, container: !fullPage }"
+>
+  <app-breadcrumb
+    *ngIf="searchResults?.topicIds && searchResults.topicIds.length == 1"
     [resourceTopic]="searchResults.topicIds[0]"
-     #breadcrumb></app-breadcrumb>
+    #breadcrumb
+  ></app-breadcrumb>
+
+
   <div *ngIf="searchText">
     <h2>Results for {{ searchText }}</h2>
   </div>

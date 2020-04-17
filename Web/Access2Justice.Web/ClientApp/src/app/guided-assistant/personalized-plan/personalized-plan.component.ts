@@ -5,13 +5,17 @@ import { ActivatedRoute } from "@angular/router";
 import { Global } from "../../global";
 import { NavigateDataService } from "../../common/services/navigate-data.service";
 import { StaticResourceService } from "../../common/services/static-resource.service";
-import { PersonalizedPlan, PersonalizedPlanDescription, PersonalizedPlanTopic } from "../personalized-plan/personalized-plan";
+import {
+  PersonalizedPlan,
+  PersonalizedPlanDescription,
+  PersonalizedPlanTopic,
+} from "../personalized-plan/personalized-plan";
 import { PersonalizedPlanService } from "../personalized-plan/personalized-plan.service";
 
 @Component({
   selector: "app-personalized-plan",
   templateUrl: "./personalized-plan.component.html",
-  styleUrls: ["./personalized-plan.component.css"]
+  styleUrls: ["./personalized-plan.component.css"],
 })
 export class PersonalizedPlanComponent implements OnInit {
   activeActionPlan = this.activeRoute.snapshot.params["id"];
@@ -78,16 +82,16 @@ export class PersonalizedPlanComponent implements OnInit {
 
   filterTopicsList(topic) {
     this.topicsList = [];
-    this.tempTopicsList.forEach(topicDetail => {
+    this.tempTopicsList.forEach((topicDetail) => {
       if (topicDetail.topic.name === topic) {
         this.planTopic = {
           topic: topicDetail.topic,
-          isSelected: !topicDetail.isSelected
+          isSelected: !topicDetail.isSelected,
         };
       } else {
         this.planTopic = {
           topic: topicDetail.topic,
-          isSelected: topicDetail.isSelected
+          isSelected: topicDetail.isSelected,
         };
       }
       this.topicsList.push(this.planTopic);
@@ -113,7 +117,7 @@ export class PersonalizedPlanComponent implements OnInit {
       if (this.global.getData()) {
         this.staticContent = this.global.getData();
         this.personalizedPlanContent = this.staticContent.find(
-          x => x.name === this.name
+          (x) => x.name === this.name
         );
         this.staticResourceService.PersonalizedPlanDescription = this.personalizedPlanContent;
         this.description = this.personalizedPlanContent.description;

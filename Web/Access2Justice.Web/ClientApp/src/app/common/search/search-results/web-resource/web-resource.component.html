@@ -39,7 +39,7 @@
       </ul>
     </div>
     <div class="web-resource">
-      <p class="ps">{{ webResult.dateLastCrawled }}</p>
+      <p class="ps">{{ webResult.dateLastCrawled | date }}</p>
       <a href="{{ webResult.url }}">
         <p class="pl">{{ webResult.name }}</p>
       </a>

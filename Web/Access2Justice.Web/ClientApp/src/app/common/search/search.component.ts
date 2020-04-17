@@ -10,7 +10,7 @@ import { SearchService } from "./search.service";
 @Component({
   selector: "app-search",
   templateUrl: "./search.component.html",
-  styleUrls: ["./search.component.css"]
+  styleUrls: ["./search.component.css"],
 })
 export class SearchComponent implements OnInit {
   inputText: string;
@@ -22,8 +22,8 @@ export class SearchComponent implements OnInit {
     TranslateFrom: "",
     TranslateTo: "",
     LuisTopScoringIntent: "",
-    OrderByField: 'name',
-    OrderBy: 'ASC'
+    OrderByField: "name",
+    OrderBy: "ASC",
   };
   mapLocation: MapLocation;
   locationDetails: LocationDetails;
@@ -39,21 +39,19 @@ export class SearchComponent implements OnInit {
     this.spinner.show();
     this.luisInput.Sentence = searchForm.value.inputText;
     if (sessionStorage.getItem("mapAddress")) {
-      const address = JSON.parse(
-        sessionStorage.getItem("mapAddress")
-      );
+      const address = JSON.parse(sessionStorage.getItem("mapAddress"));
       this.mapLocation = {
         state: address.state,
         county: address.county,
         city: address.city,
-        zipCode: address.zipCode
-      }
+        zipCode: address.zipCode,
+      };
     }
     this.luisInput.Location = this.mapLocation;
     sessionStorage.removeItem("cacheSearchResults");
     sessionStorage.removeItem("searchedLocationMap");
     this.searchService.search(this.luisInput).subscribe(
-      response => {
+      (response) => {
         this.spinner.hide();
         if (response != undefined) {
           this.searchResults = response;
@@ -63,7 +61,7 @@ export class SearchComponent implements OnInit {
             .then(() => this.router.navigate(["/search"]));
         }
       },
-      error => {
+      (error) => {
         this.spinner.hide();
         this.router.navigate(["/error"]);
       }
