@@ -9,7 +9,7 @@ import { GuidUtilityService } from "../../common/services/guid-utility.service";
 @Component({
   selector: "app-shared-resources",
   templateUrl: "./shared-resources.component.html",
-  styleUrls: ["./shared-resources.component.scss"]
+  styleUrls: ["./shared-resources.component.scss"],
 })
 export class SharedResourcesComponent implements OnInit, OnDestroy {
   public sharedResources = [];
@@ -27,23 +27,22 @@ export class SharedResourcesComponent implements OnInit, OnDestroy {
   private getSharedResources(): void {
     this.personalizedPlanService
       .getUserSavedResources("shared-resources")
-      .subscribe(sharedResources => {
+      .subscribe((sharedResources) => {
         this.sharedResourcesIds = sharedResources;
       });
     this.personalizedPlanService
       .getPersonalizedResources("shared-resources")
-      .subscribe(sharedResources => {
-       
+      .subscribe((sharedResources) => {
         this.sharedResources = [];
         const planDetailTags = {
-          topics: []
+          topics: [],
         };
 
         for (const key in sharedResources) {
-          sharedResources[key].forEach(i => {
+          sharedResources[key].forEach((i) => {
             const isSharedPlan = i.topics;
             const resource = isSharedPlan ? i.topics[0] : i;
-            resource.shared = this.sharedResourcesIds.find(o => {
+            resource.shared = this.sharedResourcesIds.find((o) => {
               if (o.itemId) {
                 return o.itemId === i.id;
               } else if (o.id) {
@@ -77,7 +76,6 @@ export class SharedResourcesComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    debugger;
     if (this.tab) {
       this.tab.select.subscribe(() => this.getSharedResources());
     } else {

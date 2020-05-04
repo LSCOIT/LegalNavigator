@@ -297,7 +297,7 @@ namespace Access2Justice.CosmosDb
                     {
                         resourceFilter.OrderByField = "modifiedTimeStamp";
                     }
-                    var orderByField = resourceFilter.OrderByField ?? "name";
+                    var orderByField = "ranking";
                     query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause} order by c.{orderByField} {resourceFilter.OrderBy}";
                 }
 

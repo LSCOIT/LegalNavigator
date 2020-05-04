@@ -2,7 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Global } from "../../global";
 import { MapService } from "../../common/map/map.service";
-import { ILuisInput, IResourceFilter } from "../../common/search/search-results/search-results.model";
+import {
+  ILuisInput,
+  IResourceFilter,
+} from "../../common/search/search-results/search-results.model";
 import { NavigateDataService } from "../../common/services/navigate-data.service";
 import { ShowMoreService } from "../../common/sidebars/show-more/show-more.service";
 import { ISubtopicGuidedInput } from "../shared/topic";
@@ -12,7 +15,7 @@ import { ParamsChange } from "../../common/search/search-filter/search-filter.co
 @Component({
   selector: "app-subtopic-detail",
   templateUrl: "./subtopic-detail.component.html",
-  styleUrls: ["./subtopic-detail.component.css"]
+  styleUrls: ["./subtopic-detail.component.css"],
 })
 export class SubtopicDetailComponent implements OnInit {
   searchResults: any;
@@ -34,7 +37,7 @@ export class SubtopicDetailComponent implements OnInit {
   showRemoveOption: boolean;
   guidedSutopicDetailsInput: ISubtopicGuidedInput = {
     activeId: "",
-    name: ""
+    name: "",
   };
   locationDetails: any;
   location: any;
@@ -44,7 +47,7 @@ export class SubtopicDetailComponent implements OnInit {
     Location: "",
     TranslateFrom: "",
     TranslateTo: "",
-    LuisTopScoringIntent: ""
+    LuisTopScoringIntent: "",
   };
   resourceFilter: IResourceFilter = {
     ResourceType: "",
@@ -56,14 +59,14 @@ export class SubtopicDetailComponent implements OnInit {
       state: "",
       county: "",
       city: "",
-      zipCode: ""
+      zipCode: "",
     },
     IsResourceCountRequired: true,
     IsOrder: false,
     OrderByField: "",
     OrderBy: "",
-    url: '',
-    sharedTo: []
+    url: "",
+    sharedTo: [],
   };
   subscription: any;
   displayResources: number;
@@ -78,25 +81,53 @@ export class SubtopicDetailComponent implements OnInit {
     private router: Router
   ) {}
 
+  sortByRanking(array): any {
+    return array.sort((n1, n2) => {
+      if (n1.ranking > n2.ranking) {
+        return 1;
+      }
+
+      if (n1.ranking < n2.ranking) {
+        return -1;
+      }
+
+      return n1.name > n2.name ? 1 : -1;
+    });
+  }
+
   filterSubtopicDetail(): void {
     if (this.subtopicDetails) {
-      this.actionPlanData = this.subtopicDetails.filter(
-        resource => resource.resourceType === "Action Plans"
+      this.actionPlanData = this.sortByRanking(
+        this.subtopicDetails.filter(
+          (resource) => resource.resourceType === "Action Plans"
+        )
       );
-      this.articleData = this.subtopicDetails.filter(
-        resource => resource.resourceType === "Articles"
+      this.articleData = this.sortByRanking(
+        this.subtopicDetails.filter(
+          (resource) => resource.resourceType === "Articles"
+        )
       );
-      this.videoData = this.subtopicDetails.filter(
-        resource => resource.resourceType === "Videos"
+      this.videoData = this.sortByRanking(
+        this.subtopicDetails.filter(
+          (resource) => resource.resourceType === "Videos"
+        )
       );
-      this.organizationData = this.subtopicDetails.filter(
-        resource => resource.resourceType === "Organizations"
+      this.organizationData = this.sortByRanking(
+        this.subtopicDetails.filter(
+          (resource) => resource.resourceType === "Organizations"
+        )
       );
-      this.formData = this.subtopicDetails.filter(
-        resource => resource.resourceType === "Forms"
+      this.formData = this.sortByRanking(
+        this.subtopicDetails.filter(
+          (resource) => resource.resourceType === "Forms"
+        )
       );
-      this.relatedLinksData = this.subtopicDetails.filter(
-        resource => resource.resourceType === "Related Readings" || resource.resourceType === "Related Links"
+      this.relatedLinksData = this.sortByRanking(
+        this.subtopicDetails.filter(
+          (resource) =>
+            resource.resourceType === "Related Readings" ||
+            resource.resourceType === "Related Links"
+        )
       );
     }
   }
@@ -107,58 +138,35 @@ export class SubtopicDetailComponent implements OnInit {
     if (this.subtopics) {
       this.topicService
         .getDocumentData(this.activeSubtopicParam)
-        .subscribe(data => {
-          if(data && data.length > 0){
+        .subscribe((data) => {
+          if (data && data.length > 0) {
             this.subtopics = data[0];
             this.topIntent = data[0].name;
             this.guidedSutopicDetailsInput = {
               activeId: this.activeSubtopicParam,
-              name: this.subtopics.name
+              name: this.subtopics.name,
             };
             this.getSubtopicDetail();
           }
-        });   
+        });
     }
-
   }
 
   getSubtopicDetail(): void {
     this.topicService
       .getSubtopicDetail(this.activeSubtopicParam, this.subtopics.name)
-      .subscribe(data => {
-        var rankingData = [];
-        rankingData = data.filter(x => x.ranking == 1);
-        var newArray = [];
-        if(rankingData.length > 1){
-          rankingData = rankingData.sort((a, b) => a.name === b.name ? 0 : (a.name < b.name ? -1 : 1));
-        }
-        newArray = data.filter(x => !rankingData.includes(x));
-        if(newArray.length > 0){
-          newArray = rankingData.concat(newArray);
-        } else{
-          newArray = rankingData;
-        }
-        this.subtopicDetails = newArray.sort((n1,n2) => {
-          if (n1.ranking > n2.ranking) {
-              return 1;
-          }
-      
-          if (n1.ranking < n2.ranking) {
-              return -1;
-          }
-      
-          return 0;
-      });
+      .subscribe((data) => {
+        this.subtopicDetails = data;
         this.filterSubtopicDetail();
       });
 
-      this.topicService
-        .getDocumentData(this.activeSubtopicParam)
-        .subscribe(data => {
-          if(data.length > 0){
-            this.subtopics = data[0];
-          }
-        });
+    this.topicService
+      .getDocumentData(this.activeSubtopicParam)
+      .subscribe((data) => {
+        if (data.length > 0) {
+          this.subtopics = data[0];
+        }
+      });
   }
 
   clickSeeMoreOrganizationsFromSubtopicDetails(resourceType: string) {
@@ -171,15 +179,19 @@ export class SubtopicDetailComponent implements OnInit {
 
   loadStatisticFilter() {
     var obj = this;
-    this.showMoreService.loadStatisticFilter('All', this.activeSubtopicParam, function(response){
-      obj.searchResults = response;
-      obj.resourceResults = response.resourceTypeFilter;
-      obj.isInternalResource = true;
-      obj.isSortingDisabled = true;
-    });
+    this.showMoreService.loadStatisticFilter(
+      "All",
+      this.activeSubtopicParam,
+      function (response) {
+        obj.searchResults = response;
+        obj.resourceResults = response.resourceTypeFilter;
+        obj.isInternalResource = true;
+        obj.isSortingDisabled = true;
+      }
+    );
   }
 
-  enableFilter(event: ParamsChange){
+  enableFilter(event: ParamsChange) {
     var obj = event;
     this.clickSeeMoreOrganizationsFromSubtopicDetails(obj.filterParam);
   }
@@ -189,14 +201,14 @@ export class SubtopicDetailComponent implements OnInit {
     this.displayResources = this.global.displayResources;
     this.global.activeSubtopicParam = this.activeSubtopicParam;
     this.global.topIntent = this.topIntent;
-    this.activeRoute.url.subscribe(routeParts => {
+    this.activeRoute.url.subscribe((routeParts) => {
       for (let i = 1; i < routeParts.length; i++) {
         this.getDataOnReload();
       }
     });
     this.showRemoveOption = false;
-    this.subscription = this.mapService.notifyLocation.subscribe(value => {
-      this.topicService.getTopics().subscribe(response => {
+    this.subscription = this.mapService.notifyLocation.subscribe((value) => {
+      this.topicService.getTopics().subscribe((response) => {
         if (response != undefined) {
           this.global.topicsData = response;
           if (

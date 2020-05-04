@@ -142,6 +142,19 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     this.searchResults = this.navigateDataService.getData();
 
     if (this.searchResults) {
+      this.searchResults.resources = this.searchResults.resources.sort(
+        (n1, n2) => {
+          if (n1.ranking > n2.ranking) {
+            return 1;
+          }
+
+          if (n1.ranking < n2.ranking) {
+            return -1;
+          }
+
+          return n1.name > n2.name ? 1 : -1;
+        }
+      );
       this.guidedAssistantId = this.searchResults.guidedAssistantId;
       this.cacheSearchResultsData();
       this.isInternalResource = this.searchResults.resources;
@@ -235,7 +248,6 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
   }
 
   filterSearchResults(event: ParamsChange) {
-    debugger;
     this.sortType = event;
     if (!event.filterParam) {
       this.sortType.filterParam = "All";
@@ -362,7 +374,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
                   return -1;
                 }
 
-                return 0;
+                return n1.name > n2.name ? 1 : -1;
               }
             );
           }
