@@ -8,14 +8,14 @@ import { ENV } from "environment";
 import { Global } from "../global";
 import {
   PersonalizedPlan,
-  PersonalizedPlanTopic
+  PersonalizedPlanTopic,
 } from "../guided-assistant/personalized-plan/personalized-plan";
 import { PersonalizedPlanService } from "../guided-assistant/personalized-plan/personalized-plan.service";
 
 @Component({
   selector: "app-profile",
   templateUrl: "./profile.component.html",
-  styleUrls: ["./profile.component.css"]
+  styleUrls: ["./profile.component.css"],
 })
 export class ProfileComponent implements OnInit {
   topics: any;
@@ -39,7 +39,7 @@ export class ProfileComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     if (this.msalService.getUser()) {
-      this.route.data.pipe(map(data => data.cres)).subscribe(response => {
+      this.route.data.pipe(map((data) => data.cres)).subscribe((response) => {
         if (response) {
           this.userId = response.oId;
           this.sharedResourceId = response.sharedResourceId;
@@ -82,16 +82,16 @@ export class ProfileComponent implements OnInit {
 
   filterTopicsList(topic) {
     this.topicsList = [];
-    this.tempTopicsList.forEach(topicDetail => {
+    this.tempTopicsList.forEach((topicDetail) => {
       if (topicDetail.topic.name === topic) {
         this.planTopic = {
           topic: topicDetail.topic,
-          isSelected: !topicDetail.isSelected
+          isSelected: !topicDetail.isSelected,
         };
       } else {
         this.planTopic = {
           topic: topicDetail.topic,
-          isSelected: topicDetail.isSelected
+          isSelected: topicDetail.isSelected,
         };
       }
       this.topicsList.push(this.planTopic);
@@ -111,14 +111,14 @@ export class ProfileComponent implements OnInit {
     }
   }
   getPersonalizedPlan() {
-    this.personalizedPlanService.getPersonalizedPlan().subscribe(plan => {
+    this.personalizedPlanService.getPersonalizedPlan().subscribe((plan) => {
       if (plan) {
         //iterate each description, find <a>, insert target="_blank" there
         var topics = plan.topics;
-        topics.forEach(topic => {
+        topics.forEach((topic) => {
           var steps = topic.steps;
           var position = 0;
-          steps.forEach(step => {
+          steps.forEach((step) => {
             position = step.description.indexOf("<a");
             while (position != -1) {
               position += 2;

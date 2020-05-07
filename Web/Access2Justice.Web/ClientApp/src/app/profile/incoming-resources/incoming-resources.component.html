@@ -1,28 +1,38 @@
 <div class="row">
-  <div *ngIf="!incomingResources.length">
+  <div *ngIf="incomingResources.length == 0 && planDetails.length == 0">
     There aren't any incoming resources
   </div>
-  <div *ngIf="incomingResources && incomingResources.length" class="col-sm-12">
-    <div *ngFor="let resource of incomingResources">
-      <app-resource-card
-        [searchResource]="resource"
-        [sharedResources]="false"
-        [sharedToResources]="false"
+  <div
+    *ngIf="
+      (incomingResources && incomingResources.length) ||
+      (planDetails && planDetails.topics)
+    "
+    class="col-sm-12"
+  >
+    <div *ngIf="incomingResources && incomingResources.length">
+      <div *ngFor="let resource of incomingResources">
+        <app-resource-card
+          [searchResource]="resource"
+          [sharedResources]="false"
+          [sharedToResources]="false"
+          [showUnshareOption]="false"
+          [showSharedOptions]="false"
+          [personalizedResources]="incomingResources"
+          [showRemoveOption]="true"
+          [isIncomingResource]="true"
+        >
+        </app-resource-card>
+      </div>
+    </div>
+    <div *ngIf="planDetails">
+      <app-action-plans
+        [planDetails]="planDetails"
         [showUnshareOption]="false"
-        [showSharedOptions]="false"
-        [personalizedResources]="incomingResources"
         [showRemoveOption]="true"
+        [showDropDown]="true"
         [isIncomingResource]="true"
       >
-      </app-resource-card>
+      </app-action-plans>
     </div>
-    <app-action-plans
-      [planDetails]="planDetails"
-      [showUnshareOption]="false"
-      [showRemoveOption]="true"
-      [showDropDown]="true"
-      [isIncomingResource]="true"
-    >
-    </app-action-plans>
   </div>
 </div>
