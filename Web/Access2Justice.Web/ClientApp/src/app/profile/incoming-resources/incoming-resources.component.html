@@ -3,10 +3,7 @@
     There aren't any incoming resources
   </div>
   <div
-    *ngIf="
-      (incomingResources && incomingResources.length) ||
-      (planDetails && planDetails.topics)
-    "
+    *ngIf="(incomingResources && incomingResources.length) || planDetails"
     class="col-sm-12"
   >
     <div *ngIf="incomingResources && incomingResources.length">
