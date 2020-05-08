@@ -29,6 +29,7 @@ export class ProfileComponent implements OnInit {
   userId: string;
   userName: string;
   sharedResourceId: string;
+  type = "Plan";
 
   constructor(
     private personalizedPlanService: PersonalizedPlanService,

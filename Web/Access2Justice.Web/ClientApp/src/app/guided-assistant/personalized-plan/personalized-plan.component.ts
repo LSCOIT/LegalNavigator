@@ -51,7 +51,7 @@ export class PersonalizedPlanComponent implements OnInit {
     } else {
       this.personalizedPlanService
         .getActionPlanConditions(this.activeActionPlan)
-        .subscribe(plan => {
+        .subscribe((plan) => {
           if (plan) {
             this.topics = plan.topics;
             this.planDetailTags = plan;

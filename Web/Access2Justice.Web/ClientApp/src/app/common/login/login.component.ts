@@ -1,15 +1,22 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { Router } from '@angular/router';
-import { MsalService } from '@azure/msal-angular';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+} from "@angular/core";
+import { Router } from "@angular/router";
+import { MsalService } from "@azure/msal-angular";
 
-import {ENV} from 'environment';
-import { Global, UserStatus } from '../../global';
-import { Login } from '../navigation/navigation';
+import { ENV } from "environment";
+import { Global, UserStatus } from "../../global";
+import { Login } from "../navigation/navigation";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.css"],
 })
 export class LoginComponent implements OnInit, OnDestroy {
   @Input() login: Login;
@@ -26,8 +33,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private router: Router,
     private global: Global,
     private msalService: MsalService
-  ) {
-  }
+  ) {}
 
   onProfileOptionClick() {
     this.sendProfileOptionClickEvent.emit();
@@ -55,8 +61,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   checkIfAdmin(roleInformation) {
-    roleInformation.forEach(role => {
-      if (role.roleName.includes('Admin') || role.roleName === 'Developer') {
+    roleInformation.forEach((role) => {
+      if (role.roleName.includes("Admin") || role.roleName === "Developer") {
         this.isAdmin = true;
       }
     });
@@ -66,20 +72,20 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.userProfile = this.msalService.getUser();
     if (this.userProfile) {
       this.isLoggedIn = true;
-      this.userProfileName = this.userProfile.idToken['name']
-        ? this.userProfile.idToken['name']
-        : this.userProfile.idToken['preferred_username'];
+      this.userProfileName = this.userProfile.idToken["name"]
+        ? this.userProfile.idToken["name"]
+        : this.userProfile.idToken["preferred_username"];
     }
 
     this.roleInformationSubscription = this.global.notifyRoleInformation.subscribe(
-      value => {
+      (value) => {
         this.checkIfAdmin(value);
       }
     );
 
     if (
-      document.getElementById('mobile-menu') &&
-      document.getElementById('mobile-menu').style.display !== 'none'
+      document.getElementById("mobile-menu") &&
+      document.getElementById("mobile-menu").style.display !== "none"
     ) {
       this.isMobile = true;
     }

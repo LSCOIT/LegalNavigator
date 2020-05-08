@@ -41,6 +41,9 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "location")]
         public Location Location { get; set; }
+
+        [JsonProperty(PropertyName = "plan")]
+        public Plan Plan { get; set; }
     }
 
     public class SharedResourceView: SharedResource
@@ -53,6 +56,7 @@ namespace Access2Justice.Shared.Models
             PermaLink = other.PermaLink;
             ResourceType = other.ResourceType;
             ItemId = other.ItemId;
+            Plan = other.Plan;
         }
 
         public SharedResourceView()

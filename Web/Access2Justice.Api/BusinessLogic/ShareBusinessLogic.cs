@@ -93,7 +93,8 @@ namespace Access2Justice.Api.BusinessLogic
                 PermaLink = permaLink,
                 Location = shareInput.Location,
                 ResourceType = shareInput.ResourseType,
-                ItemId = shareInput.ResourceId.ToString()
+                ItemId = shareInput.ResourceId.ToString(),
+                Plan = shareInput.Plan
             };
             response = await UpsertSharedResource(userProfile, sharedResource);
             if (shareInput.Url.OriginalString.Contains("plan"))
@@ -336,8 +337,8 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 return null;
             }
-
-            if (unShareInput.Url.OriginalString.Contains("plan"))
+            var isPlan = unShareInput.Url.OriginalString.Contains("plan");
+            if (isPlan)
             {
                 var planId = unShareInput.Url.OriginalString.Substring(6);
                 await UpdatePlanIsSharedStatus(planId, false);
@@ -348,7 +349,7 @@ namespace Access2Justice.Api.BusinessLogic
                 var resourceId =
                     Guid.Parse(unShareInput.Url.OriginalString.TrimEnd('/')
                         .Substring(unShareInput.Url.OriginalString.Length - Constants.StrigifiedGuidLength));
-                await UnshareAllIncomingResources(resourceId, sharedResourcesId);
+                await UnshareAllIncomingResources(resourceId, sharedResourcesId, isPlan);
             }
 
             return response != null;
@@ -397,7 +398,7 @@ namespace Access2Justice.Api.BusinessLogic
             return permaLink.Substring(0, dbShareSettings.PermaLinkMaxLength);
         }
 
-        private async Task UnshareAllIncomingResources(Guid resourceId, Guid sharedFromResourcesId)
+        private async Task UnshareAllIncomingResources(Guid resourceId, Guid sharedFromResourcesId, bool isPlan = false)
         {
             var retrieveParam = new IncomingSharedResourceRetrieveParam
             {
@@ -406,7 +407,7 @@ namespace Access2Justice.Api.BusinessLogic
             };
             var stringResource = resourceId.ToString();
             await unshareIncomingResources(retrieveParam,
-                x => x.ResourceId == stringResource && x.SharedFromResourceId == sharedFromResourcesId);
+                x => x.ResourceId == stringResource && x.SharedFromResourceId == sharedFromResourcesId, isPlan);
         }
 
         private async Task UnshareIncomingResource(Guid resourceId, Guid incomingResourcesId)
@@ -422,7 +423,7 @@ namespace Access2Justice.Api.BusinessLogic
         }
 
         private async Task unshareIncomingResources(IncomingSharedResourceRetrieveParam retrieveParam,
-            Predicate<IncomingResource> removeResourceCondition)
+            Predicate<IncomingResource> removeResourceCondition, bool isPlan = false)
         {
             var incomingShare = await dbService.FindIncomingSharedResource(retrieveParam);
             if (incomingShare == null || incomingShare.Count == 0)
@@ -434,17 +435,10 @@ namespace Access2Justice.Api.BusinessLogic
             foreach (var userIncomingResource in incomingShare)
             {
                 userIncomingResource.Resources.RemoveAll(removeResourceCondition);
-                if (userIncomingResource.Resources.Count == 0)
-                {
-                    await dbService.DeleteItemAsync(userIncomingResource.IncomingResourcesId.ToString(),
-                        dbSettings.UserResourcesCollectionId);
-                }
-                else
-                {
-                    await dbService.UpdateItemAsync(userIncomingResource.IncomingResourcesId.ToString(),
-                        userIncomingResource,
-                        dbSettings.UserResourcesCollectionId);
-                }
+
+                await dbService.UpdateItemAsync(userIncomingResource.IncomingResourcesId.ToString(),
+                    userIncomingResource,
+                    dbSettings.UserResourcesCollectionId);
             }
         }
     }

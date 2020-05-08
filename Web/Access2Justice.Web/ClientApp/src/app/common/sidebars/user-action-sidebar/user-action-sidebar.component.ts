@@ -4,7 +4,7 @@ import { Global, UserStatus } from "../../../global";
 @Component({
   selector: "app-user-action-sidebar",
   templateUrl: "./user-action-sidebar.component.html",
-  styleUrls: ["./user-action-sidebar.component.css"]
+  styleUrls: ["./user-action-sidebar.component.css"],
 })
 export class UserActionSidebarComponent implements OnInit {
   @Input() mobile = false;
@@ -13,7 +13,7 @@ export class UserActionSidebarComponent implements OnInit {
   @Input() showDownload = true;
   @Input() showSetting = false;
   @Input() id = "";
-  @Input() type = "";
+  @Input() type;
   resourceId: string;
   resourceType: string;
 

@@ -4,7 +4,7 @@ import {
   Input,
   OnInit,
   TemplateRef,
-  ViewChild
+  ViewChild,
 } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
@@ -26,8 +26,8 @@ import { MapLocation } from "../../../map/map";
   styleUrls: ["./share-button.component.css"],
   // tslint:disable-next-line
   host: {
-    "[class.app-resource-button]": "true"
-  }
+    "[class.app-resource-button]": "true",
+  },
 })
 export class ShareButtonComponent implements OnInit {
   @Input() showIcon = true;
@@ -45,7 +45,7 @@ export class ShareButtonComponent implements OnInit {
     UserId: "",
     Url: "",
     Location: null,
-    ResourceType: ""
+    ResourceType: "",
   };
   shareView: any;
   blank = "";
@@ -89,7 +89,7 @@ export class ShareButtonComponent implements OnInit {
   }
 
   formSharedResources = new FormGroup({
-    email: new FormControl("", [Validators.required, Validators.email])
+    email: new FormControl("", [Validators.required, Validators.email]),
   });
 
   close() {
@@ -99,7 +99,7 @@ export class ShareButtonComponent implements OnInit {
 
   checkPermalink() {
     this.buildParams();
-    this.shareService.checkLink(this.shareInput).subscribe(response => {
+    this.shareService.checkLink(this.shareInput).subscribe((response) => {
       if (response) {
         this.shareView = response;
         if (this.shareView.permaLink) {
@@ -116,9 +116,9 @@ export class ShareButtonComponent implements OnInit {
       const params = {
         personalizedPlan: this.navigateDataService.getData(),
         oId: this.global.userId,
-        saveActionPlan: true
+        saveActionPlan: true,
       };
-      this.personalizedPlanService.userPlan(params).subscribe(response => {
+      this.personalizedPlanService.userPlan(params).subscribe((response) => {
         if (response) {
           console.log("Plan Added to Session");
         }
@@ -129,7 +129,7 @@ export class ShareButtonComponent implements OnInit {
   generateLink() {
     debugger;
     this.buildParams();
-    this.shareService.generateLink(this.shareInput).subscribe(response => {
+    this.shareService.generateLink(this.shareInput).subscribe((response) => {
       if (response != undefined) {
         this.shareView = response;
         this.permaLink = this.getPermaLink();
@@ -140,7 +140,7 @@ export class ShareButtonComponent implements OnInit {
 
   removeLink(): void {
     this.buildParams();
-    this.shareService.removeLink(this.shareInput).subscribe(response => {
+    this.shareService.removeLink(this.shareInput).subscribe((response) => {
       if (response != undefined) {
         this.close();
         this.showGenerateLink = true;
@@ -179,17 +179,17 @@ export class ShareButtonComponent implements OnInit {
   submitShareLink() {
     debugger;
     let topicIds = this.personalizedPlanService.topicsList
-      .filter(x => x.isSelected)
-      .map(x => x.topic.topicId);
+      .filter((x) => x.isSelected)
+      .map((x) => x.topic.topicId);
     let plan = { id: this.personalizedPlanService.planDetails.id, topicIds };
     this.shareService
       .shareLinkToUser({
         Oid: this.global.userId,
         Email: this.formSharedResources.value.email,
         ItemId: this.id,
-        ResourceType: this.type || "plan",
+        ResourceType: this.type,
         ResourceDetails: {},
-        Plan: plan
+        Plan: plan,
       })
       .subscribe(() => {
         this.formSharedResources.reset();
@@ -212,7 +212,15 @@ export class ShareButtonComponent implements OnInit {
       sessionStorage.getItem("globalMapLocation")
     ).location;
     this.shareInput.Location = this.location;
-    if (this.id || this.type === "WebResources") {
+    if (this.type === "Plan") {
+      let topicIds = this.personalizedPlanService.topicsList
+        .filter((x) => x.isSelected)
+        .map((x) => x.topic.topicId);
+      let plan = { id: this.personalizedPlanService.planDetails.id, topicIds };
+      this.shareInput.Plan = plan;
+      this.shareInput.Url = this.buildUrl();
+      this.shareInput.ResourceId = this.id;
+    } else if (this.id || this.type === "WebResources") {
       this.shareInput.Url = this.buildUrl();
       this.shareInput.ResourceId = this.id;
     } else {

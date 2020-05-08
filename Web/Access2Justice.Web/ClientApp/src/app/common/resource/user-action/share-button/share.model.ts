@@ -6,6 +6,7 @@ export interface Share {
   UserId?: string;
   Location: MapLocation;
   ResourceType: string;
+  Plan?: any;
 }
 
 export interface ShareView {

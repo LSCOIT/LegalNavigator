@@ -21,6 +21,9 @@ namespace Access2Justice.Shared
 
         public Location Location { get; set; }
 
+        [JsonProperty(PropertyName = "plan")]
+        public Plan Plan { get; set; }
+
         [JsonProperty(PropertyName = "resourceType")]
         public string ResourseType { get; set; }
 
