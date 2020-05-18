@@ -1,48 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8"/>
-  <link rel="icon" href="assets/images/icons/PageIcon.ico" type="image/x-icon"/>
-  <title>Legal Navigator</title>
-  <base href="/">
-  <link href="//fonts.googleapis.com/css?family=Montserrat:400,600" rel="stylesheet">
-  <script type="text/javascript" src="https://www.bing.com/api/maps/mapcontrol?setLang=en-US" async defer></script>
-  <script type="text/javascript">
-    function googleTranslateElementInit() {
-      new google.translate.TranslateElement(
-        {
-          pageLanguage: "en",
-          layout: google.translate.TranslateElement.InlineLayout.horizontal
-        },
-        "google_translate_element"
-      );
-      let translator = document.getElementById("google_translate_element");
-      translator.setAttribute(
-        "style",
-        "display: none; box-shadow: 0 6px 12px 3px #ddd;"
-      );
-      if(typeof(document.querySelector) == 'function') {
-         document.querySelector('.goog-logo-link').setAttribute('style', 'display: none');
-         document.querySelector('.goog-te-gadget').setAttribute('style', 'font-size: 0');
+  <head>
+    <meta charset="utf-8" />
+    <link
+      rel="icon"
+      href="assets/images/icons/PageIcon.ico"
+      type="image/x-icon"
+    />
+    <title>Legal Navigator</title>
+    <base href="/" />
+    <link
+      href="//fonts.googleapis.com/css?family=Montserrat:400,600"
+      rel="stylesheet"
+    />
+    <script
+      type="text/javascript"
+      src="https://www.bing.com/api/maps/mapcontrol?setLang=en-US"
+      async
+      defer
+    ></script>
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          {
+            pageLanguage: "en",
+            layout: google.translate.TranslateElement.InlineLayout.horizontal,
+          },
+          "google_translate_element"
+        );
+        let translator = document.getElementById("google_translate_element");
+        translator.setAttribute(
+          "style",
+          "display: none; box-shadow: 0 6px 12px 3px #ddd;"
+        );
+        if (typeof document.querySelector == "function") {
+          document
+            .querySelector(".goog-logo-link")
+            .setAttribute("style", "display: none");
+          document
+            .querySelector(".goog-te-gadget")
+            .setAttribute("style", "font-size: 0");
+        }
       }
-    }
-  </script>
-  <script>
-    if(navigator.userAgent.indexOf("MSIE ") > -1 || navigator.userAgent.indexOf("Trident/") > -1){
-      alert('This browser is currently not supported. Please open the app using Chrome');
-    }
-  </script>
-  <script type="text/javascript"
-          src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <script type="text/javascript">
-      window.heap=window.heap||[],heap.load=function(e,t){window.heap.appid=e,window.heap.config=t=t||{};var r=document.createElement("script");r.type="text/javascript",r.async=!0,r.src="https://cdn.heapanalytics.com/js/heap-"+e+".js";var a=document.getElementsByTagName("script")[0];a.parentNode.insertBefore(r,a);for(var n=function(e){return function(){heap.push([e].concat(Array.prototype.slice.call(arguments,0)))}},p=["addEventProperties","addUserProperties","clearEventProperties","identify","resetIdentity","removeEventProperty","setEventProperties","track","unsetEventProperty"],o=0;o<p.length;o++)heap[p[o]]=n(p[o])};
+    </script>
+    <script>
+      if (
+        navigator.userAgent.indexOf("MSIE ") > -1 ||
+        navigator.userAgent.indexOf("Trident/") > -1
+      ) {
+        alert(
+          "This browser is currently not supported. Please open the app using Chrome"
+        );
+      }
+    </script>
+    <script
+      type="text/javascript"
+      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    ></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script type="text/javascript">
+      (window.heap = window.heap || []),
+        (heap.load = function (e, t) {
+          (window.heap.appid = e), (window.heap.config = t = t || {});
+          var r = document.createElement("script");
+          (r.type = "text/javascript"),
+            (r.async = !0),
+            (r.src = "https://cdn.heapanalytics.com/js/heap-" + e + ".js");
+          var a = document.getElementsByTagName("script")[0];
+          a.parentNode.insertBefore(r, a);
+          for (
+            var n = function (e) {
+                return function () {
+                  heap.push(
+                    [e].concat(Array.prototype.slice.call(arguments, 0))
+                  );
+                };
+              },
+              p = [
+                "addEventProperties",
+                "addUserProperties",
+                "clearEventProperties",
+                "identify",
+                "resetIdentity",
+                "removeEventProperty",
+                "setEventProperties",
+                "track",
+                "unsetEventProperty",
+              ],
+              o = 0;
+            o < p.length;
+            o++
+          )
+            heap[p[o]] = n(p[o]);
+        });
 
-      heap.load("1215956449");
-</script>
-</head> 
-<body>
-<app-root>Loading...</app-root>
-<div id="google_translate_element"></div>
-</body>
+      heap.load("1517532960");
+    </script>
+  </head>
+  <body>
+    <app-root>Loading...</app-root>
+    <div id="google_translate_element"></div>
+  </body>
 </html>

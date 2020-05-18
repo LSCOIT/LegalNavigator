@@ -61,7 +61,7 @@ export class AppComponent implements OnInit, OnDestroy {
   createOrGetProfile() {
     this.loginService.getUserProfile().subscribe(response => {
       if (response) {
-        this.heapIo.load({ app_id: 1215956449, force_ssl: true, secure_cookie: true, disable_text_capture: true, cookie_path: '/' });
+        this.heapIo.load({ app_id: 1517532960, force_ssl: true, secure_cookie: true, disable_text_capture: true, cookie_path: '/' });
         this.heapIo.addUserProperties({'email': response.eMail, 'Name': response.name});
         this.global.setProfileData(
           response.oId,
