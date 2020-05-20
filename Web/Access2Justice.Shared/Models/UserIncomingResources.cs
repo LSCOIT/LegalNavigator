@@ -14,7 +14,7 @@ namespace Access2Justice.Shared.Models
 
         public UserIncomingResources()
         {
-            Resources = new List<IncomingResource>();
+            Resources = new List<IncomingResource>();   
         }
     }
 
@@ -37,6 +37,15 @@ namespace Access2Justice.Shared.Models
 
         [JsonProperty(PropertyName = "plan")]
         public Plan Plan { get; set; }
+    }
+
+    public class Plan
+    {
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        [JsonProperty(PropertyName = "topicIds")]
+        public List<string> TopicIds { get; set; }
     }
 
     public class ProfileIncomingResources

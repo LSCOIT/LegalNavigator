@@ -49,7 +49,8 @@ namespace Access2Justice.CosmosDb
             }
             else
             {
-                query = $"SELECT * FROM c WHERE c.{propertyName}=@valueToSearch";
+                value = value.ToLower();
+                query = $"SELECT * FROM c WHERE LOWER(c.{propertyName})=@valueToSearch";
                 sqlParams = new Dictionary<string, object> { { "valueToSearch", value } };
             }
 
