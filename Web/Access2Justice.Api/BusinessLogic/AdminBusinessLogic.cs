@@ -236,7 +236,7 @@ namespace Access2Justice.Api.BusinessLogic
                     JObject.FromObject(resourceDetail), cosmosDbSettings.ResourcesCollectionId);
             }
 
-            var topicDetails = await topicsResourcesBusinessLogic.GetTopicDetailsAsync(resourceTitle);
+            var topicDetails = await topicsResourcesBusinessLogic.GetTopicDetailsAsync(resourceTitle.Trim());
             List<Topic> topics = JsonUtilities.DeserializeDynamicObject<List<Topic>>(topicDetails);
 
             if (topics.Count == 0)
