@@ -1,4 +1,4 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { MsalService } from "@azure/msal-angular";
 import { NgxSpinnerService } from "ngx-spinner";
@@ -9,12 +9,12 @@ import { IUserProfile } from "./common/login/user-profile.model";
 import { MapService } from "./common/map/map.service";
 import { SaveButtonService } from "./common/resource/user-action/save-button/save-button.service";
 import { StaticResourceService } from "./common/services/static-resource.service";
-import { HeapIoService } from './heap/heap.io-service';
+import { HeapIoService } from "./heap/heap.io-service";
 
 @Component({
   selector: "app-root",
   templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"]
+  styleUrls: ["./app.component.css"],
 })
 export class AppComponent implements OnInit, OnDestroy {
   title = "app";
@@ -46,7 +46,7 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   constructor(
-    private global: Global,    
+    private global: Global,
     private staticResourceService: StaticResourceService,
     private msalService: MsalService,
     private mapService: MapService,
@@ -59,10 +59,19 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   createOrGetProfile() {
-    this.loginService.getUserProfile().subscribe(response => {
+    this.loginService.getUserProfile().subscribe((response) => {
       if (response) {
-        this.heapIo.load({ app_id: 1517532960, force_ssl: true, secure_cookie: true, disable_text_capture: true, cookie_path: '/' });
-        this.heapIo.addUserProperties({'email': response.eMail, 'Name': response.name});
+        this.heapIo.load({
+          app_id: 2925984278,
+          force_ssl: true,
+          secure_cookie: true,
+          disable_text_capture: true,
+          cookie_path: "/",
+        });
+        this.heapIo.addUserProperties({
+          email: response.eMail,
+          Name: response.name,
+        });
         this.global.setProfileData(
           response.oId,
           response.name,
@@ -99,7 +108,7 @@ export class AppComponent implements OnInit, OnDestroy {
     this.spinner.show();
     let location = this.staticResourceService.loadStateName();
     this.staticResourceService.getStaticContents(location).subscribe(
-      response => {
+      (response) => {
         this.staticContentResults = response;
         this.global.setData(this.staticContentResults);
         if (!sessionStorage.getItem(this.global.sessionKey)) {
