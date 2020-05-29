@@ -32,19 +32,6 @@ namespace Access2Justice.CosmosDb.Tests
         }
 
         [Fact]
-        public void FindItemsWhereShouldConstructValidSqlQuery()
-        {
-            // Arrange
-            var query = @"SELECT * FROM c WHERE c.name=@valueToSearch";
-
-            // Act
-            var result = dynamicQueries.FindItemsWhereAsync("topicsCollections", "name", "eviction").Result;
-
-            // Assert
-            cosmosDbService.Received().QueryItemsAsync(Arg.Any<string>(), query, Arg.Any<Dictionary<string, object>>());
-        }
-
-        [Fact]
         public void FindItemsWhereWithMultipleArgumentsShouldConstructValidSqlQuery()
         {
             // Arrange
