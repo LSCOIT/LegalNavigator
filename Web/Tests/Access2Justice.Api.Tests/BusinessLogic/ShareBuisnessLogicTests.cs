@@ -125,41 +125,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
         }
 
         [Theory]
-        [MemberData(nameof(ShareTestData.UnShareInputData), MemberType = typeof(ShareTestData))]
-        public void UnshareResourceDataAsyncShouldReturnTrue(ShareInput unShareInput, dynamic expectedResult)
-        {
-            var profileResponse = userProfileBusinessLogic.GetUserProfileDataAsync(unShareInput.UserId);
-            profileResponse.ReturnsForAnyArgs(ShareTestData.UserProfileWithSharedResourceData);
-
-            Document updatedDocument = new Document();
-            JsonTextReader reader = new JsonTextReader(new StringReader(ShareTestData.updatedSharedResourcesData));
-            updatedDocument.LoadFrom(reader);
-
-            dbService.UpdateItemAsync<SharedResources>(
-               Arg.Any<string>(),
-               Arg.Any<SharedResources>(),
-               Arg.Any<string>()).ReturnsForAnyArgs<Document>(updatedDocument);
-
-            userProfileBusinessLogic
-                .DeleteUserSharedResource(Arg.Is<ShareInput>(x => x.Url == null))
-                .Returns((Document)null);
-
-            userProfileBusinessLogic
-                .DeleteUserSharedResource(Arg.Is<ShareInput>(x => x.Url != null))
-                .Returns(updatedDocument);
-
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourcesCollectionId, "SharedResourceId", "0568B88C-3866-4CCA-97C8-B8E3F3D1FF3C");
-            dbResponse.ReturnsForAnyArgs(ShareTestData.sharedResourcesData);
-
-            //act
-            var result = shareBusinessLogic.UnshareResourceDataAsync(unShareInput).Result;
-            expectedResult = JsonConvert.SerializeObject(expectedResult);
-            var actualResult = JsonConvert.SerializeObject(result);
-            //assert
-            Assert.Equal(expectedResult, actualResult);
-        }
-
-        [Theory]
         [MemberData(nameof(ShareTestData.ShareProfileResponseData), MemberType = typeof(ShareTestData))]
         public void GetPermaLinkDataAsyncShouldValidate(string permaLinkInput, string planId, JArray shareProfileDetails, JArray shareProfileResponse, dynamic expectedResult)
         {

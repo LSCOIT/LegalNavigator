@@ -20,6 +20,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<UserProfileViewModel> UpsertUserProfileAsync(UserProfile userProfile);
         Task<Guid> GetDefaultUserRole();
         Task<List<Role>> GetRoleDetailsAsync(List<string> roleInformationId);
+        Task<Document> DeleteUserSharedResource(UserProfileResource shareInput);
         Task<Document> DeleteUserSharedResource(ShareInput shareInput);
     }
 }

@@ -258,56 +258,26 @@ export class RemoveButtonComponent implements AfterViewInit {
   }
 
   private removeSharedPlan() {
-    const safe = this;
-    const unsharePromise = new Promise(function (resolve, reject) {
-      // Remove resource
-      const sharedResource = safe.selectedPlanDetails.planDetails.topics.find(
-        (o) => {
-          return o.topicId === safe.selectedPlanDetails.topic;
-        }
-      );
-      const resourceId = safe.guidUtilityService.getGuidFromResourceUrl(
-        sharedResource.shared.url
-      );
-      const removedElem = {
-        Oid: safe.global.userId,
-        itemId: resourceId,
-        resourceType: "Plan",
-        type: "shared-resources",
-      };
-      safe.personalizedPlanService
-        .removeSharedResources(removedElem)
-        .subscribe(() => {
-          safe.personalizedPlanService.showSuccess(
-            "Shared resource removed from profile"
-          );
-          safe.eventUtilityService.updateSharedResource("RESOURCE REMOVED");
-        });
-
-      resolve();
+    // Remove resource
+    const item = this.selectedPlanDetails.planDetails.topics.find((o) => {
+      return o.topicId === this.selectedPlanDetails.topic;
     });
-
-    unsharePromise.then(() => {
-      safe.selectedPlanDetails.planDetails.topics.forEach((topic) => {
-        if (topic.shared.sharedTo && topic.shared.sharedTo.length > 0) {
-          topic.shared.sharedTo.forEach((email) => {
-            const id = safe.guidUtilityService.getGuidFromResourceUrl(
-              topic.shared.url
-            );
-            const unsharedElem = {
-              oId: safe.global.userId,
-              email: email,
-              itemId: id,
-              resourceType: "Plan",
-              resourceDetails: null,
-            };
-            safe.personalizedPlanService
-              .unshareSharedToResources(unsharedElem)
-              .subscribe(() => {});
-          });
-        }
+    const resourceId = item.shared.itemId;
+    const removedElem = {
+      Oid: this.global.userId,
+      itemId: resourceId,
+      resourceType: "Plan",
+      type: "shared-resources",
+      topicId: this.selectedPlanDetails.topic,
+    };
+    this.personalizedPlanService
+      .removeSharedResources(removedElem)
+      .subscribe(() => {
+        this.personalizedPlanService.showSuccess(
+          "Shared resource removed from profile"
+        );
+        this.eventUtilityService.updateSharedResource("RESOURCE REMOVED");
       });
-    });
   }
 
   removeIncomingPlan = () => {

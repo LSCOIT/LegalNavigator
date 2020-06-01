@@ -55,5 +55,8 @@ namespace Access2Justice.Shared
 
         [JsonProperty(PropertyName = "plan")]
         public Plan Plan { get; set; }
+
+        [JsonProperty(PropertyName = "topicId")]
+        public string TopicId { get; set; }
     }
 }
