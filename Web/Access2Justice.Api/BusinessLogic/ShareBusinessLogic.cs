@@ -139,7 +139,11 @@ namespace Access2Justice.Api.BusinessLogic
             };
 
             response = await UpsertIncomingResourceAsync(recipientUserProfile, incomingResource);
-            await UpdateSharedResourcesTopicIds(senderUserProfile, sendLinkInput);
+            if(sendLinkInput.ResourceType == "Plan")
+            {
+                await UpdateSharedResourcesTopicIds(senderUserProfile, sendLinkInput);
+            }
+            
             return response;
         }
 
