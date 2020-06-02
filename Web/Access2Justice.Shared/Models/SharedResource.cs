@@ -43,7 +43,7 @@ namespace Access2Justice.Shared.Models
         public Location Location { get; set; }
 
         [JsonProperty(PropertyName = "plan")]
-        public Plan Plan { get; set; }
+        public SharedPlan Plan { get; set; }
     }
 
     public class SharedResourceView: SharedResource

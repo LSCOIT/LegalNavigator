@@ -46,7 +46,7 @@ namespace Access2Justice.Shared.Models
             Resources = new List<SavedResource>();
         }
     }
-
+        
     public class UserProfileResource
     {
         [JsonProperty(PropertyName = "oId")]

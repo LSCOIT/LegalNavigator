@@ -22,7 +22,7 @@ namespace Access2Justice.Shared
         public Location Location { get; set; }
 
         [JsonProperty(PropertyName = "plan")]
-        public Plan Plan { get; set; }
+        public SharedPlan Plan { get; set; }
 
         [JsonProperty(PropertyName = "resourceType")]
         public string ResourseType { get; set; }
@@ -54,7 +54,7 @@ namespace Access2Justice.Shared
         public dynamic ResourceDetails { get; set; }
 
         [JsonProperty(PropertyName = "plan")]
-        public Plan Plan { get; set; }
+        public SharedPlan Plan { get; set; }
 
         [JsonProperty(PropertyName = "topicId")]
         public string TopicId { get; set; }

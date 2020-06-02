@@ -82,14 +82,20 @@ export class SharedResourcesComponent implements OnInit, OnDestroy {
                 (x) => x.plan && x.plan.id === dataArray[g].id
               );
               for (let f = 0; f < dataArray[g].topics.length; f++) {
+                var topicId = dataArray[g].topics[f].topicId;
+                var result = test.plan.topicIds.find((x) => x.value == topicId);
+
                 dataArray[g].topics[f].shared = {
-                  sharedTo: test.sharedTo,
+                  sharedTo:
+                    result && result.isShared ? test.sharedTo : undefined,
                   itemId: test.itemId,
                 };
               }
               var nonfilteredTopics = dataArray[g].topics;
               var resTopics = nonfilteredTopics.filter((x) =>
-                sharedResources.plans[g].topicIds.includes(x.topicId)
+                sharedResources.plans[g].topicIds.find(
+                  (y) => y.value == x.topicId
+                )
               );
               planDetailTags.topics = planDetailTags.topics.concat(resTopics);
             }

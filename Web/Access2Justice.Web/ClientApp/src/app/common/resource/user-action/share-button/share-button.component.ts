@@ -178,9 +178,15 @@ export class ShareButtonComponent implements OnInit {
 
   submitShareLink() {
     debugger;
-    let topicIds = this.personalizedPlanService.topicsList
+    let topicIdsList = this.personalizedPlanService.topicsList
       .filter((x) => x.isSelected)
       .map((x) => x.topic.topicId);
+
+    let topicIds = [];
+    topicIdsList.forEach((x) => {
+      topicIds.push({ value: x, isShared: true });
+    });
+
     let plan = { id: this.personalizedPlanService.planDetails.id, topicIds };
     this.shareService
       .shareLinkToUser({
@@ -213,10 +219,22 @@ export class ShareButtonComponent implements OnInit {
     ).location;
     this.shareInput.Location = this.location;
     if (this.type === "Plan") {
-      let topicIds = this.personalizedPlanService.topicsList
+      //Convert to dictionary
+      let topicIdsList = this.personalizedPlanService.topicsList
         .filter((x) => x.isSelected)
-        .map((x) => x.topic.topicId);
-      let plan = { id: this.personalizedPlanService.planDetails.id, topicIds };
+        .map((y) => {
+          return y.topic.topicId;
+        });
+
+      let topicIds = [];
+      topicIdsList.forEach((x) => {
+        topicIds.push({ value: x, isShared: false });
+      });
+
+      let plan = {
+        id: this.personalizedPlanService.planDetails.id,
+        topicIds,
+      };
       this.shareInput.Plan = plan;
       this.shareInput.Url = this.buildUrl();
       this.shareInput.ResourceId = this.id;

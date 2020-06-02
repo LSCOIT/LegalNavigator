@@ -51,6 +51,24 @@ namespace Access2Justice.Shared.Models
         public List<string> TopicIds { get; set; }
     }
 
+    public class SharedPlan
+    {
+        [JsonProperty(PropertyName = "id")]
+        public string Id { get; set; }
+
+        [JsonProperty(PropertyName = "topicIds")]
+        public List<TopicId> TopicIds { get; set; }
+    }
+
+    public class TopicId
+    {
+        [JsonProperty(PropertyName = "value")]
+        public string Value { get; set; }
+
+        [JsonProperty(PropertyName = "isShared")]
+        public bool IsShared { get; set; }
+    }
+
     public class ProfileIncomingResources
     {
         [JsonProperty(PropertyName = "oId")]
