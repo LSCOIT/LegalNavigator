@@ -75,7 +75,7 @@ namespace Access2Justice.Api.Controllers
         {
             var personalizedPlan = await personalizedPlanBusinessLogic.GetPersonalizedPlanAsync(personalizedPlanId);
 
-            if (personalizedPlan.PersonalizedPlanId == default(Guid))
+            if (personalizedPlan is null || personalizedPlan.PersonalizedPlanId == default(Guid))
             {
                 return StatusCode(StatusCodes.Status404NotFound, $"Could not find a plan with this Id {personalizedPlanId}");
             }

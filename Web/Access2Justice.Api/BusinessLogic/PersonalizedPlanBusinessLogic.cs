@@ -36,6 +36,10 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId, string userId = null)
         {
+            if(curatedExperience is null)
+            {
+                return null;
+            }
             var a2jPersonalizedPlan = await dynamicQueries.FindItemWhereAsync<JObject>(cosmosDbSettings.A2JAuthorDocsCollectionId, Constants.Id,
                 curatedExperience.A2jPersonalizedPlanId.ToString());
 

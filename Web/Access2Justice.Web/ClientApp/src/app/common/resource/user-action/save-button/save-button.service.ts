@@ -25,7 +25,7 @@ export class SaveButtonService {
       if (response) {
         this.personalizedPlanService.showSuccess("Plan saved to profile");
         sessionStorage.removeItem(this.global.planSessionKey);
-        this.profileComponent.getPersonalizedPlan();
+        // this.profileComponent.getPersonalizedPlan();
       }
     });
   }
