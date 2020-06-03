@@ -24,12 +24,12 @@ describe("SaveButtonService", () => {
         additionalReadings: [
           {
             text: "Domestic Violence - What it is",
-            url: "https://www.thehotline.org/is-this-abuse/abuse-defined/"
+            url: "https://www.thehotline.org/is-this-abuse/abuse-defined/",
           },
           {
             text: "Safety Planning Tips",
-            url: "https://www.thehotline.org/help/path-to-safety/"
-          }
+            url: "https://www.thehotline.org/help/path-to-safety/",
+          },
         ],
         steps: [
           {
@@ -38,7 +38,7 @@ describe("SaveButtonService", () => {
             order: 1,
             resources: [],
             stepId: "ec78414b-2616-4d65-ae07-e08f3e2f697a",
-            title: "Short Term Protective Order"
+            title: "Short Term Protective Order",
           },
           {
             description: "Long Term",
@@ -46,9 +46,9 @@ describe("SaveButtonService", () => {
             order: 2,
             resources: [],
             stepId: "ed56894b-2616-4d65-ae07-e08f3e2f697a",
-            title: "Long Term Protective Order"
-          }
-        ]
+            title: "Long Term Protective Order",
+          },
+        ],
       },
       {
         topicId: "ba74f857-eb7b-4dd6-a021-5b3e4525e3e4",
@@ -57,8 +57,8 @@ describe("SaveButtonService", () => {
         additionalReadings: [
           {
             text: "Domestic Violence - What it is",
-            url: "https://www.thehotline.org/is-this-abuse/abuse-defined/"
-          }
+            url: "https://www.thehotline.org/is-this-abuse/abuse-defined/",
+          },
         ],
         steps: [
           {
@@ -67,17 +67,17 @@ describe("SaveButtonService", () => {
             order: 1,
             resources: [],
             stepId: "df822558-73c2-4ac8-8259-fabe2334eb71",
-            title: "Step Title"
-          }
-        ]
-      }
-    ]
+            title: "Step Title",
+          },
+        ],
+      },
+    ],
   };
 
   beforeEach(() => {
     mockPersonalizedPlanService = jasmine.createSpyObj([
       "userPlan",
-      "showSuccess"
+      "showSuccess",
     ]);
     mockPersonalizedPlanService.userPlan.and.returnValue(of(mockPlanDetails));
     mockProfileComponent = jasmine.createSpyObj(["getPersonalizedPlan"]);
@@ -92,21 +92,21 @@ describe("SaveButtonService", () => {
         SaveButtonService,
         {
           provide: PersonalizedPlanService,
-          useValue: mockPersonalizedPlanService
+          useValue: mockPersonalizedPlanService,
         },
         {
           provide: Global,
           useValue: {
             global,
             userId: "userId",
-            planSessionKey: "planKey"
-          }
+            planSessionKey: "planKey",
+          },
         },
         {
           provide: ProfileComponent,
-          useValue: mockProfileComponent
-        }
-      ]
+          useValue: mockProfileComponent,
+        },
+      ],
     });
     global = TestBed.get(Global);
   });
@@ -125,7 +125,7 @@ describe("SaveButtonService", () => {
       },
       clear: () => {
         store = {};
-      }
+      },
     };
 
     spyOn(sessionStorage, "setItem").and.callFake(mockSessionStorage.setItem);
@@ -141,14 +141,4 @@ describe("SaveButtonService", () => {
       expect(service).toBeTruthy();
     }
   ));
-
-  it("should call service methods and profilecomponent if userId exists in savePlanToUserProfile method", () => {
-    global.userId = "UserId";
-    service.savePlanToUserProfile(mockPlanDetails);
-    expect(service.personalizedPlan).toEqual(mockPlanDetails);
-    expect(mockPersonalizedPlanService.userPlan).toHaveBeenCalled();
-    expect(mockPersonalizedPlanService.showSuccess).toHaveBeenCalled();
-    expect(sessionStorage.removeItem).toHaveBeenCalled();
-    expect(mockProfileComponent.getPersonalizedPlan).toHaveBeenCalled();
-  });
 });
