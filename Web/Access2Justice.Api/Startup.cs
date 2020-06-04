@@ -100,7 +100,7 @@ namespace Access2Justice.Api
                         Configuration.GetSection("QnAMaker"),
                         serviceProvider.GetService<ISecretsService>()));
 
-            services.AddSingleton<ILuisProxy, SpotProxy>();
+            services.AddSingleton<ILuisProxy, LuisProxy>();
             services.AddSingleton<ILuisBusinessLogic, LuisBusinessLogic>();
             services.AddSingleton<ITopicsResourcesBusinessLogic, TopicsResourcesBusinessLogic>();
             services.AddSingleton<IWebSearchBusinessLogic, WebSearchBusinessLogic>();
