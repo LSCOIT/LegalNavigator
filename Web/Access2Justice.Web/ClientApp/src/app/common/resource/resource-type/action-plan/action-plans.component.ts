@@ -150,15 +150,22 @@ export class ActionPlansComponent implements OnChanges {
     let tag = '<a class="link" ';
 
     if (resource.resourceType === "Forms") {
-      tag += `target="_blank" href="${resource.url}">${resource.name}</a>`;
-      // }
-    } else if (resource.resourceType === "Videos") {
+      tag += `href="${resource.url}">${resource.name}</a>`;
+    } else {
       tag +=
         `href='javascript:void(0)' onclick="window.dispatchEvent(new CustomEvent(\'resource\', {detail:{id:\'${resource.id}\',` +
         `type:\'${resource.resourceType}\', name:\'${resource.name}\', url:\'${resource.url}\'}}));">${resource.name}</a>`;
-    } else {
-      tag += `target="_blank" href="${resource.url}">${resource.name}</a>`;
     }
+    // if (resource.resourceType === "Forms") {
+    //   tag += `target="_blank" href="${resource.url}">${resource.name}</a>`;
+    //   // }
+    // } else if (resource.resourceType === "Videos") {
+    //   tag +=
+    //     `href='javascript:void(0)' onclick="window.dispatchEvent(new CustomEvent(\'resource\', {detail:{id:\'${resource.id}\',` +
+    //     `type:\'${resource.resourceType}\', name:\'${resource.name}\', url:\'${resource.url}\'}}));">${resource.name}</a>`;
+    // } else {
+    //   tag += `target="_blank" href="${resource.url}">${resource.name}</a>`;
+    // }
 
     return tag;
   }
