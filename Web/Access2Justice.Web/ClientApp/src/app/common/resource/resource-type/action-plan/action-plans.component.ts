@@ -153,7 +153,7 @@ export class ActionPlansComponent implements OnChanges {
       tag += `href="${resource.url}">${resource.name}</a>`;
     } else {
       tag +=
-        `href='javascript:void(0)' onclick="window.dispatchEvent(new CustomEvent(\'resource\', {detail:{id:\'${resource.id}\',` +
+        `href='javascript:void(0)' target='_blank'  onclick="window.dispatchEvent(new CustomEvent(\'resource\', {detail:{id:\'${resource.id}\',` +
         `type:\'${resource.resourceType}\', name:\'${resource.name}\', url:\'${resource.url}\'}}));">${resource.name}</a>`;
     }
     // if (resource.resourceType === "Forms") {
