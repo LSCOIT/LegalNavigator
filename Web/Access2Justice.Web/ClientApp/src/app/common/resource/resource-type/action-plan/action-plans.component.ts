@@ -145,27 +145,15 @@ export class ActionPlansComponent implements OnChanges {
       topic.steps = this.orderBy(topic.steps, this.sortOrder);
     });
   }
-
   generateLink(resource) {
     let tag = '<a class="link" ';
 
     if (resource.resourceType === "Forms") {
-      tag += `href="${resource.url}">${resource.name}</a>`;
+      tag += `href="${resource.url}" target="_blank">${resource.name}</a>`;
     } else {
-      tag +=
-        `href='javascript:void(0)' onclick="window.dispatchEvent(new CustomEvent(\'resource\', {detail:{id:\'${resource.id}\',` +
-        `type:\'${resource.resourceType}\', name:\'${resource.name}\', url:\'${resource.url}\'}}));">${resource.name}</a>`;
+      var route = `'${window.location.protocol}//${window.location.host}/resource/${resource.id}'`;
+      tag += `href="javascript:void(0)" onclick="window.open(${route},'_blank');return false;">${resource.name}</a>`;
     }
-    // if (resource.resourceType === "Forms") {
-    //   tag += `target="_blank" href="${resource.url}">${resource.name}</a>`;
-    //   // }
-    // } else if (resource.resourceType === "Videos") {
-    //   tag +=
-    //     `href='javascript:void(0)' onclick="window.dispatchEvent(new CustomEvent(\'resource\', {detail:{id:\'${resource.id}\',` +
-    //     `type:\'${resource.resourceType}\', name:\'${resource.name}\', url:\'${resource.url}\'}}));">${resource.name}</a>`;
-    // } else {
-    //   tag += `target="_blank" href="${resource.url}">${resource.name}</a>`;
-    // }
 
     return tag;
   }
