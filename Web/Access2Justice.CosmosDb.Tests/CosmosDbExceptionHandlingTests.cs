@@ -14,7 +14,8 @@ namespace Access2Justice.CosmosDb.Tests
         public CosmosDbExceptionHandlingTests()
         {
             cosmosDbService = Substitute.For<IBackendDatabaseService>();
-            dynamicQueries = new CosmosDbDynamicQueries(cosmosDbService);
+            var settings = Substitute.For<ICosmosDbSettings>();
+            dynamicQueries = new CosmosDbDynamicQueries(cosmosDbService, settings);
         }
 
         [Theory]
