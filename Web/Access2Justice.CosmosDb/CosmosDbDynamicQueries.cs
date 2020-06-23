@@ -19,10 +19,12 @@ namespace Access2Justice.CosmosDb
         private static readonly Func<object, Dictionary<string, object>> _wrapSingleParam = x => new Dictionary<string, object>{{ $"{_singleParameterName}", x } };
 
         private readonly IBackendDatabaseService backendDatabaseService;
+        private readonly ICosmosDbSettings dbSettings;
 
-        public CosmosDbDynamicQueries(IBackendDatabaseService backendDatabaseService)
+        public CosmosDbDynamicQueries(IBackendDatabaseService backendDatabaseService, ICosmosDbSettings dbSettings)
         {
             this.backendDatabaseService = backendDatabaseService;
+            this.dbSettings = dbSettings;
         }
 
         public async Task<T> FindItemWhereAsync<T>(string collectionId, string propertyName, string value)
@@ -292,15 +294,50 @@ namespace Access2Justice.CosmosDb
             else
             {
                 var query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause}";
-                if (resourceFilter.IsOrder)
-                {
-                    if (resourceFilter.OrderByField == "date")
-                    {
-                        resourceFilter.OrderByField = "modifiedTimeStamp";
-                    }
-                    var orderByField = "ranking";
-                    query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause} order by c.{orderByField} {resourceFilter.OrderBy}";
-                }
+
+                return query;
+            }
+        }
+
+        public string BuildQueryWhereArrayContainsWithAndClauseLocationSpecificRanking(string arrayName,
+            string propertyName,
+            string andPropertyName,
+            ResourceFilter resourceFilter, Dictionary<string, object> parameters, Location location, string topicName, bool isResourceCountCall = false)
+        {
+            EnsureParametersAreNotNullOrEmpty(arrayName, propertyName, andPropertyName, resourceFilter.ResourceType);
+
+            var arrayContainsWithAndClause = ArrayContainsWithOrClause(arrayName, propertyName,
+                resourceFilter.TopicIds as IList<string> ?? resourceFilter.TopicIds.ToList(), parameters);
+            if (!string.IsNullOrEmpty(arrayContainsWithAndClause))
+            {
+                arrayContainsWithAndClause = "(" + arrayContainsWithAndClause + ")";
+            }
+            if (resourceFilter.ResourceType.ToUpperInvariant() != Constants.ResourceTypeAll && !isResourceCountCall)
+            {
+                arrayContainsWithAndClause += string.IsNullOrEmpty(arrayContainsWithAndClause) ? $" c.{andPropertyName} = '" + resourceFilter.ResourceType + "'"
+                                             : $" AND c.{andPropertyName} = '" + resourceFilter.ResourceType + "'";
+            }
+            string resourceIsActiveFilter = FindItemsWhereResourceIsActive(resourceFilter.ResourceType);
+            if (!string.IsNullOrEmpty(resourceIsActiveFilter))
+            {
+                arrayContainsWithAndClause = string.IsNullOrEmpty(arrayContainsWithAndClause) ? resourceIsActiveFilter
+                                          : arrayContainsWithAndClause + " AND " + resourceIsActiveFilter;
+            }
+            string locationFilter = FindLocationWhereArrayContains(location);
+            if (!string.IsNullOrEmpty(locationFilter))
+            {
+                arrayContainsWithAndClause = string.IsNullOrEmpty(arrayContainsWithAndClause) ? locationFilter
+                                          : arrayContainsWithAndClause + " AND " + locationFilter;
+            }
+
+            if (isResourceCountCall)
+            {
+                var query = $"SELECT c.resourceType FROM c WHERE {arrayContainsWithAndClause}" + " AND c.display != 'No'";
+                return query;
+            }
+            else
+            {
+                var query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause} order by c.ranking['{topicName}'] ASC";
 
                 return query;
             }
@@ -334,9 +371,15 @@ namespace Access2Justice.CosmosDb
 
         public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseLocationAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, Location location, bool isResourceCountCall = false)
         {
+            //Get topic info, and check the ranking value before assigning the query
+            var topicId = resourceFilter.TopicIds.ElementAt(0);
+            Topic topicInfo = await backendDatabaseService.GetItemAsync<Topic>(topicId, dbSettings.TopicsCollectionId);
+            string query = string.Empty;
             var parameters = new Dictionary<string, object>();
-            var query = BuildQueryWhereArrayContainsWithAndClauseLocation(arrayName, propertyName, andPropertyName,
-                resourceFilter, parameters, location, isResourceCountCall);
+
+            query = BuildQueryWhereArrayContainsWithAndClauseLocationSpecificRanking(arrayName, propertyName, andPropertyName,
+                    resourceFilter, parameters, location, topicInfo.Name, isResourceCountCall);
+
             PagedResources pagedResources;
             if (isResourceCountCall)
             {
@@ -355,6 +398,7 @@ namespace Access2Justice.CosmosDb
                     pagedResources.TopicIds = resourceFilter.TopicIds;
                 }
             }
+
             return pagedResources;
         }
 

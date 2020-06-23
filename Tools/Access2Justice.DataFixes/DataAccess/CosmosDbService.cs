@@ -2,6 +2,7 @@
 using Microsoft.Azure.Documents.Client;
 using Microsoft.Azure.Documents.Linq;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Access2Justice.DataFixes.DataAccess
@@ -54,6 +55,36 @@ namespace Access2Justice.DataFixes.DataAccess
             }
 
             return results;
+        }
+
+        public async Task<T> GetItemAsync<T>(string id, string collectionId)
+        {
+            var uri = UriFactory.CreateDocumentCollectionUri(_cosmosDbSettings.DatabaseId, collectionId);
+            var query = new SqlQuerySpec
+            {
+                QueryText = "SELECT * FROM c WHERE c.id = @id",
+                Parameters = new SqlParameterCollection { new SqlParameter("@id", id) }
+            };
+            var options = new FeedOptions
+            {
+                EnableCrossPartitionQuery = true
+            };
+
+            // I'm not using the documentClient.ReadDocumentAsync() because Microsoft recently made cosmos partitioning a 
+            // mandatory query param and I don't want to explicitly specify a partition key.
+            var docQuery = _documentClient.CreateDocumentQuery<dynamic>(uri, query, options).AsDocumentQuery();
+
+            var results = new List<dynamic>();
+            while (docQuery.HasMoreResults)
+            {
+                results.AddRange(await docQuery.ExecuteNextAsync());
+            }
+            if (!results.Any())
+            {
+                return default(T);
+            }
+
+            return (T)results.FirstOrDefault();
         }
     }
 }
