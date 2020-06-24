@@ -484,11 +484,11 @@ namespace Access2Justice.CosmosDb
             string resourceIsActiveFilter = string.Empty;
             if (resourceType.ToUpperInvariant() == Constants.GuidedAssistant.ToUpperInvariant())
             {
-                resourceIsActiveFilter = $" c.isActive = true";
+                resourceIsActiveFilter = $" c.display = 'Yes'";
             }
             else if (resourceType.ToUpperInvariant() == Constants.All)
             {
-                resourceIsActiveFilter = $" (c.resourceType != '{Constants.GuidedAssistant}' OR (c.resourceType = '{Constants.GuidedAssistant}' AND c.isActive = true))";
+                resourceIsActiveFilter = $" (c.resourceType != '{Constants.GuidedAssistant}') AND c.display = 'Yes'";
             }
             return resourceIsActiveFilter;
         }
