@@ -244,20 +244,6 @@ namespace Access2Justice.CosmosDb.Tests
         //    cosmosDbService.Received().QueryPagedResourcesAsync(query, Arg.Any<Dictionary<string, object>>(), resourceFilter.ContinuationToken);
         //}
 
-        [Fact]
-        public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldVaildSqlQueryWithOnlyLocationDetails()
-        {
-            // Arrange
-            Location location = new Location { State = "Hawaii", City = "Honolulu", County = "Honolulu", ZipCode = "96801" };
-            ResourceFilter resourceFilter = new ResourceFilter { PageNumber = 0, ResourceType = "ALL", Location = location };
-            string query = "SELECT * FROM c WHERE  (c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = true)) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\",\"county\":\"Honolulu\",\"city\":\"Honolulu\",\"zipCode\":\"96801\"},true))";            
-
-            //Act
-            dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter);
-
-            // Assert
-            cosmosDbService.Received().QueryPagedResourcesAsync(query, Arg.Any<Dictionary<string, object>>(), "");
-        }
 
         [Fact]
         public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldVaildSqlQueryWithSpecificResourceType()
@@ -305,20 +291,6 @@ namespace Access2Justice.CosmosDb.Tests
         //    cosmosDbService.Received().QueryResourcesCountAsync(query, Arg.Any<Dictionary<string, object>>());
         //}
 
-        [Fact]
-        public void FindItemsWhereArrayContainsWithAndClauseAsyncShouldVaildSqlQueryForResourceCountWithLocationDetails()
-        {
-            // Arrange
-            Location location = new Location { State = "Hawaii" };
-            ResourceFilter resourceFilter = new ResourceFilter { PageNumber = 0, ResourceType = "ALL", Location = location };
-            string query = "SELECT c.resourceType FROM c WHERE  (c.resourceType != 'Guided Assistant' OR (c.resourceType = 'Guided Assistant' AND c.isActive = true)) AND  (ARRAY_CONTAINS(c.location,{\"state\":\"Hawaii\"},true))";
-
-            //Act
-            dynamicQueries.FindItemsWhereArrayContainsWithAndClauseAsync("topicTags", "id", "resourceType", resourceFilter, true);
-
-            // Assert
-            cosmosDbService.Received().QueryResourcesCountAsync(query, Arg.Any<Dictionary<string, object>>());
-        }
 
         [Fact]
         public void FindItemsWhereInClauseAsyncShouldValidSqlQueryForPersonalizedPlan()
