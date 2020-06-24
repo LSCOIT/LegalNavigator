@@ -337,7 +337,7 @@ namespace Access2Justice.CosmosDb
             }
             else
             {
-                var query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause} order by c.ranking['{topicName}'] ASC";
+                var query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause} AND c.display = 'Yes' order by c.ranking['{topicName}'] ASC";
 
                 return query;
             }
