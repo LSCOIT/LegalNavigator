@@ -230,7 +230,7 @@ namespace Access2Justice.Api.BusinessLogic
                 {
                     maxVersion = resourceDetail.Version;
                 }
-                resourceDetail.IsActive = false;
+                resourceDetail.Display = "No";
 
                 await backendDatabaseService.UpdateItemAsync(resourceDetail.ResourceId.ToString(),
                     JObject.FromObject(resourceDetail), cosmosDbSettings.ResourcesCollectionId);
@@ -265,7 +265,7 @@ namespace Access2Justice.Api.BusinessLogic
             guidedAssistantResource.TopicTags = topicTags;
             guidedAssistantResource.Location = locations;
             guidedAssistantResource.Version = IncrementVersion(maxVersion);
-            guidedAssistantResource.IsActive = true;
+            guidedAssistantResource.Display = "Yes";
             guidedAssistantResource.ResourceType = Constants.GuidedAssistant;
             guidedAssistantResource.CuratedExperienceId = curatedExperienceId;
 
