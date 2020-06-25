@@ -293,7 +293,7 @@ namespace Access2Justice.CosmosDb
             }
             else
             {
-                var query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause}";
+                var query = $"SELECT * FROM c WHERE {arrayContainsWithAndClause} order by c.name ASC";
 
                 return query;
             }
@@ -372,13 +372,21 @@ namespace Access2Justice.CosmosDb
         public async Task<dynamic> FindItemsWhereArrayContainsWithAndClauseLocationAsync(string arrayName, string propertyName, string andPropertyName, ResourceFilter resourceFilter, Location location, bool isResourceCountCall = false)
         {
             //Get topic info, and check the ranking value before assigning the query
-            var topicId = resourceFilter.TopicIds.ElementAt(0);
-            Topic topicInfo = await backendDatabaseService.GetItemAsync<Topic>(topicId, dbSettings.TopicsCollectionId);
-            string query = string.Empty;
+            string topicId = string.Empty;
             var parameters = new Dictionary<string, object>();
-
-            query = BuildQueryWhereArrayContainsWithAndClauseLocationSpecificRanking(arrayName, propertyName, andPropertyName,
+            string query = string.Empty;
+            if (resourceFilter.TopicIds.Count() == 0)
+            {
+                topicId = resourceFilter.TopicIds.ElementAt(0);
+                Topic topicInfo = await backendDatabaseService.GetItemAsync<Topic>(topicId, dbSettings.TopicsCollectionId);
+                query = BuildQueryWhereArrayContainsWithAndClauseLocationSpecificRanking(arrayName, propertyName, andPropertyName,
                     resourceFilter, parameters, location, topicInfo.Name, isResourceCountCall);
+            }
+            else
+            {
+                query = BuildQueryWhereArrayContainsWithAndClauseLocation(arrayName, propertyName, andPropertyName,
+                    resourceFilter, parameters, location, isResourceCountCall);
+            }
 
             PagedResources pagedResources;
             if (isResourceCountCall)
@@ -488,7 +496,7 @@ namespace Access2Justice.CosmosDb
             }
             else if (resourceType.ToUpperInvariant() == Constants.All)
             {
-                resourceIsActiveFilter = $" (c.resourceType != '{Constants.GuidedAssistant}') AND c.display = 'Yes'";
+                resourceIsActiveFilter = $" c.display = 'Yes'";
             }
             return resourceIsActiveFilter;
         }
