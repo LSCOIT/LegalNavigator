@@ -375,7 +375,8 @@ namespace Access2Justice.CosmosDb
             string topicId = string.Empty;
             var parameters = new Dictionary<string, object>();
             string query = string.Empty;
-            if (resourceFilter.TopicIds.Count() == 0)
+            var ssf = resourceFilter.TopicIds.Count();
+            if (ssf == 1)
             {
                 topicId = resourceFilter.TopicIds.ElementAt(0);
                 Topic topicInfo = await backendDatabaseService.GetItemAsync<Topic>(topicId, dbSettings.TopicsCollectionId);

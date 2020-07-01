@@ -142,19 +142,7 @@ export class SearchResultsComponent implements OnInit, OnDestroy {
     this.searchResults = this.navigateDataService.getData();
 
     if (this.searchResults) {
-      this.searchResults.resources = this.searchResults.resources.sort(
-        (n1, n2) => {
-          if (n1.ranking > n2.ranking) {
-            return 1;
-          }
-
-          if (n1.ranking < n2.ranking) {
-            return -1;
-          }
-
-          return n1.name > n2.name ? 1 : -1;
-        }
-      );
+      this.searchResults.resources = this.searchResults.resources;
       this.guidedAssistantId = this.searchResults.guidedAssistantId;
       this.cacheSearchResultsData();
       this.isInternalResource = this.searchResults.resources;
