@@ -86,10 +86,14 @@ namespace Access2Justice.Api
             Location location = luisInput.Location;
 
             var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            var curatedExperienceIds = await topicsResourcesBusinessLogic.GetActiveCuratedExperienceIds(location);
-            var curatedExperiences = (await topicsResourcesBusinessLogic.GetCuratedExperiences(curatedExperienceIds.ToList()))
-                .Where(x=>x.Title.Contains(keyword, StringComparison.OrdinalIgnoreCase))
-                .Select(x => new {x.CuratedExperienceId, x.Title });
+            var curatedExperienceIds = (await topicsResourcesBusinessLogic.GetActiveCuratedExperienceIds(location)).ToList();
+            dynamic curatedExperiences = null;
+            if (curatedExperienceIds.Any())
+            {
+                curatedExperiences = (await topicsResourcesBusinessLogic.GetCuratedExperiences(curatedExperienceIds))
+                .Where(x => x.Title.Contains(keyword, StringComparison.OrdinalIgnoreCase))
+                .Select(x => new { x.CuratedExperienceId, x.Title });
+            }
             
             List<string> topicIds = new List<string>();
             foreach (var item in topics)
