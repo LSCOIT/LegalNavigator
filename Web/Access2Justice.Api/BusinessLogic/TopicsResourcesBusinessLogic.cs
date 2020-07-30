@@ -599,7 +599,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 List<dynamic> rawItems = await GetResourcesFromLocation(topicInput);
 
-                var items = FilterByDeleteAndOrderByRanking<Topic>(rawItems, topicInput.Name);
+                var items = FilterByDeleteAndOrderByRanking<dynamic>(rawItems, topicInput.Name);
                 return items;
             }
         }
