@@ -37,7 +37,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
         #endregion Variables
 
-        public Dictionary<Guid, string> GetDeleteEntries(string filePath)
+        public Dictionary<Guid?, string> GetDeleteEntries(string filePath)
         {
             using (SpreadsheetDocument spreadsheetDocument =
                         SpreadsheetDocument.Open(filePath, true))
@@ -53,7 +53,7 @@ namespace Access2Justice.DataImportTool.BusinessLogic
 
                         SharedStringTable sharedStringTable = spreadsheetDocument.WorkbookPart.SharedStringTablePart.SharedStringTable;
 
-                        var keyValuesPairs = new Dictionary<Guid, string>();
+                        var keyValuesPairs = new Dictionary<Guid?, string>();
                         string cellValue;
                         foreach (Row row in sheetData.Elements<Row>())
                         {

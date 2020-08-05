@@ -26,6 +26,18 @@ namespace Access2Justice.DataFixes.DataAccess
             return await QueryItemsAsync(collectionId, query);
         }
 
+        public async Task<dynamic> FindAllArticles(string collectionId)
+        {
+            var query = $"SELECT * FROM c WHERE c.resourceType = 'Articles'";
+            return await QueryItemsAsync(collectionId, query);
+        }
+
+        public async Task<dynamic> FindAllCuratedExperienceItems(string collectionId)
+        {
+            var query = $"SELECT * FROM c WHERE c.resourceType = 'Guided Assistant'";
+            return await QueryItemsAsync(collectionId, query);
+        }
+
         public async Task<Document> UpdateItemAsync<T>(string id, T item, string collectionId)
         {
             return await _documentClient.ReplaceDocumentAsync(
@@ -65,6 +77,66 @@ namespace Access2Justice.DataFixes.DataAccess
                 QueryText = "SELECT * FROM c WHERE c.id = @id",
                 Parameters = new SqlParameterCollection { new SqlParameter("@id", id) }
             };
+            var options = new FeedOptions
+            {
+                EnableCrossPartitionQuery = true
+            };
+
+            // I'm not using the documentClient.ReadDocumentAsync() because Microsoft recently made cosmos partitioning a 
+            // mandatory query param and I don't want to explicitly specify a partition key.
+            var docQuery = _documentClient.CreateDocumentQuery<dynamic>(uri, query, options).AsDocumentQuery();
+
+            var results = new List<dynamic>();
+            while (docQuery.HasMoreResults)
+            {
+                results.AddRange(await docQuery.ExecuteNextAsync());
+            }
+            if (!results.Any())
+            {
+                return default(T);
+            }
+
+            return (T)results.FirstOrDefault();
+        }
+        public async Task<T> GetItemAsyncByTitle<T>(string name, string collectionId)
+        {
+            var uri = UriFactory.CreateDocumentCollectionUri(_cosmosDbSettings.DatabaseId, collectionId);
+            var query = new SqlQuerySpec
+            {
+                QueryText = "SELECT * FROM c WHERE c.title = @name",
+                Parameters = new SqlParameterCollection { new SqlParameter("@name", name)},
+            };
+
+            var options = new FeedOptions
+            {
+                EnableCrossPartitionQuery = true
+            };
+
+            // I'm not using the documentClient.ReadDocumentAsync() because Microsoft recently made cosmos partitioning a 
+            // mandatory query param and I don't want to explicitly specify a partition key.
+            var docQuery = _documentClient.CreateDocumentQuery<dynamic>(uri, query, options).AsDocumentQuery();
+
+            var results = new List<dynamic>();
+            while (docQuery.HasMoreResults)
+            {
+                results.AddRange(await docQuery.ExecuteNextAsync());
+            }
+            if (!results.Any())
+            {
+                return default(T);
+            }
+
+            return (T)results.FirstOrDefault();
+        }
+        public async Task<T> GetItemAsyncByName<T>(string name, string collectionId, string state, bool toLower = true)
+        {
+            var uri = UriFactory.CreateDocumentCollectionUri(_cosmosDbSettings.DatabaseId, collectionId);
+            var query = new SqlQuerySpec
+            {
+                QueryText = toLower ? "SELECT * FROM c WHERE LOWER(c.name) = @name AND c.organizationalUnit = @state" : "SELECT * FROM c WHERE c.name = @name AND c.organizationalUnit = @state",
+                Parameters = new SqlParameterCollection { new SqlParameter("@name", name), new SqlParameter("@state", state) },
+            };
+
             var options = new FeedOptions
             {
                 EnableCrossPartitionQuery = true

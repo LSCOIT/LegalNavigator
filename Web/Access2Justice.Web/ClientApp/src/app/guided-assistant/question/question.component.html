@@ -2,8 +2,16 @@
   *ngIf="question"
   class="col-md-8 col-md-offset-2 col-sm-10 col-sm-offset-1 text-center question"
 >
-  <h3 *ngIf="question.text" id="question-text" [innerHTML]="question.text | sanitizeHtml"></h3>
-  <form #gaForm="ngForm" (ngSubmit)="onSubmit(gaForm)">
+  <h3
+    *ngIf="question.text"
+    id="question-text"
+    [innerHTML]="question.text | sanitizeHtml"
+  ></h3>
+  <form
+    #gaForm="ngForm"
+    (keyup.enter)="onSubmit(gaForm)"
+    (ngSubmit)="onSubmit(gaForm)"
+  >
     <div *ngIf="question.fields">
       <div *ngFor="let field of question.fields">
         <div
@@ -13,7 +21,13 @@
             else elseBlock
           "
         >
-          <ul class="{{ field.label === 'Yes' || field.label === 'No' ? 'multi-button' : '' }}">
+          <ul
+            class="{{
+              field.label === 'Yes' || field.label === 'No'
+                ? 'multi-button'
+                : ''
+            }}"
+          >
             <li>
               <input
                 *ngIf="field.type === 'radio'"
@@ -31,15 +45,13 @@
                 name="multiSelectOptions"
                 ngModel
               />
-              <label
-                class="p"
-                for="{{ field.id }}"
-                tabindex="0"
-                (keyup.enter)="$event.target.click()"
-              >
-              {{ field.label }}
+              <label class="p" for="{{ field.id }}" tabindex="0">
+                {{ field.label }}
               </label>
-              <div *ngIf="field.label !== 'Yes' && field.label !== 'No'" class="check"></div>
+              <div
+                *ngIf="field.label !== 'Yes' && field.label !== 'No'"
+                class="check"
+              ></div>
             </li>
           </ul>
         </div>
@@ -134,12 +146,11 @@
               />
               <label
                 tabindex="0"
-                (keyup.enter)="$event.target.click()"
                 class="p"
                 *ngIf="button.label !== 'Continue'"
                 for="{{ button.id }}"
               >
-              {{ button.label }}
+                {{ button.label }}
               </label>
             </li>
           </ul>
@@ -147,8 +158,22 @@
         <p class="validation-error" *ngIf="validationError && gaForm.submitted">
           Please enter a valid search text.
         </p>
-        <button *ngIf="question.hasPreviousAnswers" type="button" class="btn" (click)="backQuestion(gaForm)">Back</button>
-        <button type="submit" id="guided-assistant-continue" class="btn btn-primary"> Continue </button>
+        <button
+          *ngIf="question.hasPreviousAnswers"
+          type="button"
+          class="btn"
+          (click)="backQuestion(gaForm)"
+        >
+          Back
+        </button>
+        <!-- // -->
+        <button
+          type="submit"
+          id="guided-assistant-continue"
+          class="btn btn-primary"
+        >
+          Continue
+        </button>
       </div>
       <div class="row">
         <div class="col-md-10 col-md-offset-1 col-sm-12 col-sm-offset-0">

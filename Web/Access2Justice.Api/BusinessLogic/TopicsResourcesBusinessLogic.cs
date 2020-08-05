@@ -604,6 +604,22 @@ namespace Access2Justice.Api.BusinessLogic
             }
         }
 
+        public async Task<dynamic> GetResourceForCuratedExperienceAsync(TopicInput topicInput)
+        {
+            if (topicInput.IsShared)
+            {
+                var rawItems = await dbClient.FindItemsWhereArrayContainsAsync(dbSettings.ResourcesCollectionId, Constants.TopicTags, Constants.Id, topicInput.Id);
+                var items = FilterByDeleteAndOrderByRanking<Topic>(rawItems);
+                return items;
+            }
+            else
+            {
+                List<dynamic> rawItems = await GetResourcesFromLocation(topicInput);
+                var items = FilterByDeleteAndOrderByRanking<Topic>(rawItems, topicInput.Name);
+                return items;
+            }
+        }
+
         public async Task<dynamic> GetResourcesAsync(dynamic topics)
         {
             var ids = new List<string>();
@@ -1073,8 +1089,6 @@ namespace Access2Justice.Api.BusinessLogic
             RelatedLink relatedLinks = new RelatedLink();
             try
             {
-
-
                 foreach (var resourceObject in resourceObjects)
                 {
                     try

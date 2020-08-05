@@ -178,8 +178,8 @@ namespace Access2Justice.Api
                         break;
                     }
 
-                    List<Topic> ttt = await topicsResourcesBusinessLogic.GetResourceAsync(new TopicInput { Id = item.Id, Location = location });
-                    if (ttt.Any())
+                    List<Topic> resultTopics = await topicsResourcesBusinessLogic.GetResourceForCuratedExperienceAsync(new TopicInput { Id = item.Id, Location = location });
+                    if (resultTopics.Any())
                     {
                         dynamic dynamicObject = new ExpandoObject();
                         dynamicObject.Id = item.Id;

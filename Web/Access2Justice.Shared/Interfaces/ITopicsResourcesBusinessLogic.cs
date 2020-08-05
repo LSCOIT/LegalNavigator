@@ -17,6 +17,7 @@ namespace Access2Justice.Shared.Interfaces
         Task<dynamic> GetSubTopicsAsync(TopicInput topicInput);
         Task<dynamic> GetResourceByIdAsync(TopicInput topicInput);
         Task<dynamic> GetResourceAsync(TopicInput topicInput);
+        Task<dynamic> GetResourceForCuratedExperienceAsync(TopicInput topicInput);
         Task<dynamic> GetDocumentAsync(TopicInput topicInput);
         Task<dynamic> GetBreadcrumbDataAsync(string id);
         Task<dynamic> GetTopicDetailsAsync(string topicName);
