@@ -431,7 +431,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="uploadedFile"></param>
         /// <response code="200">Returns created resources </response>
         /// <response code="500">Failure</response>
-        [Permission(PermissionName.createresourcesupload)]
+      //  [Permission(PermissionName.createresourcesupload)]
         [HttpPost]
         [Route("resources/upload")]
         public async Task<IActionResult> CreateResources(IFormFile uploadedFile)
@@ -450,7 +450,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="resource"></param>
         /// <response code="200">Returns created resources </response>
         /// <response code="500">Failure</response>
-        [Permission(PermissionName.upsertresourcedocuments)]
+      //  [Permission(PermissionName.upsertresourcedocuments)]
         [HttpPost]
         [Route("resources/documents/upsert")]
         public async Task<IActionResult> UpsertResourceDocuments([FromBody]dynamic resource)
@@ -511,7 +511,7 @@ namespace Access2Justice.Api.Controllers
         /// <summary>
         /// Create Single Topic Document
         /// </summary>
-        [Permission(PermissionName.upserttopicdocument)]
+        //[Permission(PermissionName.upserttopicdocument)]
         [HttpPost]
         [Route("topics/document/upsert")]
         public async Task<IActionResult> UpsertTopicDocument([FromBody]dynamic topic)
