@@ -167,7 +167,7 @@ namespace Access2Justice.Api
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
-            if (env.IsDevelopment())
+            if (!env.IsProduction())
             {
                 app.UseDeveloperExceptionPage();
 
