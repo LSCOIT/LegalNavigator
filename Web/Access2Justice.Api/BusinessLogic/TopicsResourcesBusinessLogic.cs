@@ -289,7 +289,7 @@ namespace Access2Justice.Api.BusinessLogic
             {
                 return new List<Topic>();
             }
-            
+
             return resultTopics;
         }
 
@@ -388,7 +388,7 @@ namespace Access2Justice.Api.BusinessLogic
             return topics;
         }
 
-        
+
         private Location GetProperLocation(TopicInput topicInput)
         {
             Location location;
@@ -1087,104 +1087,90 @@ namespace Access2Justice.Api.BusinessLogic
             Organization organizations = new Organization();
             AdditionalReading additionalReadings = new AdditionalReading();
             RelatedLink relatedLinks = new RelatedLink();
-            try
+            foreach (var resourceObject in resourceObjects)
             {
-                foreach (var resourceObject in resourceObjects)
+                string id = resourceObject.id;
+                string resourceType = resourceObject.resourceType;
+                if (resourceObject.resourceType == "Forms")
                 {
-                    try
-                    {
-                        string id = resourceObject.id;
-                        string resourceType = resourceObject.resourceType;
-                        if (resourceObject.resourceType == "Forms")
-                        {
-                            forms = UpsertResourcesForms(resourceObject);
+                    forms = UpsertResourcesForms(resourceObject);
 
-                            var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(forms);
-                            var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
-                                id, resourceType, forms.Name, forms.OrganizationalUnit);
+                    var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(forms);
+                    var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
+                        id, resourceType, forms.Name, forms.OrganizationalUnit);
 
-                            resources.Add(result);
-                        }
-
-                        else if (resourceObject.resourceType == "Action Plans")
-                        {
-                            actionPlans = UpsertResourcesActionPlans(resourceObject);
-
-                            var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(actionPlans);
-
-                            var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
-                                id, resourceType, actionPlans.Name, actionPlans.OrganizationalUnit);
-
-                            resources.Add(result);
-
-                        }
-
-                        else if (resourceObject.resourceType == "Articles")
-                        {
-                            articles = UpsertResourcesArticles(resourceObject);
-
-                            var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(articles);
-
-                            var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
-                                id, resourceType, articles.Name, articles.OrganizationalUnit);
-
-                            resources.Add(result);
-                        }
-
-                        else if (resourceObject.resourceType == "Videos")
-                        {
-                            videos = UpsertResourcesVideos(resourceObject);
-
-                            var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(videos);
-
-                            var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
-                                id, resourceType, videos.Name, videos.OrganizationalUnit);
-
-                            resources.Add(result);
-                        }
-
-                        else if (resourceObject.resourceType == "Organizations")
-                        {
-                            organizations = UpsertResourcesOrganizations(resourceObject);
-
-                            var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(organizations);
-                            var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
-                                id, resourceType, organizations.Name, organizations.OrganizationalUnit);
-
-                            resources.Add(result);
-                        }
-
-                        else if (resourceObject.resourceType == "Related Readings" || resourceObject.resourceType == "Additional Readings")
-                        {
-                            resourceObject.resourceType = "Related Readings";
-                            additionalReadings = UpsertResourcesAdditionalReadings(resourceObject);
-
-                            var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(additionalReadings);
-                            var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
-                                id, resourceType, additionalReadings.Name, additionalReadings.OrganizationalUnit);
-
-                            resources.Add(result);
-
-                        }
-                        else if (resourceObject.resourceType == "Related Links")
-                        {
-                            relatedLinks = UpsertResourcesRelatedLinks(resourceObject);
-                            var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(relatedLinks);
-                            var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
-                                id, resourceType, relatedLinks.Name, relatedLinks.OrganizationalUnit);
-
-                            resources.Add(result);
-                        }
-                    }
-                    catch (Exception e)
-                    {
-                        continue;
-                    }
+                    resources.Add(result);
                 }
-            }
-            catch (Exception e)
-            {
 
+                else if (resourceObject.resourceType == "Action Plans")
+                {
+                    actionPlans = UpsertResourcesActionPlans(resourceObject);
+
+                    var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(actionPlans);
+
+                    var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
+                        id, resourceType, actionPlans.Name, actionPlans.OrganizationalUnit);
+
+                    resources.Add(result);
+
+                }
+
+                else if (resourceObject.resourceType == "Articles")
+                {
+                    articles = UpsertResourcesArticles(resourceObject);
+
+                    var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(articles);
+
+                    var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
+                        id, resourceType, articles.Name, articles.OrganizationalUnit);
+
+                    resources.Add(result);
+                }
+
+                else if (resourceObject.resourceType == "Videos")
+                {
+                    videos = UpsertResourcesVideos(resourceObject);
+
+                    var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(videos);
+
+                    var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
+                        id, resourceType, videos.Name, videos.OrganizationalUnit);
+
+                    resources.Add(result);
+                }
+
+                else if (resourceObject.resourceType == "Organizations")
+                {
+                    organizations = UpsertResourcesOrganizations(resourceObject);
+
+                    var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(organizations);
+                    var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
+                        id, resourceType, organizations.Name, organizations.OrganizationalUnit);
+
+                    resources.Add(result);
+                }
+
+                else if (resourceObject.resourceType == "Related Readings" || resourceObject.resourceType == "Additional Readings")
+                {
+                    resourceObject.resourceType = "Related Readings";
+                    additionalReadings = UpsertResourcesAdditionalReadings(resourceObject);
+
+                    var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(additionalReadings);
+                    var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
+                        id, resourceType, additionalReadings.Name, additionalReadings.OrganizationalUnit);
+
+                    resources.Add(result);
+
+                }
+                else if (resourceObject.resourceType == "Related Links")
+                {
+                    relatedLinks = UpsertResourcesRelatedLinks(resourceObject);
+                    var resourceDocument = JsonUtilities.DeserializeDynamicObject<object>(relatedLinks);
+                    var result = await UpdateOrCreateResource(resourceDocument, dbSettings.ResourcesCollectionId,
+                        id, resourceType, relatedLinks.Name, relatedLinks.OrganizationalUnit);
+
+                    resources.Add(result);
+                }
             }
             return resources;
         }
@@ -1193,7 +1179,7 @@ namespace Access2Justice.Api.BusinessLogic
             string id, string resourceType, string resourceName, string resourceOrganizationUnit)
         {
             Microsoft.Azure.Documents.Document document;
-            if(resourceType == "Additional Readings")
+            if (resourceType == "Additional Readings")
             {
                 resourceType = "Related Readings";
             }
@@ -1837,7 +1823,7 @@ namespace Access2Justice.Api.BusinessLogic
                     break;
                 }
             }
-            
+
             return foundResources.Select(x => CastDynamicToObj<GuidedAssistant>(x)).Cast<GuidedAssistant>().Select(x => x.CuratedExperienceId);
         }
 
