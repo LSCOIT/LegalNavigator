@@ -167,13 +167,13 @@ namespace Access2Justice.Api
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
-            if (!env.IsProduction())
-            {
-                app.UseDeveloperExceptionPage();
+            //if (!env.IsProduction())
+            //{
+            //    app.UseDeveloperExceptionPage();
 
-                // https://github.com/aspnet/AspNetCore/issues/2378
-                app.UseForcedCorsHeaders();
-            }
+            //    // https://github.com/aspnet/AspNetCore/issues/2378
+            //    app.UseForcedCorsHeaders();
+            //}
 
             app.UseSession();
             app.UseAuthentication();
