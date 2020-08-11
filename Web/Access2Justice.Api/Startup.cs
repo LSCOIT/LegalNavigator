@@ -33,6 +33,7 @@ using DinkToPdf;
 using DinkToPdf.Contracts;
 using Access2Justice.Shared.Spot;
 using Access2Justice.Shared.Luis;
+using Access2Justice.Api.Middleware;
 
 namespace Access2Justice.Api
 {
@@ -167,14 +168,14 @@ namespace Access2Justice.Api
                 .AllowAnyMethod()
                 .AllowAnyHeader());
 
-            //if (!env.IsProduction())
-            //{
-            //    app.UseDeveloperExceptionPage();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
 
-            //    // https://github.com/aspnet/AspNetCore/issues/2378
-            //    app.UseForcedCorsHeaders();
-            //}
-
+                // https://github.com/aspnet/AspNetCore/issues/2378
+                app.UseForcedCorsHeaders();
+            }
+            app.UseErrorHandlingMiddleware();
             app.UseSession();
             app.UseAuthentication();
             
