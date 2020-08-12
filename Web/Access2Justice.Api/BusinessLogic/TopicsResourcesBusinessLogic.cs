@@ -93,7 +93,7 @@ namespace Access2Justice.Api.BusinessLogic
             var foundTopics = await dbClient.FindItemsWhereArrayContainsAsync(
                 dbSettings.TopicsCollectionId, Constants.Location, Constants.StateCode, stateCode, true);
 
-            var filteredTopics = FilterByDeleteAndOrderByRanking<Topic>(foundTopics);
+            var filteredTopics = FilterByDeleteAndOrderByRankingTopics<Topic>(foundTopics);
 
             return GetOutboundTopicsCollection(filteredTopics);
         }
@@ -1730,6 +1730,53 @@ namespace Access2Justice.Api.BusinessLogic
         // Filters for DELETE and Ranking
 
         // Catching  calls from tests
+        private List<T> FilterByDeleteAndOrderByRankingTopics<T>(JArray rawEntities) where T : class
+        {
+            var entities = JsonConvert.DeserializeObject<List<T>>(rawEntities.ToString());
+
+            Func<T, bool> isEmpty = (T resource) =>
+            {
+                var result = false;
+                if (typeof(T) == typeof(Topic))
+                {
+                    result = ((dynamic)resource).Id == null;
+                }
+                else if (typeof(T) == typeof(Resource))
+                {
+                    result = ((dynamic)resource).ResourceId == null;
+                }
+
+                return result;
+            };
+
+            if (entities.Count(w => isEmpty(w)) == entities.Count)
+            {
+                return new List<T>();
+            }
+            else
+            {
+                var dynamicentities = JsonConvert.DeserializeObject<List<dynamic>>(rawEntities.ToString());
+
+                return FilterByDeleteAndOrderByRankingTopics<T>(dynamicentities);
+            }
+        }
+
+        private List<T> FilterByDeleteAndOrderByRankingTopics<T>(List<dynamic> rawEntities, string topicName = "") where T : class
+        {
+            if (rawEntities == null)
+            {
+                return new List<T>();
+            }
+
+            Func<T, bool> notDeletedPredicate = (T resource) => !string.Equals(((dynamic)resource).Display, "No", StringComparison.Ordinal);
+            var realEntities = new List<T>();
+           
+            realEntities = rawEntities.Select(s => JsonConvert.DeserializeObject<T>(s.ToString()) as T).ToList();
+            var entities = realEntities.Where(notDeletedPredicate).ToList();
+
+            return entities;
+        }
+
         private List<T> FilterByDeleteAndOrderByRanking<T>(JArray rawEntities) where T : class
         {
             var entities = JsonConvert.DeserializeObject<List<T>>(rawEntities.ToString());
