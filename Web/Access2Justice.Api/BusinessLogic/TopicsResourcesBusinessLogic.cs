@@ -83,7 +83,7 @@ namespace Access2Justice.Api.BusinessLogic
                 }
             }
 
-            List<Topic> filteredTopics = FilterByDeleteAndOrderByRanking<Topic>(topics);
+            List<Topic> filteredTopics = FilterByDeleteAndOrderByRankingTopics<Topic>(topics);
 
             return filteredTopics;
         }
@@ -658,7 +658,7 @@ namespace Access2Justice.Api.BusinessLogic
                 topics = await GetTopicsByLocation(topicInput);
             }
 
-            var filteredTopicsCollection = FilterByDeleteAndOrderByRanking<Topic>(topics);
+            var filteredTopicsCollection = FilterByDeleteAndOrderByRankingTopics<Topic>(topics);
             var topicsCollection = GetOutboundTopicsCollection(filteredTopicsCollection);
             var processedTopics = await fillCuratedExperienceId(topicInput.Location, topicsCollection);
             if (processedTopics != null && processedTopics.Count != 0)
@@ -712,7 +712,7 @@ namespace Access2Justice.Api.BusinessLogic
         {
             List<dynamic> topics = await dbClient.FindItemsWhereAsync(dbSettings.TopicsCollectionId, Constants.Id, id);
 
-            var filteredTopic = FilterByDeleteAndOrderByRanking<Topic>(topics);
+            var filteredTopic = FilterByDeleteAndOrderByRankingTopics<Topic>(topics);
             if (!filteredTopic.Any())
             {
                 throw new Exception($"No topic found with this id: {id}");
@@ -733,7 +733,7 @@ namespace Access2Justice.Api.BusinessLogic
             var topics = await dbClient.FindItemsWhereAsync(
                 dbSettings.TopicsCollectionId, Constants.Name, topicName);
 
-            var filteredTopics = FilterByDeleteAndOrderByRanking<Topic>(topics);
+            var filteredTopics = FilterByDeleteAndOrderByRankingTopics<Topic>(topics);
 
             return GetOutboundTopicsCollection(filteredTopics);
         }
