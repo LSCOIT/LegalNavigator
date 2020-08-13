@@ -263,7 +263,7 @@ namespace Access2Justice.Api.BusinessLogic
                 await GetParentTopics(topicIds, parentTopics);
             }
 
-            var filteredTopics = FilterByDeleteAndOrderByRanking<Topic>(parentTopics.ToList());
+            var filteredTopics = FilterByDeleteAndOrderByRankingTopics<Topic>(parentTopics.ToList());
 
             filteredTopics = filteredTopics.Where(x => x.Location.Any(y => y.State == location.State)).ToList();
             return GetOutboundTopicsCollection(filteredTopics);
