@@ -1537,6 +1537,7 @@ namespace Access2Justice.Api.BusinessLogic
                 Icon = GetRelativeStaticResourceStoragePath((string)topicObject.icon),
                 CreatedBy = topicObject.createdBy,
                 ModifiedBy = topicObject.modifiedBy,
+                Display = topicObject.display,
                 NsmiCode = topicObject.nsmiCode
             };
             topics.Validate();
