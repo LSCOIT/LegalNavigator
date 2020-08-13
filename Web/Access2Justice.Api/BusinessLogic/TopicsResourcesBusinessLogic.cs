@@ -49,11 +49,11 @@ namespace Access2Justice.Api.BusinessLogic
             }
             if (!string.IsNullOrWhiteSpace(state))
             {
-                topic = FilterByDeleteAndOrderByRanking<Topic>(topics).FirstOrDefault(x => x.Location[0].State == state);
+                topic = FilterByDeleteAndOrderByRankingTopics<Topic>(topics).FirstOrDefault(x => x.Location[0].State == state);
             }
             else
             {
-                topic = FilterByDeleteAndOrderByRanking<Topic>(topics).FirstOrDefault();
+                topic = FilterByDeleteAndOrderByRankingTopics<Topic>(topics).FirstOrDefault();
             }
 
             return GetOutboundTopic(topic);
