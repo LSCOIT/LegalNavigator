@@ -26,7 +26,7 @@ namespace Access2Justice.Api.Controllers
             this.adminSettings = adminSettings;
         }
 
-        [Permission(PermissionName.importa2jtemplate)]
+        //[Permission(PermissionName.importa2jtemplate)]
         [HttpPost("curated-experience")]
         [SwaggerResponse(400, typeof(JsonUploadResult))]
         public async Task<IActionResult> UploadCuratedExperienceTemplate([FromForm] CuratedTemplate curatedTemplate)
