@@ -42,7 +42,7 @@ namespace Access2Justice.Api.Controllers
         /// <response code="200">Returns curated experiences </response>
         /// <response code="500">Failure</response>
         [HttpGet]
-        public async Task<IActionResult> GetCuratedExperiences([FromQuery]string location = "Alaska")
+        public async Task<IActionResult> GetCuratedExperiences([FromQuery]string location)
         {
             return Ok(await curatedExperienceBusinessLogic.GetCuratedExperiencesAsync(location));
         }

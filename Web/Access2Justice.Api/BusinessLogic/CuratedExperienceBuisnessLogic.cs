@@ -1,19 +1,17 @@
-﻿using Access2Justice.Api.Interfaces;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
+using System.Threading.Tasks;
+using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
+using Access2Justice.CosmosDb;
 using Access2Justice.Shared.A2JAuthor;
 using Access2Justice.Shared.Extensions;
 using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Interfaces.A2JAuthor;
 using Access2Justice.Shared.Models;
 using Microsoft.Azure.Documents;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Threading.Tasks;
-using Access2Justice.CosmosDb;
-using NuGet.Frameworks;
-
 
 namespace Access2Justice.Api.BusinessLogic
 {
@@ -43,15 +41,21 @@ namespace Access2Justice.Api.BusinessLogic
             IEnumerable<CuratedExperienceViewModel> items = new List<CuratedExperienceViewModel>();
             if (location == "Hawaii")
             {
-                items = await dbService.GetItemsAsync<CuratedExperienceViewModel>(x => !x.Title.Contains("Alaska"), dbSettings.CuratedExperiencesCollectionId);
+                var resources = await dbService.GetItemsAsync<GuidedAssistant>(x => x.CuratedExperienceId != null && x.Location[0].State == "HI", dbSettings.ResourcesCollectionId);
+                var curatedExperienceIds = resources.Select(x => x.CuratedExperienceId).ToList();
+                items = await dbService.GetItemsAsync<CuratedExperienceViewModel>(x => curatedExperienceIds.Contains(x.CuratedExperienceId.ToString()), dbSettings.CuratedExperiencesCollectionId);
             }
             else if (location == "Alaska")
             {
-                items = await dbService.GetItemsAsync<CuratedExperienceViewModel>(x => x.Title.Contains(location), dbSettings.CuratedExperiencesCollectionId);
+                var resources = await dbService.GetItemsAsync<GuidedAssistant>(x => x.CuratedExperienceId != null && x.Location[0].State == "AK", dbSettings.ResourcesCollectionId);
+                var curatedExperienceIds = resources.Select(x => x.CuratedExperienceId).ToList();
+                items = await dbService.GetItemsAsync<CuratedExperienceViewModel>(x => curatedExperienceIds.Contains(x.CuratedExperienceId.ToString()), dbSettings.CuratedExperiencesCollectionId);
             }
             else
             {
-                items = await dbService.GetItemsAsync<CuratedExperienceViewModel>(x => x.Title != string.Empty, dbSettings.CuratedExperiencesCollectionId);
+                var resources = await dbService.GetItemsAsync<GuidedAssistant>(x => x.CuratedExperienceId != null, dbSettings.ResourcesCollectionId);
+                var curatedExperienceIds = resources.Select(x => x.CuratedExperienceId).ToList();
+                items = await dbService.GetItemsAsync<CuratedExperienceViewModel>(x => curatedExperienceIds.Contains(x.CuratedExperienceId.ToString()), dbSettings.CuratedExperiencesCollectionId);
             }
 
             return items.OrderBy(x => x.ts).ToList();
