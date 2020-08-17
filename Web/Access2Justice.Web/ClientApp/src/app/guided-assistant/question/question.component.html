@@ -45,7 +45,12 @@
                 name="multiSelectOptions"
                 ngModel
               />
-              <label class="p" for="{{ field.id }}" tabindex="0">
+              <label
+                class="p"
+                for="{{ field.id }}"
+                tabindex="0"
+                (keyup.enter)="$event.target.click()"
+              >
                 {{ field.label }}
               </label>
               <div
@@ -57,7 +62,11 @@
         </div>
         <ng-template #elseBlock>
           <div class="inputs">
-            <label class="p" for="{{ field.label }}"></label>
+            <label
+              class="p"
+              (keyup.enter)="$event.target.click()"
+              for="{{ field.label }}"
+            ></label>
             <input
               class="textbox"
               *ngIf="field.type === 'text'"
@@ -149,6 +158,7 @@
                 class="p"
                 *ngIf="button.label !== 'Continue'"
                 for="{{ button.id }}"
+                (keyup.enter)="$event.target.click()"
               >
                 {{ button.label }}
               </label>
