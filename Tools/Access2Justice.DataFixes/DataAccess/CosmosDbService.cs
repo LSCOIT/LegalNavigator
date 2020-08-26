@@ -32,6 +32,12 @@ namespace Access2Justice.DataFixes.DataAccess
             return await QueryItemsAsync(collectionId, query);
         }
 
+        public async Task<dynamic> FindAllOrganizations(string collectionId)
+        {
+            var query = $"SELECT * FROM c WHERE c.resourceType = 'Organizations'";
+            return await QueryItemsAsync(collectionId, query);
+        }
+
         public async Task<dynamic> FindAllCuratedExperienceItems(string collectionId)
         {
             var query = $"SELECT * FROM c WHERE c.resourceType = 'Guided Assistant'";

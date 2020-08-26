@@ -36,7 +36,7 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<PersonalizedPlanViewModel> GeneratePersonalizedPlanAsync(CuratedExperience curatedExperience, Guid answersDocId, string userId = null)
         {
-            if(curatedExperience is null)
+            if (curatedExperience is null)
             {
                 return null;
             }
@@ -119,32 +119,33 @@ namespace Access2Justice.Api.BusinessLogic
             }
         }
 
+        public async Task UpsertExternalPersonalizedPlanAsync(PersonalizedPlanViewModel personalizedPlan, string oId)
+        {
+            await UpdatePlanToProfile(personalizedPlan.PersonalizedPlanId, oId, personalizedPlan);
+        }
+
         public async Task UpdatePlanToProfile(Guid planId, string oId, PersonalizedPlanViewModel personalizedPlan)
         {
-            UserProfile userProfile = await this.userProfileBusinessLogic.GetUserProfileDataAsync(oId);
+            UserProfile userProfile = await userProfileBusinessLogic.GetUserProfileDataAsync(oId);
             if (userProfile?.PersonalizedActionPlanId != null && userProfile?.PersonalizedActionPlanId != Guid.Empty)
             {
                 var userExistingPersonalizedPlan = await GetPersonalizedPlanAsync(userProfile.PersonalizedActionPlanId);
-                var i = 0;
-                bool isMatched = false;
-                foreach (var planTopic in personalizedPlan.Topics)
+                var existingTopicNames = userExistingPersonalizedPlan.Topics.Select(x => x.TopicName);
+                for (int i = 0; i < personalizedPlan.Topics.Count; i++)
                 {
-                    foreach (var topic in userExistingPersonalizedPlan.Topics.ToArray())
+                    if (!existingTopicNames.Contains(personalizedPlan.Topics[i].TopicName))
                     {
-                        if (topic.TopicName == planTopic.TopicName)
-                        {
-                            isMatched = true;
-                            break;
-                        }
-                        i++;
-                    }
-                    if (isMatched)
-                    {
-                        userExistingPersonalizedPlan.Topics[i] = planTopic;
+                        userExistingPersonalizedPlan.Topics.Add(personalizedPlan.Topics[i]);      
                     }
                     else
                     {
-                        userExistingPersonalizedPlan.Topics.Add(planTopic);
+                        for(int j = 0; j < userExistingPersonalizedPlan.Topics.Count;j++)
+                        {
+                            if(userExistingPersonalizedPlan.Topics[j].TopicName == personalizedPlan.Topics[i].TopicName)
+                            {
+                                userExistingPersonalizedPlan.Topics[j] = personalizedPlan.Topics[i];
+                            }
+                        }
                     }
                 }
                 await backendDatabaseService.UpdateItemAsync(

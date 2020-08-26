@@ -159,6 +159,17 @@ namespace Access2Justice.Api.Controllers
             return StatusCode(400);
         }
 
+        [HttpPost("save-external")]
+        public async Task<IActionResult> SaveExternalPersonalPlan([FromBody]PersonalizedPlanViewModel plan, [FromQuery]string oId)
+        {
+            if (plan != null)
+            {
+                await personalizedPlanBusinessLogic.UpsertExternalPersonalizedPlanAsync(plan, oId);
+                return Ok();
+            }
+            return StatusCode(400);
+        }
+
         /// <summary>
         /// Get action plans by ids
         /// </summary>
