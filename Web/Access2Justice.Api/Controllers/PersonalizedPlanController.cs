@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Threading.Tasks;
+using Access2Justice.Api.Authorization;
 using Access2Justice.Api.Interfaces;
 using Access2Justice.Api.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using static Access2Justice.Api.Authorization.Permissions;
 
 namespace Access2Justice.Api.Controllers
 {
@@ -160,6 +162,7 @@ namespace Access2Justice.Api.Controllers
         }
 
         [HttpPost("save-external")]
+        [Permission(PermissionName.updateplan)]
         public async Task<IActionResult> SaveExternalPersonalPlan([FromBody]PersonalizedPlanViewModel plan, [FromQuery]string oId)
         {
             if (plan != null)
@@ -168,6 +171,14 @@ namespace Access2Justice.Api.Controllers
                 return Ok();
             }
             return StatusCode(400);
+        }
+
+        [HttpGet]
+        [Route("oid")]
+        [Permission(PermissionName.updateplan)]
+        public async Task<IActionResult> GetOid()
+        {
+            return Ok(userRoleBusinessLogic.GetOId());
         }
 
         /// <summary>
