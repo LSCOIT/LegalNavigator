@@ -148,7 +148,11 @@ export class ActionPlansComponent implements OnChanges {
   generateLink(resource) {
     let tag = '<a class="link" ';
 
-    if (resource.resourceType === "Forms") {
+    if (
+      resource.resourceType === "Forms" ||
+      resource.resourceType === "Related Readings" ||
+      resource.resourceType === "Related Links"
+    ) {
       tag += `href="${resource.url}" target="_blank">${resource.name}</a>`;
     } else {
       var route = `'${window.location.protocol}//${window.location.host}/resource/${resource.id}'`;
