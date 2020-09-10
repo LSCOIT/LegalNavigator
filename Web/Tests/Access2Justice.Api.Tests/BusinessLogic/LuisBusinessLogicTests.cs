@@ -149,25 +149,25 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
             Assert.Equal(expectedhreshold, threshold);
         }
 
-        [Fact]
-        public void GetInternalResourcesAsyncTestsShouldReturnTopIntent()
-        {
-            //arrange
-            PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
-            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            topicResponse.ReturnsForAnyArgs(topicsData);
-            var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
-            resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
-            var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-            paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
+        //[Fact]
+        //public void GetInternalResourcesAsyncTestsShouldReturnTopIntent()
+        //{
+        //    //arrange
+        //    PagedResources pagedResources = new PagedResources() { Results = resourcesData, ContinuationToken = "[]", TopicIds = topicIds };
+        //    var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
+        //    topicResponse.ReturnsForAnyArgs(topicsData);
+        //    var resourceCount = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
+        //    resourceCount.ReturnsForAnyArgs<dynamic>(allResourcesCount);
+        //    var paginationResult = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
+        //    paginationResult.ReturnsForAnyArgs<dynamic>(pagedResources);
 
-            //act
-            var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>()).Result;
-            result = JsonConvert.SerializeObject(result);
+        //    //act
+        //    var result = luisBusinessLogic.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>()).Result;
+        //    result = JsonConvert.SerializeObject(result);
 
-            //assert            
-            Assert.Contains(keyword, result);
-        }
+        //    //assert            
+        //    Assert.Contains(keyword, result);
+        //}
 
         [Fact]
         public void ParseLuisIntentTestsShouldValidateData()

@@ -52,11 +52,12 @@ namespace Access2Justice.Api
                    luisTopIntents != null && luisTopIntents.TopNIntents != null ? luisTopIntents.TopNIntents : null);
             }
             //Will fetch web links only when there are no mapping LUIS Intent or no mapping resources to specific LUIS Intent
-            return ((luisViewModel != null && luisViewModel.Resources != null &&
-                ((JContainer)(luisViewModel.Resources)).Count > 0))
-                || !string.IsNullOrEmpty(luisInput.LuisTopScoringIntent) ?
-                JObject.FromObject(luisViewModel).ToString() :
-            await GetWebResourcesAsync(encodedSentence);
+            if(luisViewModel is null || luisViewModel.GuidedAssistants == null || !luisViewModel.GuidedAssistants.Any())
+            {
+                return await GetWebResourcesAsync(encodedSentence);
+            }
+
+            return JObject.FromObject(luisViewModel).ToString();
         }
 
         public IntentWithScore ParseLuisIntent(string LuisResponse, Location location = null)
@@ -85,24 +86,10 @@ namespace Access2Justice.Api
             TextInfo textInfo = cultureInfo.TextInfo;
             Location location = luisInput.Location;
 
-            var topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            var curatedExperienceIds = (await topicsResourcesBusinessLogic.GetActiveCuratedExperienceIds(location)).ToList();
-            dynamic curatedExperiences = null;
-            if (curatedExperienceIds.Any())
-            {
-                curatedExperiences = (await topicsResourcesBusinessLogic.GetCuratedExperiences(curatedExperienceIds))
-                .Where(x => x.Title.Contains(keyword, StringComparison.OrdinalIgnoreCase))
-                .Select(x => new { x.CuratedExperienceId, x.Title });
-            }
-            
-            List<string> topicIds = new List<string>();
-            foreach (var item in topics)
-            {
-                string topicId = item.Id;
-                topicIds.Add(topicId);
-            }
+            List<Topic> topics = await topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
+            List<string> topicIds = topics.Select(x => (string)x.Id).ToList();
 
-            if (topicIds.Count == 0 || location == null)
+            if (!topicIds.Any() || location == null)
             {
                 return new LuisViewModel
                 {
@@ -111,10 +98,9 @@ namespace Access2Justice.Api
             }
 
             ResourceFilter resourceFilter = null;
-            PagedResources resources = null;
-            dynamic groupedResourceType = null;
-            IEnumerable<dynamic> guidedAssistantsResult = null;
 
+            IEnumerable<dynamic> guidedAssistantsResult = null;
+            IEnumerable<dynamic> curatedExperiences = null;
             foreach (var searchLocation in LocationUtilities.GetSearchLocations(location))
             {
                 const bool isNeedAllGuidAssistance = true;
@@ -127,21 +113,9 @@ namespace Access2Justice.Api
                     IsNeedAllGuideAssistance = isNeedAllGuidAssistance
                 };
 
-                var GetResourcesTask = topicsResourcesBusinessLogic.GetResourcesCountAsync(resourceFilter);
-                ResourceFilter sortResourceFilter = resourceFilter;
-                sortResourceFilter.IsOrder = true;
-                sortResourceFilter.OrderByField = luisInput.OrderByField;
-                sortResourceFilter.OrderBy = luisInput.OrderBy;
-
-                var ApplyPaginationTask = topicsResourcesBusinessLogic.ApplyPaginationAsync(sortResourceFilter);
-                //To get guided assistant id
                 resourceFilter.ResourceType = Constants.GuidedAssistant;
-                var GetGuidedAssistantId = topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
-                await Task.WhenAll(GetResourcesTask, ApplyPaginationTask, GetGuidedAssistantId);
+                PagedResources guidedAssistantResponse = await topicsResourcesBusinessLogic.ApplyPaginationAsync(resourceFilter);
 
-                groupedResourceType = GetResourcesTask.Result;
-                resources = ApplyPaginationTask.Result;
-                PagedResources guidedAssistantResponse = GetGuidedAssistantId.Result;
 
                 guidedAssistantsResult = guidedAssistantResponse?
                                          .Results.Select(s =>
@@ -150,45 +124,42 @@ namespace Access2Justice.Api
 
                                              var child2Topics = topicsResourcesBusinessLogic.GetChild2TopicsAsync(ga.TopicTags[0].TopicTags.ToString());
                                              return (id: ga.CuratedExperienceId, tags: child2Topics);
-
                                          })
                                          .OfType<dynamic>().ToArray();
-                guidedAssistantsResult = CleanGuidedAssistantsResult(guidedAssistantsResult);
 
-                if (resources != null &&
-                    resources.Results != null &&
-                    resources.Results.Count() > 0 && guidedAssistantsResult != null)
+
+
+                var curatedExperienceIds = guidedAssistantsResult.Select(x => (string)x.Item1).ToList(); ;
+                //get curated Experiences
+
+                curatedExperiences = (await topicsResourcesBusinessLogic.GetCuratedExperiences(curatedExperienceIds))
+                    .Select(x => new { x.CuratedExperienceId, x.Title, x.IsExternal, x.Url });
+
+                if (guidedAssistantsResult != null)
                 {
                     break;
                 }
             }
 
-            dynamic searchFilter = new JObject();
-            searchFilter.OrderByField = resourceFilter.OrderByField;
-            searchFilter.OrderBy = resourceFilter.OrderBy;
-
             var relevantTopics = new List<dynamic>();
-            foreach (var intent in relevantIntents)
-            {
-                List<Topic> topic = await topicsResourcesBusinessLogic.GetTopicsAsync(intent, location);
-                foreach (var item in topic)
-                {
-                    if(relevantTopics.Count > 2)
-                    {
-                        break;
-                    }
 
-                    List<Topic> resultTopics = await topicsResourcesBusinessLogic.GetResourceForCuratedExperienceAsync(new TopicInput { Id = item.Id, Location = location });
-                    if (resultTopics.Any())
-                    {
-                        dynamic dynamicObject = new ExpandoObject();
-                        dynamicObject.Id = item.Id;
-                        dynamicObject.Name = item.Name;
-                        relevantTopics.Add(dynamicObject);
-                    }
+            foreach (var item in topics)
+            {
+                //if topic has resources
+                if(await topicsResourcesBusinessLogic.ExistsRelation(new TopicInput { Id = item.Id, Location = location }))
+                {
+                    dynamic dynamicObject = new ExpandoObject();
+                    dynamicObject.Id = item.Id;
+                    dynamicObject.Name = item.Name;
+                    relevantTopics.Add(dynamicObject);
                 }
 
+                if(relevantTopics.Count > 2)
+                {
+                    break;
+                }
             }
+
 
             var result = new LuisViewModel
             {
@@ -196,25 +167,11 @@ namespace Access2Justice.Api
                 RelevantIntents = relevantIntents != null
                     ? JsonUtilities.DeserializeDynamicObject<dynamic>(relevantTopics)
                     : JsonConvert.DeserializeObject(Constants.EmptyArray),
-                Topics = JsonUtilities.DeserializeDynamicObject<dynamic>(topics),   
-                CuratedExperiences = JsonUtilities.DeserializeDynamicObject<dynamic>(curatedExperiences),
-                Resources = resources != null
-                    ? JsonUtilities.DeserializeDynamicObject<dynamic>(resources.Results)
-                    : JsonConvert.DeserializeObject(Constants.EmptyArray),
-                ContinuationToken = resources != null && resources.ContinuationToken != null
-                    ? JsonConvert.DeserializeObject(resources.ContinuationToken)
-                    : JsonConvert.DeserializeObject(Constants.EmptyArray),
-                TopicIds = JsonUtilities.DeserializeDynamicObject<dynamic>(topicIds),
-                ResourceTypeFilter = groupedResourceType != null
-                    ? JsonUtilities.DeserializeDynamicObject<dynamic>(groupedResourceType)
-                    : JsonConvert.DeserializeObject(Constants.EmptyArray),
                 GuidedAssistants = guidedAssistantsResult,
-                SearchFilter = searchFilter
+                CuratedExperiences = curatedExperiences
             };
 
-
             return result;
-
         }
 
         private IEnumerable<dynamic> CleanGuidedAssistantsResult(IEnumerable<object> guidedAssistantsResult)

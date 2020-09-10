@@ -11,7 +11,8 @@ namespace Access2Justice.Shared.Interfaces
         Task<IEnumerable<string>> GetActiveCuratedExperienceIds(Location location);
         Task<IEnumerable<CuratedExperience>> GetCuratedExperiences(List<string> ids);
         Task<dynamic> GetTopicsAsync(string stateCode);
-        Task<dynamic> GetTopicsAsync(string keyword, Location location);
+        Task<List<Topic>> GetTopicsAsync(string keyword, Location location);
+        Task<bool> ExistsRelation(TopicInput topicInput);
         Task<dynamic> GetResourcesAsync(dynamic resourcesIds);
         Task<dynamic> GetTopLevelTopicsAsync(Location location);
         Task<dynamic> GetSubTopicsAsync(TopicInput topicInput);

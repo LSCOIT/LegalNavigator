@@ -158,7 +158,7 @@ namespace Access2Justice.CosmosDb
             EnsureParametersAreNotNullOrEmpty(collectionId);
             string locationFilter = FindLocationWhereArrayContains(location);
             var query = string.Empty;
-            query = $"SELECT * FROM c WHERE c.curatedExperienceId != null AND c.isActive = true";
+            query = $"SELECT * FROM c WHERE c.curatedExperienceId != null AND c.display = 'Yes'";
 
             if (!string.IsNullOrEmpty(locationFilter))
             {
@@ -603,6 +603,53 @@ namespace Access2Justice.CosmosDb
             return await backendDatabaseService.QueryItemsAsync(collectionId, query, parameters);
         }
 
+        public async Task<dynamic> ExistsItemsWhereArrayContainsAsyncWithLocation(string collectionId, string arrayName, string propertyName, string value, Location location)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId, arrayName, propertyName);
+            string locationFilter = FindLocationWhereArrayContains(location);
+            var ids = new List<string> { value };
+
+            if (location == null || (string.IsNullOrEmpty(location.State) && string.IsNullOrEmpty(location.County)
+                && string.IsNullOrEmpty(location.City) && string.IsNullOrEmpty(location.ZipCode)))
+            {
+                return "";
+            }
+
+            var parameters = new Dictionary<string, object>();
+            string arrayContainsClause = ArrayContainsWithOrClause(arrayName, propertyName, ids, parameters);
+            var query = $"SELECT * FROM c WHERE {arrayContainsClause}";
+            if (!string.IsNullOrEmpty(locationFilter))
+            {
+                query = query + " AND " + locationFilter;
+            }
+            query = query + " AND c.display = 'Yes' AND c.resourceType != 'Guided Assistant' ";
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, parameters);
+        }
+
+
+        public async Task<dynamic> FindItemsWhereArrayContainsAsyncWithLocationTopOne(string collectionId, string arrayName, string propertyName, string value, Location location)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId, arrayName, propertyName);
+            string locationFilter = FindLocationWhereArrayContains(location);
+            var ids = new List<string> { value };
+
+            if (location == null || (string.IsNullOrEmpty(location.State) && string.IsNullOrEmpty(location.County)
+                && string.IsNullOrEmpty(location.City) && string.IsNullOrEmpty(location.ZipCode)))
+            {
+                return "";
+            }
+
+            var parameters = new Dictionary<string, object>();
+            string arrayContainsClause = ArrayContainsWithOrClause(arrayName, propertyName, ids, parameters);
+            var query = $"SELECT TOP 1 FROM c WHERE {arrayContainsClause}";
+            if (!string.IsNullOrEmpty(locationFilter))
+            {
+                query = query + " AND " + locationFilter;
+            }
+            query = query + " AND c.display = 'Yes' AND c.resourceType != 'Guided Assistant' ";
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, parameters);
+        }
+
         public async Task<dynamic> FindItemsAllAsync(string collectionId)
         {
             var query = "SELECT * FROM c";
@@ -641,6 +688,23 @@ namespace Access2Justice.CosmosDb
         public async Task DeleteResource(string collectionId, string id, string partitionKey)
         {
             await backendDatabaseService.DeleteResourceAsync(id, partitionKey, collectionId);
+        }
+
+        public async Task<dynamic> FindOneItemWhereArrayContainsAsyncWithLocation(string collectionId, string arrayName, string propertyName, string value, Location location)
+        {
+            EnsureParametersAreNotNullOrEmpty(collectionId, arrayName, propertyName);
+            string locationFilter = FindLocationWhereArrayContains(location);
+            var ids = new List<string> { value };
+
+            var parameters = new Dictionary<string, object>();
+            string arrayContainsClause = ArrayContainsWithOrClause(arrayName, propertyName, ids, parameters);
+            var query = $"SELECT TOP 1 * FROM c WHERE {arrayContainsClause}";
+            if (!string.IsNullOrEmpty(locationFilter))
+            {
+                query = query + " AND " + locationFilter;
+            }
+            query = query + " AND c.display = 'Yes' AND c.resourceType != 'Guided Assistant' ";
+            return await backendDatabaseService.QueryItemsAsync(collectionId, query, parameters);
         }
     }
 }

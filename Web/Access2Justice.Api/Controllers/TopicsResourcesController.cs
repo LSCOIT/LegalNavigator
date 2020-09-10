@@ -450,7 +450,7 @@ namespace Access2Justice.Api.Controllers
         /// <param name="resource"></param>
         /// <response code="200">Returns created resources </response>
         /// <response code="500">Failure</response>
-      //  [Permission(PermissionName.upsertresourcedocuments)]
+        [Permission(PermissionName.upsertresourcedocuments)]
         [HttpPost]
         [Route("resources/documents/upsert")]
         public async Task<IActionResult> UpsertResourceDocuments([FromBody]dynamic resource)

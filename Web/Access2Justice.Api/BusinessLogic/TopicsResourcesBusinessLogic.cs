@@ -59,7 +59,7 @@ namespace Access2Justice.Api.BusinessLogic
             return GetOutboundTopic(topic);
         }
 
-        public async Task<dynamic> GetTopicsAsync(string keyword, Location location)
+        public async Task<List<Topic>> GetTopicsAsync(string keyword, Location location)
         {
             dynamic topics = new List<dynamic>();
 
@@ -1898,6 +1898,22 @@ namespace Access2Justice.Api.BusinessLogic
                     await dbClient.DeleteResource(dbSettings.ResourcesCollectionId, item.Key.ToString(), orgUnit.ToString());
                 }
             }
+        }
+
+        public async Task<bool> ExistsRelation(TopicInput topicInput)
+        {
+            List<dynamic> topics = await dbClient.FindOneItemWhereArrayContainsAsyncWithLocation(dbSettings.TopicsCollectionId,
+                Constants.ParentTopicId, Constants.Id, topicInput.Id, topicInput.Location);
+            
+            if (topics.Any())
+            {
+                return true;
+            }
+
+            List<dynamic> resources = await dbClient.FindOneItemWhereArrayContainsAsyncWithLocation(dbSettings.ResourcesCollectionId,
+                Constants.TopicTags, Constants.Id, topicInput.Id, topicInput.Location);
+
+            return resources.Any();
         }
     }
 }

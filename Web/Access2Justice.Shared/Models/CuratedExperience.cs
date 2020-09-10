@@ -21,6 +21,12 @@ namespace Access2Justice.Shared.Models
         [JsonProperty(PropertyName = "title")]
         public string Title { get; set; }
 
+        [JsonProperty(PropertyName = "url")]
+        public string Url { get; set; }
+
+        [JsonProperty(PropertyName = "isExternal")]
+        public bool IsExternal { get; set; } = false;
+
         [JsonProperty(PropertyName = "components")]
         public List<CuratedExperienceComponent> Components { get; set; }
 
