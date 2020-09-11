@@ -44,22 +44,6 @@ namespace Access2Justice.Api.Tests.BusinessLogic
 
         [Theory]
         [MemberData(nameof(ShareTestData.ShareInputData), MemberType = typeof(ShareTestData))]
-        public void CheckPermaLinkDataAsyncShouldValidate(ShareInput shareInput, dynamic expectedResult)
-        {
-            dynamic profileResponse = userProfileBusinessLogic.GetUserProfileDataAsync(shareInput.UserId, false).Returns<dynamic>(ShareTestData.UserProfileWithSharedResourceData);
-            var dbResponse = dynamicQueries.FindItemsWhereAsync(dbSettings.UserResourcesCollectionId, "SharedResourceId", "0568B88C-3866-4CCA-97C8-B8E3F3D1FF3C");
-            dbResponse.ReturnsForAnyArgs(ShareTestData.sharedResourcesData);
-
-            //act
-            var response = shareBusinessLogic.CheckPermaLinkDataAsync(shareInput);
-            expectedResult = JsonConvert.SerializeObject(expectedResult);
-            var actualResult = JsonConvert.SerializeObject(response.Result);
-            //assert
-            Assert.Equal(expectedResult, actualResult);
-        }
-
-        [Theory]
-        [MemberData(nameof(ShareTestData.ShareInputData), MemberType = typeof(ShareTestData))]
         public void CheckPermaLinkDataAsyncShouldValidateNull(ShareInput shareInput, dynamic expectedResult)
         {
             shareInput.UserId = null;

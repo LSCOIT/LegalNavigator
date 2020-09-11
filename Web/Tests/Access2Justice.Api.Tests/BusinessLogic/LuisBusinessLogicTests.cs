@@ -256,30 +256,6 @@ namespace Access2Justice.Tests.ServiceUnitTestCases
 
         //}
 
-        [Fact]
-        public void GetResourceBasedOnThresholdAsyncTestsShouldValidateEmptyResources()
-        {
-            //arrange
-            luisInput.LuisTopScoringIntent = keyword;
-            var luisResponse = luisProxy.GetIntents(searchText);
-            luisResponse.ReturnsForAnyArgs(properLuisResponse);
-
-            var topicResponse = topicsResourcesBusinessLogic.GetTopicsAsync(keyword, location);
-            topicResponse.ReturnsForAnyArgs<dynamic>(emptyTopicObject);
-
-            var internalResponse = luis.GetInternalResourcesAsync(keyword, luisInput, Arg.Any<IEnumerable<string>>());
-            internalResponse.ReturnsForAnyArgs<dynamic>(internalResponse);
-
-            var webResponse = webSearchBusinessLogic.SearchWebResourcesAsync(new Uri("http://www.bing.com"));
-            webResponse.ReturnsForAnyArgs<dynamic>(webData);
-
-            //act
-            var result = luisBusinessLogic.GetResourceBasedOnThresholdAsync(luisInput).Result;
-
-            //assert
-            Assert.Contains(expectedInternalResponse, result);
-        }
-
         //[Fact]
         //public void GetResourceBasedOnThresholdAsyncTestsShouldValidateWebResources()
         //{
