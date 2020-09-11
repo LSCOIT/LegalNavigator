@@ -1,14 +1,20 @@
 <div class="container" *ngIf="guidedAssistantResults">
   <div *ngIf="guidedAssistantResults.topIntent; else elseblock">
     <div
-      *ngIf="guidedAssistantResults.guidedAssistants && guidedAssistantResults.guidedAssistants[0].Item2.length == 0; else multiga"
+      *ngIf="
+        guidedAssistantResults.guidedAssistants &&
+          guidedAssistantResults.curatedExperiences.length == 0;
+        else multiga
+      "
       class="col-sm-8 col-sm-offset-2 text-center top-intent"
     >
       <h3>It looks like you are looking for information on:</h3>
       <p class="text-capitalize">{{ guidedAssistantResults.topIntent }}</p>
       <button
         class="btn btn-primary"
-        routerLink="/guidedassistant/{{ guidedAssistantResults?.guidedAssistants[0].Item1 }}"
+        routerLink="/guidedassistant/{{
+          guidedAssistantResults?.guidedAssistants[0].Item1
+        }}"
       >
         Start the Guided Assistant
       </button>
@@ -16,26 +22,52 @@
         <a class="link col-md-12 text-center" (click)="backToSearch()">Back</a>
       </div>
     </div>
-    <ng-template #multiga >
-      <div *ngIf="guidedAssistantResults.guidedAssistants && guidedAssistantResults.guidedAssistants[0].Item2.length > 0; else elseIfBlock"
-           class="col-sm-8 col-sm-offset-2 text-center top-intent">
-            <h3>It looks like you are looking for information on:</h3>
-            <p class="text-capitalize">{{ guidedAssistantResults.topIntent }}</p>
-            <div *ngFor="let ce of guidedAssistantResults.curatedExperiences" class="text-left">
-              <a class="link col-md-12"  routerLink="/guidedassistant/{{ ce.CuratedExperienceId }}" >{{ce.Title}}</a>
-              <!-- <ng-container *ngFor="let tag of ga.Item2">
-                <a class="link col-md-12"  routerLink="/guidedassistant/{{ ga?.Item1 }}" >{{tag}}</a>
-              </ng-container> -->
-            </div>
-            <div>
-              <a class="link col-md-12 text-center" (click)="backToSearch()">Back</a>
-            </div>
+    <ng-template #multiga>
+      <div
+        *ngIf="
+          guidedAssistantResults.guidedAssistants &&
+            guidedAssistantResults.curatedExperiences.length > 0;
+          else elseIfBlock
+        "
+        class="col-sm-8 col-sm-offset-2 text-center top-intent"
+      >
+        <h3>It looks like you are looking for information on:</h3>
+        <p class="text-capitalize">{{ guidedAssistantResults.topIntent }}</p>
+        <p>Here is a list of guided interviews we've found</p>
+        <div
+          *ngFor="let ce of guidedAssistantResults.curatedExperiences"
+          class="text-left"
+        >
+          <a
+            class="link col-md-12"
+            target="_blank"
+            routerLink="/guidedassistant/{{ ce.CuratedExperienceId }}"
+            *ngIf="!ce.IsExternal"
+            >{{ ce.Title }}</a
+          >
+          <a
+            class="link col-md-12"
+            target="_blank"
+            href="{{ ce.Url }}"
+            *ngIf="ce.IsExternal"
+            >{{ ce.Title }}</a
+          >
         </div>
+        <div>
+          <a class="link col-md-12 text-center" (click)="backToSearch()"
+            >Back</a
+          >
+        </div>
+      </div>
     </ng-template>
     <ng-template #elseIfBlock>
       <div
         class="col-sm-8 col-sm-offset-2 text-center top-intent"
-        *ngIf="!guidedAssistantResults.guidedAssistantId && guidedAssistantResults.topicIds.length > 0; else elseblock"
+        *ngIf="
+          !guidedAssistantResults.guidedAssistantId &&
+            guidedAssistantResults.topicIds.length > 0;
+          else elseblock
+        "
       >
         <h3>It looks like you are looking for information on:</h3>
         <p class="text-capitalize">{{ guidedAssistantResults.topIntent }}</p>
@@ -52,45 +84,48 @@
           you.
         </span>
         <div class="row">
-          <a
-            routerLink="/guidedassistant"
-            class="link col-md-12 text-center">
+          <a routerLink="/guidedassistant" class="link col-md-12 text-center">
             Back
           </a>
         </div>
       </div>
     </ng-template>
-    <div class="row" *ngIf="guidedAssistantResults?.relevantIntents?.length > 0">
+    <div
+      class="row"
+      *ngIf="guidedAssistantResults?.relevantIntents?.length > 0"
+    >
       <div class="col-sm-12 relevant-intent">
-        <h5>You may also be interested in the following topic{{ guidedAssistantResults.relevantIntents.length > 1 ? 's' : '' }}:</h5>
+        <h5>
+          You may also be interested in the following topic{{
+            guidedAssistantResults.relevantIntents.length > 1 ? "s" : ""
+          }}:
+        </h5>
         <form>
           <div class="button-container">
             <ul>
-              <li
-                *ngFor="let intent of guidedAssistantResults.relevantIntents"
-              >
-              <div (change) = "onSelectTopic($event, intent.Name)">
-                <input
-                  type="checkbox"
-                  [id]="intent.Name"
-                  [value]="intent.Name"
-                  name="multiSelectOptions"
-                  #checkBox 
-                  ngModel
-                />
-                <label
-                  [for]="intent.Name"
-                  class="p text-capitalize"
-                  tabindex="0"
-                  (keyup.enter)="$event.target.click()"
-                >
-                  {{intent.Name}}
-                </label>
-                <div (click) = "checkBox.click()" class="check">
+              <li *ngFor="let intent of guidedAssistantResults.relevantIntents">
+                <div (change)="onSelectTopic($event, intent.Name)">
+                  <input
+                    type="checkbox"
+                    [id]="intent.Name"
+                    [value]="intent.Name"
+                    name="multiSelectOptions"
+                    #checkBox
+                    ngModel
+                  />
+                  <label
+                    [for]="intent.Name"
+                    class="p text-capitalize"
+                    tabindex="0"
+                    (keyup.enter)="$event.target.click()"
+                  >
+                    {{ intent.Name }}
+                  </label>
+                  <div (click)="checkBox.click()" class="check"></div>
                 </div>
-              </div>
                 <a
                   class="link p"
+                  target="_blank"
                   routerLink="/topics/{{ intent.Id }}"
                 >
                   Learn More
