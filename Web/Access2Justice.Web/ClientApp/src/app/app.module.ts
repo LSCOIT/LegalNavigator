@@ -27,6 +27,7 @@ import { SharedModule } from "./shared/shared.module";
 import { SavedResourcesComponent } from "./profile/saved-resources/saved-resources.component";
 import { IncomingResourcesComponent } from "./profile/incoming-resources/incoming-resources.component";
 import { SharedResourcesComponent } from "./profile/shared-resources/shared-resources.component";
+import { InnerQuestionComponent } from './guided-assistant/question/inner-question/inner-question.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { SharedResourcesComponent } from "./profile/shared-resources/shared-reso
     CuratedExperienceResultComponent,
     IncomingResourcesComponent,
     SharedResourcesComponent,
+    InnerQuestionComponent,
   ],
   imports: [
     CoreModule,

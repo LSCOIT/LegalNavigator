@@ -7,7 +7,7 @@ body {
 }
 
 #toast-container > div {
-  opacity:1;
+  opacity: 1;
 }
 
 li {
@@ -306,8 +306,8 @@ textarea {
   width: 100%;
 }
 
-[action-button-label]{
-  padding: .5rem 0.3rem!important;
+[action-button-label] {
+  padding: 0.5rem 0.3rem !important;
   font-weight: 600;
   font-size: 16px;
 }
@@ -451,10 +451,16 @@ textarea {
   }
 }
 
-.quote-block{
+.quote-block {
   color: #0b2b78;
-  font-family: Georgia,serif;
-  margin-bottom: .5rem;
+  font-family: Georgia, serif;
+  margin-bottom: 0.5rem;
   font-weight: 500;
 }
+.m-0 {
+  margin: 0;
+}
 
+.findcase-input {
+  height: auto;
+}

@@ -1,0 +1,58 @@
+<h3
+  id="input-data"
+  (click)="openModal($event)"
+  [innerHtml]="inputData | sanitizeHtml"
+></h3>
+<ng-template #caseExampleTemplate>
+  <div class="modal-body text-center container-fluid">
+    <img
+      type="button"
+      class="nav-icon pull-right close"
+      src="./assets/images/small-icons/close.svg"
+      aria-label="Close"
+      (click)="modalRef.hide()"
+    />
+
+    <div class="row">
+      <div class="col-md-10 offset-md-1">
+        <div class="input-group">
+          <input
+            type="text"
+            id="caseId"
+            name="caseId"
+            placeholder="Enter your case ID"
+            [(ngModel)]="caseId"
+            class="form-control findcase-input"
+            aria-describedby="find-case-button"
+            aria-label="Case id with lookup and info addons"
+          />
+          <div class="input-group-append" id="find-case-button">
+            <button
+              type="button"
+              class="btn btn-primary m-0"
+              (click)="lookup()"
+              id="look_up"
+            >
+              Look up
+            </button>
+          </div>
+        </div>
+
+        <p *ngIf="errorMessage">{{ errorMessage }}</p>
+        <div *ngIf="caseObject">
+          <p>Title: {{ caseObject.caseTitle }}</p>
+          <p>Id: {{ caseObject.caseId }}</p>
+          <p>Status: {{ caseObject.caseStatus }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <p>For example:</p>
+      <ul>
+        <li>1TX161000007</li>
+        <li>3DTI-15-062264</li>
+        <li>5DRC-20-0000238</li>
+      </ul>
+    </div>
+  </div>
+</ng-template>

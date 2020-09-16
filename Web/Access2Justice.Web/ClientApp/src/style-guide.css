@@ -292,6 +292,7 @@ input[type="checkbox"]:checked ~ .check::before {
 .link {
   color: #0d3fb8;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .link:hover {
