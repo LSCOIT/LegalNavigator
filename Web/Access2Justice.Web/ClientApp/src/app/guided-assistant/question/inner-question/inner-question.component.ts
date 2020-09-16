@@ -52,7 +52,7 @@ export class InnerQuestionComponent implements OnInit {
   ngOnInit() {}
 
   openModal(event: any) {
-    if (event.target.id === "case-test") {
+    if (event.target.id === "case-lookup") {
       var temp = this.template.first;
       this.modalRef = this.modalService.show(temp, { class: "modal-sm" });
     }
