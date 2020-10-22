@@ -13,5 +13,6 @@ namespace Access2Justice.Api.Interfaces
         Task<bool> ValidateOrganizationalUnit(string ou);
         Task<bool> ValidateOUForRole(List<string> roleInformationId, string ou);
         string GetOId();
+        bool IsApplication();
     }
 }

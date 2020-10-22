@@ -6,10 +6,12 @@ using Access2Justice.Shared.Interfaces;
 using Access2Justice.Shared.Models;
 using Access2Justice.Shared.Utilities;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Access2Justice.Api.BusinessLogic
@@ -21,16 +23,19 @@ namespace Access2Justice.Api.BusinessLogic
         private readonly IUserProfileBusinessLogic dbUserProfile;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly AzureAdOptions azureOptions;
+        private readonly IConfiguration configuration;
 
         public UserRoleBusinessLogic(IDynamicQueries dynamicQueries, ICosmosDbSettings cosmosDbSettings,
             IUserProfileBusinessLogic userProfileBusinessLogic,
-            IHttpContextAccessor httpContextAccessor, IOptions<AzureAdOptions> azureOptions)
+            IHttpContextAccessor httpContextAccessor, IOptions<AzureAdOptions> azureOptions,
+            IConfiguration configuration)
         {
             dbClient = dynamicQueries;
             dbSettings = cosmosDbSettings;
             dbUserProfile = userProfileBusinessLogic;
             this.httpContextAccessor = httpContextAccessor;
             this.azureOptions = azureOptions.Value;
+            this.configuration = configuration;
         }
 
         public async Task<List<string>> GetPermissionDataAsync(string oId)
@@ -49,6 +54,10 @@ namespace Access2Justice.Api.BusinessLogic
 
         public async Task<bool> ValidateOrganizationalUnit(string ou)
         {
+            if (this.IsApplication())
+            {
+                return true;
+            }
             string oId = GetOId();
             if (string.IsNullOrEmpty(ou) || string.IsNullOrEmpty(oId))
                 return false;
@@ -94,6 +103,33 @@ namespace Access2Justice.Api.BusinessLogic
                     }
                 }
             }
+            return false;
+        }
+
+        public bool IsApplication()
+        {
+            try
+            {
+                IEnumerable<Claim> claims = httpContextAccessor.HttpContext.User.Claims;
+                IConfigurationSection apiOids = configuration.GetSection("ApiOids");
+                IEnumerable<string> oids = apiOids.GetSection("oIds").Get<IEnumerable<string>>();
+                string azpacr = apiOids.GetSection(Constants.Azpacr).Get<string>();
+                string oId = claims.FirstOrDefault(c => c.Type == azureOptions.UserClaimsUrl)?.Value ?? string.Empty;
+                string sub = claims.FirstOrDefault(c => c.Type == Constants.NameIdentifier)?.Value ?? string.Empty;
+                string azpacrClaim = claims.FirstOrDefault(c => c.Type == Constants.Azpacr)?.Value ?? string.Empty;
+
+                // Application tokens always have the same value of oId and sub claims
+                // azpacr 1 means that token was generated using client secret
+                if (!string.IsNullOrEmpty(oId) && oids.Contains(oId) && oId == sub && azpacr == azpacrClaim)
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
             return false;
         }
     }
