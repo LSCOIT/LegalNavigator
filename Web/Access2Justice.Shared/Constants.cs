@@ -52,6 +52,8 @@
         public const string Code = "code";
         public const string DefaultOgranizationalUnit = "Default";
         public const string OrganizationalUnit = "organizationalUnit";
+        public const string NameIdentifier = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier";
+        public const string Azpacr = "azpacr";
 
         public static readonly int StrigifiedGuidLength = System.Guid.Empty.ToString().Length;
 		/// <summary>
