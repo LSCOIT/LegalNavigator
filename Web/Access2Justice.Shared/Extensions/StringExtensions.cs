@@ -32,7 +32,9 @@ namespace Access2Justice.Shared.Extensions
             if (keepHyperlinkTags)
             {
                 // allow urls
-                sanitizer.Tag("a").SetAttribute("target", "_blank")
+                sanitizer.Tag("a").AllowAttributes("id")
+                    .AllowAttributes("class")
+                    .SetAttribute("target", "_blank")
                     .SetAttribute("rel", "nofollow")
                     .CheckAttribute("href", HtmlSanitizerCheckType.Url)
                     .RemoveEmpty();
