@@ -72,7 +72,7 @@ namespace Access2Justice.Api.BusinessLogic
                 topics = await dbClient.
                     FindItemsWhereContainsWithLocationAsync(
                         dbSettings.TopicsCollectionId,
-                        "keywords",
+                        "name",
                         searchKeyword,
                         searchLocation,
                         ignoreCase: true);
