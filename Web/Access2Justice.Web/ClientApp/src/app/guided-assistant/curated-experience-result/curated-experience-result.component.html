@@ -1,4 +1,5 @@
 <div class="container" *ngIf="guidedAssistantResults">
+  <app-warning-question></app-warning-question>
   <div *ngIf="guidedAssistantResults.topIntent; else elseblock">
     <div
       *ngIf="
@@ -50,6 +51,7 @@
             target="_blank"
             href="{{ ce.Url }}"
             *ngIf="ce.IsExternal"
+            (click)="onExternalClick($event)"
             >{{ ce.Title }}</a
           >
         </div>

@@ -1,0 +1,21 @@
+<ng-template #authWarningPopup>
+  <div class="modal-body text-center container-fluid">
+    <img type="button"
+         class="nav-icon pull-right close"
+         src="./assets/images/small-icons/close.svg"
+         aria-label="Close"
+         (click)="modalRef.hide()" />
+    <h3>Warning!</h3>
+    <div class="row">
+      <span>
+        Please note that you are currenеly not logged in and won't be able to save the personal action plan into your account.
+        <br>
+        Log in if you wish to save your personal action plan or click "Continue" to start the interview without saving.
+      </span>
+    </div>
+    <div class="row">
+      <button class="btn btn-primary m-0" (click)="openExternalGuidedInterview()">Continue</button>
+    </div>
+  </div>
+</ng-template>
+    

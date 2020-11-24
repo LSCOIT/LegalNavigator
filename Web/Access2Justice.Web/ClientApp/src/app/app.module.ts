@@ -28,6 +28,7 @@ import { SavedResourcesComponent } from "./profile/saved-resources/saved-resourc
 import { IncomingResourcesComponent } from "./profile/incoming-resources/incoming-resources.component";
 import { SharedResourcesComponent } from "./profile/shared-resources/shared-resources.component";
 import { InnerQuestionComponent } from './guided-assistant/question/inner-question/inner-question.component';
+import { AuthWarningComponent } from './guided-assistant/curated-experience-result/auth-warning/auth-warning.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { InnerQuestionComponent } from './guided-assistant/question/inner-questi
     IncomingResourcesComponent,
     SharedResourcesComponent,
     InnerQuestionComponent,
+    AuthWarningComponent
   ],
   imports: [
     CoreModule,

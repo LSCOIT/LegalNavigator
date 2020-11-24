@@ -1,5 +1,5 @@
 import { Location } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { Router } from "@angular/router";
 import { ToastrService } from "ngx-toastr";
 import { Global } from "../../global";
@@ -9,6 +9,7 @@ import { ArrayUtilityService } from "../../common/services/array-utility.service
 import { NavigateDataService } from "../../common/services/navigate-data.service";
 import { IntentInput } from "../personalized-plan/personalized-plan";
 import { PersonalizedPlanService } from "../personalized-plan/personalized-plan.service";
+import { AuthWarningComponent } from '../curated-experience-result/auth-warning/auth-warning.component'; 
 
 @Component({
   selector: "app-curated-experience-result",
@@ -24,6 +25,7 @@ export class CuratedExperienceResultComponent implements OnInit {
   intentInput: IntentInput;
   locationDetails: LocationDetails;
   locationSubscription: any;
+  @ViewChild(AuthWarningComponent) child: AuthWarningComponent;
 
   constructor(
     private navigateDataService: NavigateDataService,
@@ -90,6 +92,11 @@ export class CuratedExperienceResultComponent implements OnInit {
   backToSearch() {
     sessionStorage.removeItem("searchTextResults");
     this.router.navigateByUrl("/guidedassistant");
+  }
+
+  onExternalClick(event) {
+    event.preventDefault();
+    this.child.showAuthWarning(event);
   }
 
   ngOnInit() {
